@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "cachedimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leoz/CachedImage",
+      "state" : {
+        "revision" : "d84d2577d65c2e662c163b2505c06ec38c68d410",
+        "version" : "0.0.5"
+      }
+    },
+    {
+      "identity" : "skphotobrowser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/suzuki-0000/SKPhotoBrowser",
+      "state" : {
+        "revision" : "f9d8589310ad935270c2b24b3f97c5a89970aff5",
+        "version" : "7.1.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup",
+      "state" : {
+        "revision" : "8b6cf29eead8841a1fa7822481cb3af4ddaadba6",
+        "version" : "2.6.1"
+      }
+    }
+  ],
+  "version" : 2
+}

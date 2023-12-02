@@ -1,0 +1,576 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
+		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
+		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
+		BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA52B1ADD540014FB18 /* DetailTagView.swift */; };
+		BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */; };
+		BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAC2B1ADDA00014FB18 /* MediaView.swift */; };
+		BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */; };
+		BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */; };
+		BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */; };
+		BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB62B1ADE130014FB18 /* RedditScraper.swift */; };
+		BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB92B1ADE470014FB18 /* App Consts.swift */; };
+		BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */; };
+		BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */; };
+		BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC12B1ADE700014FB18 /* SizeModifier.swift */; };
+		BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC42B1ADE790014FB18 /* NavInjector.swift */; };
+		BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC52B1ADE790014FB18 /* NavPayloads.swift */; };
+		BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */; };
+		BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCA2B1ADE850014FB18 /* Post Utils.swift */; };
+		BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCB2B1ADE850014FB18 /* Media Utils.swift */; };
+		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
+		BBB2C0C92B1AD88F003C8ACC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */; };
+		BBB2C0D22B1AD8C8003C8ACC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */; };
+		BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0DE2B1AD939003C8ACC /* CachedImage */; };
+		BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */; };
+		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
+		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
+		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
+		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		BB391FA52B1ADD540014FB18 /* DetailTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTagView.swift; sourceTree = "<group>"; };
+		BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedMultiMediaView.swift; sourceTree = "<group>"; };
+		BB391FAC2B1ADDA00014FB18 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
+		BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowserController.swift; sourceTree = "<group>"; };
+		BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
+		BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
+		BB391FB62B1ADE130014FB18 /* RedditScraper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditScraper.swift; sourceTree = "<group>"; };
+		BB391FB92B1ADE470014FB18 /* App Consts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "App Consts.swift"; sourceTree = "<group>"; };
+		BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentSafari.swift; sourceTree = "<group>"; };
+		BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loading Modifiers.swift"; sourceTree = "<group>"; };
+		BB391FC12B1ADE700014FB18 /* SizeModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeModifier.swift; sourceTree = "<group>"; };
+		BB391FC42B1ADE790014FB18 /* NavInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavInjector.swift; sourceTree = "<group>"; };
+		BB391FC52B1ADE790014FB18 /* NavPayloads.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavPayloads.swift; sourceTree = "<group>"; };
+		BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavCoordinator.swift; sourceTree = "<group>"; };
+		BB391FCA2B1ADE850014FB18 /* Post Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post Utils.swift"; sourceTree = "<group>"; };
+		BB391FCB2B1ADE850014FB18 /* Media Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media Utils.swift"; sourceTree = "<group>"; };
+		BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArtemis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "../../OpenArtemis copy hehe/OpenArtemis/AppDelegate.swift"; sourceTree = "<group>"; };
+		BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BBB2C0BB2B1AD88E003C8ACC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
+				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
+				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BB391F9C2B1ADCC00014FB18 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */,
+				BB391FA02B1ADD030014FB18 /* Subreddits */,
+				BB391F9D2B1ADCCC0014FB18 /* Posts */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BB391F9D2B1ADCCC0014FB18 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */,
+				BB391FA92B1ADD700014FB18 /* Media */,
+				BB391FA52B1ADD540014FB18 /* DetailTagView.swift */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
+		BB391FA02B1ADD030014FB18 /* Subreddits */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FA12B1ADD140014FB18 /* DividerView.swift */,
+				BB391FA22B1ADD140014FB18 /* SearchView.swift */,
+			);
+			path = Subreddits;
+			sourceTree = "<group>";
+		};
+		BB391FA92B1ADD700014FB18 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FAE2B1ADDAA0014FB18 /* Media View Controllers */,
+				BB391FAC2B1ADDA00014FB18 /* MediaView.swift */,
+				BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		BB391FAE2B1ADDAA0014FB18 /* Media View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */,
+				BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */,
+			);
+			path = "Media View Controllers";
+			sourceTree = "<group>";
+		};
+		BB391FB52B1ADE0B0014FB18 /* Scrape */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FB62B1ADE130014FB18 /* RedditScraper.swift */,
+			);
+			path = Scrape;
+			sourceTree = "<group>";
+		};
+		BB391FB82B1ADE3D0014FB18 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FBF2B1ADE670014FB18 /* Post Utils */,
+				BB391FBE2B1ADE600014FB18 /* Navigation */,
+				BB391FBD2B1ADE560014FB18 /* Modifiers */,
+				BB391FB92B1ADE470014FB18 /* App Consts.swift */,
+				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BB391FBD2B1ADE560014FB18 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
+				BB391FC12B1ADE700014FB18 /* SizeModifier.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		BB391FBE2B1ADE600014FB18 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */,
+				BB391FC42B1ADE790014FB18 /* NavInjector.swift */,
+				BB391FC52B1ADE790014FB18 /* NavPayloads.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		BB391FBF2B1ADE670014FB18 /* Post Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FCB2B1ADE850014FB18 /* Media Utils.swift */,
+				BB391FCA2B1ADE850014FB18 /* Post Utils.swift */,
+			);
+			path = "Post Utils";
+			sourceTree = "<group>";
+		};
+		BBB2C0B52B1AD88D003C8ACC = {
+			isa = PBXGroup;
+			children = (
+				BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */,
+				BBB2C0BF2B1AD88E003C8ACC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BBB2C0BF2B1AD88E003C8ACC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */ = {
+			isa = PBXGroup;
+			children = (
+				BB391FB82B1ADE3D0014FB18 /* Utilities */,
+				BB391FB52B1ADE0B0014FB18 /* Scrape */,
+				BB391F9C2B1ADCC00014FB18 /* Views */,
+				BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */,
+				BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */,
+				BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */,
+				BBB2C0C72B1AD88F003C8ACC /* Preview Content */,
+			);
+			path = OpenArtemis;
+			sourceTree = "<group>";
+		};
+		BBB2C0C72B1AD88F003C8ACC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BBB2C0BD2B1AD88E003C8ACC /* OpenArtemis */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBB2C0CC2B1AD88F003C8ACC /* Build configuration list for PBXNativeTarget "OpenArtemis" */;
+			buildPhases = (
+				BBB2C0BA2B1AD88E003C8ACC /* Sources */,
+				BBB2C0BB2B1AD88E003C8ACC /* Frameworks */,
+				BBB2C0BC2B1AD88E003C8ACC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenArtemis;
+			packageProductDependencies = (
+				BBB2C0DE2B1AD939003C8ACC /* CachedImage */,
+				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
+				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
+			);
+			productName = OpenArtemis;
+			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BBB2C0B62B1AD88D003C8ACC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					BBB2C0BD2B1AD88E003C8ACC = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = BBB2C0B92B1AD88D003C8ACC /* Build configuration list for PBXProject "OpenArtemis" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BBB2C0B52B1AD88D003C8ACC;
+			packageReferences = (
+				BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */,
+				BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
+				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
+			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BBB2C0BD2B1AD88E003C8ACC /* OpenArtemis */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BBB2C0BC2B1AD88E003C8ACC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBB2C0C92B1AD88F003C8ACC /* Preview Assets.xcassets in Resources */,
+				BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BBB2C0BA2B1AD88E003C8ACC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */,
+				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
+				BBB2C0D22B1AD8C8003C8ACC /* AppDelegate.swift in Sources */,
+				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
+				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
+				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
+				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
+				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
+				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
+				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
+				BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */,
+				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
+				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
+				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
+				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
+				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
+				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
+				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
+				BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */,
+				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
+				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BBB2C0CA2B1AD88F003C8ACC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BBB2C0CB2B1AD88F003C8ACC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BBB2C0CD2B1AD88F003C8ACC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
+				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenArtemis;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BBB2C0CE2B1AD88F003C8ACC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
+				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenArtemis;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BBB2C0B92B1AD88D003C8ACC /* Build configuration list for PBXProject "OpenArtemis" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBB2C0CA2B1AD88F003C8ACC /* Debug */,
+				BBB2C0CB2B1AD88F003C8ACC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBB2C0CC2B1AD88F003C8ACC /* Build configuration list for PBXNativeTarget "OpenArtemis" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBB2C0CD2B1AD88F003C8ACC /* Debug */,
+				BBB2C0CE2B1AD88F003C8ACC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/leoz/CachedImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.5;
+			};
+		};
+		BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/suzuki-0000/SKPhotoBrowser";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
+		BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */;
+			productName = CachedImage;
+		};
+		BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */;
+			productName = SKPhotoBrowser;
+		};
+		BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = BBB2C0B62B1AD88D003C8ACC /* Project object */;
+}
