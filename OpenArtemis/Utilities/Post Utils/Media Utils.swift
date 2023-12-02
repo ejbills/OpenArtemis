@@ -44,10 +44,14 @@ class MediaUtils {
                 completion(nil)
                 return
             }
-
+          
+          //Return the url if its already a media url
+          if videoURL.isVideoMediaURL() {
+            completion(videoURL)
+          } else {
             do {
-                let htmlString = String(data: data, encoding: .utf8)!
-                let doc = try SwiftSoup.parse(htmlString)
+                let htmlString = String(data: data, encoding: .utf8)
+                let doc = try SwiftSoup.parse(htmlString!)
 
                 // Extract video link
                 if let videoElement = try doc.select("shreddit-player source").first(),
@@ -60,6 +64,8 @@ class MediaUtils {
             } catch {
                 completion(nil)
             }
+          }
+
         }
 
         task.resume()

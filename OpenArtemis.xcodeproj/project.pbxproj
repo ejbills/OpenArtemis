@@ -15,6 +15,11 @@
 		65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */; };
 		65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */; };
 		65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */; };
+		65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCA2B1B3DAC00BCCD38 /* PrivacyURL.swift */; };
+		65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */; };
+		65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCE2B1B52EF00BCCD38 /* RemoveTrackingParams.swift */; };
+		65D3DBD72B1B555200BCCD38 /* OpenArtemisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */; };
+		65D3DBDE2B1B569000BCCD38 /* PrivacyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -42,6 +47,16 @@
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		65D3DBD82B1B555200BCCD38 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BBB2C0B62B1AD88D003C8ACC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BBB2C0BD2B1AD88E003C8ACC;
+			remoteInfo = OpenArtemis;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
@@ -50,6 +65,12 @@
 		65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorModifier.swift; sourceTree = "<group>"; };
 		65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeAppIconView.swift; sourceTree = "<group>"; };
 		65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconManager.swift; sourceTree = "<group>"; };
+		65D3DBCA2B1B3DAC00BCCD38 /* PrivacyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyURL.swift; sourceTree = "<group>"; };
+		65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaURL.swift; sourceTree = "<group>"; };
+		65D3DBCE2B1B52EF00BCCD38 /* RemoveTrackingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveTrackingParams.swift; sourceTree = "<group>"; };
+		65D3DBD42B1B555200BCCD38 /* OpenArtemisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenArtemisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisTests.swift; sourceTree = "<group>"; };
+		65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTests.swift; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
 		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -76,6 +97,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		65D3DBD12B1B555200BCCD38 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB2C0BB2B1AD88E003C8ACC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,6 +133,24 @@
 				65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		65D3DBC92B1B3DA000BCCD38 /* Privacy */ = {
+			isa = PBXGroup;
+			children = (
+				65D3DBCA2B1B3DAC00BCCD38 /* PrivacyURL.swift */,
+				65D3DBCE2B1B52EF00BCCD38 /* RemoveTrackingParams.swift */,
+			);
+			path = Privacy;
+			sourceTree = "<group>";
+		};
+		65D3DBD52B1B555200BCCD38 /* OpenArtemisTests */ = {
+			isa = PBXGroup;
+			children = (
+				65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */,
+				65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */,
+			);
+			path = OpenArtemisTests;
 			sourceTree = "<group>";
 		};
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
@@ -167,6 +213,7 @@
 		BB391FB82B1ADE3D0014FB18 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				65D3DBC92B1B3DA000BCCD38 /* Privacy */,
 				BB391FBF2B1ADE670014FB18 /* Post Utils */,
 				BB391FBE2B1ADE600014FB18 /* Navigation */,
 				BB391FBD2B1ADE560014FB18 /* Modifiers */,
@@ -184,6 +231,7 @@
 				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
 				BB391FC12B1ADE700014FB18 /* SizeModifier.swift */,
 				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
+				65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -211,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */,
+				65D3DBD52B1B555200BCCD38 /* OpenArtemisTests */,
 				BBB2C0BF2B1AD88E003C8ACC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -219,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */,
+				65D3DBD42B1B555200BCCD38 /* OpenArtemisTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -249,6 +299,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		65D3DBD32B1B555200BCCD38 /* OpenArtemisTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65D3DBDA2B1B555200BCCD38 /* Build configuration list for PBXNativeTarget "OpenArtemisTests" */;
+			buildPhases = (
+				65D3DBD02B1B555200BCCD38 /* Sources */,
+				65D3DBD12B1B555200BCCD38 /* Frameworks */,
+				65D3DBD22B1B555200BCCD38 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				65D3DBD92B1B555200BCCD38 /* PBXTargetDependency */,
+			);
+			name = OpenArtemisTests;
+			productName = OpenArtemisTests;
+			productReference = 65D3DBD42B1B555200BCCD38 /* OpenArtemisTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BBB2C0BD2B1AD88E003C8ACC /* OpenArtemis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBB2C0CC2B1AD88F003C8ACC /* Build configuration list for PBXNativeTarget "OpenArtemis" */;
@@ -282,6 +350,10 @@
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					65D3DBD32B1B555200BCCD38 = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = BBB2C0BD2B1AD88E003C8ACC;
+					};
 					BBB2C0BD2B1AD88E003C8ACC = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -307,11 +379,19 @@
 			projectRoot = "";
 			targets = (
 				BBB2C0BD2B1AD88E003C8ACC /* OpenArtemis */,
+				65D3DBD32B1B555200BCCD38 /* OpenArtemisTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		65D3DBD22B1B555200BCCD38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB2C0BC2B1AD88E003C8ACC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -324,6 +404,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		65D3DBD02B1B555200BCCD38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65D3DBDE2B1B569000BCCD38 /* PrivacyTests.swift in Sources */,
+				65D3DBD72B1B555200BCCD38 /* OpenArtemisTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB2C0BA2B1AD88E003C8ACC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -331,6 +420,7 @@
 				BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */,
 				65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
+				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
@@ -344,6 +434,7 @@
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
+				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
@@ -352,6 +443,7 @@
 				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
 				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
 				BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */,
+				65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
@@ -360,7 +452,49 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		65D3DBD92B1B555200BCCD38 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BBB2C0BD2B1AD88E003C8ACC /* OpenArtemis */;
+			targetProxy = 65D3DBD82B1B555200BCCD38 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		65D3DBDB2B1B555200BCCD38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpenArtemis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OpenArtemis";
+			};
+			name = Debug;
+		};
+		65D3DBDC2B1B555200BCCD38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpenArtemis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OpenArtemis";
+			};
+			name = Release;
+		};
 		BBB2C0CA2B1AD88F003C8ACC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -553,6 +687,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		65D3DBDA2B1B555200BCCD38 /* Build configuration list for PBXNativeTarget "OpenArtemisTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65D3DBDB2B1B555200BCCD38 /* Debug */,
+				65D3DBDC2B1B555200BCCD38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BBB2C0B92B1AD88D003C8ACC /* Build configuration list for PBXProject "OpenArtemis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

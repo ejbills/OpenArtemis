@@ -10,7 +10,7 @@ import SwiftSoup
 
 class RedditScraper {
     
-    static func scrape(subreddit: String, lastPostAfter: String? = nil, completion: @escaping (Result<[Post], Error>) -> Void) {
+  static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
                             "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
@@ -35,7 +35,8 @@ class RedditScraper {
             
             do {
                 // Parse the HTML data into an array of Post objects
-                let posts = try parsePostData(data: data)
+                // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
+                let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
                 completion(.success(posts))
             } catch {
                 completion(.failure(error))
@@ -43,12 +44,11 @@ class RedditScraper {
         }.resume()
     }
     
-    private static func parsePostData(data: Data) throws -> [Post] {
+  private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!
-
         let doc = try SwiftSoup.parse(htmlString)
         let postElements = try doc.select("div.link")
-
+        
         let posts = postElements.compactMap { postElement -> Post? in
             do {
                 let isAd = try postElement.classNames().contains("promoted")
@@ -72,7 +72,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
 
-                return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL, type: type, thumbnailURL: thumbnailURL)
+              return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")

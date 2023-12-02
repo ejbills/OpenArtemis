@@ -27,7 +27,7 @@ struct LoadingAnimation: View {
             .offset(x: moveRightLeft ? 14 : -14)
             .foregroundColor(Color.artemisAccent)
             .onAppear{
-              withAnimation(Animation.easeInOut(duration: 0.5).delay(0.2).repeatForever(autoreverses: true)){
+              withAnimation(Animation.easeInOut(duration: 0.5).delay(0.1).repeatForever(autoreverses: true)){
                 moveRightLeft.toggle()
               }
             }

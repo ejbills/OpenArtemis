@@ -8,11 +8,12 @@
 import Foundation
 import UIKit
 
+/// This class lets you ,anage the apps icon
 class AppIconManager {
   private var appIcons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any] ?? [:]
   
   
-  
+  ///Set the App Icon to a named String
   func setAppIcon(to iconName: String) {
     UIApplication.shared.setAlternateIconName(iconName == "AppIcon" ? "" : iconName) { error in
       if let error = error {
@@ -22,6 +23,8 @@ class AppIconManager {
     }
   }
   
+  ///Returns an array of names for all the alternative app icons
+  ///Note: The default one is not included but it should be accessible under the name "AppIcon"
   func getIcons() -> [String] {
     var alternateIconNames: [String] = []
     
@@ -33,11 +36,12 @@ class AppIconManager {
     return alternateIconNames
   }
 
-  
+  ///Returns the name of the currently applied icon
   func getCurrentIconName() -> String{
     return UIApplication.shared.alternateIconName ?? "AppIcon"
   }
   
+  ///Same as setAppIcon but uses private API to circumvent the alert popup that normally occurs
   func setAppIconWithoutAlert(to iconName: String?) {
     if UIApplication.shared.responds(to: #selector(getter: UIApplication.supportsAlternateIcons)) && UIApplication.shared.supportsAlternateIcons { // Mark 1
       

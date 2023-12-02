@@ -12,6 +12,10 @@ import SwiftUI
 extension Defaults.Keys {
   static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
   static let accentColor = Key<Color>("accentColor", default: Color.blue)
+  
+  static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
+  static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
+  static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
 }
 
 enum PreferredThemeMode: Codable, CaseIterable, Identifiable, Defaults.Serializable {
