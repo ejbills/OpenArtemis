@@ -11,23 +11,23 @@ import SwiftUI
 struct HandleDeepLinksDisplay: ViewModifier {
     func body(content: Content) -> some View {
         content
-            // MARK: App routing
+        // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
                 SubredditFeedView(subredditName: response.subredditName)
-                    
+                
             }
             .navigationDestination(for: PostResponse.self) { response in
                 Text(response.post.title)
-                    
+                
             }
         
             .navigationDestination(for: SafariResponse.self) { response in
-//                SafariHelper.openSafariView(withURL: response.url)
+                //                SafariHelper.openSafariView(withURL: response.url)
                 
-//                EmptyView()
-//                    .onAppear {
-//                        SafariHelper.openSafariView(withURL: response.url)
-//                    }
+                //                EmptyView()
+                //                    .onAppear {
+                //                        SafariHelper.openSafariView(withURL: response.url)
+                //                    }
             }
     }
 }
@@ -77,7 +77,7 @@ extension View {
         modifier(HandleDeepLinksDisplay())
     }
     
-//    func handleDeepLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
-//        modifier(HandleDeepLinkResolution(navigationPath: navigationPath))
-//    }
+    //    func handleDeepLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
+    //        modifier(HandleDeepLinkResolution(navigationPath: navigationPath))
+    //    }
 }

@@ -12,6 +12,7 @@ struct SubredditFeedView: View {
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
+    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
     var body: some View {
         Group {
@@ -32,12 +33,12 @@ struct SubredditFeedView: View {
                 }
                 .scrollIndicators(.hidden)
             } else {
-                ProgressView("Loading...")
+                LoadingAnimation(loadingText: "Loading Feed...")
                     .padding()
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle(subredditName)
+        .navigationTitle(subredditName.localizedCapitalized)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
@@ -49,7 +50,7 @@ struct SubredditFeedView: View {
     }
     
     private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil) {
-        RedditScraper.scrape(subreddit: subredditName, lastPostAfter: lastPostAfter) { result in
+        RedditScraper.scrape(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let newPosts):
                 for post in newPosts {

@@ -11,18 +11,19 @@ import CachedImage
 
 struct MediaView: View {
     let determinedType: String
-    let mediaURL: String
+    let mediaURL: PrivateURL
     let thumbnailURL: String?
 
     @Binding var mediaSize: CGSize
     
     var body: some View {
-        let forcedMediaURL = URL(string: mediaURL)!
+      
+      let forcedPrivateMediaURL = URL(string: mediaURL.privateURL)!
             
         switch determinedType {
         case "image":
             CachedImage(
-                url: forcedMediaURL,
+                url: forcedPrivateMediaURL,
                 content: { image in
                     image
                         .resizable()
@@ -45,7 +46,7 @@ struct MediaView: View {
             .aspectRatio(contentMode: .fit)
             .cornerRadius(6)
             .onTapGesture {
-                SKPhotoBrowserController(images: [mediaURL]).present()
+              SKPhotoBrowserController(images: [mediaURL.privateURL]).present()
             }
             
         case "text":
@@ -53,7 +54,7 @@ struct MediaView: View {
             EmptyView()
             
         default:
-            EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: forcedMediaURL, thumbnailURL: thumbnailURL)
+            EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL)
         }
     }
 }

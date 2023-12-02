@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     
     let determinedType: String
-    let mediaURL: URL
+    let mediaURL: PrivateURL
     let thumbnailURL: String?
     
     @State private var isLoading: Bool = false
@@ -45,7 +46,7 @@ struct EmbeddedMultiMediaView: View {
                     .lineLimit(1)
                     .foregroundColor(.primary)
 
-                Text(mediaURL.absoluteString)
+              Text(Defaults[.showOriginalURL] ? mediaURL.originalURL : mediaURL.privateURL)
                     .font(.callout)
                     .foregroundColor(.secondary)
                     .lineLimit(2)
@@ -59,7 +60,7 @@ struct EmbeddedMultiMediaView: View {
             isLoading = true
 
             if determinedType == "gallery" {
-                MediaUtils.galleryMediaExtractor(galleryURL: mediaURL) { imageUrls in
+              MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
                     if let imageUrls = imageUrls {
                         DispatchQueue.main.async {
                             SKPhotoBrowserController(images: imageUrls).present()
@@ -71,7 +72,7 @@ struct EmbeddedMultiMediaView: View {
                     isLoading = false
                 }
             } else if determinedType == "video" {
-                MediaUtils.videoMediaExtractor(videoURL: mediaURL) { videoURL in
+              MediaUtils.videoMediaExtractor(videoURL: URL(string: mediaURL.privateURL)!) { videoURL in
                     if let videoURL = videoURL {
                         DispatchQueue.main.async {
                             VideoPlayerViewController(videoURL: videoURL).play()
@@ -83,7 +84,7 @@ struct EmbeddedMultiMediaView: View {
                     isLoading = false
                 }
             } else {
-                SafariHelper.openSafariView(withURL: mediaURL)
+                SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
                 isLoading = false
             }
         }

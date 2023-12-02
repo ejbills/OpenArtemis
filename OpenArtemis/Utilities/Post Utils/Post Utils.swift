@@ -13,7 +13,7 @@ struct Post: Equatable, Hashable {
     let title: String
     let author: String
     let score: String
-    let mediaURL: String
+    let mediaURL: PrivateURL
     
     let type: String
     
@@ -23,11 +23,24 @@ struct Post: Equatable, Hashable {
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    //Don't do drugs kids
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(subreddit)
+        hasher.combine(title)
+        hasher.combine(author)
+        hasher.combine(score)
+        hasher.combine(mediaURL.originalURL)
+        hasher.combine(mediaURL.privateURL)
+        hasher.combine(type)
+        hasher.combine(thumbnailURL)
+    }
 }
 
 func determinePostType(mediaURL: String) -> String {
     let mediaURL = mediaURL.lowercased()
-
+    
     if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
         return "text"
     } else if mediaURL.contains("reddit.com/gallery/") {
