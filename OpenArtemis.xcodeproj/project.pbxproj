@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
+		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
+		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
+		65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */; };
+		65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBB2B1B212800BCCD38 /* Defaults.swift */; };
+		65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */; };
+		65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */; };
+		65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -28,7 +36,6 @@
 		BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCB2B1ADE850014FB18 /* Media Utils.swift */; };
 		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
 		BBB2C0C92B1AD88F003C8ACC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */; };
-		BBB2C0D22B1AD8C8003C8ACC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */; };
 		BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0DE2B1AD939003C8ACC /* CachedImage */; };
 		BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */; };
 		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
@@ -36,6 +43,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
+		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		65D3DBBB2B1B212800BCCD38 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorModifier.swift; sourceTree = "<group>"; };
+		65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeAppIconView.swift; sourceTree = "<group>"; };
+		65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconManager.swift; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
 		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -58,7 +72,6 @@
 		BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArtemis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "../../OpenArtemis copy hehe/OpenArtemis/AppDelegate.swift"; sourceTree = "<group>"; };
 		BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
 				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
@@ -76,9 +90,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65D3DBB42B1B1F1400BCCD38 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		65D3DBB72B1B20E100BCCD38 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */,
+				65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				65D3DBB72B1B20E100BCCD38 /* Settings */,
 				BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */,
 				BB391FA02B1ADD030014FB18 /* Subreddits */,
 				BB391F9D2B1ADCCC0014FB18 /* Posts */,
@@ -140,6 +172,7 @@
 				BB391FBD2B1ADE560014FB18 /* Modifiers */,
 				BB391FB92B1ADE470014FB18 /* App Consts.swift */,
 				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
+				65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -147,8 +180,10 @@
 		BB391FBD2B1ADE560014FB18 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				65D3DBBB2B1B212800BCCD38 /* Defaults.swift */,
 				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
 				BB391FC12B1ADE700014FB18 /* SizeModifier.swift */,
+				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -191,11 +226,12 @@
 		BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */ = {
 			isa = PBXGroup;
 			children = (
+				65D3DBB42B1B1F1400BCCD38 /* Components */,
 				BB391FB82B1ADE3D0014FB18 /* Utilities */,
 				BB391FB52B1ADE0B0014FB18 /* Scrape */,
 				BB391F9C2B1ADCC00014FB18 /* Views */,
-				BBB2C0D12B1AD8C8003C8ACC /* AppDelegate.swift */,
 				BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */,
+				65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */,
 				BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */,
 				BBB2C0C72B1AD88F003C8ACC /* Preview Content */,
 			);
@@ -230,6 +266,7 @@
 				BBB2C0DE2B1AD939003C8ACC /* CachedImage */,
 				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
+				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -263,6 +300,7 @@
 				BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */,
 				BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -291,24 +329,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */,
+				65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
-				BBB2C0D22B1AD8C8003C8ACC /* AppDelegate.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
+				65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */,
+				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
 				BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
+				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
+				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
 				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
+				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
 				BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */,
+				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
 			);
@@ -441,6 +485,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -475,6 +520,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -528,6 +574,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
@@ -555,6 +609,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		65D3DBAE2B1B1AFA00BCCD38 /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
+		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */;

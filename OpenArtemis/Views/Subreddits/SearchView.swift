@@ -24,7 +24,7 @@ struct SearchView: View {
                 Text("Go to \(inputText)")
                     .padding()
                     .foregroundColor(.white)
-                    .background(Color.blue)
+                    .background(Color.artemisAccent)
                     .cornerRadius(10)
             }
             .padding()

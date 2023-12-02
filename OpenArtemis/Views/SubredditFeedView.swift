@@ -32,12 +32,12 @@ struct SubredditFeedView: View {
                 }
                 .scrollIndicators(.hidden)
             } else {
-                ProgressView("Loading...")
-                    .padding()
+              LoadingAnimation(loadingText: "Loading Feed...")
+              .padding()
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle(subredditName)
+        .navigationTitle(subredditName.localizedCapitalized)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)

@@ -1,0 +1,14 @@
+{
+  "images" : [
+    {
+      "filename" : "frostplexx_An_App_Icon_for_a_privacy_focused_reddit_app_its_spa_77d2fa2f-d5c6-4efe-816a-cbe8cf85d9a7.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
