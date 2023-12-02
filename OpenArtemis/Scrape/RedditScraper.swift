@@ -10,11 +10,11 @@ import SwiftSoup
 
 class RedditScraper {
     
-  static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
+    static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
                             "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
-                            "\(baseRedditURL)/r/\(subreddit)") else {
+                                "\(baseRedditURL)/r/\(subreddit)") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
@@ -44,7 +44,7 @@ class RedditScraper {
         }.resume()
     }
     
-  private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
+    private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!
         let doc = try SwiftSoup.parse(htmlString)
         let postElements = try doc.select("div.link")
@@ -52,11 +52,11 @@ class RedditScraper {
         let posts = postElements.compactMap { postElement -> Post? in
             do {
                 let isAd = try postElement.classNames().contains("promoted")
-
+                
                 guard !isAd else {
                     return nil
                 }
-
+                
                 let id = try postElement.attr("data-fullname")
                 let subreddit = try postElement.attr("data-subreddit")
                 let title = try postElement.select("p.title a.title").text()
@@ -71,17 +71,17 @@ class RedditScraper {
                 if type == "video" || type == "gallery" || type == "article", let thumbnailElement = try? postElement.select("a.thumbnail img").first() {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
-
-              return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), type: type, thumbnailURL: thumbnailURL)
+                
+                return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
                 return nil
             }
         }
-
+        
         return posts
     }
-
+    
 }
 

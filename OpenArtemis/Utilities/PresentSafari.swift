@@ -11,7 +11,7 @@ import SafariServices
 class SafariHelper {
     static func openSafariView(withURL url: URL, from viewController: UIViewController? = nil) {
         let presentingViewController = viewController ?? UIApplication.shared.windows.first?.rootViewController
-
+        
         if let presentingViewController = presentingViewController {
             presentingViewController.present(SFSafariViewController(url: url), animated: true, completion: nil)
         }

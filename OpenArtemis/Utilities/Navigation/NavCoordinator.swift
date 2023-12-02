@@ -14,12 +14,12 @@ class NavCoordinator: ObservableObject {
 struct NavigationStackWrapper<Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
     var content: () -> Content
-
+    
     init(tabCoordinator: NavCoordinator, @ViewBuilder content: @escaping () -> Content) {
         self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
         self.content = content
     }
-
+    
     var body: some View {
         NavigationStack(path: $tabCoordinator.path) {
             content()

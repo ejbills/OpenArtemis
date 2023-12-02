@@ -24,7 +24,7 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {}
 
     func play() {
-        print(videoURL)
+//        print(videoURL)
       let player = AVPlayer(url: videoURL)
         let controller = AVPlayerViewController()
         controller.player = player

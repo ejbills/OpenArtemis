@@ -12,7 +12,7 @@ import SwiftUI
 
 struct SubredditFeedResponse: Hashable {
     var subredditName: String
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(subredditName)
     }
@@ -64,7 +64,7 @@ struct PostResponse: Hashable {
 
 struct SafariResponse: Hashable {
     var url: URL
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(url)
     }

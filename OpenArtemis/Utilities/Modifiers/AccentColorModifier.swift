@@ -11,6 +11,6 @@ import Defaults
 
 
 extension Color {
-  /// This is the accent Color for the app which can be modified by the user in Settings
-  static let artemisAccent = Defaults[.accentColor]
+    /// This is the accent Color for the app which can be modified by the user in Settings
+    static let artemisAccent = Defaults[.accentColor]
 }

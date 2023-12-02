@@ -15,7 +15,7 @@ class MediaUtils {
                 completion(nil)
                 return
             }
-
+            
             do {
                 let htmlString = String(data: data, encoding: .utf8)
                 let document = try SwiftSoup.parse(htmlString ?? "")
@@ -28,13 +28,13 @@ class MediaUtils {
                     }
                     return nil
                 }.compactMap { $0 }
-
+                
                 completion(imageUrls)
             } catch {
                 completion(nil)
             }
         }
-
+        
         task.resume()
     }
     
@@ -44,30 +44,30 @@ class MediaUtils {
                 completion(nil)
                 return
             }
-          
-          //Return the url if its already a media url
-          if videoURL.isVideoMediaURL() {
-            completion(videoURL)
-          } else {
-            do {
-                let htmlString = String(data: data, encoding: .utf8)
-                let doc = try SwiftSoup.parse(htmlString!)
-
-                // Extract video link
-                if let videoElement = try doc.select("shreddit-player source").first(),
-                   let videoUrlString = try? videoElement.attr("src"),
-                   let videoUrl = URL(string: videoUrlString) {
-                    completion(videoUrl)
-                } else {
+            
+            //Return the url if its already a media url
+            if videoURL.isVideoMediaURL() {
+                completion(videoURL)
+            } else {
+                do {
+                    let htmlString = String(data: data, encoding: .utf8)
+                    let doc = try SwiftSoup.parse(htmlString!)
+                    
+                    // Extract video link
+                    if let videoElement = try doc.select("shreddit-player source").first(),
+                       let videoUrlString = try? videoElement.attr("src"),
+                       let videoUrl = URL(string: videoUrlString) {
+                        completion(videoUrl)
+                    } else {
+                        completion(nil)
+                    }
+                } catch {
                     completion(nil)
                 }
-            } catch {
-                completion(nil)
             }
-          }
-
+            
         }
-
+        
         task.resume()
     }
 }

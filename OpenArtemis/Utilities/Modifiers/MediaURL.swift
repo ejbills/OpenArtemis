@@ -7,8 +7,8 @@
 
 import Foundation
 extension URL {
-  func isVideoMediaURL() -> Bool {
-    let l = self.lastPathComponent
-    return l.contains(".mp4") || l.contains(".gif")
-}
+    func isVideoMediaURL() -> Bool {
+        let l = self.lastPathComponent
+        return l.contains(".mp4") || l.contains(".gif")
+    }
 }

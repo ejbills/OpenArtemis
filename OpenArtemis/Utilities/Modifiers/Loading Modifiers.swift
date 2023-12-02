@@ -9,11 +9,11 @@ import SwiftUI
 
 struct LoadingOverlay: ViewModifier {
     var isLoading: Bool
-
+    
     func body(content: Content) -> some View {
         ZStack {
             content
-
+            
             if isLoading {
                 ProgressView()
                 

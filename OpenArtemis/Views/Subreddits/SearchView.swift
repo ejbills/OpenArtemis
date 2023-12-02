@@ -11,13 +11,13 @@ struct SearchView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     
     @State private var inputText: String = ""
-
+    
     var body: some View {
         VStack {
             TextField("Enter subreddit name", text: $inputText)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-
+            
             Button(action: {
                 goToSubreddit()
             }) {
@@ -28,18 +28,18 @@ struct SearchView: View {
                     .cornerRadius(10)
             }
             .padding()
-
+            
             Spacer()
         }
         .padding()
     }
-
+    
     private func goToSubreddit() {
         guard !inputText.isEmpty else {
             // Handle case where inputText is empty
             return
         }
-
+        
         coordinator.path.append(SubredditFeedResponse(subredditName: inputText))
     }
 }

@@ -14,7 +14,7 @@ struct PostFeedView: View {
     let post: Post
     
     @State private var mediaSize: CGSize = .zero
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
