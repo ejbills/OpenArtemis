@@ -70,7 +70,7 @@ class TrackingParamRemover: ObservableObject, Observable{
                 }
                 .filter { !$0.isEmpty && !$0.contains("!")}
         } catch {
-            print("Error encountered, can typically safely pass: \(error.localizedDescription)")
+            print("Warning: \(error.localizedDescription)")
             downloadTrackingList{ completion in
                 //Do nothing
             }
@@ -101,7 +101,7 @@ class TrackingParamRemover: ObservableObject, Observable{
                 do {
                     try FileManager.default.removeItem(at: fileLocation)
                 } catch {
-                    print("Error removing existing file: \(error.localizedDescription)")
+                    print("Error removing existing file: \(error.localizedDescription) - CAN IGNORE")
                 }
                 
                 do {
