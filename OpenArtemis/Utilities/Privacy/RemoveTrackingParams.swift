@@ -19,7 +19,6 @@ class TrackingParamRemover: ObservableObject, Observable{
   
   init() {
     loadTrackingList()
-    print(trackingList)
   }
   
   

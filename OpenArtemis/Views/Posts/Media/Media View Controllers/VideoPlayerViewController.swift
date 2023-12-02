@@ -25,7 +25,7 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
 
     func play() {
         print(videoURL)
-        let player = AVPlayer(url: videoURL)
+      let player = AVPlayer(url: videoURL)
         let controller = AVPlayerViewController()
         controller.player = player
         UIApplication.shared.windows.first?.rootViewController?.present(controller, animated: true) {

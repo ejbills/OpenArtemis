@@ -18,25 +18,25 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
       
     //TwitterA
     case let str where str.contains("twitter.com"):
-      privateURL = str.replacingOccurrences(of: "twitter.com", with: "nitter.net")
+      privateURL = str.replacingOccurrences(of: "twitter.com", with: "nitter.net") //Instance located in the Netherlands
     case let str where str.contains("x.com"):
       privateURL = str.replacingOccurrences(of: "x.com", with: "nitter.net")
       
     //Youtube
     case let str where str.contains("youtube.com"):
-      privateURL = str.replacingOccurrences(of: "youtube.com", with: "yewtu.be").replacingOccurrences(of: "www.", with: "")
+      privateURL = str.replacingOccurrences(of: "youtube.com", with: "yewtu.be").replacingOccurrences(of: "www.", with: "") //Instance located in the Netherlands
     case let str where str.contains("youtu.be"):
       privateURL = str.replacingOccurrences(of: "youtu.be/", with: "yewtu.be/watch?v=")
       
     //Medium
     case let str where str.contains("medium.com"):
-      privateURL = str.replacingOccurrences(of: "medium.com", with: "scribe.rip")
-      
+      privateURL = str.replacingOccurrences(of: "medium.com", with: "scribe.rip") //Instance located in the Netherlands
+       
       
     //Imgur
     case let str where str.contains(try! Regex("i.imgur.com/[a-zA-Z0-9]*.gifv")):
       privateURL = str
-        .replacingOccurrences(of: "i.imgur.com", with: "rimgo.lunar.icu")
+        .replacingOccurrences(of: "i.imgur.com", with: "rimgo.hostux.net") //rimgo.hostux.net is a french instance provided by Gandi.net
         .replacingOccurrences(of: ".gifv", with: ".mp4")
       
     //If it cant match it just returns the url
