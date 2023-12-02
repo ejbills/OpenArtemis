@@ -15,13 +15,21 @@ struct OpenArtemisApp: App {
     
     //TrackingParamRemover as Environment Object so it loads / downloads the tracking params list only once and doesnt unload / load them all the time
     @ObservedObject private var trackingParamRemover = TrackingParamRemover()
+    
+    // Scene phase tracks when the app goes to the background
+    @Environment(\.scenePhase) var scenePhase
+    
+    // this is the shared context controller for our CoreData module
+    let persistenceController = PersistenceController.shared
+    
     var body: some Scene {
         WindowGroup {
             TabView {
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SubredditFeedView(subredditName: "all")
+                    SubredditDrawerView()
                         .handleDeepLinkViews()
                 }
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .tabItem {
                     Label("Feed", systemImage: "doc.richtext")
                 }
@@ -46,5 +54,9 @@ struct OpenArtemisApp: App {
             .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
         }
         .environment(trackingParamRemover)
+        .onChange(of: scenePhase) {
+            // Always save to coredata when app moves to background
+            persistenceController.save()
+        }
     }
 }
