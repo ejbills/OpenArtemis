@@ -70,7 +70,7 @@ class TrackingParamRemover: ObservableObject, Observable{
                 }
                 .filter { !$0.isEmpty && !$0.contains("!")}
         } catch {
-            print("Error loading tracking list from file: \(error.localizedDescription)")
+            print("Error encountered, can typically safely pass: \(error.localizedDescription)")
             downloadTrackingList{ completion in
                 //Do nothing
             }
@@ -92,7 +92,7 @@ class TrackingParamRemover: ObservableObject, Observable{
         let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
             if let tempLocalUrl = tempLocalUrl, error == nil {
                 // Success
-                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                if ((response as? HTTPURLResponse)?.statusCode) != nil {
                     self.loadTrackingList()
                     completion(true)
                 }
@@ -108,7 +108,7 @@ class TrackingParamRemover: ObservableObject, Observable{
                     try FileManager.default.copyItem(at: tempLocalUrl, to: fileLocation)
                     
                 } catch (let writeError) {
-                    print("error writing file \(fileLocation) : \(writeError)")
+                    print("Error writing file \(fileLocation) : \(writeError)")
                     completion(false)
                 }
                 

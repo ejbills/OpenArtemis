@@ -50,7 +50,7 @@ struct SettingsView: View {
                     .disabled(!redirectToPrivateSites)
                 Toggle("Remove Tracking Parameter", isOn: $removeTrackingParams)
                 //least confusing nested if
-                    .onChange(of: removeTrackingParams){ toggle in
+                    .onChange(of: removeTrackingParams) { toggle in
                         toggle ? trackingParamRemover.updateTrackingList{ res in
                             if res {
                                 currentBlockedAmount = trackingParamRemover.trackinglistLength
