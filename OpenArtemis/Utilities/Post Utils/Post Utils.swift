@@ -12,7 +12,7 @@ struct Post: Equatable, Hashable {
     let subreddit: String
     let title: String
     let author: String
-    let votes: String
+    let score: String
     let mediaURL: PrivateURL
     let commentsURL: String
     
@@ -32,7 +32,7 @@ struct Post: Equatable, Hashable {
         hasher.combine(subreddit)
         hasher.combine(title)
         hasher.combine(author)
-        hasher.combine(votes)
+        hasher.combine(score)
         hasher.combine(commentsURL)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
@@ -41,22 +41,20 @@ struct Post: Equatable, Hashable {
     }
 }
 
-class PostUtils {
-    func determinePostType(mediaURL: String) -> String {
-        let mediaURL = mediaURL.lowercased()
-        
-        if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
-            return "text"
-        } else if mediaURL.contains("reddit.com/gallery/") {
-            return "gallery"
-        } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
-            return "image"
-        } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
-            return "gif"
-        } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
-            return "video"
-        } else {
-            return "article"
-        }
+func determinePostType(mediaURL: String) -> String {
+    let mediaURL = mediaURL.lowercased()
+    
+    if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
+        return "text"
+    } else if mediaURL.contains("reddit.com/gallery/") {
+        return "gallery"
+    } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
+        return "image"
+    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") || mediaURL.hasSuffix(".mp4") {
+        return "video"
+    } else if mediaURL.contains("v.redd.it") {
+        return "video"
+    } else {
+        return "article"
     }
 }
