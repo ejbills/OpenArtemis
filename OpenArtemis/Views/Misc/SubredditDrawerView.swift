@@ -15,14 +15,13 @@ struct SubredditDrawerView: View {
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.name)
     ]) var localFavorites: FetchedResults<LocalSubreddit>
-        
-    @State private var hasPresented = false
-    @State private var isShowingDefaultFeed = false
     
     @State private var subredditName = ""
     @State private var showSaveDialog = false
     
     @State private var availableIndexArr: [String] = []
+    
+    @State private var editMode = false
     
     var body: some View {
         VStack {
@@ -113,20 +112,31 @@ struct SubredditDrawerView: View {
                                                 Text("Tap to go to r/\(subName)")
                                                     .foregroundColor(.secondary)
                                             }
+                                            
+                                            if editMode { // cant use onDelete in a nested forEach, this is the workaround.
+                                                Spacer()
+                                                
+                                                Button(action: {
+                                                    removeFromSubredditFavorites(subredditName: subName)
+                                                    visibleSubredditSections()
+                                                }) {
+                                                    Image(systemName: "trash.fill")
+                                                        .foregroundColor(.red)
+                                                        .font(.title)
+                                                        .padding(.trailing)
+                                                }
+                                            }
                                         }
                                         .background(
-                                            NavigationLink(value: SubredditFeedResponse(subredditName: subName)) {
-                                                EmptyView()
-                                            }
-                                            .opacity(0)
-                                        )
+                                                NavigationLink(value: SubredditFeedResponse(subredditName: subName)) {
+                                                    EmptyView()
+                                                }
+                                                .opacity(0)
+                                                .disabled(editMode)
+                                            )
                                     }
                                 }
                             }
-                        }
-                        .onDelete { index in
-                            removeFromSubredditFavorites(at: index)
-                            visibleSubredditSections()
                         }
                     }
                     .listStyle(PlainListStyle())
@@ -146,6 +156,16 @@ struct SubredditDrawerView: View {
         }
         .navigationTitle("Favorites")
         .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    withAnimation(.snappy) {
+                        editMode.toggle()
+                    }
+                }) {
+                    Image(systemName: editMode ? "pencil.slash" : "pencil.and.outline")
+                }
+            }
+            
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     subredditName = ""
@@ -191,13 +211,16 @@ struct SubredditDrawerView: View {
         }
     }
     
-    func removeFromSubredditFavorites(at offsets: IndexSet) {
-        for index in offsets {
-            let subreddit = localFavorites[index]
+    func removeFromSubredditFavorites(subredditName: String) {
+        let matchingSubreddits = localFavorites.filter { $0.name == subredditName }
+
+        for subreddit in matchingSubreddits {
             managedObjectContext.delete(subreddit)
         }
-        
-        PersistenceController.shared.save()
+
+        withAnimation(.snappy) {
+            PersistenceController.shared.save()
+        }
     }
     
     func saveToSubredditFavorites(name: String) {
@@ -208,6 +231,8 @@ struct SubredditDrawerView: View {
         let tempSubreddit = LocalSubreddit(context: managedObjectContext)
         tempSubreddit.name = cleanedName
         
-        PersistenceController.shared.save()
+        withAnimation(.snappy) {
+            PersistenceController.shared.save()
+        }
     }
 }
