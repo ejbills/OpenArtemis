@@ -175,7 +175,6 @@
 			isa = PBXGroup;
 			children = (
 				BBE434822B1C0D0000886CAB /* Favorites Drawer */,
-				BBE434612B1BD31E00886CAB /* Misc */,
 				65D3DBB72B1B20E100BCCD38 /* Settings */,
 				BB391FA02B1ADD030014FB18 /* Subreddits */,
 				BB391F9D2B1ADCCC0014FB18 /* Posts */,
@@ -317,13 +316,6 @@
 				BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		BBE434612B1BD31E00886CAB /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Misc;
 			sourceTree = "<group>";
 		};
 		BBE434672B1BD4D900886CAB /* App Storage */ = {
