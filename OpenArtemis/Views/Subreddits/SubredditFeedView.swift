@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct SubredditFeedView: View {
+    @EnvironmentObject var coordinator: NavCoordinator
+    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    
     let subredditName: String
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
-    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    
     
     var body: some View {
         Group {
@@ -21,10 +24,14 @@ struct SubredditFeedView: View {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
+                                .contentShape(Rectangle())
                                 .onAppear {
                                     if post.id == posts[Int(Double(posts.count) * 0.85)].id {
                                         scrapeSubreddit(subredditName, lastPostAfter)
                                     }
+                                }
+                                .onTapGesture {
+                                    coordinator.path.append(PostResponse(post: post))
                                 }
                             
                             DividerView()
