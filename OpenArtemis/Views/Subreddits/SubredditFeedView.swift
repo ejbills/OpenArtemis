@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SubredditFeedView: View {
     let subredditName: String
+    let titleOverride: String?
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
@@ -38,7 +39,7 @@ struct SubredditFeedView: View {
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle(subredditName.localizedCapitalized)
+        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName.localizedCapitalized)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
