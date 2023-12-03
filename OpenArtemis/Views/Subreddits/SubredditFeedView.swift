@@ -12,18 +12,20 @@ struct SubredditFeedView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
     let subredditName: String
+    let titleOverride: String?
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
-    
     
     var body: some View {
         Group {
             if !posts.isEmpty {
                 ScrollView {
+  
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
+                                .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {
                                     if post.id == posts[Int(Double(posts.count) * 0.85)].id {
@@ -45,7 +47,7 @@ struct SubredditFeedView: View {
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle(subredditName.localizedCapitalized)
+        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName.localizedCapitalized)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
