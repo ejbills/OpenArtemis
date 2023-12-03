@@ -76,6 +76,7 @@ struct EmbeddedMultiMediaView: View {
                     if let videoURL = videoURL {
                         DispatchQueue.main.async {
                             VideoPlayerViewController(videoURL: videoURL).play()
+                                
                         }
                     } else {
                         print("Failed to extract video URL.")

@@ -19,9 +19,13 @@ struct SettingsView: View {
     @State var currentAppIcon: String = "AppIcon"
     @State var currentBlockedAmount: Int = 0
     @State var showingSuccessfullUpdateAlert: Bool = false
+    
+    
+    @State var showingImportDalog: Bool = false
+    @State var showingURLImportSheet: Bool = false
     var body: some View {
         List{
-            Section("Theming"){
+            Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
                     preferredThemeMode
                 }, set: { val, _ in
@@ -41,6 +45,34 @@ struct SettingsView: View {
                             .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
                         Text("App Icon")
                     }
+                })
+            }
+            
+            Section("Subreddits"){
+                Button{
+                } label: {
+                    Label("Export Subreddits", systemImage: "arrowshape.turn.up.left")
+                }
+                Button{
+                    showingImportDalog.toggle()
+                } label: {
+                    Label("Import Subreddits", systemImage: "arrowshape.turn.up.right")
+                }
+                .confirmationDialog("What do you want to Import?", isPresented: $showingImportDalog, titleVisibility: .automatic, actions: {
+                    Button{
+                        showingURLImportSheet.toggle()
+                    } label: {
+                        Label("Import Subreddits From URL", systemImage: "link")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Import Subreddits From File", systemImage: "doc")
+                    }
+                })
+                .sheet(isPresented: $showingURLImportSheet, content: {
+                    ImportURLSheet(showingThisSheet: $showingURLImportSheet)
                 })
             }
             

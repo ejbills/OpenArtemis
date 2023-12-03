@@ -15,6 +15,11 @@ let basePostCount = "?count=25"
 // Screen defaults
 let roughWidth = UIScreen.main.bounds.width * 0.85
 let roughHeight = UIScreen.main.bounds.height * 0.45
+extension UIScreen {
+  static let screenWidth = UIScreen.main.bounds.size.width
+  static let screenHeight = UIScreen.main.bounds.size.height
+  static let screenSize = UIScreen.main.bounds.size
+}
 
 // Useful data
 let drawerChars = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "#"]

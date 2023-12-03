@@ -20,6 +20,8 @@
 		65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCE2B1B52EF00BCCD38 /* RemoveTrackingParams.swift */; };
 		65D3DBD72B1B555200BCCD38 /* OpenArtemisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */; };
 		65D3DBDE2B1B569000BCCD38 /* PrivacyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */; };
+		65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */; };
+		65EFE40B2B1CC37F00517EBE /* If.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE40A2B1CC37F00517EBE /* If.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -81,6 +83,8 @@
 		65D3DBD42B1B555200BCCD38 /* OpenArtemisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenArtemisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisTests.swift; sourceTree = "<group>"; };
 		65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTests.swift; sourceTree = "<group>"; };
+		65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportURLSheet.swift; sourceTree = "<group>"; };
+		65EFE40A2B1CC37F00517EBE /* If.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = If.swift; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
 		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 			children = (
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
+				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
 				65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */,
 				BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */,
+				65EFE40A2B1CC37F00517EBE /* If.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -479,11 +485,13 @@
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
+				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
 				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
+				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
 				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
@@ -676,7 +684,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = TCHY3UX6JP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
@@ -692,7 +700,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejibills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -729,7 +737,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejibills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
