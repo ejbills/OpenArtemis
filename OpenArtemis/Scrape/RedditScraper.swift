@@ -6,11 +6,11 @@
 //
 
 import Foundation
+import Combine
 import SwiftSoup
 
 class RedditScraper {
-    
-    static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
                             "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
@@ -18,9 +18,7 @@ class RedditScraper {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-        
-        print(url.absoluteString)
-        
+                
         // Create a URLSession and make a data task to fetch the HTML content
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -84,5 +82,49 @@ class RedditScraper {
         return posts
     }
     
+    static func scrapeComments(commentURL: String, completion: @escaping (Result<[Comment], Error>) -> Void) {
+        guard let url = URL(string: commentURL) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let comments = try parseCommentsData(data: data)
+                completion(.success(comments))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    private static func parseCommentsData(data: Data) throws -> [Comment] {
+        let htmlString = String(data: data, encoding: .utf8)!
+        let doc = try SwiftSoup.parse(htmlString)
+        
+        var comments: [Comment] = []
+        
+        try doc.select("div.comment").enumerated().forEach { (index, commentElement) in
+            print("parsing")
+            let id = try commentElement.attr("data-fullname") // Use "data-fullname" attribute for comment id
+            let author = try commentElement.select("a.author").text()
+            let body = try commentElement.select("div.usertext-body div.md").html()
+            let depth = commentElement.parents().count
+            
+            let comment = Comment(id: id, author: author, body: body, depth: depth)
+            comments.append(comment)
+        }
+        
+        return comments
+    }
 }
-
