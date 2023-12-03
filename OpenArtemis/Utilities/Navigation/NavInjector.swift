@@ -13,7 +13,7 @@ struct HandleDeepLinksDisplay: ViewModifier {
         content
         // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
-                SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride)
+                SubredditFeedView(subredditName: response.subredditName)
                 
             }
             .navigationDestination(for: PostResponse.self) { response in
