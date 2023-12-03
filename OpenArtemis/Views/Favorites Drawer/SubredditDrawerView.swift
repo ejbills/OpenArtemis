@@ -29,6 +29,14 @@ struct SubredditDrawerView: View {
                 ZStack {
                     List {
                         Section(header: Text("Defaults")) {
+                            DefaultSubredditRowView(title: "Home", iconSystemName: "house.circle", iconColor: .artemisAccent)
+                                .background(
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
+                                        EmptyView()
+                                    }
+                                        .opacity(0)
+                                )
+                            
                             DefaultSubredditRowView(title: "All", iconSystemName: "star.circle", iconColor: .yellow)
                                 .background(
                                     // highlights button on tap (cant be modifier or inside child view)
@@ -38,7 +46,7 @@ struct SubredditDrawerView: View {
                                     .opacity(0)
                                 )
                             
-                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.min", iconColor: .blue)
+                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.circle", iconColor: .blue)
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
                                         EmptyView()
@@ -46,7 +54,7 @@ struct SubredditDrawerView: View {
                                     .opacity(0)
                                 )
                             
-                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark", iconColor: .green)
+                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.circle", iconColor: .green)
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: "saved")) {
                                         EmptyView()
@@ -132,6 +140,11 @@ struct SubredditDrawerView: View {
         } message: {
             Text("Enter the subreddit name you wish to add to your favorites.")
         }
+    }
+    
+    private func concatenateFavoriteSubs() -> String {
+        let favoriteSubs = localFavorites.compactMap { $0.name }
+        return favoriteSubs.joined(separator: "+")
     }
     
     private func visibleSubredditSections() {

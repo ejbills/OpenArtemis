@@ -12,6 +12,7 @@ import SwiftUI
 
 struct SubredditFeedResponse: Hashable {
     var subredditName: String
+    var titleOverride: String? = nil
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(subredditName)
