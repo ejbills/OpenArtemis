@@ -29,7 +29,6 @@ struct SubredditDrawerView: View {
                 ZStack {
                     List {
                         Section(header: Text("Defaults")) {
-                            
                             DefaultSubredditRowView(title: "Home", iconSystemName: "house.circle", iconColor: .artemisAccent)
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
@@ -147,7 +146,6 @@ struct SubredditDrawerView: View {
         let favoriteSubs = localFavorites.compactMap { $0.name }
         return favoriteSubs.joined(separator: "+")
     }
-
     
     private func visibleSubredditSections() {
         let localFavorites = localFavorites.compactMap { $0.name }
