@@ -22,6 +22,7 @@
 		65D3DBDE2B1B569000BCCD38 /* PrivacyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */; };
 		BB071EDC2B1D326300C198BC /* Comment Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB071EDB2B1D326300C198BC /* Comment Utils.swift */; };
 		BB17BA452B1D3FDB008FAB83 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB17BA442B1D3FDB008FAB83 /* CommentView.swift */; };
+		BB17BA482B1D40B7008FAB83 /* RichText in Frameworks */ = {isa = PBXBuildFile; productRef = BB17BA472B1D40B7008FAB83 /* RichText */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -134,6 +135,7 @@
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
 				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
+				BB17BA482B1D40B7008FAB83 /* RichText in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,6 +396,7 @@
 				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
+				BB17BA472B1D40B7008FAB83 /* RichText */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -432,6 +435,7 @@
 				BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
+				BB17BA462B1D40B7008FAB83 /* XCRemoteSwiftPackageReference "RichText" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -797,6 +801,14 @@
 				kind = branch;
 			};
 		};
+		BB17BA462B1D40B7008FAB83 /* XCRemoteSwiftPackageReference "RichText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NuPlay/RichText";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
@@ -828,6 +840,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		BB17BA472B1D40B7008FAB83 /* RichText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB17BA462B1D40B7008FAB83 /* XCRemoteSwiftPackageReference "RichText" */;
+			productName = RichText;
 		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;
