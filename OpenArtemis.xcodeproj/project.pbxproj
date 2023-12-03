@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65BE32272B1CE91E00DBC067 /* FormatBugNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */; };
 		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
 		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
 		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
@@ -70,6 +71,7 @@
 /* Begin PBXFileReference section */
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBugNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
 		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				BB391FB92B1ADE470014FB18 /* App Consts.swift */,
 				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
 				65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */,
+				65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
+				65BE32272B1CE91E00DBC067 /* FormatBugNumbers.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
