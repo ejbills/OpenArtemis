@@ -17,8 +17,7 @@ struct HandleDeepLinksDisplay: ViewModifier {
                 
             }
             .navigationDestination(for: PostResponse.self) { response in
-                Text(response.post.title)
-                
+                PostPageView(post: response.post)
             }
         
             .navigationDestination(for: SafariResponse.self) { response in

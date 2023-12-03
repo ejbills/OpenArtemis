@@ -62,6 +62,7 @@
 		BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */; };
 		BBE434842B1C0D1900886CAB /* SubredditRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434832B1C0D1900886CAB /* SubredditRowView.swift */; };
 		BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */; };
+		BBE4348A2B1C58CE00886CAB /* PostPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434892B1C58CE00886CAB /* PostPageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +130,7 @@
 		BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Disabled Modifier.swift"; sourceTree = "<group>"; };
 		BBE434832B1C0D1900886CAB /* SubredditRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditRowView.swift; sourceTree = "<group>"; };
 		BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSubredditRowView.swift; sourceTree = "<group>"; };
+		BBE434892B1C58CE00886CAB /* PostPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 		BB391F9D2B1ADCCC0014FB18 /* Posts */ = {
 			isa = PBXGroup;
 			children = (
+				BBE434892B1C58CE00886CAB /* PostPageView.swift */,
 				BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */,
 				BB391FA92B1ADD700014FB18 /* Media */,
 				BB391FA52B1ADD540014FB18 /* DetailTagView.swift */,
@@ -514,6 +517,7 @@
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
 				BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
+				BBE4348A2B1C58CE00886CAB /* PostPageView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,

@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct SubredditFeedView: View {
+    @EnvironmentObject var coordinator: NavCoordinator
+    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    
     let subredditName: String
     let titleOverride: String?
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
-    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
-    @State var showImageViewer: Bool = false
-
+    
     var body: some View {
         Group {
             if !posts.isEmpty {
@@ -25,11 +26,16 @@ struct SubredditFeedView: View {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
                                 .id(post.id)
+                                .contentShape(Rectangle())
                                 .onAppear {
                                     if post.id == posts[Int(Double(posts.count) * 0.85)].id {
                                         scrapeSubreddit(subredditName, lastPostAfter)
                                     }
                                 }
+                                .onTapGesture {
+                                    coordinator.path.append(PostResponse(post: post))
+                                }
+                            
                             DividerView()
                         }
                     }

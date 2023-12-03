@@ -14,11 +14,13 @@ struct Post: Equatable, Hashable {
     let author: String
     let score: String
     let mediaURL: PrivateURL
+    let commentsURL: String
     
     let type: String
     
     // If post media has a thumbnail...
     let thumbnailURL: String?
+    
     
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
@@ -31,6 +33,7 @@ struct Post: Equatable, Hashable {
         hasher.combine(title)
         hasher.combine(author)
         hasher.combine(score)
+        hasher.combine(commentsURL)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
         hasher.combine(type)
