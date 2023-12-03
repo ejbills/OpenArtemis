@@ -29,63 +29,31 @@ struct SubredditDrawerView: View {
                 ZStack {
                     List {
                         Section(header: Text("Defaults")) {
-                            Label(
-                                title: { Text("All") },
-                                icon: {
-                                    Image(systemName: "star.circle")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.yellow)
-                                }
-                            )
-                            .labelStyle(DefaultLabelStyle())
-                            .foregroundColor(.primary)
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "all")) {
-                                    EmptyView()
-                                }
-                                .opacity(0)
-                            )
+                            DefaultSubredditRowView(title: "All", iconSystemName: "star.circle", iconColor: .yellow)
+                                .background(
+                                    // highlights button on tap (cant be modifier or inside child view)
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "all")) {
+                                        EmptyView()
+                                    }
+                                    .opacity(0)
+                                )
                             
-                            Label(
-                                title: { Text("Popular") },
-                                icon: {
-                                    Image(systemName: "lightbulb.min")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.blue)
-                                }
-                            )
-                            .labelStyle(DefaultLabelStyle())
-                            .foregroundColor(.primary)
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
-                                    EmptyView()
-                                }
-                                .opacity(0)
-                            )
+                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.min", iconColor: .blue)
+                                .background(
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
+                                        EmptyView()
+                                    }
+                                    .opacity(0)
+                                )
                             
-                            Label(
-                                title: { Text("Saved") },
-                                icon: {
-                                    Image(systemName: "bookmark")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.green)
-                                }
-                            )
-                            .labelStyle(DefaultLabelStyle())
-                            .foregroundColor(.primary)
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "saved")) {
-                                    EmptyView()
-                                }
-                                .opacity(0)
-                            )
-                            .disabledView(isEnabled: false)
+                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark", iconColor: .green)
+                                .background(
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "saved")) {
+                                        EmptyView()
+                                    }
+                                    .opacity(0)
+                                )
+                                .disabledView(disabled: true)
                         }
                         
                         ForEach(availableIndexArr, id: \.self) { letter in
@@ -101,40 +69,14 @@ struct SubredditDrawerView: View {
                                         return false
                                     }
                                 ) { subreddit in
-                                    if let subName = subreddit.name {
-                                        HStack {
-                                            getColorFromInputString(subName)
-                                                .frame(width: 30, height: 30)
-                                                .clipShape(Circle())
-                                            
-                                            VStack(alignment: .leading) {
-                                                Text(subName)
-                                                Text("Tap to go to r/\(subName)")
-                                                    .foregroundColor(.secondary)
-                                            }
-                                            
-                                            if editMode { // cant use onDelete in a nested forEach, this is the workaround.
-                                                Spacer()
-                                                
-                                                Button(action: {
-                                                    removeFromSubredditFavorites(subredditName: subName)
-                                                    visibleSubredditSections()
-                                                }) {
-                                                    Image(systemName: "trash.fill")
-                                                        .foregroundColor(.red)
-                                                        .font(.title)
-                                                        .padding(.trailing)
-                                                }
-                                            }
+                                    SubredditRowView(
+                                        subreddit: subreddit,
+                                        editMode: editMode,
+                                        removeFromSubredditFavorites: {
+                                            removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            visibleSubredditSections()
                                         }
-                                        .background(
-                                                NavigationLink(value: SubredditFeedResponse(subredditName: subName)) {
-                                                    EmptyView()
-                                                }
-                                                .opacity(0)
-                                                .disabled(editMode)
-                                            )
-                                    }
+                                    )
                                 }
                             }
                         }

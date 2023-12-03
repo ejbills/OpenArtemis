@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct DisabledViewModifier: ViewModifier {
-    var isEnabled: Bool
+    var disabled: Bool
 
     func body(content: Content) -> some View {
         content
-            .opacity(isEnabled ? 1.0 : 0.5)
-            .disabled(!isEnabled)
+            .opacity(!disabled ? 1.0 : 0.5)
+            .disabled(disabled)
     }
 }
 
 extension View {
-    func disabledView(isEnabled: Bool) -> some View {
-        self.modifier(DisabledViewModifier(isEnabled: isEnabled))
+    func disabledView(disabled: Bool) -> some View {
+        self.modifier(DisabledViewModifier(disabled: disabled))
     }
 }
