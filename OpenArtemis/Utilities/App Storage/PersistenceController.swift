@@ -12,7 +12,7 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     // Storage for Core Data
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
 
     // A test configuration for SwiftUI previews
     static var preview: PersistenceController = {
@@ -32,7 +32,7 @@ struct PersistenceController {
     init(inMemory: Bool = false) {
         // If you didn't name your model Main you'll need
         // to change this name below.
-        container = NSPersistentContainer(name: "LocalData")
+        container = NSPersistentCloudKitContainer(name: "LocalData")
 
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
