@@ -42,7 +42,7 @@ struct PersistenceController {
             fatalError("Failed to init persistent container")
         }
         //enable history tracking
-        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+//        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
 //        //set merge policy
 //        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
 //        container.viewContext.automaticallyMergesChangesFromParent = true
