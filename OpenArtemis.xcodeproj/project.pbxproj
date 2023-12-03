@@ -51,6 +51,7 @@
 		BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BBE434732B1BE32300886CAB /* LocalData.xcdatamodeld */; };
 		BBE434772B1BE35F00886CAB /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434762B1BE35F00886CAB /* PersistenceController.swift */; };
 		BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */; };
+		BBE434812B1BFD9D00886CAB /* SwipeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434802B1BFD9D00886CAB /* SwipeHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		BBE434742B1BE32300886CAB /* LocalData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalData.xcdatamodel; sourceTree = "<group>"; };
 		BBE434762B1BE35F00886CAB /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Disabled Modifier.swift"; sourceTree = "<group>"; };
+		BBE434802B1BFD9D00886CAB /* SwipeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +251,7 @@
 				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
 				65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */,
 				BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */,
+				BBE434802B1BFD9D00886CAB /* SwipeHandler.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
 				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
+				BBE434812B1BFD9D00886CAB /* SwipeHandler.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
