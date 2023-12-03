@@ -12,7 +12,7 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     // Storage for Core Data
-    let container: NSPersistentCloudKitContainer
+    let container: NSPersistentContainer
 
     // A test configuration for SwiftUI previews
     static var preview: PersistenceController = {
@@ -32,7 +32,7 @@ struct PersistenceController {
     init(inMemory: Bool = false) {
         // If you didn't name your model Main you'll need
         // to change this name below.
-        container = NSPersistentCloudKitContainer(name: "LocalData")
+        container = NSPersistentContainer(name: "LocalData")
 
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
@@ -43,9 +43,9 @@ struct PersistenceController {
         }
         //enable history tracking
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        //set merge policy
-        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-        container.viewContext.automaticallyMergesChangesFromParent = true
+//        //set merge policy
+//        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+//        container.viewContext.automaticallyMergesChangesFromParent = true
         
         container.loadPersistentStores { description, error in
             if let error = error {
