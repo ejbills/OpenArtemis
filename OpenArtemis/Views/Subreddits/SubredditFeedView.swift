@@ -59,7 +59,7 @@ struct SubredditFeedView: View {
     }
     
     private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil) {
-        RedditScraper.scrape(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
+        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let newPosts):
                 for post in newPosts {

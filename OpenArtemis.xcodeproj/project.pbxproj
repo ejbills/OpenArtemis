@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
-		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
-		65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */; };
-		65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */; };
-		65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A22B1DF39200421162 /* ImageViewOverlay.swift */; };
-		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
-		65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */; };
-		65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */; };
 		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
 		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
 		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
@@ -28,14 +20,15 @@
 		65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCE2B1B52EF00BCCD38 /* RemoveTrackingParams.swift */; };
 		65D3DBD72B1B555200BCCD38 /* OpenArtemisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */; };
 		65D3DBDE2B1B569000BCCD38 /* PrivacyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */; };
-		65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */; };
-		65EFE40B2B1CC37F00517EBE /* If.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE40A2B1CC37F00517EBE /* If.swift */; };
+		BB071EDC2B1D326300C198BC /* Comment Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB071EDB2B1D326300C198BC /* Comment Utils.swift */; };
+		BB17BA452B1D3FDB008FAB83 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB17BA442B1D3FDB008FAB83 /* CommentView.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
 		BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA52B1ADD540014FB18 /* DetailTagView.swift */; };
 		BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */; };
 		BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAC2B1ADDA00014FB18 /* MediaView.swift */; };
+		BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */; };
 		BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */; };
 		BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */; };
 		BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB62B1ADE130014FB18 /* RedditScraper.swift */; };
@@ -76,15 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
-		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
-		65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableScrollView.swift; sourceTree = "<group>"; };
-		65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
-		65A332A22B1DF39200421162 /* ImageViewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewOverlay.swift; sourceTree = "<group>"; };
-		65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
-		65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBigNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
 		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -98,14 +83,15 @@
 		65D3DBD42B1B555200BCCD38 /* OpenArtemisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenArtemisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D3DBD62B1B555200BCCD38 /* OpenArtemisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisTests.swift; sourceTree = "<group>"; };
 		65D3DBDD2B1B569000BCCD38 /* PrivacyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTests.swift; sourceTree = "<group>"; };
-		65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportURLSheet.swift; sourceTree = "<group>"; };
-		65EFE40A2B1CC37F00517EBE /* If.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = If.swift; sourceTree = "<group>"; };
+		BB071EDB2B1D326300C198BC /* Comment Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Utils.swift"; sourceTree = "<group>"; };
+		BB17BA442B1D3FDB008FAB83 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
 		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		BB391FA52B1ADD540014FB18 /* DetailTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTagView.swift; sourceTree = "<group>"; };
 		BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedMultiMediaView.swift; sourceTree = "<group>"; };
 		BB391FAC2B1ADDA00014FB18 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
+		BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowserController.swift; sourceTree = "<group>"; };
 		BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		BB391FB62B1ADE130014FB18 /* RedditScraper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditScraper.swift; sourceTree = "<group>"; };
@@ -149,31 +135,17 @@
 				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
-				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		65A3329D2B1DED5500421162 /* ImageViewer */ = {
-			isa = PBXGroup;
-			children = (
-				65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */,
-				65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */,
-				65A332A22B1DF39200421162 /* ImageViewOverlay.swift */,
-				65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */,
-			);
-			path = ImageViewer;
-			sourceTree = "<group>";
-		};
 		65D3DBB42B1B1F1400BCCD38 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				65A332992B1DDD2F00421162 /* Toaster.swift */,
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
-				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -205,6 +177,14 @@
 			path = OpenArtemisTests;
 			sourceTree = "<group>";
 		};
+		BB17BA432B1D3FC6008FAB83 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				BB17BA442B1D3FDB008FAB83 /* CommentView.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +199,7 @@
 		BB391F9D2B1ADCCC0014FB18 /* Posts */ = {
 			isa = PBXGroup;
 			children = (
+				BB17BA432B1D3FC6008FAB83 /* Comments */,
 				BBE434892B1C58CE00886CAB /* PostPageView.swift */,
 				BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */,
 				BB391FA92B1ADD700014FB18 /* Media */,
@@ -250,7 +231,7 @@
 		BB391FAE2B1ADDAA0014FB18 /* Media View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				65A3329D2B1DED5500421162 /* ImageViewer */,
+				BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */,
 				BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */,
 			);
 			path = "Media View Controllers";
@@ -275,8 +256,6 @@
 				BB391FB92B1ADE470014FB18 /* App Consts.swift */,
 				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
 				65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */,
-				65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */,
-				65A332922B1DCDCD00421162 /* SubredditIOManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -290,7 +269,6 @@
 				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
 				65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */,
 				BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */,
-				65EFE40A2B1CC37F00517EBE /* If.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -310,6 +288,7 @@
 			children = (
 				BB391FCB2B1ADE850014FB18 /* Media Utils.swift */,
 				BB391FCA2B1ADE850014FB18 /* Post Utils.swift */,
+				BB071EDB2B1D326300C198BC /* Comment Utils.swift */,
 			);
 			path = "Post Utils";
 			sourceTree = "<group>";
@@ -335,7 +314,6 @@
 		BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */ = {
 			isa = PBXGroup;
 			children = (
-				6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */,
 				6573F9342B1B710A00859D2C /* Info.plist */,
 				65D3DBB42B1B1F1400BCCD38 /* Components */,
 				BB391FB82B1ADE3D0014FB18 /* Utilities */,
@@ -416,7 +394,6 @@
 				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
-				65AD50B02B1E2725008B39E9 /* LazyPager */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -455,7 +432,6 @@
 				BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
-				65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -508,7 +484,6 @@
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
-				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
@@ -520,18 +495,13 @@
 				BBE4348A2B1C58CE00886CAB /* PostPageView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
-				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
-				65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
-				65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */,
 				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
-				65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */,
-				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,
-				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
+				BB17BA452B1D3FDB008FAB83 /* CommentView.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
 				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
 				BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */,
@@ -541,12 +511,12 @@
 				BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */,
 				65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */,
 				BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */,
-				65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */,
+				BB071EDC2B1D326300C198BC /* Comment Utils.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
+				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
 				BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */,
 				BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */,
-				65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,7 +690,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArtemis/OpenArtemis.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -757,7 +726,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArtemis/OpenArtemis.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -821,14 +789,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gh123man/LazyPager";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.5;
-			};
-		};
 		65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
@@ -864,11 +824,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		65AD50B02B1E2725008B39E9 /* LazyPager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */;
-			productName = LazyPager;
-		};
 		65D3DBAE2B1B1AFA00BCCD38 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
