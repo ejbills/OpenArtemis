@@ -24,34 +24,34 @@ struct OpenArtemisApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TabView {
-                NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SubredditDrawerView()
-                        .handleDeepLinkViews()
+                TabView {
+                    NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
+                        SubredditDrawerView()
+                            .handleDeepLinkViews()
+                    }
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .tabItem {
+                        Label("Feed", systemImage: "doc.richtext")
+                    }
+                    
+                    NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
+                        SearchView()
+                            .handleDeepLinkViews()
+                    }
+                    .tabItem {
+                        Label("Search", systemImage: "text.magnifyingglass")
+                    }
+                    
+                    NavigationStackWrapper(tabCoordinator: NavCoordinator(), content: {
+                        SettingsView()
+                            .handleDeepLinkViews()
+                    })
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }
                 }
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .tabItem {
-                    Label("Feed", systemImage: "doc.richtext")
-                }
-                
-                NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SearchView()
-                        .handleDeepLinkViews()
-                }
-                .tabItem {
-                    Label("Search", systemImage: "text.magnifyingglass")
-                }
-                
-                NavigationStackWrapper(tabCoordinator: NavCoordinator(), content: {
-                    SettingsView()
-                        .handleDeepLinkViews()
-                })
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-            }
-            .accentColor(Color.artemisAccent)
-            .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+                .accentColor(Color.artemisAccent)
+                .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
         }
         .environment(trackingParamRemover)
         .onChange(of: scenePhase) {
