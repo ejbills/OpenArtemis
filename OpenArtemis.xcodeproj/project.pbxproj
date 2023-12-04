@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		65A332932B1DCDCD00421162 /* subsPorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* subsPorter.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
-		65A3329C2B1DE6E100421162 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3329B2B1DE6E100421162 /* ImageViewer.swift */; };
 		65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */; };
 		65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */; };
 		65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A22B1DF39200421162 /* ImageViewOverlay.swift */; };
+		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
+		65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */; };
 		65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */; };
 		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
 		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
@@ -79,10 +80,10 @@
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65A332922B1DCDCD00421162 /* subsPorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = subsPorter.swift; sourceTree = "<group>"; };
 		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
-		65A3329B2B1DE6E100421162 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableScrollView.swift; sourceTree = "<group>"; };
 		65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
 		65A332A22B1DF39200421162 /* ImageViewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewOverlay.swift; sourceTree = "<group>"; };
+		65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBigNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
+				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,10 +159,10 @@
 		65A3329D2B1DED5500421162 /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
-				65A3329B2B1DE6E100421162 /* ImageViewer.swift */,
 				65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */,
 				65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */,
 				65A332A22B1DF39200421162 /* ImageViewOverlay.swift */,
+				65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */,
 			);
 			path = ImageViewer;
 			sourceTree = "<group>";
@@ -414,6 +416,7 @@
 				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
+				65AD50B02B1E2725008B39E9 /* LazyPager */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -452,6 +455,7 @@
 				BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */,
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
+				65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -518,12 +522,12 @@
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
 				65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
+				65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */,
 				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
 				65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */,
-				65A3329C2B1DE6E100421162 /* ImageViewer.swift in Sources */,
 				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
@@ -817,6 +821,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gh123man/LazyPager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
 		65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults.git";
@@ -852,6 +864,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		65AD50B02B1E2725008B39E9 /* LazyPager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */;
+			productName = LazyPager;
+		};
 		65D3DBAE2B1B1AFA00BCCD38 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;

@@ -13,13 +13,13 @@ import SwiftUI
 struct ZoomableScrollView<Content: View>: UIViewRepresentable {
     private var content: Content
     private var onTap: (()->())?
-    @Binding var isZoomed: Bool // Add the binding parameter
+    private var isZoomed: Bool
     
-    init(onTap: (()->())? = nil,isZoomed: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    init(onTap: (()->())? = nil,isZoomed: Bool, @ViewBuilder content: () -> Content) {
         self.content = content()
         //set up helper class
         self.onTap = onTap
-        self._isZoomed = isZoomed // Initialize the binding
+        self.isZoomed = isZoomed // Initialize the binding
     }
     
     func makeUIView(context: Context) -> UIScrollView {
@@ -61,7 +61,7 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(hostingController: UIHostingController(rootView: self.content), onTap: self.onTap, isZoomed: $isZoomed)
+        return Coordinator(hostingController: UIHostingController(rootView: self.content), onTap: self.onTap, isZoomed: self.isZoomed)
     }
     
     // MARK: - Coordinator
@@ -69,13 +69,13 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
     class Coordinator: NSObject, UIScrollViewDelegate {
         var hostingController: UIHostingController<Content>
         var onTap: (() -> ())?
-        @Binding var isZoomed: Bool // Use the binding here
+        var isZoomed: Bool
         
         
-        init(hostingController: UIHostingController<Content>, onTap: (() -> ())? = nil, isZoomed: Binding<Bool>) {
+        init(hostingController: UIHostingController<Content>, onTap: (() -> ())? = nil, isZoomed: Bool) {
             self.hostingController = hostingController
             self.onTap = onTap
-            _isZoomed = isZoomed
+            self.isZoomed = isZoomed
         }
         
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {

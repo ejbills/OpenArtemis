@@ -7,6 +7,8 @@
 
 import SwiftUI
 import Defaults
+import LazyPager
+import CachedImage
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -19,7 +21,9 @@ struct EmbeddedMultiMediaView: View {
     
     @State private var showImageViewer: Bool = false
     @State private var imageURLS: [String] = []
-    
+        @State var index = 0
+    @State var show = true
+    @State var opacity: CGFloat = 1 // Dismiss gesture background opacity
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
@@ -59,7 +63,6 @@ struct EmbeddedMultiMediaView: View {
         }
         .padding(6)
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(Color.gray.opacity(0.2)))
-        .imageViewer(isPresented: $showImageViewer, imageURLS, title: title)
         .onTapGesture {
             isLoading = true
 
@@ -68,8 +71,7 @@ struct EmbeddedMultiMediaView: View {
                     if let imageUrls = imageUrls {
                         DispatchQueue.main.async {
 //                            SKPhotoBrowserController(images: imageUrls).present()
-                            imageURLS = imageUrls
-                            showImageViewer.toggle()
+                            ImageViewerController(images: imageUrls, imageTitle: title).present()
                         }
                     } else {
                         print("Failed to extract image URLs.")

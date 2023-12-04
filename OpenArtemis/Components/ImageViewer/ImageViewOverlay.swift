@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageViewOverlay: View {
     var title: String? = nil
-    @Binding var arrayIndex: (Int, Int)
+    @State var arrayIndex: (Int, Int)
     var opacity: CGFloat
     
     var body: some View {
