@@ -87,7 +87,7 @@ struct ImageViewer: ViewModifier {
                             else {
                                 var transaction = Transaction()
                                 transaction.isContinuous = true
-                                transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0)
+                                transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
                                 withTransaction(transaction){
                                     offset = .zero
                                 }
@@ -96,7 +96,7 @@ struct ImageViewer: ViewModifier {
                         .onChanged { value in
                             var transaction = Transaction()
                             transaction.isContinuous = true
-                            transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0)
+                            transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
                             
                             if value.translation.height > 0 && max(value.translation.width, 10) <= 10 {
                                 withTransaction(transaction){
