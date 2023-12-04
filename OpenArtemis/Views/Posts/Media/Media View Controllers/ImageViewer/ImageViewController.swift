@@ -60,6 +60,7 @@ private struct ImageView: View {
             LazyHStack(spacing: 0) {
                 ForEach(images, id: \.self) { imageURL in
                     ZoomableScrollView(isZoomed: isZoomed) {
+                        // TODO: add gif support! CachedImage does not load gifs properly.
                         CachedImage(
                             url: URL(string: imageURL),
                             content: { image in
