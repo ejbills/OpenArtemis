@@ -13,7 +13,7 @@ struct PostPageView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            LazyVStack {
                 PostFeedView(post: post)
                 
                 DividerView(frameHeight: 10)
@@ -29,7 +29,7 @@ struct PostPageView: View {
                     ForEach(comments, id: \.id) { comment in
                         CommentView(comment: comment)
                         
-                        DividerView(frameHeight: 5)
+                        DividerView(frameHeight: 10)
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)")
@@ -53,6 +53,7 @@ struct PostPageView: View {
                 for comment in comments {
                     self.comments.append(comment)
                 }
+                
                 let endTime = CFAbsoluteTimeGetCurrent() // Stop the timer
                 let elapsedTime = endTime - startTime
                 print("Time taken: \(elapsedTime) seconds")
