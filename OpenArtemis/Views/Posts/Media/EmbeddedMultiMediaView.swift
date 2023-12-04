@@ -18,12 +18,7 @@ struct EmbeddedMultiMediaView: View {
     let thumbnailURL: String?
     let title: String
     @State private var isLoading: Bool = false
-    
-    @State private var showImageViewer: Bool = false
-    @State private var imageURLS: [String] = []
-        @State var index = 0
-    @State var show = true
-    @State var opacity: CGFloat = 1 // Dismiss gesture background opacity
+
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
@@ -70,7 +65,6 @@ struct EmbeddedMultiMediaView: View {
               MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
                     if let imageUrls = imageUrls {
                         DispatchQueue.main.async {
-//                            SKPhotoBrowserController(images: imageUrls).present()
                             ImageViewerController(images: imageUrls, imageTitle: title).present()
                         }
                     } else {

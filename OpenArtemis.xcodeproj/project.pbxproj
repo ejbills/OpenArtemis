@@ -36,7 +36,6 @@
 		BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA52B1ADD540014FB18 /* DetailTagView.swift */; };
 		BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */; };
 		BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAC2B1ADDA00014FB18 /* MediaView.swift */; };
-		BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */; };
 		BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */; };
 		BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */; };
 		BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB62B1ADE130014FB18 /* RedditScraper.swift */; };
@@ -106,7 +105,6 @@
 		BB391FA52B1ADD540014FB18 /* DetailTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTagView.swift; sourceTree = "<group>"; };
 		BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedMultiMediaView.swift; sourceTree = "<group>"; };
 		BB391FAC2B1ADDA00014FB18 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
-		BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPhotoBrowserController.swift; sourceTree = "<group>"; };
 		BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		BB391FB62B1ADE130014FB18 /* RedditScraper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditScraper.swift; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 		65D3DBB42B1B1F1400BCCD38 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				65A3329D2B1DED5500421162 /* ImageViewer */,
 				65A332992B1DDD2F00421162 /* Toaster.swift */,
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
@@ -250,7 +247,7 @@
 		BB391FAE2B1ADDAA0014FB18 /* Media View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BB391FAF2B1ADDB00014FB18 /* SKPhotoBrowserController.swift */,
+				65A3329D2B1DED5500421162 /* ImageViewer */,
 				BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */,
 			);
 			path = "Media View Controllers";
@@ -543,7 +540,6 @@
 				65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
-				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
 				BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */,
 				BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */,
 				65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */,

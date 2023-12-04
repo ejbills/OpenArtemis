@@ -31,19 +31,6 @@ struct SubredditFeedView: View {
                                     }
                                 }
                             DividerView()
-//                            Button {
-//                                showImageViewer.toggle()
-//                            } label: {
-//                                Label("Button :3", systemImage: "checkmark")
-//                            }
-//                            .onAppear {
-//                                if post.id == posts[Int(Double(posts.count) * 0.85)].id {
-//                                    scrapeSubreddit(subredditName, lastPostAfter)
-//                                }
-//                            }
-//                            .sheet(isPresented: $showImageViewer){
-//                                Text("Hewwwo")
-//                            }
                         }
                     }
                 }

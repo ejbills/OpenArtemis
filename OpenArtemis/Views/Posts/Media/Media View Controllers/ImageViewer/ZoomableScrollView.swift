@@ -102,18 +102,6 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
                 }
             }
         }
-        
-//        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//            let offsetY = scrollView.contentOffset.y
-//            let contentHeight = scrollView.contentSize.height
-//            let scrollViewHeight = scrollView.bounds.height
-//            print()
-//            print(offsetY)
-//
-//            if offsetY < (contentHeight / 2) || offsetY > (contentHeight / 2) {
-//                scrollView.setContentOffset(CGPoint(x: 0, y: contentHeight - scrollViewHeight), animated: false)
-//            }
-//        }
     }
     
 }

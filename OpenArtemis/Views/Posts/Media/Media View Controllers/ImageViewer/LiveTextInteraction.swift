@@ -16,7 +16,6 @@ struct LiveTextInteraction: UIViewRepresentable {
     let analyzer = ImageAnalyzer()
     let interaction = ImageAnalysisInteraction()
     
-    
     func makeUIView(context: Context) -> some UIView {
         guard let image = ImageRenderer(content: image).uiImage else {
             imageView.image = UIImage(named: "emptyThumb")
@@ -51,12 +50,11 @@ struct LiveTextInteraction: UIViewRepresentable {
     }
 }
 
-
 class LiveTextImageView: UIImageView {
     // Use intrinsicContentSize to change the default image size
     // so that we can change the size in our SwiftUI View
     override var intrinsicContentSize: CGSize {
-        CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        CGSize(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
     }
     
 }

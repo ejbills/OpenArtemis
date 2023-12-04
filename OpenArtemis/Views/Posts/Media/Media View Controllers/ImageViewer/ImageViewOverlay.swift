@@ -19,10 +19,8 @@ struct ImageViewOverlay: View {
                     .font(.system(size: 20, weight: .semibold))
                     .allowsHitTesting(false)
             }
+            
             Spacer()
-                .onChange(of: arrayIndex.0){ ind in
-                    print(ind)
-                }
             
             if arrayIndex.1 > 1 {
                 Text("\(arrayIndex.0 + 1)/\(arrayIndex.1)")

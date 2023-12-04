@@ -6,9 +6,6 @@
 //
 
 import AVKit
-import SwiftUI
-
-import AVKit
 import AVFoundation
 import SwiftUI
 
@@ -24,7 +21,6 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
         // Set up notification for when the video playback ends
         // Shit doesnt work :(
         NotificationCenter.default.addObserver(forName: AVPlayerItem.failedToPlayToEndTimeNotification, object: player.currentItem, queue: .main) { _ in
-            print("Boing")
             // Video playback ended, restore AVAudioSession to normal
             try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         }
@@ -64,9 +60,7 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
         // Present the video player
         UIApplication.shared.windows.first?.rootViewController?.present(controller, animated: true) {
             controller.player?.play()
-          
         }
-        
     }
 }
 
