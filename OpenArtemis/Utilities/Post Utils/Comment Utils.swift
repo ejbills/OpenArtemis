@@ -9,6 +9,7 @@ import Foundation
 
 struct Comment {
     let id: String
+    let parentID: String?
     let author: String
     let body: String
     let depth: Int

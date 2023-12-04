@@ -113,17 +113,38 @@ class RedditScraper {
         let doc = try SwiftSoup.parse(htmlString)
 
         var comments: [Comment] = []
-        
-        try doc.select("div.sitetable.nestedlisting > div.comment").forEach { commentElement in
+        var commentIDs = Set<String>()
+
+        // Function to recursively parse comments
+        func parseComment(commentElement: Element, parentID: String?, depth: Int) throws {
             let id = try commentElement.attr("data-fullname")
+
+            // Check for duplicate comments
+            guard !commentIDs.contains(id) else {
+                return
+            }
+
             let author = try commentElement.attr("data-author")
             let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
-            let depth = 0
 
-            let comment = Comment(id: id, author: author, body: body, depth: depth)
+            let comment = Comment(id: id, parentID: parentID, author: author, body: body, depth: depth)
             comments.append(comment)
+            commentIDs.insert(id)
+
+            // Check for child comments
+            if let childElement = try? commentElement.select("div.child > div.sitetable.listing > div.comment") {
+                try childElement.forEach { childCommentElement in
+                    try parseComment(commentElement: childCommentElement, parentID: id, depth: depth + 1)
+                }
+            }
         }
 
+        // Parse top-level comments
+        try doc.select("div.sitetable.nestedlisting > div.comment").forEach { commentElement in
+            try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
+        }
+
+        print(comments.count)
         return comments
     }
 }
