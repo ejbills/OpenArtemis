@@ -11,17 +11,25 @@ struct CommentView: View {
     var comment: Comment
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Author: \(comment.author)")
-                .font(.headline)
+        HStack(spacing: 4) {
+            if comment.depth > 0 {
+                Rectangle()
+                    .fill(commentIndentationColor(forDepth: comment.depth))
+                    .frame(width: 2)
+            }
             
-            Text("Body: \(comment.body)")
-                .font(.body)
-                .lineLimit(nil)
+            VStack(alignment: .leading) {
+                HStack {
+                    DetailTagView(icon: "person", data: comment.author)
+                    DetailTagView(icon: "arrow.up", data: comment.score)
+                    DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
+                }
+                
+                Text(comment.body)
+            }
             
-            Text("Depth: \(comment.depth)")
-                .font(.footnote)
+            Spacer()
         }
-        .padding()
+        .padding(8)
     }
 }
