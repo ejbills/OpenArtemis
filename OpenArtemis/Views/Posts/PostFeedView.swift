@@ -16,6 +16,7 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     
     var body: some View {
+
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
                 .font(.headline)
@@ -25,7 +26,7 @@ struct PostFeedView: View {
             HStack {
                 Spacer()
                 
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
                 
                 Spacer()
             }
@@ -38,7 +39,8 @@ struct PostFeedView: View {
                         coordinator.path.append(SubredditFeedResponse(subredditName: post.subreddit))
                     }
                 
-                DetailTagView(icon: "arrow.up", data: post.score)
+ 
+                DetailTagView(icon: "arrow.up", data: Int(post.score)?.roundedWithAbbreviations ?? "")
             }
         }
         .padding(8)

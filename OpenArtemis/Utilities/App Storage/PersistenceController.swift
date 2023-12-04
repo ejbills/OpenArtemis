@@ -37,7 +37,16 @@ struct PersistenceController {
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
-
+        
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to init persistent container")
+        }
+        //enable history tracking
+//        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+//        //set merge policy
+//        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+//        container.viewContext.automaticallyMergesChangesFromParent = true
+        
         container.loadPersistentStores { description, error in
             if let error = error {
                 fatalError("Error: \(error.localizedDescription)")

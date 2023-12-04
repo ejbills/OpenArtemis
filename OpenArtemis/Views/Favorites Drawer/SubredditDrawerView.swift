@@ -106,17 +106,17 @@ struct SubredditDrawerView: View {
         }
         .navigationTitle("Favorites")
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .destructiveAction) {
                 Button(action: {
                     withAnimation(.snappy) {
                         editMode.toggle()
                     }
                 }) {
-                    Image(systemName: editMode ? "pencil.slash" : "pencil.and.outline")
+                    Text( editMode ? "Done" : "Edit" )
                 }
             }
             
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     subredditName = ""
                     showSaveDialog = true
@@ -166,7 +166,7 @@ struct SubredditDrawerView: View {
         }
     }
     
-    func removeFromSubredditFavorites(subredditName: String) {
+    private func removeFromSubredditFavorites(subredditName: String) {
         let matchingSubreddits = localFavorites.filter { $0.name == subredditName }
 
         for subreddit in matchingSubreddits {
@@ -178,7 +178,7 @@ struct SubredditDrawerView: View {
         }
     }
     
-    func saveToSubredditFavorites(name: String) {
+     func saveToSubredditFavorites(name: String) {
         let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
                             .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
                             .replacingOccurrences(of: "^r/", with: "", options: .regularExpression)

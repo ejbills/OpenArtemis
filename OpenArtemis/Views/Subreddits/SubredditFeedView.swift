@@ -14,20 +14,22 @@ struct SubredditFeedView: View {
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
-    
+    @State var showImageViewer: Bool = false
+
     var body: some View {
         Group {
             if !posts.isEmpty {
                 ScrollView {
+  
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
+                                .id(post.id)
                                 .onAppear {
                                     if post.id == posts[Int(Double(posts.count) * 0.85)].id {
                                         scrapeSubreddit(subredditName, lastPostAfter)
                                     }
                                 }
-                            
                             DividerView()
                         }
                     }

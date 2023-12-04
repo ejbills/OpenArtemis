@@ -42,6 +42,7 @@ struct AppIconElement: View {
                     .foregroundColor(Color.artemisAccent)
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             AppIconManager().setAppIconWithoutAlert(to: icon)
             currentAppIcon = icon
