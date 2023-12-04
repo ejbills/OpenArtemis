@@ -27,19 +27,19 @@ class ImageViewerController: UIViewController {
             return
         }
         let hostingController = UIHostingController(rootView:
-                                                        ImageViewView(images: images, imageTitle: imageTitle, rootView: rootView)
+                                                        ImageViewView(images: images, imageTitle: imageTitle, rootViewClosure: closeButtonTapped)
         )
         hostingController.modalPresentationStyle = .fullScreen
         hostingController.modalTransitionStyle = .crossDissolve
         rootView.present(hostingController, animated: true, completion: nil)
     }
     
-    @objc private func closeButtonTapped() {
+    private func closeButtonTapped() {
         guard let rootView = UIApplication.shared.windows.first?.rootViewController else {
             return
         }
         
-        rootView.dismiss(animated: true, completion: nil)
+        rootView.dismiss(animated: true)
     }
 }
 
@@ -53,10 +53,10 @@ private struct ImageViewView: View {
     @State var scrollPosition: Int?
     @State var arrayIndex: (Int, Int) = (0, 0)
     
-    var rootView: UIViewController
+    var rootViewClosure: (() -> ())?
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        ScrollView(.horizontal, showsIndicators: true) {
             LazyHStack(spacing: 0) {
                 ForEach(images, id: \.self) { imageURL in
                     ZoomableScrollView(isZoomed: isZoomed) {
@@ -100,12 +100,14 @@ private struct ImageViewView: View {
             DragGesture(minimumDistance: 20, coordinateSpace: .local)
                 .onEnded { value in
                     if value.translation.height > 100 {
-                        withAnimation{
-                            rootView.dismiss(animated: true, completion: nil)
+                        if let rootViewClosure = rootViewClosure {
+                            rootViewClosure()
                         }
-                        offset = .zero
-                    }
-                    else {
+                        
+                        withAnimation(.snappy) {
+                            offset = .zero
+                        }
+                    } else {
                         var transaction = Transaction()
                         transaction.isContinuous = true
                         transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky

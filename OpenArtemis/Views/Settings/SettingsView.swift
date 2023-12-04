@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Defaults
-import AlertToast
 
 struct SettingsView: View {
     @Default(.preferredThemeMode) var preferredThemeMode
