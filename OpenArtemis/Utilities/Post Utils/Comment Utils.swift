@@ -16,6 +16,7 @@ struct Comment {
     let time: String
     let body: String
     let depth: Int
+    var isCollapsed: Bool
 }
 
 public func commentIndentationColor(forDepth depth: Int) -> Color {

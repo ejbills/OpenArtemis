@@ -35,7 +35,9 @@ struct PostPageView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.leading, CGFloat(comment.depth) * 10)
                             .onTapGesture {
-                                <#code#>
+                                withAnimation(.snappy) {
+                                    collapseChildren(parentCommentID: comment.id)
+                                }
                             }
                         
                         DividerView(frameHeight: 1)
@@ -69,4 +71,20 @@ struct PostPageView: View {
             self.isLoading = false
         }
     }
+    
+    private func collapseChildren(parentCommentID: String) {
+        // Find indices of comments that match the parentCommentID
+        let matchingIndices = comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }
+        
+        // Recursively update the matching comments
+        for index in matchingIndices {
+            comments[index].isCollapsed.toggle()
+
+            // Check if there are child comments before recursing
+            collapseChildren(parentCommentID: comments[index].id)
+        }
+    }
+
+
+
 }

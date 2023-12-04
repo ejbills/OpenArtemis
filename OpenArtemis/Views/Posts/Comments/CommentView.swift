@@ -18,14 +18,22 @@ struct CommentView: View {
                     .frame(width: 2)
             }
             
-            VStack(alignment: .leading) {
+            if !comment.isCollapsed {
+                VStack(alignment: .leading) {
+                    HStack {
+                        DetailTagView(icon: "person", data: comment.author)
+                        DetailTagView(icon: "arrow.up", data: comment.score)
+                        DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
+                    }
+                    
+                    Text(comment.body)
+                }
+            } else {
                 HStack {
                     DetailTagView(icon: "person", data: comment.author)
                     DetailTagView(icon: "arrow.up", data: comment.score)
                     DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
                 }
-                
-                Text(comment.body)
             }
             
             Spacer()
