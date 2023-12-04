@@ -21,22 +21,20 @@ struct Toaster: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay{
-                VStack {
-                    Spacer()
-                    if isPresented {
-                        switch style {
-                        case .popup:
-                            PopupToast(title: title,icon: systemIcon, tapToDismiss: tapToDismiss, isPresented: $isPresented, duration: duration)
-                                .padding() // Add padding as needed
+                withAnimation(animation.speed(speed)) {
+                    VStack {
+                        Spacer()
+                        if isPresented {
+                            switch style {
+                            case .popup:
+                                PopupToast(title: title,icon: systemIcon, tapToDismiss: tapToDismiss, isPresented: $isPresented, duration: duration)
+                                    .padding() // Add padding as needed
+                            }
                         }
                     }
+                    .onAppear(perform: onAppear)
                 }
-                .animation(animation.speed(speed))
-                .onAppear(perform: onAppear)
-                
-                
             }
-        
     }
 }
 
