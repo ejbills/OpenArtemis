@@ -111,20 +111,19 @@ class RedditScraper {
     private static func parseCommentsData(data: Data) throws -> [Comment] {
         let htmlString = String(data: data, encoding: .utf8)!
         let doc = try SwiftSoup.parse(htmlString)
-        
+
         var comments: [Comment] = []
         
-        try doc.select("div.comment").enumerated().forEach { (index, commentElement) in
-            print("parsing")
-            let id = try commentElement.attr("data-fullname") // Use "data-fullname" attribute for comment id
-            let author = try commentElement.select("a.author").text()
-            let body = try commentElement.select("div.usertext-body div.md").html()
-            let depth = commentElement.parents().count
-            
+        try doc.select("div.sitetable.nestedlisting > div.comment").forEach { commentElement in
+            let id = try commentElement.attr("data-fullname")
+            let author = try commentElement.attr("data-author")
+            let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
+            let depth = 0
+
             let comment = Comment(id: id, author: author, body: body, depth: depth)
             comments.append(comment)
         }
-        
+
         return comments
     }
 }

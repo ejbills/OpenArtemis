@@ -36,7 +36,7 @@ struct SubredditFeedView: View {
                                     coordinator.path.append(PostResponse(post: post))
                                 }
                             
-                            DividerView()
+                            DividerView(frameHeight: 10)
                         }
                     }
                 }

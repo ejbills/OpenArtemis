@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct PostPageView: View {
     let post: Post
@@ -17,7 +16,7 @@ struct PostPageView: View {
             VStack {
                 PostFeedView(post: post)
                 
-                DividerView()
+                DividerView(frameHeight: 10)
                                 
                 HStack {
                     Text("Comments")
@@ -29,6 +28,8 @@ struct PostPageView: View {
                 if !comments.isEmpty {
                     ForEach(comments, id: \.id) { comment in
                         CommentView(comment: comment)
+                        
+                        DividerView(frameHeight: 5)
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)")
