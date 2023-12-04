@@ -50,9 +50,9 @@ func determinePostType(mediaURL: String) -> String {
         return "gallery"
     } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
         return "image"
-    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") || mediaURL.hasSuffix(".mp4") {
-        return "video"
-    } else if mediaURL.contains("v.redd.it") {
+    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
+        return "gif"
+    } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
         return "video"
     } else {
         return "article"
