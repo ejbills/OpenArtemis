@@ -16,8 +16,6 @@ struct ImportURLSheet: View {
     @Binding var showingThisSheet: Bool
     var body: some View {
         ZStack {
-            
-            
             if displayImport {
                 List {
                     Spacer()
@@ -86,8 +84,9 @@ struct ImportURLSheet: View {
             }
             
         }
-        .onChange(of: url){ url in
-            subreddits = parseSubreddits(string: url)
+        .onChange(of: url){ oldURL, newURL in
+            subreddits = parseSubreddits(string: newURL)
+            
             withAnimation{
                 displayImport = !subreddits.isEmpty
             }
