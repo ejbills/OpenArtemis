@@ -22,12 +22,15 @@ class ImageViewerController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func present() { 
+    func present() {
         guard let rootView = UIApplication.shared.windows.first?.rootViewController else {
             return
         }
-        let hostingController = UIHostingController(rootView: ImageViewView(images: images, imageTitle: imageTitle, rootView: rootView))
+        let hostingController = UIHostingController(rootView:
+                                                        ImageViewView(images: images, imageTitle: imageTitle, rootView: rootView)
+        )
         hostingController.modalPresentationStyle = .fullScreen
+        hostingController.modalTransitionStyle = .crossDissolve
         rootView.present(hostingController, animated: true, completion: nil)
     }
     
@@ -43,7 +46,7 @@ class ImageViewerController: UIViewController {
 
 private struct ImageViewView: View {
     var images: [String]
-     var imageTitle: String?
+    var imageTitle: String?
     @State var offset: CGSize = .zero
     @State var isZoomed: Bool = false
     @State var showOverlay: Bool = true
@@ -76,19 +79,17 @@ private struct ImageViewView: View {
             }
             .scrollTargetLayout()
         }
-        .onChange(of: scrollPosition) { oldPost, newPos in
-            arrayIndex = (newPos!, images.count)
-        }
-        .scrollDisabled(isZoomed)
-        .ignoresSafeArea(.all)
-        .background(Color.black)
-        .scrollTargetBehavior(.paging)
-        .preferredColorScheme(.dark)
         .onTapGesture {
             withAnimation{
                 showOverlay.toggle()
             }
         }
+        .onChange(of: scrollPosition) { oldPost, newPos in
+            arrayIndex = (newPos!, images.count)
+        }
+        .scrollDisabled(isZoomed)
+        .ignoresSafeArea(.all)
+        .scrollTargetBehavior(.paging)
         .statusBar(hidden: true)
         .onAppear {
             //reinitialize this
@@ -126,6 +127,6 @@ private struct ImageViewView: View {
                 }
         )
         .offset(y: offset.height)
-        .overlay(ImageViewOverlay(title: imageTitle,arrayIndex: arrayIndex, opacity: showOverlay || !isZoomed ? 1 : 0))
+//        .overlay(ImageViewOverlay(title: imageTitle,arrayIndex: arrayIndex, opacity: showOverlay || !isZoomed ? 1 : 0))
     }
 }
