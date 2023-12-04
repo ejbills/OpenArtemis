@@ -45,12 +45,17 @@ struct PostPageView: View {
     }
     
     private func scrapeComments(_ commentsURL: String) {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        
         RedditScraper.scrapeComments(commentURL: commentsURL) { result in
             switch result {
             case .success(let comments):
                 for comment in comments {
                     self.comments.append(comment)
                 }
+                let endTime = CFAbsoluteTimeGetCurrent() // Stop the timer
+                let elapsedTime = endTime - startTime
+                print("Time taken: \(elapsedTime) seconds")
             case .failure(let error):
                 print("Error: \(error)")
             }

@@ -16,10 +16,10 @@ struct CommentView: View {
             Text("Author: \(comment.author)")
                 .font(.headline)
             
-            RichText(html: comment.body)
-//            Text("Body: \(comment.body)")
-//                .font(.body)
-//                .lineLimit(nil)
+//            RichText(html: comment.body)
+            Text("Body: \(comment.body)")
+                .font(.body)
+                .lineLimit(nil)
             
             Text("Depth: \(comment.depth)")
                 .font(.footnote)
