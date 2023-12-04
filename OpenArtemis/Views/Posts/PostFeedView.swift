@@ -39,7 +39,7 @@ struct PostFeedView: View {
                         coordinator.path.append(SubredditFeedResponse(subredditName: post.subreddit))
                     }
                 
-                DetailTagView(icon: "arrow.up", data: Int(post.score)?.roundedWithAbbreviations ?? "")
+                DetailTagView(icon: "arrow.up", data: Int(post.votes)?.roundedWithAbbreviations ?? "")
             }
         }
         .padding(8)
