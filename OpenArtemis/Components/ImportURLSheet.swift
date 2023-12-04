@@ -11,14 +11,14 @@ import CoreData
 struct ImportURLSheet: View {
     @State var url: String = ""
     @State var subreddits: [String] = []
-    @State var showingImportStuff: Bool = false
+    @State var displayImport: Bool = false
     
     @Binding var showingThisSheet: Bool
     var body: some View {
         ZStack {
             
             
-            if showingImportStuff {
+            if displayImport {
                 List {
                     Spacer()
                         .frame(height: 50)
@@ -49,18 +49,18 @@ struct ImportURLSheet: View {
                         .textFieldStyle(.roundedBorder)
                 }
                 .frame(width: UIScreen.screenWidth)
-                .if(showingImportStuff){ view in
+                .if(displayImport){ view in
                     view.background(
                         Material.ultraThinMaterial
                     )
                 }
-                if showingImportStuff {
+                if displayImport {
                     Spacer()
                 }
             }
             
             
-            if showingImportStuff {
+            if displayImport {
                 VStack {
                     Spacer()
                     Button {
@@ -89,7 +89,7 @@ struct ImportURLSheet: View {
         .onChange(of: url){ url in
             subreddits = parseSubreddits(string: url)
             withAnimation{
-                showingImportStuff = !subreddits.isEmpty
+                displayImport = !subreddits.isEmpty
             }
             
         }
