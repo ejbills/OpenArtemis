@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65BE32272B1CE91E00DBC067 /* FormatBugNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */; };
+		65A332932B1DCDCD00421162 /* subsPorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* subsPorter.swift */; };
+		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
+		65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */; };
 		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
 		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
 		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
@@ -71,7 +73,9 @@
 /* Begin PBXFileReference section */
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBugNumbers.swift; sourceTree = "<group>"; };
+		65A332922B1DCDCD00421162 /* subsPorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = subsPorter.swift; sourceTree = "<group>"; };
+		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
+		65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBigNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
 		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 		65D3DBB42B1B1F1400BCCD38 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				65A332992B1DDD2F00421162 /* Toaster.swift */,
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
@@ -248,7 +253,8 @@
 				BB391FB92B1ADE470014FB18 /* App Consts.swift */,
 				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
 				65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */,
-				65BE32262B1CE91E00DBC067 /* FormatBugNumbers.swift */,
+				65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */,
+				65A332922B1DCDCD00421162 /* subsPorter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -478,6 +484,7 @@
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
+				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
@@ -494,7 +501,7 @@
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
-				65BE32272B1CE91E00DBC067 /* FormatBugNumbers.swift in Sources */,
+				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
@@ -506,6 +513,7 @@
 				BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */,
 				65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */,
 				BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */,
+				65A332932B1DCDCD00421162 /* subsPorter.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,
@@ -704,7 +712,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejibills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frostplexx.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -741,7 +749,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejibills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frostplexx.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

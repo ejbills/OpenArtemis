@@ -1,5 +1,5 @@
 //
-//  FormatBugNumbers.swift
+//  FormatBigNumbers.swift
 //  OpenArtemis
 //
 //  Created by daniel on 03/12/23.
