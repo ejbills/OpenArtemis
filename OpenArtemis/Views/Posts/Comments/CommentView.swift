@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import RichText
 
 struct CommentView: View {
     var comment: Comment
@@ -16,7 +15,6 @@ struct CommentView: View {
             Text("Author: \(comment.author)")
                 .font(.headline)
             
-//            RichText(html: comment.body)
             Text("Body: \(comment.body)")
                 .font(.body)
                 .lineLimit(nil)
