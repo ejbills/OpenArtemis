@@ -34,13 +34,14 @@ struct PostPageView: View {
                         CommentView(comment: comment)
                             .frame(maxWidth: .infinity)
                             .padding(.leading, CGFloat(comment.depth) * 10)
+                            .onTapGesture {
+                                <#code#>
+                            }
                         
                         DividerView(frameHeight: 1)
                     }
-                } else if isLoading {
-                    LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)")
                 } else {
-                    NoResultsFound()
+                    LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)", isLoading: isLoading)
                 }
             }
         }
@@ -53,7 +54,7 @@ struct PostPageView: View {
     }
     
     private func scrapeComments(_ commentsURL: String) {
-        isLoading = true
+        self.isLoading = true
         
         RedditScraper.scrapeComments(commentURL: commentsURL) { result in
             switch result {
@@ -65,7 +66,7 @@ struct PostPageView: View {
                 print("Error: \(error)")
             }
             
-            isLoading = false
+            self.isLoading = false
         }
     }
 }

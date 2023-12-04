@@ -17,6 +17,8 @@ struct SubredditFeedView: View {
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
     
+    @State private var isLoading: Bool = false
+    
     var body: some View {
         Group {
             if !posts.isEmpty {
@@ -42,7 +44,7 @@ struct SubredditFeedView: View {
                 }
                 .scrollIndicators(.hidden)
             } else {
-                LoadingAnimation(loadingText: "Loading Feed...")
+                LoadingAnimation(loadingText: "Loading Feed...", isLoading: isLoading)
                     .padding()
             }
         }
@@ -59,6 +61,8 @@ struct SubredditFeedView: View {
     }
     
     private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil) {
+        self.isLoading = true
+        
         RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let newPosts):
@@ -77,6 +81,8 @@ struct SubredditFeedView: View {
                 // Handle error (e.g., display an alert)
                 print("Error: \(error.localizedDescription)")
             }
+            
+            self.isLoading = false
         }
     }
     
@@ -84,6 +90,7 @@ struct SubredditFeedView: View {
         self.posts.removeAll()
         self.postIDs.removeAll()
         self.lastPostAfter = ""
+        self.isLoading = false
         
         scrapeSubreddit(subredditName)
     }
