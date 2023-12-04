@@ -30,16 +30,17 @@ struct PostPageView: View {
                 DividerView(frameHeight: 1)
                 
                 if !comments.isEmpty {
-                    ForEach(comments, id: \.id) { comment in
+                    ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
                         CommentView(comment: comment)
                             .frame(maxWidth: .infinity)
                             .padding(.leading, CGFloat(comment.depth) * 10)
                             .onTapGesture {
                                 withAnimation(.snappy) {
-                                    collapseChildren(parentCommentID: comment.id)
+                                    comments[index].isCollapsed.toggle()
+                                    collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isCollapsed)
                                 }
                             }
-                        
+
                         DividerView(frameHeight: 1)
                     }
                 } else {
@@ -72,16 +73,16 @@ struct PostPageView: View {
         }
     }
     
-    private func collapseChildren(parentCommentID: String) {
+    private func collapseChildren(parentCommentID: String, rootCollapsedStatus: Bool) {
         // Find indices of comments that match the parentCommentID
-        let matchingIndices = comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }
+        let matchingIndices = self.comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }
         
         // Recursively update the matching comments
         for index in matchingIndices {
-            comments[index].isCollapsed.toggle()
+            self.comments[index].isCollapsed = rootCollapsedStatus
 
             // Check if there are child comments before recursing
-            collapseChildren(parentCommentID: comments[index].id)
+            collapseChildren(parentCommentID: self.comments[index].id, rootCollapsedStatus: rootCollapsedStatus)
         }
     }
 
