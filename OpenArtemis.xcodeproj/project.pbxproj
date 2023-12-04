@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65A332932B1DCDCD00421162 /* subsPorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* subsPorter.swift */; };
+		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
 		65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */; };
 		65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */; };
@@ -78,7 +78,7 @@
 /* Begin PBXFileReference section */
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		65A332922B1DCDCD00421162 /* subsPorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = subsPorter.swift; sourceTree = "<group>"; };
+		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
 		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
 		65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableScrollView.swift; sourceTree = "<group>"; };
 		65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
@@ -276,7 +276,7 @@
 				BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */,
 				65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */,
 				65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */,
-				65A332922B1DCDCD00421162 /* subsPorter.swift */,
+				65A332922B1DCDCD00421162 /* SubredditIOManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -540,7 +540,7 @@
 				BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */,
 				65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */,
 				BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */,
-				65A332932B1DCDCD00421162 /* subsPorter.swift in Sources */,
+				65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BB391FB12B1ADDB00014FB18 /* SKPhotoBrowserController.swift in Sources */,

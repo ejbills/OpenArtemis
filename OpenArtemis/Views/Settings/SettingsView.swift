@@ -59,7 +59,7 @@ struct SettingsView: View {
             
             Section("Subreddits"){
                 Button{
-                    exportedURL = exportSubs(fileName: "artemis_subs.json", subreddits: localFavorites.compactMap { $0.name })
+                    exportedURL = SubredditIOManager().exportSubs(fileName: "artemis_subs.json", subreddits: localFavorites.compactMap { $0.name })
                     presentingFileMover = exportedURL != nil
                 } label: {
                     Label("Export Subreddits", systemImage: "arrowshape.turn.up.left")
@@ -89,7 +89,7 @@ struct SettingsView: View {
                 .fileImporter(isPresented: $doImport, allowedContentTypes: [.json], allowsMultipleSelection: false, onCompletion: { result in
                     switch result {
                     case .success(let file):
-                        let success = importSubreddits(jsonFilePath: file[0])
+                        let success = SubredditIOManager().importSubreddits(jsonFilePath: file[0])
                         if success {
                             showToast.toggle()
                         } else {
@@ -112,8 +112,8 @@ struct SettingsView: View {
                     .disabled(!redirectToPrivateSites)
                 Toggle("Remove Tracking Parameter", isOn: $removeTrackingParams)
                 //least confusing nested if
-                    .onChange(of: removeTrackingParams) { toggle in
-                        toggle ? trackingParamRemover.updateTrackingList{ res in
+                    .onChange(of: removeTrackingParams) { oldToggle, newToggle in
+                        newToggle ? trackingParamRemover.updateTrackingList{ res in
                             if res {
                                 currentBlockedAmount = trackingParamRemover.trackinglistLength
                             }
