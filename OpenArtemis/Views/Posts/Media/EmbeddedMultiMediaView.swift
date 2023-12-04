@@ -14,8 +14,11 @@ struct EmbeddedMultiMediaView: View {
     let determinedType: String
     let mediaURL: PrivateURL
     let thumbnailURL: String?
-    
+    let title: String
     @State private var isLoading: Bool = false
+    
+    @State private var showImageViewer: Bool = false
+    @State private var imageURLS: [String] = []
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
@@ -56,6 +59,7 @@ struct EmbeddedMultiMediaView: View {
         }
         .padding(6)
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(Color.gray.opacity(0.2)))
+        .imageViewer(isPresented: $showImageViewer, imageURLS, title: title)
         .onTapGesture {
             isLoading = true
 
@@ -63,7 +67,9 @@ struct EmbeddedMultiMediaView: View {
               MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
                     if let imageUrls = imageUrls {
                         DispatchQueue.main.async {
-                            SKPhotoBrowserController(images: imageUrls).present()
+//                            SKPhotoBrowserController(images: imageUrls).present()
+                            imageURLS = imageUrls
+                            showImageViewer.toggle()
                         }
                     } else {
                         print("Failed to extract image URLs.")

@@ -25,7 +25,7 @@ struct PostFeedView: View {
             HStack {
                 Spacer()
                 
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
                 
                 Spacer()
             }

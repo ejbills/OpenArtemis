@@ -13,9 +13,9 @@ struct MediaView: View {
     let determinedType: String
     let mediaURL: PrivateURL
     let thumbnailURL: String?
-
+    let title: String
     @Binding var mediaSize: CGSize
-    
+    @State var showImageViewer: Bool = false
     var body: some View {
       
       let forcedPrivateMediaURL = URL(string: mediaURL.privateURL)!
@@ -46,15 +46,22 @@ struct MediaView: View {
             .aspectRatio(contentMode: .fit)
             .cornerRadius(6)
             .onTapGesture {
-              SKPhotoBrowserController(images: [mediaURL.privateURL]).present()
+//              SKPhotoBrowserController(images: [mediaURL.privateURL]).present()
+                showImageViewer = false
+                print("Tap")
+                print(showImageViewer)
+                showImageViewer = true
+                print(mediaURL.privateURL)
             }
+            .imageViewer(isPresented: $showImageViewer, [mediaURL.privateURL], title: title)
+            
             
         case "text":
             // we dont need to display anything.
             EmptyView()
             
         default:
-            EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL)
+            EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title)
         }
     }
 }
