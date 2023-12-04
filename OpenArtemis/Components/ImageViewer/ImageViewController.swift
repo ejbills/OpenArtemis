@@ -9,13 +9,9 @@ import VisionKit
 import CachedImage
 
 class ImageViewerController: UIViewController {
-    private var images: [String]
-    private var imageTitle: String? = ""
-    @State private var offset: CGSize = .zero
-    private var isZoomed: Bool = false
-    @State private var showOverlay: Bool = true
-    private var scrollPosition: Int?
-    @State private var arrayIndex: (Int, Int) = (0, 0)
+    @Published var images: [String]
+    @Published var imageTitle: String?
+    
     init(images: [String], imageTitle: String) {
         self.images = images
         self.imageTitle = imageTitle
@@ -26,100 +22,12 @@ class ImageViewerController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func present() {
-        let closeButton = UIButton(type: .system)
-        closeButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        closeButton.tintColor = .white
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        
-        let hostingController = UIHostingController(
-            rootView:
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 0) {
-                        ForEach(images, id: \.self) { imageURL in
-                            ZoomableScrollView(isZoomed: self.isZoomed) {
-                                CachedImage(
-                                    url: URL(string: imageURL),
-                                    content: { image in
-                                        LiveTextInteraction(image: image)
-                                            .scaledToFit()
-                                            .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
-                                    },
-                                    placeholder: {
-                                        ProgressView()
-                                            .progressViewStyle(CircularProgressViewStyle())
-                                            .animatedLoading()
-                                    })
-                            }
-                            .frame(width: UIScreen.screenWidth)
-                            .id(self.images.firstIndex(of: imageURL))
-                        }
-                    }
-                    .scrollTargetLayout()
-                }
-                .onChange(of: scrollPosition) { oldPost, newPos in
-                    self.arrayIndex = (newPos!, self.images.count)
-                }
-                .scrollDisabled(isZoomed)
-                .ignoresSafeArea(.all)
-                .background(Color.black)
-                .scrollTargetBehavior(.paging)
-                .preferredColorScheme(.dark)
-                .overlay(ImageViewOverlay(title: imageTitle,arrayIndex: self.arrayIndex, opacity: self.showOverlay || !self.isZoomed ? 1 : 0))
-                .highPriorityGesture(
-                    TapGesture()
-                        .onEnded{
-                            withAnimation{
-                                self.showOverlay.toggle()
-                            }
-                        }
-                )
-                .statusBar(hidden: true)
-                .onAppear {
-                    //reinitialize this
-                    self.arrayIndex = (0, self.images.count)
-                }
-                .highPriorityGesture(
-                    
-                    DragGesture(minimumDistance: 20, coordinateSpace: .local)
-                        .onEnded { value in
-                            if value.translation.height > 100 {
-                                withAnimation{
-                                    self.closeButtonTapped()
-                                }
-                                self.offset = .zero
-                            }
-                            else {
-                                var transaction = Transaction()
-                                transaction.isContinuous = true
-                                transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
-                                withTransaction(transaction){
-                                    self.offset = .zero
-                                }
-                            }
-                        }
-                        .onChanged { value in
-                            var transaction = Transaction()
-                            transaction.isContinuous = true
-                            transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
-                            
-                            if value.translation.height > 0 && max(value.translation.width, 10) <= 10 {
-                                withTransaction(transaction){
-                                    self.offset = value.translation
-                                }
-                            }
-                        }
-                )
-                .offset(y: offset.height)
-            
-        )
-        
-        hostingController.modalPresentationStyle = .fullScreen
-        
+    func present() { 
         guard let rootView = UIApplication.shared.windows.first?.rootViewController else {
             return
         }
-        
+        let hostingController = UIHostingController(rootView: ImageViewView(images: images, imageTitle: imageTitle, rootView: rootView))
+        hostingController.modalPresentationStyle = .fullScreen
         rootView.present(hostingController, animated: true, completion: nil)
     }
     
@@ -129,5 +37,95 @@ class ImageViewerController: UIViewController {
         }
         
         rootView.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+private struct ImageViewView: View {
+    var images: [String]
+     var imageTitle: String?
+    @State var offset: CGSize = .zero
+    @State var isZoomed: Bool = false
+    @State var showOverlay: Bool = true
+    @State var scrollPosition: Int?
+    @State var arrayIndex: (Int, Int) = (0, 0)
+    
+    var rootView: UIViewController
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 0) {
+                ForEach(images, id: \.self) { imageURL in
+                    ZoomableScrollView(isZoomed: isZoomed) {
+                        CachedImage(
+                            url: URL(string: imageURL),
+                            content: { image in
+                                LiveTextInteraction(image: image)
+                                    .scaledToFit()
+                                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
+                            },
+                            placeholder: {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .animatedLoading()
+                            })
+                    }
+                    .frame(width: UIScreen.screenWidth)
+                    .id(images.firstIndex(of: imageURL))
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .onChange(of: scrollPosition) { oldPost, newPos in
+            arrayIndex = (newPos!, images.count)
+        }
+        .scrollDisabled(isZoomed)
+        .ignoresSafeArea(.all)
+        .background(Color.black)
+        .scrollTargetBehavior(.paging)
+        .preferredColorScheme(.dark)
+        .onTapGesture {
+            withAnimation{
+                showOverlay.toggle()
+            }
+        }
+        .statusBar(hidden: true)
+        .onAppear {
+            //reinitialize this
+            arrayIndex = (0, images.count)
+        }
+        .highPriorityGesture(
+            
+            DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                .onEnded { value in
+                    if value.translation.height > 100 {
+                        withAnimation{
+                            rootView.dismiss(animated: true, completion: nil)
+                        }
+                        offset = .zero
+                    }
+                    else {
+                        var transaction = Transaction()
+                        transaction.isContinuous = true
+                        transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
+                        withTransaction(transaction){
+                            offset = .zero
+                        }
+                    }
+                }
+                .onChanged { value in
+                    var transaction = Transaction()
+                    transaction.isContinuous = true
+                    transaction.animation = .interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 0) //needed for it to not be janky
+                    
+                    if value.translation.height > 0 && max(value.translation.width, 10) <= 10 {
+                        withTransaction(transaction){
+                            offset = value.translation
+                        }
+                    }
+                }
+        )
+        .offset(y: offset.height)
+        .overlay(ImageViewOverlay(title: imageTitle,arrayIndex: arrayIndex, opacity: showOverlay || !isZoomed ? 1 : 0))
     }
 }
