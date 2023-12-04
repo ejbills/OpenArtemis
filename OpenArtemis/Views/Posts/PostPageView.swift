@@ -11,6 +11,8 @@ struct PostPageView: View {
     let post: Post
     @State private var comments: [Comment] = []
     
+    @State private var isLoading: Bool = false
+    
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -25,14 +27,20 @@ struct PostPageView: View {
                     Spacer()
                 }
                 
+                DividerView(frameHeight: 1)
+                
                 if !comments.isEmpty {
                     ForEach(comments, id: \.id) { comment in
                         CommentView(comment: comment)
+                            .frame(maxWidth: .infinity)
+                            .padding(.leading, CGFloat(comment.depth) * 10)
                         
-                        DividerView(frameHeight: 10)
+                        DividerView(frameHeight: 1)
                     }
-                } else {
+                } else if isLoading {
                     LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)")
+                } else {
+                    NoResultsFound()
                 }
             }
         }
@@ -45,7 +53,7 @@ struct PostPageView: View {
     }
     
     private func scrapeComments(_ commentsURL: String) {
-        let startTime = CFAbsoluteTimeGetCurrent()
+        isLoading = true
         
         RedditScraper.scrapeComments(commentURL: commentsURL) { result in
             switch result {
@@ -53,13 +61,11 @@ struct PostPageView: View {
                 for comment in comments {
                     self.comments.append(comment)
                 }
-                
-                let endTime = CFAbsoluteTimeGetCurrent() // Stop the timer
-                let elapsedTime = endTime - startTime
-                print("Time taken: \(elapsedTime) seconds")
             case .failure(let error):
                 print("Error: \(error)")
             }
+            
+            isLoading = false
         }
     }
 }

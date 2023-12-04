@@ -34,6 +34,9 @@ struct LoadingAnimation: View {
                 }
                 
                 Text(loadingText)
+                    .font(.subheadline)
+                    .italic()
+                    .foregroundStyle(.secondary)
             }
         }
     }

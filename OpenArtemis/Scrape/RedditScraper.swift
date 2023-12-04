@@ -59,7 +59,7 @@ class RedditScraper {
                 let subreddit = try postElement.attr("data-subreddit")
                 let title = try postElement.select("p.title a.title").text()
                 let author = try postElement.attr("data-author")
-                let score = try postElement.attr("data-score")
+                let votes = try postElement.attr("data-score")
                 let mediaURL = try postElement.attr("data-url")
                 let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
                 
@@ -71,7 +71,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: subreddit, title: title, author: author, votes: votes, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
@@ -125,9 +125,13 @@ class RedditScraper {
             }
 
             let author = try commentElement.attr("data-author")
-            let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
+            let score = try commentElement.select("span.score.unvoted").first()?.text() ?? "[score hidden]"
+            let time = try commentElement.select("time").first()?.attr("datetime") ?? ""
+            // commenting this temporarily till html rendering is fixed.
+            // let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
+            let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
 
-            let comment = Comment(id: id, parentID: parentID, author: author, body: body, depth: depth)
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth)
             comments.append(comment)
             commentIDs.insert(id)
 
@@ -144,7 +148,6 @@ class RedditScraper {
             try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
         }
 
-        print(comments.count)
         return comments
     }
 }
