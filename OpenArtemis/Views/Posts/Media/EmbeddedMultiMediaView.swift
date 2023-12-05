@@ -74,18 +74,8 @@ struct EmbeddedMultiMediaView: View {
                     isLoading = false
                 }
             } else if determinedType == "video" {
-              MediaUtils.videoMediaExtractor(videoURL: URL(string: mediaURL.privateURL)!) { videoURL in
-                    if let videoURL = videoURL {
-                        DispatchQueue.main.async {
-                            VideoPlayerViewController(videoURL: videoURL).play()
-                                
-                        }
-                    } else {
-                        print("Failed to extract video URL.")
-                    }
-                    
-                    isLoading = false
-                }
+                VideoPlayerViewController(videoURL: URL(string: mediaURL.privateURL)!).play()
+                isLoading = false
             } else {
                 SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
                 isLoading = false

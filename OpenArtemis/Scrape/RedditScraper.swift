@@ -7,10 +7,11 @@
 
 import Foundation
 import SwiftSoup
+import Erik
 
 class RedditScraper {
     
-    static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
+    static func scrape(subreddit: String, lastPostAfter: String? = nil, trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
                             "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
@@ -18,35 +19,35 @@ class RedditScraper {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-        
-        print(url.absoluteString)
-        
-        // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: url) { data, response, error in
+                
+        Erik.visit(url: url) { object, error in
             if let error = error {
                 completion(.failure(error))
                 return
+            } else if let doc = object {
+                do {
+                    doc.querySelectorAll("div[class^=\"expando-button\"]").forEach { element in
+                        element.click()
+                    }
+                    
+                    // Get the HTML string from the document
+                    let htmlString = doc.innerHTML
+
+                    // Parse the HTML data into an array of Post objects
+                    let posts = try parsePostData(data: htmlString ?? "", trackingParamRemover: trackingParamRemover)
+                    completion(.success(posts))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                let unknownError = NSError(domain: "Unknown error", code: 0, userInfo: nil)
+                completion(.failure(unknownError))
             }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
-                return
-            }
-            
-            do {
-                // Parse the HTML data into an array of Post objects
-                // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
-                let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
-                completion(.success(posts))
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
+        }
     }
     
-    private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
-        let htmlString = String(data: data, encoding: .utf8)!
-        let doc = try SwiftSoup.parse(htmlString)
+    private static func parsePostData(data: String, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
+        let doc = try SwiftSoup.parse(data)
         let postElements = try doc.select("div.link")
         
         let posts = postElements.compactMap { postElement -> Post? in
@@ -62,9 +63,26 @@ class RedditScraper {
                 let title = try postElement.select("p.title a.title").text()
                 let author = try postElement.attr("data-author")
                 let score = try postElement.attr("data-score")
-                let mediaURL = try postElement.attr("data-url")
+                var mediaURL = try postElement.attr("data-url")
                 
                 let type = determinePostType(mediaURL: mediaURL)
+                
+                if type == "video" {
+                    if let videoDiv = try postElement.select("div.expando.expando-uninitialized").first() {
+                        let cachedHtml = try videoDiv.attr("data-cachedhtml")
+                                   
+                       // Parse the nested HTML string
+                       let nestedDoc = try SwiftSoup.parse(cachedHtml)
+                       
+                       // Find the div with the data-hls-url attribute
+                        if let videoDiv = try nestedDoc.select("div[data-hls-url]").first() {
+                            
+                            // Get the data-hls-url attribute value
+                            let videoUrl = try videoDiv.attr("data-hls-url")
+                            mediaURL = videoUrl
+                        }
+                    }
+                }
                 
                 var thumbnailURL: String? = nil
                 

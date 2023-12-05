@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Defaults
+import Erik
 
 @main
 struct OpenArtemisApp: App {

@@ -48,6 +48,7 @@
 		BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */; };
 		BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCA2B1ADE850014FB18 /* Post Utils.swift */; };
 		BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCB2B1ADE850014FB18 /* Media Utils.swift */; };
+		BBA4DC282B1FA5BF00192F11 /* Erik in Frameworks */ = {isa = PBXBuildFile; productRef = BBA4DC272B1FA5BF00192F11 /* Erik */; };
 		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
 		BBB2C0C92B1AD88F003C8ACC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */; };
 		BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0DE2B1AD939003C8ACC /* CachedImage */; };
@@ -144,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
+				BBA4DC282B1FA5BF00192F11 /* Erik in Frameworks */,
 				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
@@ -414,6 +416,7 @@
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
+				BBA4DC272B1FA5BF00192F11 /* Erik */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -453,6 +456,7 @@
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
 				65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */,
+				BBA4DC262B1FA5BF00192F11 /* XCRemoteSwiftPackageReference "Erik" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -833,6 +837,14 @@
 				kind = branch;
 			};
 		};
+		BBA4DC262B1FA5BF00192F11 /* XCRemoteSwiftPackageReference "Erik" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/phimage/Erik";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
@@ -869,6 +881,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		BBA4DC272B1FA5BF00192F11 /* Erik */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBA4DC262B1FA5BF00192F11 /* XCRemoteSwiftPackageReference "Erik" */;
+			productName = Erik;
 		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;
