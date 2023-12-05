@@ -31,17 +31,20 @@ struct PostPageView: View {
                 
                 if !comments.isEmpty {
                     ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
-                        CommentView(comment: comment)
-                            .frame(maxWidth: .infinity)
-                            .padding(.leading, CGFloat(comment.depth) * 10)
-                            .onTapGesture {
-                                withAnimation(.snappy) {
-                                    comments[index].isCollapsed.toggle()
-                                    collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isCollapsed)
+                        if !comment.isCollapsed {
+                            CommentView(comment: comment)
+                                .frame(maxWidth: .infinity)
+                                .padding(.leading, CGFloat(comment.depth) * 10)
+                                .onTapGesture {
+                                    withAnimation(.snappy) {
+                                        comments[index].isRoot.toggle()
+                                        
+                                        collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRoot)
+                                    }
                                 }
-                            }
-
-                        DividerView(frameHeight: 1)
+                            
+                            DividerView(frameHeight: 1)
+                        }
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)", isLoading: isLoading)
