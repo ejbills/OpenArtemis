@@ -55,7 +55,6 @@
 		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
 		BBB2C0C92B1AD88F003C8ACC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */; };
 		BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0DE2B1AD939003C8ACC /* CachedImage */; };
-		BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */; };
 		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
 		BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */; };
@@ -152,7 +151,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
-				BBB2C0E42B1AD99C003C8ACC /* SKPhotoBrowser in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
@@ -430,7 +428,6 @@
 			name = OpenArtemis;
 			packageProductDependencies = (
 				BBB2C0DE2B1AD939003C8ACC /* CachedImage */,
-				BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */,
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
@@ -741,6 +738,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenArtemis/OpenArtemis.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -762,6 +760,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -778,6 +777,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenArtemis/OpenArtemis.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
@@ -799,6 +799,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -898,11 +899,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */;
 			productName = CachedImage;
-		};
-		BBB2C0E32B1AD99C003C8ACC /* SKPhotoBrowser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BBB2C0E22B1AD99C003C8ACC /* XCRemoteSwiftPackageReference "SKPhotoBrowser" */;
-			productName = SKPhotoBrowser;
 		};
 		BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

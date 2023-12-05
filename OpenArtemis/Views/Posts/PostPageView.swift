@@ -18,7 +18,7 @@ struct PostPageView: View {
             LazyVStack {
                 PostFeedView(post: post)
                 
-                DividerView(frameHeight: 10)
+                DividerView(frameHeight: 1)
                                 
                 HStack {
                     Text("Comments")
@@ -37,9 +37,9 @@ struct PostPageView: View {
                                 .padding(.leading, CGFloat(comment.depth) * 10)
                                 .onTapGesture {
                                     withAnimation(.snappy) {
-                                        comments[index].isRoot.toggle()
+                                        comments[index].isRootCollapsed.toggle()
                                         
-                                        collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRoot)
+                                        collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                     }
                                 }
                             
@@ -47,7 +47,7 @@ struct PostPageView: View {
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading comments from \(post.commentsURL)", isLoading: isLoading)
+                    LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
                 }
             }
         }
