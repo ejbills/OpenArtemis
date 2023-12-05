@@ -12,7 +12,7 @@ struct Post: Equatable, Hashable {
     let subreddit: String
     let title: String
     let author: String
-    let score: String
+    let votes: String
     let mediaURL: PrivateURL
     let commentsURL: String
     
@@ -32,7 +32,7 @@ struct Post: Equatable, Hashable {
         hasher.combine(subreddit)
         hasher.combine(title)
         hasher.combine(author)
-        hasher.combine(score)
+        hasher.combine(votes)
         hasher.combine(commentsURL)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
@@ -50,9 +50,9 @@ func determinePostType(mediaURL: String) -> String {
         return "gallery"
     } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
         return "image"
-    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") || mediaURL.hasSuffix(".mp4") {
-        return "video"
-    } else if mediaURL.contains("v.redd.it") {
+    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
+        return "gif"
+    } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
         return "video"
     } else {
         return "article"

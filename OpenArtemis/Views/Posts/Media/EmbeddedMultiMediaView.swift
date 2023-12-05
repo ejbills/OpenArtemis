@@ -7,6 +7,8 @@
 
 import SwiftUI
 import Defaults
+import LazyPager
+import CachedImage
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -14,9 +16,9 @@ struct EmbeddedMultiMediaView: View {
     let determinedType: String
     let mediaURL: PrivateURL
     let thumbnailURL: String?
-    
+    let title: String
     @State private var isLoading: Bool = false
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
@@ -63,7 +65,7 @@ struct EmbeddedMultiMediaView: View {
               MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
                     if let imageUrls = imageUrls {
                         DispatchQueue.main.async {
-                            SKPhotoBrowserController(images: imageUrls).present()
+                            ImageViewerController(images: imageUrls, imageTitle: title).present()
                         }
                     } else {
                         print("Failed to extract image URLs.")
@@ -76,6 +78,7 @@ struct EmbeddedMultiMediaView: View {
                     if let videoURL = videoURL {
                         DispatchQueue.main.async {
                             VideoPlayerViewController(videoURL: videoURL).play()
+                                
                         }
                     } else {
                         print("Failed to extract video URL.")

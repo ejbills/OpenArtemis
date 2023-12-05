@@ -29,7 +29,6 @@ struct OpenArtemisApp: App {
                     SubredditDrawerView()
                         .handleDeepLinkViews()
                 }
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .tabItem {
                     Label("Feed", systemImage: "doc.richtext")
                 }
@@ -53,6 +52,7 @@ struct OpenArtemisApp: App {
             .accentColor(Color.artemisAccent)
             .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
         }
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
         .environment(trackingParamRemover)
         .onChange(of: scenePhase) {
             // Always save to coredata when app moves to background

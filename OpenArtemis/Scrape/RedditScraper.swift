@@ -6,11 +6,11 @@
 //
 
 import Foundation
+import Combine
 import SwiftSoup
 
 class RedditScraper {
-    
-    static func scrape(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
                             "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
@@ -18,9 +18,7 @@ class RedditScraper {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-        
-        print(url.absoluteString)
-        
+                
         // Create a URLSession and make a data task to fetch the HTML content
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -61,7 +59,7 @@ class RedditScraper {
                 let subreddit = try postElement.attr("data-subreddit")
                 let title = try postElement.select("p.title a.title").text()
                 let author = try postElement.attr("data-author")
-                let score = try postElement.attr("data-score")
+                let votes = try postElement.attr("data-score")
                 let mediaURL = try postElement.attr("data-url")
                 let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
                 
@@ -73,7 +71,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, author: author, score: score, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: subreddit, title: title, author: author, votes: votes, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
@@ -84,5 +82,72 @@ class RedditScraper {
         return posts
     }
     
-}
+    static func scrapeComments(commentURL: String, completion: @escaping (Result<[Comment], Error>) -> Void) {
+        guard let url = URL(string: commentURL) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let comments = try parseCommentsData(data: data)
+                completion(.success(comments))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    private static func parseCommentsData(data: Data) throws -> [Comment] {
+        let htmlString = String(data: data, encoding: .utf8)!
+        let doc = try SwiftSoup.parse(htmlString)
 
+        var comments: [Comment] = []
+        var commentIDs = Set<String>()
+
+        // Function to recursively parse comments
+        func parseComment(commentElement: Element, parentID: String?, depth: Int) throws {
+            let id = try commentElement.attr("data-fullname")
+
+            // Check for duplicate comments
+            guard !commentIDs.contains(id) else {
+                return
+            }
+
+            let author = try commentElement.attr("data-author")
+            let score = try commentElement.select("span.score.unvoted").first()?.text() ?? "[score hidden]"
+            let time = try commentElement.select("time").first()?.attr("datetime") ?? ""
+            // commenting this temporarily till html rendering is fixed.
+            // let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
+            let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
+
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
+            comments.append(comment)
+            commentIDs.insert(id)
+
+            // Check for child comments
+            if let childElement = try? commentElement.select("div.child > div.sitetable.listing > div.comment") {
+                try childElement.forEach { childCommentElement in
+                    try parseComment(commentElement: childCommentElement, parentID: id, depth: depth + 1)
+                }
+            }
+        }
+
+        // Parse top-level comments
+        try doc.select("div.sitetable.nestedlisting > div.comment").forEach { commentElement in
+            try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
+        }
+
+        return comments
+    }
+}
