@@ -16,11 +16,11 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     
     var body: some View {
-
+        
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
                 .font(.headline)
-            
+                .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
             Divider()
             
             HStack {
@@ -30,7 +30,7 @@ struct PostFeedView: View {
                 
                 Spacer()
             }
-            
+            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
             HStack {
                 DetailTagView(icon: "person", data: post.author)
                 
@@ -41,8 +41,16 @@ struct PostFeedView: View {
                 
                 DetailTagView(icon: "arrow.up", data: Int(post.votes)?.roundedWithAbbreviations ?? "")
             }
+            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
         }
-        .padding(8)
+        .background(Color(uiColor: UIColor.systemBackground))
+        .padding(.horizontal, 8)
+        .addGestureActions(
+            primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {}),
+            secondaryLeadingAction: nil,
+            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),
+            secondaryTrailingAction: nil
+        )
         .frame(maxWidth: .infinity)
     }
 }

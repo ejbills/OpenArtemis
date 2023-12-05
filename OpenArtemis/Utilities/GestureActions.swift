@@ -212,7 +212,7 @@ struct GestureView: ViewModifier {
             HapticManager.shared.confirmationInfo()
         }
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             if finalDragPosition < -1 * 100 {
                 Task(priority: .userInitiated) {
                     if secondaryTrailingAction != nil {
