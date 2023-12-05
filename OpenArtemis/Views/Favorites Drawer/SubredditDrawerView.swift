@@ -29,15 +29,17 @@ struct SubredditDrawerView: View {
                 ZStack {
                     List {
                         Section(header: Text("Defaults")) {
-                            DefaultSubredditRowView(title: "Home", iconSystemName: "house.circle", iconColor: .artemisAccent)
+                            DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
                                         EmptyView()
                                     }
                                         .opacity(0)
                                 )
+                                .disabledView(disabled: localFavorites.isEmpty)
+                                
                             
-                            DefaultSubredditRowView(title: "All", iconSystemName: "star.circle", iconColor: .yellow)
+                            DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
                                 .background(
                                     // highlights button on tap (cant be modifier or inside child view)
                                     NavigationLink(value: SubredditFeedResponse(subredditName: "all")) {
@@ -46,7 +48,7 @@ struct SubredditDrawerView: View {
                                     .opacity(0)
                                 )
                             
-                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.circle", iconColor: .blue)
+                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
                                         EmptyView()
@@ -54,7 +56,7 @@ struct SubredditDrawerView: View {
                                     .opacity(0)
                                 )
                             
-                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.circle", iconColor: .green)
+                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
                                 .background(
                                     NavigationLink(value: SubredditFeedResponse(subredditName: "saved")) {
                                         EmptyView()

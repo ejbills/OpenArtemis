@@ -22,7 +22,8 @@ struct PostPageView: View {
                                 
                 HStack {
                     Text("Comments")
-                        .font(.subheadline)
+                        .font(.title3)
+                        .padding(.leading)
                     
                     Spacer()
                 }
@@ -32,19 +33,20 @@ struct PostPageView: View {
                 if !comments.isEmpty {
                     ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
                         if !comment.isCollapsed {
-                            CommentView(comment: comment)
+                            CommentView(comment: comment, numberOfChildren: getNumberOfDescendants(for: comment, in: comments))
                                 .frame(maxWidth: .infinity)
                                 .padding(.leading, CGFloat(comment.depth) * 10)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
                                     withAnimation(.snappy) {
                                         comments[index].isRootCollapsed.toggle()
-                                        
                                         collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                     }
                                 }
+                                .padding(.vertical, 4)
                             
                             DividerView(frameHeight: 1)
+                                .padding(.leading, CGFloat(comment.depth) * 10)
                         }
                     }
                 } else {
