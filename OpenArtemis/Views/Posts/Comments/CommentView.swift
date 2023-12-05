@@ -25,7 +25,7 @@ struct CommentView: View {
                     DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
                 }
                 
-                if !comment.isRoot {
+                if !comment.isRootCollapsed {
                     Text(comment.body)
                 }
             }

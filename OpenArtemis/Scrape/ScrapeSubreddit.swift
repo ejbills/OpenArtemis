@@ -131,7 +131,7 @@ class RedditScraper {
             // let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
             let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
 
-            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRoot: false)
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
             comments.append(comment)
             commentIDs.insert(id)
 
