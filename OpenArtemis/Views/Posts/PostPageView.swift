@@ -35,6 +35,7 @@ struct PostPageView: View {
                             CommentView(comment: comment)
                                 .frame(maxWidth: .infinity)
                                 .padding(.leading, CGFloat(comment.depth) * 10)
+                                .contentShape(Rectangle())
                                 .onTapGesture {
                                     withAnimation(.snappy) {
                                         comments[index].isRootCollapsed.toggle()
@@ -83,9 +84,11 @@ struct PostPageView: View {
         // Recursively update the matching comments
         for index in matchingIndices {
             self.comments[index].isCollapsed = rootCollapsedStatus
-
-            // Check if there are child comments before recursing
-            collapseChildren(parentCommentID: self.comments[index].id, rootCollapsedStatus: rootCollapsedStatus)
+            
+            if !self.comments[index].isRootCollapsed { // catch a child comment that is collapsed being collapsed again
+                // Check if there are child comments before recursing
+                collapseChildren(parentCommentID: self.comments[index].id, rootCollapsedStatus: rootCollapsedStatus)
+            }
         }
     }
 }
