@@ -19,7 +19,7 @@ struct PostPageView: View {
                 PostFeedView(post: post)
                 
                 DividerView(frameHeight: 1)
-                                
+                
                 HStack {
                     Text("Comments")
                         .font(.title3)
@@ -44,6 +44,26 @@ struct PostPageView: View {
                                     }
                                 }
                                 .padding(.vertical, 4)
+                                .background(Color(uiColor: UIColor.systemBackground))
+                                .addGestureActions(
+                                    primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
+                                        withAnimation(.snappy) {
+                                            if comment.parentID == nil {
+                                                comments[index].isRootCollapsed.toggle()
+                                                collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
+                                            } else {
+                                                //Find the root comment by traversing up the tree
+                                                if var rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
+                                                    comments[rootIndex].isRootCollapsed = true
+                                                    collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
+                                                }
+                                            }
+                                        }
+                                    }),
+                                    secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {}),
+                                    primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {}),
+                                    secondaryTrailingAction: nil
+                                )
                             
                             DividerView(frameHeight: 1)
                                 .padding(.leading, CGFloat(comment.depth) * 10)
@@ -61,6 +81,7 @@ struct PostPageView: View {
             }
         }
     }
+    
     
     private func scrapeComments(_ commentsURL: String) {
         self.isLoading = true
@@ -93,4 +114,18 @@ struct PostPageView: View {
             }
         }
     }
+    
+    private func findRootComment(comment: Comment) -> Comment? {
+        var currentComment = comment
+        while let parentID = currentComment.parentID {
+            if let parentComment = comments.first(where: { $0.id == parentID }) {
+                currentComment = parentComment
+            } else {
+                // Parent comment not found, break the loop
+                break
+            }
+        }
+        return currentComment
+    }
+    
 }

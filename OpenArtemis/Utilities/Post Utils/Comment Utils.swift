@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Comment {
+struct Comment: Equatable{
     let id: String
     let parentID: String?
     var childID: String?
