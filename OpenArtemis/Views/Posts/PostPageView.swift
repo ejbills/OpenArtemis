@@ -88,7 +88,4 @@ struct PostPageView: View {
             collapseChildren(parentCommentID: self.comments[index].id, rootCollapsedStatus: rootCollapsedStatus)
         }
     }
-
-
-
 }
