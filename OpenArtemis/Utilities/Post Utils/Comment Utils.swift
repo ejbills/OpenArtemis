@@ -11,7 +11,6 @@ import SwiftUI
 struct Comment: Equatable{
     let id: String
     let parentID: String?
-    var childID: String?
     let author: String
     let score: String // since comments show score as "X votes" rather than just the int
     let time: String
