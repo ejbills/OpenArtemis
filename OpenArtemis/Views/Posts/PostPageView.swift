@@ -10,70 +10,109 @@ import SwiftUI
 struct PostPageView: View {
     let post: Post
     @State private var comments: [Comment] = []
-    
+    @State private var rootComments: [Comment] = []
     @State private var isLoading: Bool = false
-    
+    @State private var visibleRootComments: [Comment] = []
+    //    @State private var disappeardComments: [Comment] = []
+    @State private var scrollID: Int? = nil
+    @State var visibleRootComment: Comment? = nil
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                PostFeedView(post: post)
-                
-                DividerView(frameHeight: 1)
-                
-                HStack {
-                    Text("Comments")
-                        .font(.title3)
-                        .padding(.leading)
+        ScrollViewReader { reader in
+            ScrollView {
+                LazyVStack {
+                    PostFeedView(post: post)
+                    DividerView(frameHeight: 1)
+                    HStack {
+                        Text("Comments")
+                            .font(.title3)
+                            .padding(.leading)
+                        
+                        Spacer()
+                    }
+                    DividerView(frameHeight: 1)
                     
-                    Spacer()
-                }
-                
-                DividerView(frameHeight: 1)
-                
-                if !comments.isEmpty {
-                    ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
-                        if !comment.isCollapsed {
-                            CommentView(comment: comment, numberOfChildren: getNumberOfDescendants(for: comment, in: comments))
-                                .frame(maxWidth: .infinity)
-                                .padding(.leading, CGFloat(comment.depth) * 10)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    withAnimation(.snappy) {
-                                        comments[index].isRootCollapsed.toggle()
-                                        collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
+                    if !comments.isEmpty {
+                        ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
+                            if !comment.isCollapsed {
+                                CommentView(comment: comment, numberOfChildren:comment.isRootCollapsed ? getNumberOfDescendants(for: comment, in: comments) : 0)
+                                    .id(comment.id)
+                                    .onAppear{
+                                        if comment.parentID == nil {
+                                            visibleRootComments.append(comment)
+                                        }
                                     }
-                                }
-                                .padding(.vertical, 4)
-                                .background(Color(uiColor: UIColor.systemBackground))
-                                .addGestureActions(
-                                    primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
+                                    .onDisappear{
+                                        if comment.parentID == nil {
+                                            visibleRootComment = visibleRootComments.first
+                                            visibleRootComments = visibleRootComments.filter { $0.id != comment.id}
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.leading, CGFloat(comment.depth) * 10)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
                                         withAnimation(.snappy) {
-                                            if comment.parentID == nil {
-                                                comments[index].isRootCollapsed.toggle()
-                                                collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
-                                            } else {
-                                                //Find the root comment by traversing up the tree
-                                                if var rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
-                                                    comments[rootIndex].isRootCollapsed = true
-                                                    collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
+                                            comments[index].isRootCollapsed.toggle()
+                                            collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
+                                        }
+                                    }
+                                    .padding(.vertical, 4)
+                                    .background{
+                                        if visibleRootComment == comment {
+                                            Color.red
+                                        } else if visibleRootComments.firstIndex(of: comment) != nil{
+                                            Color.yellow
+                                        }
+                                        
+                                        else {
+                                            Color(uiColor: UIColor.systemBackground)
+                                        }
+                                    }
+                                    .addGestureActions(
+                                        primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
+                                            withAnimation(.snappy) {
+                                                if comment.parentID == nil {
+                                                    comments[index].isRootCollapsed.toggle()
+                                                    collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
+                                                } else {
+                                                    //Find the root comment by traversing up the tree
+                                                    if let rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
+                                                        comments[rootIndex].isRootCollapsed = true
+                                                        collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }),
-                                    secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {}),
-                                    primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {}),
-                                    secondaryTrailingAction: nil
-                                )
-                            
-                            DividerView(frameHeight: 1)
-                                .padding(.leading, CGFloat(comment.depth) * 10)
+                                        }),
+                                        secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {saveComment(comment: comment)}),
+                                        primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
+                                            shareComment(comment: comment, post: post)
+                                        }),
+                                        secondaryTrailingAction: nil
+                                    )
+                                    .contextMenu(ContextMenu(menuItems: {
+                                        ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
+                                    }))
+                                DividerView(frameHeight: 1)
+                                    .padding(.leading, CGFloat(comment.depth) * 10)
+                            }
                         }
+                    } else {
+                        LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
                     }
-                } else {
-                    LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
+                }
+                
+            }
+            .scrollTargetLayout()
+        }
+    .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                } label: {
+                    Label("Jump to next Comment", systemImage: "chevron.down")
                 }
             }
         }
+
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             if comments.isEmpty {
@@ -82,6 +121,13 @@ struct PostPageView: View {
         }
     }
     
+    private func saveComment(comment: Comment) {
+        
+    }
+    
+    private func shareComment(comment: Comment, post: Post) {
+        
+    }
     
     private func scrapeComments(_ commentsURL: String) {
         self.isLoading = true
@@ -91,6 +137,7 @@ struct PostPageView: View {
             case .success(let comments):
                 for comment in comments {
                     self.comments.append(comment)
+                    rootComments = comments.filter { $0.parentID == nil }
                 }
             case .failure(let error):
                 print("Error: \(error)")

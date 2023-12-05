@@ -56,7 +56,7 @@ extension RedditScraper {
             let time = try commentElement.select("time").first()?.attr("datetime") ?? ""
             let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
             
-            let comment = Comment(id: id, parentID: parentID, childID: nil, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
             comments.append(comment)
             
             commentIDs.insert(id)
@@ -65,11 +65,6 @@ extension RedditScraper {
             if let childElement = try? commentElement.select("div.child > div.sitetable.listing > div.comment") {
                 try childElement.enumerated().forEach { index, childCommentElement in
                     try parseComment(commentElement: childCommentElement, parentID: id, depth: depth + 1)
-                    
-                    // Add child ID to the previous comment (if any)
-                    if index > 0 {
-                        comments[comments.count - 2].childID = id
-                    }
                 }
             }
         }
