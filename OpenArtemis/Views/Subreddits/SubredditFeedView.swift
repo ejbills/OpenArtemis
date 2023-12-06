@@ -48,7 +48,7 @@ struct SubredditFeedView: View {
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName.localizedCapitalized)
+        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
