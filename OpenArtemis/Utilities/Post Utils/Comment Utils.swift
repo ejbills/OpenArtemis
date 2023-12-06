@@ -16,6 +16,7 @@ struct Comment {
     let time: String
     let body: String
     let depth: Int
+    let stickied: Bool
     var isCollapsed: Bool
     var isRootCollapsed: Bool
 }
