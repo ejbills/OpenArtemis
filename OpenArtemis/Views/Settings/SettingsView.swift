@@ -14,6 +14,9 @@ struct SettingsView: View {
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
+    
+    @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
+    
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
     
@@ -56,7 +59,9 @@ struct SettingsView: View {
                     }
                 })
             }
-            
+            Section("Comments"){
+                Toggle("Jump to Next Comment Button", isOn: $showJumpToNextCommentButton)
+            }
             Section("Subreddits"){
                 Button{
                     exportedURL = SubredditIOManager().exportSubs(fileName: "artemis_subs.json", subreddits: localFavorites.compactMap { $0.name })

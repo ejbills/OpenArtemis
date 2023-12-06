@@ -16,6 +16,8 @@ extension Defaults.Keys {
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
+    
+    static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
 }
 
 enum PreferredThemeMode: Codable, CaseIterable, Identifiable, Defaults.Serializable {

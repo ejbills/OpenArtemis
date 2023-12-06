@@ -12,13 +12,15 @@ struct Post: Equatable, Hashable {
     let subreddit: String
     let title: String
     let author: String
-    let score: String
+    let votes: String
     let mediaURL: PrivateURL
+    let commentsURL: String
     
     let type: String
     
     // If post media has a thumbnail...
     let thumbnailURL: String?
+    
     
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
@@ -30,7 +32,8 @@ struct Post: Equatable, Hashable {
         hasher.combine(subreddit)
         hasher.combine(title)
         hasher.combine(author)
-        hasher.combine(score)
+        hasher.combine(votes)
+        hasher.combine(commentsURL)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
         hasher.combine(type)
@@ -38,20 +41,22 @@ struct Post: Equatable, Hashable {
     }
 }
 
-func determinePostType(mediaURL: String) -> String {
-    let mediaURL = mediaURL.lowercased()
-    
-    if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
-        return "text"
-    } else if mediaURL.contains("reddit.com/gallery/") {
-        return "gallery"
-    } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
-        return "image"
-    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") || mediaURL.hasSuffix(".mp4") {
-        return "video"
-    } else if mediaURL.contains("v.redd.it") {
-        return "video"
-    } else {
-        return "article"
+class PostUtils {
+    func determinePostType(mediaURL: String) -> String {
+        let mediaURL = mediaURL.lowercased()
+        
+        if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
+            return "text"
+        } else if mediaURL.contains("reddit.com/gallery/") {
+            return "gallery"
+        } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
+            return "image"
+        } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
+            return "gif"
+        } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
+            return "video"
+        } else {
+            return "article"
+        }
     }
 }

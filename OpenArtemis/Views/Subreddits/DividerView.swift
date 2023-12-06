@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct DividerView: View {
+    let frameHeight: CGFloat
+    
     var body: some View {
         Rectangle()
             .fill(Color.gray.opacity(0.15))
-            .frame(height: 10)
+            .frame(height: frameHeight)
             .edgesIgnoringSafeArea(.all)
     }
 }
