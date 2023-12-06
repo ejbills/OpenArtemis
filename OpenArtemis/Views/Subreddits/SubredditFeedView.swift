@@ -23,7 +23,6 @@ struct SubredditFeedView: View {
         Group {
             if !posts.isEmpty {
                 ScrollView {
-  
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
@@ -44,12 +43,12 @@ struct SubredditFeedView: View {
                 }
                 .scrollIndicators(.hidden)
             } else {
-                LoadingAnimation(loadingText: "Loading Feed...", isLoading: isLoading)
+                LoadingAnimation(loadingText: "Loading Feed...")
                     .padding()
             }
         }
         .id("\(subredditName)-feed-view")
-        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName.localizedCapitalized)
+        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
@@ -66,14 +65,16 @@ struct SubredditFeedView: View {
         RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let newPosts):
-                for post in newPosts {
-                    // Check if the post ID is not in the set to avoid duplicates
-                    if !postIDs.contains(post.id) {
-                        self.posts.append(post)
-                        self.postIDs.insert(post.id)
+                withAnimation(.snappy) {
+                    for post in newPosts {
+                        // Check if the post ID is not in the set to avoid duplicates
+                        if !postIDs.contains(post.id) {
+                            self.posts.append(post)
+                            self.postIDs.insert(post.id)
+                        }
                     }
                 }
-                
+                    
                 if let lastPost = newPosts.last {
                     self.lastPostAfter = lastPost.id
                 }
@@ -87,10 +88,12 @@ struct SubredditFeedView: View {
     }
     
     private func clearFeedAndReload() {
-        self.posts.removeAll()
-        self.postIDs.removeAll()
-        self.lastPostAfter = ""
-        self.isLoading = false
+        withAnimation(.snappy) {
+            self.posts.removeAll()
+            self.postIDs.removeAll()
+            self.lastPostAfter = ""
+            self.isLoading = false
+        }
         
         scrapeSubreddit(subredditName)
     }

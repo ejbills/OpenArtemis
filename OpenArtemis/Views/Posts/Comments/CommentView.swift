@@ -44,9 +44,9 @@ struct CommentView: View {
                     Text(comment.body)
                 }
             }
-            
-            Spacer()
         }
         .padding(.horizontal, 8)
+        .frame(maxWidth: .infinity)
+
     }
 }

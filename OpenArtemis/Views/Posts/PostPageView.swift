@@ -22,11 +22,12 @@ private struct AnchorsKey: PreferenceKey {
 
 struct PostPageView: View {
     let post: Post
+  
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
+    @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     
-    //    @State private var disappeardComments: [Comment] = []
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
@@ -36,9 +37,20 @@ struct PostPageView: View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
                 ScrollView {
-                    LazyVStack {
+                    LazyVStack(spacing: 0) {
                         PostFeedView(post: post)
-                        DividerView(frameHeight: 1)
+                
+                        if let postBody = postBody {
+                            Text(postBody)
+                                .font(.body)
+                                .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+                                .background(Color.gray.opacity(0.1))
+                                .cornerRadius(6)
+                                .padding(.horizontal)
+                        }
+
+                        DividerView(frameHeight: 10)
+                      
                         HStack {
                             Text("Comments")
                                 .font(.title3)
@@ -128,8 +140,6 @@ struct PostPageView: View {
                                             reader.scrollTo(rootComments[topVisibleCommentIndex + 1].id, anchor: .top)
                                             previousScrollTarget = topVisibleCommentId
                                         }
-                                        
-                                        
                                     }
                                 }
                             } label: {
@@ -144,13 +154,15 @@ struct PostPageView: View {
                         }
                         .padding()
                     }
-                    
-                    
+                } else {
+                    LoadingAnimation(loadingText: "Loading comments...")
+                        .padding()
                 }
             }
         }
-       
-        
+        .frame(maxWidth: UIScreen.main.bounds.width,
+               maxHeight: UIScreen.main.bounds.height) // prevents animated comment loading from twitching
+        .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             if comments.isEmpty {
@@ -186,10 +198,17 @@ struct PostPageView: View {
         
         RedditScraper.scrapeComments(commentURL: commentsURL) { result in
             switch result {
-            case .success(let comments):
-                for comment in comments {
-                    self.comments.append(comment)
-                    rootComments = comments.filter { $0.parentID == nil }
+            case .success(let result):
+                withAnimation(.snappy) {
+                    for comment in result.comments {
+                        self.comments.append(comment)
+                    }
+                    
+                    if let postBody = result.postBody, !(postBody.isEmpty) {
+                        self.postBody = postBody
+                    }
+                  
+                  self.rootComments = result.comments.filter { $0.parentID == nil }
                 }
             case .failure(let error):
                 print("Error: \(error)")
@@ -197,8 +216,9 @@ struct PostPageView: View {
             
             self.isLoading = false
         }
+        
     }
-    
+        
     private func collapseChildren(parentCommentID: String, rootCollapsedStatus: Bool) {
         // Find indices of comments that match the parentCommentID
         let matchingIndices = self.comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }

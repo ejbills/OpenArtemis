@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct PostFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -16,32 +15,17 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     
     var body: some View {
-        
+
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
                 .font(.headline)
                 .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
             Divider()
-            
-            HStack {
-                Spacer()
+
                 
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
-                
-                Spacer()
-            }
-            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
-            HStack {
-                DetailTagView(icon: "person", data: post.author)
-                
-                DetailTagView(icon: "location", data: post.subreddit)
-                    .onTapGesture {
-                        coordinator.path.append(SubredditFeedResponse(subredditName: post.subreddit))
-                    }
-                
-                DetailTagView(icon: "arrow.up", data: Int(post.votes)?.roundedWithAbbreviations ?? "")
-            }
-            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+                        
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
         }
         .background(Color(uiColor: UIColor.systemBackground))
         .padding(.horizontal, 8)
