@@ -20,15 +20,9 @@ struct PostFeedView: View {
                 .font(.headline)
             
             Divider()
-            
-            HStack {
-                Spacer()
                 
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
-                
-                Spacer()
-            }
-            
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+                        
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
         }
         .padding(8)
