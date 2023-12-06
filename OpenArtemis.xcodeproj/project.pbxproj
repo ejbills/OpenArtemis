@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
-		65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */; };
-		65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */; };
-		65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332A22B1DF39200421162 /* ImageViewOverlay.swift */; };
 		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
 		65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */; };
 		65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */; };
@@ -88,9 +85,6 @@
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
 		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
-		65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableScrollView.swift; sourceTree = "<group>"; };
-		65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
-		65A332A22B1DF39200421162 /* ImageViewOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewOverlay.swift; sourceTree = "<group>"; };
 		65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBigNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -175,9 +169,6 @@
 		65A3329D2B1DED5500421162 /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
-				65A3329E2B1DED6C00421162 /* ZoomableScrollView.swift */,
-				65A332A02B1DEE5900421162 /* LiveTextInteraction.swift */,
-				65A332A22B1DF39200421162 /* ImageViewOverlay.swift */,
 				65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */,
 			);
 			path = ImageViewer;
@@ -564,7 +555,6 @@
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
-				65A3329F2B1DED6C00421162 /* ZoomableScrollView.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
 				65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */,
 				BB8CAE7A2B1E73CE00CA13BB /* Comment Utils.swift in Sources */,
@@ -572,7 +562,6 @@
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
-				65A332A32B1DF39200421162 /* ImageViewOverlay.swift in Sources */,
 				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,
 				65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
@@ -595,7 +584,6 @@
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */,
 				BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */,
-				65A332A12B1DEE5900421162 /* LiveTextInteraction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
