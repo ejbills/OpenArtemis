@@ -61,6 +61,7 @@ private struct ImageView: View {
                 content: { image in
                     image
                         .resizable()
+                        .scaledToFit()
                 },
                 placeholder: {
                     ProgressView()
