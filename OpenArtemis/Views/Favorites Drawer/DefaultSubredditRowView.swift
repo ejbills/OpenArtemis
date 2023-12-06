@@ -19,8 +19,14 @@ struct DefaultSubredditRowView: View {
                 Image(systemName: iconSystemName)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(iconColor)
+                    .foregroundColor(Color.white)
+                    .padding(6)
+                    .frame(maxWidth: 30, maxHeight: 30)
+                    .background{
+                        RoundedRectangle(cornerSize: CGSize(width: 7, height: 7))
+                            .foregroundStyle(iconColor)
+                            .frame(width: 30, height: 30)
+                    }
             }
         )
         .labelStyle(DefaultLabelStyle())

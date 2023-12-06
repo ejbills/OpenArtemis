@@ -10,7 +10,7 @@ import Foundation
 class TimeFormatUtil {
     func formatTimeAgo(fromUTCString utcString: String) -> String {
         let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
+        formatter.unitsStyle = .abbreviated
         formatter.maximumUnitCount = 1
         formatter.allowsFractionalUnits = true
         
@@ -19,7 +19,7 @@ class TimeFormatUtil {
             let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date, to: Date())
             
             if let formattedString = formatter.string(from: components) {
-                return "\(formattedString) ago"
+                return "\(formattedString)"
             } else {
                 return "Unknown"
             }
