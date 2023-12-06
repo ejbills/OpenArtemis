@@ -29,8 +29,10 @@ struct SubredditFeedView: View {
                                 .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {
-                                    if post.id == posts[Int(Double(posts.count) * 0.85)].id {
-                                        scrapeSubreddit(subredditName, lastPostAfter)
+                                    if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
+                                        if post.id == posts[Int(Double(posts.count) * 0.85)].id {
+                                            scrapeSubreddit(subredditName, lastPostAfter)
+                                        }
                                     }
                                 }
                                 .onTapGesture {
@@ -48,6 +50,7 @@ struct SubredditFeedView: View {
         }
         .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             if posts.isEmpty {
                 scrapeSubreddit(subredditName)
