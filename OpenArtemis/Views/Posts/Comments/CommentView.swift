@@ -21,17 +21,17 @@ struct CommentView: View {
             VStack(alignment: .leading) {
                 HStack {
                     DetailTagView(icon: "person", data: comment.author)
-                    DetailTagView(icon: "arrow.up", data: comment.score)
                     DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
+                    Spacer()
+                    DetailTagView(icon: "arrow.up", data: comment.score)
                 }
                 
                 if !comment.isRootCollapsed {
                     Text(comment.body)
                 }
             }
-            
-            Spacer()
         }
+        .frame(maxWidth: .infinity)
         .padding(8)
     }
 }

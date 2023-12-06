@@ -16,7 +16,7 @@ struct PostPageView: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack {
+            LazyVStack(spacing: 0) {
                 PostFeedView(post: post)
                 
                 if let postBody = postBody {
@@ -35,7 +35,6 @@ struct PostPageView: View {
                         if !comment.isCollapsed {
                             CommentView(comment: comment)
                                 .id(comment.id)
-                                .frame(maxWidth: .infinity)
                                 .padding(.leading, CGFloat(comment.depth) * 10)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
