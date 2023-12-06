@@ -24,12 +24,11 @@ struct PostPageView: View {
                         .font(.body)
                         .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
+                        .cornerRadius(6)
                         .padding(.horizontal)
                 }
                 
                 DividerView(frameHeight: 10)
-                
                 
                 if !comments.isEmpty {
                     ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in

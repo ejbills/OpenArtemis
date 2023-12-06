@@ -18,6 +18,8 @@ struct PostDetailsView: View {
         HStack {
             DetailTagView(icon: "person", data: postAuthor)
             
+            Spacer()
+            
             DetailTagView(icon: "location", data: subreddit)
                 .onTapGesture {
                     coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
