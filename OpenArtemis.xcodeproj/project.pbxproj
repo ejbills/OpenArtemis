@@ -28,7 +28,7 @@
 		65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */; };
 		65EFE40B2B1CC37F00517EBE /* If.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EFE40A2B1CC37F00517EBE /* If.swift */; };
 		65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F595972B1F116F005BE493 /* ScrapeSubreddit.swift */; };
-		65F5959A2B1F1195005BE493 /* ScrapeComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F595992B1F1195005BE493 /* ScrapeComments.swift */; };
+		65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F595992B1F1195005BE493 /* ScrapePostMedia.swift */; };
 		65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959B2B1F188B005BE493 /* ColorFromHex.swift */; };
 		65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959D2B1F3A54005BE493 /* HapticManager.swift */; };
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
@@ -40,7 +40,6 @@
 		BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAC2B1ADDA00014FB18 /* MediaView.swift */; };
 		BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */; };
 		BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */; };
-		BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB62B1ADE130014FB18 /* RedditScraper.swift */; };
 		BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FB92B1ADE470014FB18 /* App Consts.swift */; };
 		BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */; };
 		BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */; };
@@ -103,7 +102,7 @@
 		65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportURLSheet.swift; sourceTree = "<group>"; };
 		65EFE40A2B1CC37F00517EBE /* If.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = If.swift; sourceTree = "<group>"; };
 		65F595972B1F116F005BE493 /* ScrapeSubreddit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeSubreddit.swift; sourceTree = "<group>"; };
-		65F595992B1F1195005BE493 /* ScrapeComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeComments.swift; sourceTree = "<group>"; };
+		65F595992B1F1195005BE493 /* ScrapePostMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapePostMedia.swift; sourceTree = "<group>"; };
 		65F5959B2B1F188B005BE493 /* ColorFromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFromHex.swift; sourceTree = "<group>"; };
 		65F5959D2B1F3A54005BE493 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		65F5959F2B1F3A69005BE493 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
@@ -115,7 +114,6 @@
 		BB391FAC2B1ADDA00014FB18 /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		BB391FB02B1ADDB00014FB18 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		BB391FB32B1ADDE70014FB18 /* PostFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
-		BB391FB62B1ADE130014FB18 /* RedditScraper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditScraper.swift; sourceTree = "<group>"; };
 		BB391FB92B1ADE470014FB18 /* App Consts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "App Consts.swift"; sourceTree = "<group>"; };
 		BB391FBB2B1ADE4E0014FB18 /* PresentSafari.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentSafari.swift; sourceTree = "<group>"; };
 		BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loading Modifiers.swift"; sourceTree = "<group>"; };
@@ -267,9 +265,8 @@
 		BB391FB52B1ADE0B0014FB18 /* Scrape */ = {
 			isa = PBXGroup;
 			children = (
-				BB391FB62B1ADE130014FB18 /* RedditScraper.swift */,
 				65F595972B1F116F005BE493 /* ScrapeSubreddit.swift */,
-				65F595992B1F1195005BE493 /* ScrapeComments.swift */,
+				65F595992B1F1195005BE493 /* ScrapePostMedia.swift */,
 			);
 			path = Scrape;
 			sourceTree = "<group>";
@@ -534,7 +531,7 @@
 				BB391FC22B1ADE700014FB18 /* Loading Modifiers.swift in Sources */,
 				BBE434842B1C0D1900886CAB /* SubredditRowView.swift in Sources */,
 				65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */,
-				65F5959A2B1F1195005BE493 /* ScrapeComments.swift in Sources */,
+				65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */,
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
@@ -568,7 +565,6 @@
 				BBB101D02B20154600691B2F /* PostDetailsView.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
-				BB391FB72B1ADE130014FB18 /* RedditScraper.swift in Sources */,
 				BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */,
 				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
 				BBE434772B1BE35F00886CAB /* PersistenceController.swift in Sources */,

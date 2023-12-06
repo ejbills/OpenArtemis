@@ -41,20 +41,22 @@ struct Post: Equatable, Hashable {
     }
 }
 
-func determinePostType(mediaURL: String) -> String {
-    let mediaURL = mediaURL.lowercased()
-    
-    if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
-        return "text"
-    } else if mediaURL.contains("reddit.com/gallery/") {
-        return "gallery"
-    } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
-        return "image"
-    } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
-        return "gif"
-    } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
-        return "video"
-    } else {
-        return "article"
+class PostUtils {
+    func determinePostType(mediaURL: String) -> String {
+        let mediaURL = mediaURL.lowercased()
+        
+        if mediaURL.contains("/r/") && mediaURL.contains("/comments/") {
+            return "text"
+        } else if mediaURL.contains("reddit.com/gallery/") {
+            return "gallery"
+        } else if mediaURL.hasSuffix(".png") || mediaURL.hasSuffix(".jpg") || mediaURL.hasSuffix(".jpeg") {
+            return "image"
+        } else if mediaURL.hasSuffix(".gif") || mediaURL.hasSuffix(".gifv") {
+            return "gif"
+        } else if mediaURL.contains("v.redd.it") || mediaURL.hasSuffix(".mp4") {
+            return "video"
+        } else {
+            return "article"
+        }
     }
 }

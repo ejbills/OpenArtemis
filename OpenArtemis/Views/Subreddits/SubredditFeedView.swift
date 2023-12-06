@@ -44,7 +44,6 @@ struct SubredditFeedView: View {
                 .scrollIndicators(.hidden)
             } else {
                 LoadingAnimation(loadingText: "Loading Feed...")
-                    .padding()
             }
         }
         .id("\(subredditName)-feed-view")

@@ -33,5 +33,6 @@ struct LoadingAnimation: View {
                 .italic()
                 .foregroundStyle(.secondary)
         }
+        .padding()
     }
 }
