@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct PostFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -16,11 +15,10 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
                 .font(.headline)
-                .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
+            
             Divider()
             
             HStack {
@@ -30,27 +28,10 @@ struct PostFeedView: View {
                 
                 Spacer()
             }
-            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
-            HStack {
-                DetailTagView(icon: "person", data: post.author)
-                
-                DetailTagView(icon: "location", data: post.subreddit)
-                    .onTapGesture {
-                        coordinator.path.append(SubredditFeedResponse(subredditName: post.subreddit))
-                    }
-                
-                DetailTagView(icon: "arrow.up", data: Int(post.votes)?.roundedWithAbbreviations ?? "")
-            }
-            .padding(.vertical, 8) // vertical padding here so it also includes the gesture background
+            
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
         }
-        .background(Color(uiColor: UIColor.systemBackground))
-        .padding(.horizontal, 8)
-        .addGestureActions(
-            primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {}),
-            secondaryLeadingAction: nil,
-            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),
-            secondaryTrailingAction: nil
-        )
+        .padding(8)
         .frame(maxWidth: .infinity)
     }
 }

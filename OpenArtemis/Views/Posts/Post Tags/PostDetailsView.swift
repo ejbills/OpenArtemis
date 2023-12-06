@@ -23,8 +23,6 @@ struct PostDetailsView: View {
                     coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
                 }
             
-            Spacer()
-            
             DetailTagView(icon: "arrow.up", data: votes.roundedWithAbbreviations)
         }
     }
