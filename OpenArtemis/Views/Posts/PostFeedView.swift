@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct PostFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -16,7 +15,6 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     
     var body: some View {
-
         VStack(alignment: .leading, spacing: 8) {
             Text(post.title)
                 .font(.headline)
@@ -31,16 +29,7 @@ struct PostFeedView: View {
                 Spacer()
             }
             
-            HStack {
-                DetailTagView(icon: "person", data: post.author)
-                
-                DetailTagView(icon: "location", data: post.subreddit)
-                    .onTapGesture {
-                        coordinator.path.append(SubredditFeedResponse(subredditName: post.subreddit))
-                    }
-                
-                DetailTagView(icon: "arrow.up", data: Int(post.votes)?.roundedWithAbbreviations ?? "")
-            }
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
         }
         .padding(8)
         .frame(maxWidth: .infinity)

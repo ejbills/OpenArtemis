@@ -82,7 +82,18 @@ class RedditScraper {
         return posts
     }
     
-    static func scrapeComments(commentURL: String, completion: @escaping (Result<[Comment], Error>) -> Void) {
+    private static func parseUserTextBody(data: Data) throws -> String? {
+        let htmlString = String(data: data, encoding: .utf8)!
+        let doc = try SwiftSoup.parse(htmlString)
+        
+        guard let userTextBody = try doc.select("div.expando").first()?.text() else {
+            throw NSError(domain: "Could not find user text body", code: 0, userInfo: nil)
+        }
+        
+        return userTextBody
+    }
+    
+    static func scrapeComments(commentURL: String, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
         guard let url = URL(string: commentURL) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -101,7 +112,14 @@ class RedditScraper {
             
             do {
                 let comments = try parseCommentsData(data: data)
-                completion(.success(comments))
+                
+                // Call parseUserTextBody
+                if let postBody = try? parseUserTextBody(data: data) {
+                    completion(.success((comments: comments, postBody: postBody)))
+                } else {
+                    completion(.success((comments: comments, postBody: nil)))
+                }
+                
             } catch {
                 completion(.failure(error))
             }
