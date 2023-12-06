@@ -148,8 +148,13 @@ class RedditScraper {
             // commenting this temporarily till html rendering is fixed.
             // let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").html()
             let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
+            
+            // check for stickied tag
+            let stickiedElement = try commentElement.select("span.stickied-tagline").first()
+            let stickied = stickiedElement != nil ? true : false
 
-            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body,
+                                  depth: depth, stickied: stickied, isCollapsed: false, isRootCollapsed: stickied)
             comments.append(comment)
             commentIDs.insert(id)
 
