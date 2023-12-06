@@ -9,7 +9,18 @@ import Foundation
 import SwiftSoup
 
 extension RedditScraper {
-    static func scrapeComments(commentURL: String, completion: @escaping (Result<[Comment], Error>) -> Void) {
+    private static func parseUserTextBody(data: Data) throws -> String? {
+        let htmlString = String(data: data, encoding: .utf8)!
+        let doc = try SwiftSoup.parse(htmlString)
+        
+        guard let userTextBody = try doc.select("div.expando").first()?.text() else {
+            throw NSError(domain: "Could not find user text body", code: 0, userInfo: nil)
+        }
+        
+        return userTextBody
+    }
+    
+    static func scrapeComments(commentURL: String, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
         guard let url = URL(string: commentURL) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -28,7 +39,14 @@ extension RedditScraper {
             
             do {
                 let comments = try parseCommentsData(data: data)
-                completion(.success(comments))
+                
+                // Call parseUserTextBody
+                if let postBody = try? parseUserTextBody(data: data) {
+                    completion(.success((comments: comments, postBody: postBody)))
+                } else {
+                    completion(.success((comments: comments, postBody: nil)))
+                }
+                
             } catch {
                 completion(.failure(error))
             }
@@ -47,31 +65,40 @@ extension RedditScraper {
             let id = try commentElement.attr("data-fullname")
             
             // Check for duplicate comments
-            guard !commentIDs.contains(id) else {
+            guard commentIDs.insert(id).inserted else {
                 return
             }
             
             let author = try commentElement.attr("data-author")
-            let score = try commentElement.select("span.score.unvoted").first()?.attr("title") ?? "[score hidden]"
+            
+            let scoreText = try commentElement.select("span.score.unvoted").first()?.text() ?? ""
+            let score = scoreText.components(separatedBy: " ").first ?? "[score hidden]"
+            
             let time = try commentElement.select("time").first()?.attr("datetime") ?? ""
             let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
             
-            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body, depth: depth, isCollapsed: false, isRootCollapsed: false)
-            comments.append(comment)
+            // check for stickied tag
+            let stickiedElement = try commentElement.select("span.stickied-tagline").first()
+            let stickied = stickiedElement != nil
             
-            commentIDs.insert(id)
+            let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body,
+                                  depth: depth, stickied: stickied, isCollapsed: false, isRootCollapsed: stickied)
+            comments.append(comment)
             
             // Check for child comments
             if let childElement = try? commentElement.select("div.child > div.sitetable.listing > div.comment") {
-                try childElement.enumerated().forEach { index, childCommentElement in
+                try childElement.forEach { childCommentElement in
                     try parseComment(commentElement: childCommentElement, parentID: id, depth: depth + 1)
                 }
             }
         }
         
         // Parse top-level comments
-        try doc.select("div.sitetable.nestedlisting > div.comment").forEach { commentElement in
-            try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
+        if let topLevelComments = try? doc.select("div.sitetable.nestedlisting > div.comment") {
+            comments.reserveCapacity(topLevelComments.size())
+            try topLevelComments.forEach { commentElement in
+                try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
+            }
         }
         
         return comments
