@@ -24,6 +24,6 @@ struct DetailTagView: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.gray.opacity(0.2)))
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(Color.gray.opacity(0.2)))
     }
 }

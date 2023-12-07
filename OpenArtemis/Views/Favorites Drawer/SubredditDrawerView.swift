@@ -42,7 +42,7 @@ struct SubredditDrawerView: View {
                             DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
                                 .background(
                                     // highlights button on tap (cant be modifier or inside child view)
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "all")) {
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
                                         EmptyView()
                                     }
                                     .opacity(0)
@@ -50,7 +50,7 @@ struct SubredditDrawerView: View {
                             
                             DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
                                 .background(
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
                                         EmptyView()
                                     }
                                     .opacity(0)
@@ -58,7 +58,7 @@ struct SubredditDrawerView: View {
                             
                             DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
                                 .background(
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "saved")) {
+                                    NavigationLink(value: SubredditFeedResponse(subredditName: "Saved")) {
                                         EmptyView()
                                     }
                                     .opacity(0)
@@ -91,7 +91,6 @@ struct SubredditDrawerView: View {
                             }
                         }
                     }
-                    .listStyle(PlainListStyle())
                     .scrollIndicators(.hidden)
                     .onAppear {
                         visibleSubredditSections()
@@ -99,9 +98,6 @@ struct SubredditDrawerView: View {
                     
                     SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
                         .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.leading, 8)
-                        .padding(.top, 8)
-                        .padding(.bottom, 8)
                         .padding(.trailing, 4)
                 }
             }

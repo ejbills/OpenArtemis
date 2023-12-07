@@ -8,7 +8,10 @@
 import Foundation
 import SwiftSoup
 
-extension RedditScraper {
+<<<<<<<< HEAD:OpenArtemis/Scrape/RedditScraper.swift
+class RedditScraper {}
+========
+class RedditScraper {
     static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
         // Construct the URL for the Reddit website based on the subreddit
         guard let url = URL(string: lastPostAfter != nil ?
@@ -62,7 +65,7 @@ extension RedditScraper {
                 let mediaURL = try postElement.attr("data-url")
                 let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
                 
-                let type = determinePostType(mediaURL: mediaURL)
+                let type = PostUtils().determinePostType(mediaURL: mediaURL)
                 
                 var thumbnailURL: String? = nil
                 
@@ -81,3 +84,4 @@ extension RedditScraper {
         return posts
     }
 }
+>>>>>>>> f64b61545500c911cb469d3718436c73485f2618:OpenArtemis/Scrape/ScrapeSubreddit.swift

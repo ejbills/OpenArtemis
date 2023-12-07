@@ -26,6 +26,7 @@ struct SubredditRowView: View {
                 }
             }
             
+            
             getColorFromInputString(subreddit.name ?? "")
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
