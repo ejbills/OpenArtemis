@@ -9,6 +9,8 @@ import SwiftUI
 import Defaults
 
 struct PostPageView: View {
+    @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
+    
     let post: Post
   
     @State private var commentUtils = CommentUtils()
@@ -27,14 +29,24 @@ struct PostPageView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         PostFeedView(post: post)
-                
+                                        
                         if let postBody = postBody {
-                            Text(postBody)
-                                .font(.body)
-                                .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(6)
-                                .padding(.horizontal)
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Text("Post Body")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                }
+                                
+                                Text(postBody)
+                                    .font(.body)
+                            }
+                            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                            .background(tagBgColor)
+                            .cornerRadius(6)
+                            .padding(.horizontal, 8)
+                            .padding(.bottom, 8)
                         }
 
                         DividerView(frameHeight: 10)
@@ -47,6 +59,8 @@ struct PostPageView: View {
                                                     numberOfChildren: comment.isRootCollapsed ?
                                                     commentUtils.getNumberOfDescendants(for: comment, in: comments) :
                                                         0)
+                                        
+                                            // next comment tracker
                                             .if(rootComments.firstIndex(of: comment) != nil){ view in
                                                 view.anchorPreference(
                                                     key: CommentUtils.AnchorsKey.self,
@@ -104,7 +118,7 @@ struct PostPageView: View {
                     }
                 }
                 .overlay {
-                    if Defaults[.showJumpToNextCommentButton] {
+                    if showJumpToNextCommentButton {
                         HStack {
                             Spacer()
                             VStack {

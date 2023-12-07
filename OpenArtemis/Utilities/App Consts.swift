@@ -13,7 +13,7 @@ let baseRedditURL = "https://old.reddit.com"
 let basePostCount = "?count=25"
 
 // Screen defaults
-let roughWidth = UIScreen.main.bounds.width * 0.85
+let roughWidth = UIScreen.main.bounds.width * 0.90
 let roughHeight = UIScreen.main.bounds.height * 0.45
 extension UIScreen {
   static let screenWidth = UIScreen.main.bounds.size.width
@@ -26,3 +26,4 @@ let drawerChars = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","
 
 // Other
 let colorPalette: [Color] = [Color(hex: 0x648FFF), Color(hex: 0x785EF0), Color(hex: 0xDC267F), Color(hex: 0xFE6100), Color(hex: 0xFFB000)]
+let tagBgColor = Color.gray.opacity(0.2)

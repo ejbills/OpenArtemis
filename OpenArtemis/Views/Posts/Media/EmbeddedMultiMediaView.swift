@@ -12,6 +12,7 @@ import CachedImage
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
+    @Default(.showOriginalURL) private var showOriginalURL
     
     let determinedType: String
     let mediaURL: PrivateURL
@@ -48,7 +49,7 @@ struct EmbeddedMultiMediaView: View {
                     .lineLimit(1)
                     .foregroundColor(.primary)
 
-              Text(Defaults[.showOriginalURL] ? mediaURL.originalURL : mediaURL.privateURL)
+              Text(showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
                     .font(.callout)
                     .foregroundColor(.secondary)
                     .lineLimit(2)
@@ -57,7 +58,7 @@ struct EmbeddedMultiMediaView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(6)
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(Color.gray.opacity(0.2)))
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor))
         .onTapGesture {
             isLoading = true
 

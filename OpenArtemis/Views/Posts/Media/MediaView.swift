@@ -54,7 +54,7 @@ struct MediaView: View {
                 
             case "text":
                 // we dont need to display anything.
-                EmptyView()
+                EmptyView().padding(-8) // make up for empty space padding
             default:
                 EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title)
             }

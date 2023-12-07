@@ -47,6 +47,7 @@ struct CommentView: View {
                 }
             }            
             .padding(.horizontal, 8)
+            .padding(.vertical, 4)
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
