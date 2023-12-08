@@ -14,7 +14,7 @@ struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     
     let determinedType: String
-    let mediaURL: PrivateURL
+    let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
     @State private var isLoading: Bool = false

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Comment: Equatable{
+struct Comment: Equatable, Codable, Hashable{
     let id: String
     let parentID: String?
     let author: String
@@ -72,4 +72,89 @@ class CommentUtils {
         let colorIndex = depth % colorPalette.count
         return colorPalette[colorIndex]
     }
+    
+    /// Converts a `SavedComment` entity to a triple containing the saved timestamp, a corresponding `Comment`, and the post link.
+    ///
+    /// - Parameter comment: The `SavedComment` entity to convert.
+    /// - Returns: A triple containing the saved timestamp, the corresponding `Comment`, and the post link.
+    func savedCommentToComment(_ comment: SavedComment) -> (Date?, Comment, String) {
+        return (
+            comment.savedTimestamp,
+            Comment(
+                id: comment.id ?? "",
+                parentID: comment.parentID,
+                author: comment.author ?? "",
+                score: comment.score ?? "",
+                time: comment.time ?? "",
+                body: comment.body ?? "",
+                depth: Int(comment.depth),
+                stickied: comment.stickied,
+                isCollapsed: comment.isCollapsed,
+                isRootCollapsed: comment.isRootCollapsed
+            ),
+            comment.postLink ?? ""
+        )
+    }
+
+    /// Toggles the saved status of a `Comment`.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` to toggle.
+    ///   - post: The associated `Post` of the comment.
+    ///   - savedComments: The fetched results containing saved comments.
+    func toggleSaved(comment: Comment, post: Post, savedComments: FetchedResults<SavedComment>) -> Bool{
+        let isCommentSaved = savedComments.contains { $0.id == comment.id }
+        
+        if isCommentSaved {
+            removeSavedComment(id: comment.id, savedComments: savedComments)
+            return false
+        } else {
+            saveComment(comment: comment, post: post)
+            return true
+        }
+    }
+
+    /// Saves a `Comment` entity.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` to save.
+    ///   - post: The associated `Post` of the comment.
+    private func saveComment(comment: Comment, post: Post) {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        let tempComment = SavedComment(context: managedObjectContext)
+        tempComment.id = comment.id
+        tempComment.body = comment.body
+        tempComment.depth = Int32(comment.depth)
+        tempComment.author = comment.author
+        tempComment.isCollapsed = comment.isRootCollapsed
+        tempComment.isRootCollapsed = comment.isRootCollapsed
+        tempComment.parentID = comment.parentID
+        tempComment.score = comment.score
+        tempComment.stickied = comment.stickied
+        tempComment.time = comment.time
+        tempComment.savedTimestamp = Date()
+        tempComment.postLink = post.commentsURL
+        
+        withAnimation {
+            PersistenceController.shared.save()
+        }
+    }
+
+    /// Removes a saved `Comment` entity.
+    ///
+    /// - Parameters:
+    ///   - id: The identifier of the `Comment` to remove.
+    ///   - savedComments: The fetched results containing saved comments.
+    private func removeSavedComment(id: String, savedComments: FetchedResults<SavedComment>) {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        let matchingComment = savedComments.filter { $0.id == id }
+        for comment in matchingComment {
+            managedObjectContext.delete(comment)
+        }
+        
+        withAnimation {
+            PersistenceController.shared.save()
+        }
+    }
+
 }
