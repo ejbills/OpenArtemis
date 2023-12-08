@@ -23,16 +23,18 @@ To contribute to OpenArtemis, follow these steps:
 When contributing to OpenArtemis, it's important to follow clean coding practices and provide meaningful comments to ensure code maintainability. Here's a generic guide to help you get started:
 
 1. **Branching:**
+   - Base all new features off of `main`.
    - Create a new branch for each feature or bug fix: `git checkout -b feature/your-feature-name`.
+   
 
-2. **Coding Standards:**
+3. **Coding Standards:**
    - Follow Swift coding conventions and style guidelines.
    - Aim for clear, concise, and expressive code.
 
-3. **Documentation:**
+4. **Documentation:**
    - Document your code using comments to explain complex logic or functionality.
 
-4. **Testing (optional):**
+5. **Testing (optional):**
    - Write unit tests for new features or changes.
    - Ensure existing tests pass before submitting a pull request.
 
