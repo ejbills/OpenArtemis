@@ -19,7 +19,7 @@ To contribute to OpenArtemis, follow these steps:
 2. Clone your forked repository to your local machine.
 3. Open the project in Xcode.
 
-### Xcode Contribution Guide
+### Contribution Guide
 When contributing to OpenArtemis, it's important to follow clean coding practices and provide meaningful comments to ensure code maintainability. Here's a generic guide to help you get started:
 
 1. **Branching:**
