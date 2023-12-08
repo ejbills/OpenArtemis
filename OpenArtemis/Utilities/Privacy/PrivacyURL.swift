@@ -8,7 +8,7 @@
 import Foundation
 import Defaults
 
-private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRemover? = nil) -> PrivateURL {
+private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRemover? = nil) -> Post.PrivateURL {
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     var privateURL: String = url
     var dirtyURL: String = url
@@ -51,11 +51,11 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
         privateURL = trackingParamRemover.cleanURL(URL(string: privateURL)!).absoluteString
     }
     
-    return (dirtyURL, privateURL)
+    return Post.PrivateURL(originalURL: dirtyURL, privateURL: privateURL)
 }
 
 extension String {
-    func privacyURL(trackingParamRemover: TrackingParamRemover? = nil) -> PrivateURL {
+    func privacyURL(trackingParamRemover: TrackingParamRemover? = nil) -> Post.PrivateURL {
         transformedURL(self,trackingParamRemover: trackingParamRemover)
     }
 }

@@ -18,6 +18,7 @@ struct SubredditFeedView: View {
     @State private var lastPostAfter: String = ""
     
     @State private var isLoading: Bool = false
+    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
     
     var body: some View {
         Group {
@@ -25,7 +26,8 @@ struct SubredditFeedView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
-                            PostFeedView(post: post)
+                            
+                            PostFeedView(post: post, savedPosts: savedPosts)
                                 .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {

@@ -48,6 +48,9 @@ struct GestureAction {
 
 
 struct GestureView: ViewModifier {
+    
+    private var dragDistanceToSecondaryAction: CGFloat = 150.0
+    
     // state
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition: CGFloat = .zero
@@ -117,10 +120,11 @@ struct GestureView: ViewModifier {
                     dragPosition = newDragState
                     
                     // update color and symbol. If crossed an edge, play a gentle haptic
-                    if dragPosition <= -1 * 100 && secondaryTrailingAction != nil {
+                    if dragPosition <= -dragDistanceToSecondaryAction && secondaryTrailingAction != nil {
                         dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
-
-                        if prevDragPosition > -1 * 100 && secondaryTrailingAction != nil {
+                        trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
+                        
+                        if prevDragPosition > -dragDistanceToSecondaryAction && secondaryTrailingAction != nil {
                             // crossed from short swipe -> long swipe
                             HapticManager.shared.mushyInfo()
                         }
@@ -131,7 +135,7 @@ struct GestureView: ViewModifier {
                         if prevDragPosition > -1 * 50 {
                             // crossed from no swipe -> short swipe
                             HapticManager.shared.gentleInfo()
-                        } else if prevDragPosition <= -1 * 100 && secondaryTrailingAction != nil {
+                        } else if prevDragPosition <= -dragDistanceToSecondaryAction && secondaryTrailingAction != nil {
                             // crossed from long swipe -> short swipe
                             HapticManager.shared.mushyInfo()
                         }
@@ -151,14 +155,14 @@ struct GestureView: ViewModifier {
                             // crossed from short swipe -> no swipe
                             HapticManager.shared.mushyInfo()
                         }
-                    } else if dragPosition < 100 {
+                    } else if dragPosition < dragDistanceToSecondaryAction {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
                         dragBackground = primaryLeadingAction?.color
 
                         if prevDragPosition < 50 {
                             // crossed from no swipe -> short swipe
                             HapticManager.shared.gentleInfo()
-                        } else if prevDragPosition >= 100 && secondaryLeadingAction != nil {
+                        } else if prevDragPosition >= dragDistanceToSecondaryAction && secondaryLeadingAction != nil {
                             // crossed from long swipe -> short swipe
                             HapticManager.shared.mushyInfo()
                         }
@@ -166,7 +170,7 @@ struct GestureView: ViewModifier {
                         leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
                         dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
 
-                        if prevDragPosition < 100 && secondaryLeadingAction != nil {
+                        if prevDragPosition < dragDistanceToSecondaryAction && secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
                             HapticManager.shared.firmerInfo()
                         }
@@ -213,7 +217,7 @@ struct GestureView: ViewModifier {
         }
         
         DispatchQueue.main.async {
-            if finalDragPosition < -1 * 100 {
+            if finalDragPosition < -dragDistanceToSecondaryAction {
                 Task(priority: .userInitiated) {
                     if secondaryTrailingAction != nil {
                         await secondaryTrailingAction?.action.performAction()
@@ -225,7 +229,7 @@ struct GestureView: ViewModifier {
                 Task(priority: .userInitiated) {
                     await primaryTrailingAction?.action.performAction()
                 }
-            } else if finalDragPosition > 100 {
+            } else if finalDragPosition > dragDistanceToSecondaryAction {
                 Task(priority: .userInitiated) {
                     if secondaryLeadingAction != nil {
                         await secondaryLeadingAction?.action.performAction()

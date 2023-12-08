@@ -22,14 +22,15 @@ struct PostPageView: View {
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
-    
+    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
+
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        PostFeedView(post: post)
-                                        
+                        PostFeedView(post: post, savedPosts: savedPosts)
                         if let postBody = postBody {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
@@ -93,7 +94,9 @@ struct PostPageView: View {
                                                 }
                                             }
                                         }),
-                                        secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {saveComment(comment: comment)}),
+                                        secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
+                                            CommentUtils().toggleSaved(comment: comment,post: post,savedComments: savedComments)
+                                        }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
                                             shareComment(comment: comment, post: post)
                                         }),
@@ -162,6 +165,7 @@ struct PostPageView: View {
                maxHeight: UIScreen.main.bounds.height) // prevents animated comment loading from twitching
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("\(comments.count) Comments")
         .onAppear {
             if comments.isEmpty {
                 scrapeComments(post.commentsURL)
