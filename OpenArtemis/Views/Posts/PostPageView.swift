@@ -30,7 +30,7 @@ struct PostPageView: View {
             ScrollViewReader { reader in
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        PostFeedView(post: post, savedPosts: savedPosts)
+                        PostFeedView(post: post)
                         if let postBody = postBody {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {

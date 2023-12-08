@@ -56,13 +56,11 @@ struct Post: Equatable, Hashable, Codable {
 
 
 class PostUtils {
-    
-    /// Converts a `SavedPost` entity to a tuple containing the saved timestamp and a corresponding `Post`.
-    ///
-    /// - Parameters:
-    ///   - post: The `SavedPost` entity to convert.
-    /// - Returns: A tuple containing the saved timestamp and the corresponding `Post`.
-    func savedPostToPost(_ post: SavedPost) -> (Date?, Post) {
+    static let shared = PostUtils()
+
+    private init() {}
+
+    func savedPostToPost(context: NSManagedObjectContext, _ post: SavedPost) -> (Date?, Post) {
         return (
             post.savedTimestamp,
             Post(
@@ -79,29 +77,21 @@ class PostUtils {
         )
     }
 
-    /// Toggles the saved status of a `Post`.
-    ///
-    /// - Parameters:
-    ///   - post: The `Post` to toggle.
-    ///   - savedPosts: The fetched results containing saved posts.
-    func toggleSaved(post: Post, savedPosts: FetchedResults<SavedPost>) -> Bool {
+    func toggleSaved(context: NSManagedObjectContext, post: Post) -> Bool {
+        let savedPosts = fetchSavedPosts(context: context)
         let isPostSaved = savedPosts.contains { $0.id == post.id }
         if isPostSaved {
-            removeSavedPost(id: post.id, savedPosts: savedPosts)
+            removeSavedPost(context: context, id: post.id)
             return false
         } else {
-            savePost(post: post)
+            savePost(context: context, post: post)
             return true
         }
     }
 
-    /// Saves a `Post` entity.
-    ///
-    /// - Parameter post: The `Post` to save.
-    private func savePost(post: Post) {
+    func savePost(context: NSManagedObjectContext, post: Post) {
         @Default(.redirectToPrivateSites) var privULR
-        let managedObjectContext = PersistenceController.shared.container.viewContext
-        let tempPost = SavedPost(context: managedObjectContext)
+        let tempPost = SavedPost(context: context)
         tempPost.author = post.author
         tempPost.subreddit = post.subreddit
         tempPost.commentsURL = post.commentsURL
@@ -114,28 +104,29 @@ class PostUtils {
         tempPost.savedTimestamp = Date()
 
         withAnimation {
-            PersistenceController.shared.save()
+            do {
+                try context.save()
+            } catch {
+                print("Error saving post: \(error)")
+            }
         }
     }
 
-    /// Removes a saved `Post` entity.
-    ///
-    /// - Parameters:
-    ///   - id: The identifier of the `Post` to remove.
-    ///   - savedPosts: The fetched results containing saved posts.
-    private func removeSavedPost(id: String, savedPosts: FetchedResults<SavedPost>) {
-        let managedObjectContext = PersistenceController.shared.container.viewContext
-        let matchingPost = savedPosts.filter { $0.id == id }
+    func removeSavedPost(context: NSManagedObjectContext, id: String) {
+        let matchingPost = fetchSavedPost(context: context, id: id)
         for post in matchingPost {
-            managedObjectContext.delete(post)
+            context.delete(post)
         }
 
         withAnimation {
-            PersistenceController.shared.save()
+            do {
+                try context.save()
+            } catch {
+                print("Error removing saved post: \(error)")
+            }
         }
     }
-    
-    
+
     func determinePostType(mediaURL: String) -> String {
         let mediaURL = mediaURL.lowercased()
         
@@ -151,6 +142,26 @@ class PostUtils {
             return "video"
         } else {
             return "article"
+        }
+    }
+
+    func fetchSavedPosts(context: NSManagedObjectContext) -> [SavedPost] {
+        do {
+            return try context.fetch(SavedPost.fetchRequest())
+        } catch {
+            print("Error fetching saved posts: \(error)")
+            return []
+        }
+    }
+
+    func fetchSavedPost(context: NSManagedObjectContext, id: String) -> [SavedPost] {
+        let request: NSFetchRequest<SavedPost> = SavedPost.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Error fetching saved post: \(error)")
+            return []
         }
     }
 }

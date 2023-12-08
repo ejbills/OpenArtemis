@@ -9,6 +9,8 @@ import SwiftUI
 import CoreData
 
 struct SavedView: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
     @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
     @State var mixedMediaLinks: [ItemTuple] = []
@@ -33,7 +35,7 @@ struct SavedView: View {
         mixedMediaLinks = []
         //map the posts and comments loaded from CoreData to the mixedMediaLinks Array
         let posts = savedPosts.map {
-            let post = PostUtils().savedPostToPost($0)
+            let post = PostUtils.shared.savedPostToPost(context: managedObjectContext, $0)
             return ItemTuple(date: post.0 ?? Date(),content: Either<Post, CommentWithPostLink>.first(post.1))
         }
         let comments = savedComments.map {
@@ -64,7 +66,7 @@ struct MixedContentView: View {
     var body: some View {
         switch content {
         case .first(let post):
-            PostFeedView(post: post, savedPosts: savedPosts)
+            PostFeedView(post: post)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
                 }

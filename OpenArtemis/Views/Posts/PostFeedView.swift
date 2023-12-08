@@ -10,12 +10,12 @@ import CoreData
 import Defaults
 
 struct PostFeedView: View {
-    //    @EnvironmentObject var coordinator: NavCoordinator
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     let post: Post
-    var savedPosts: FetchedResults<SavedPost>
     @State private var mediaSize: CGSize = .zero
     @State var isSaved: Bool = false
+    
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 8) {
@@ -30,16 +30,17 @@ struct PostFeedView: View {
             }
             .padding(8)
             .frame(maxWidth: .infinity)
-            
+            .background(Color(uiColor: UIColor.systemBackground))
+        }        
+        .onAppear{
+            isSaved = !(PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id).isEmpty)
         }
         .savedIndicator($isSaved, offset: (-8, 0))
-        .background(Color(uiColor: UIColor.systemBackground))
-        .onAppear{
-            isSaved = savedPosts.contains { $0.id == post.id }
-        }
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                isSaved = PostUtils().toggleSaved(post: post, savedPosts: savedPosts)
+                let temp = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                isSaved = temp
+                print(temp)
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),
@@ -47,7 +48,4 @@ struct PostFeedView: View {
         )
         
     }
-    
-    
-    
 }

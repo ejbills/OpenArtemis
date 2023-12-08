@@ -126,7 +126,10 @@ struct SubredditDrawerView: View {
             TextField("Subreddit name", text: $subredditName)
             
             Button("Save") {
-                saveToSubredditFavorites(name: subredditName)
+                withAnimation {
+                    SubredditUtils.shared.saveToSubredditFavorites(managedObjectContext: managedObjectContext, name: subredditName)
+                }
+                
                 visibleSubredditSections()
                 showSaveDialog = false
             }
@@ -163,28 +166,12 @@ struct SubredditDrawerView: View {
         }
     }
     
+    // manage favorites
     private func removeFromSubredditFavorites(subredditName: String) {
-        let matchingSubreddits = localFavorites.filter { $0.name == subredditName }
-
-        for subreddit in matchingSubreddits {
-            managedObjectContext.delete(subreddit)
+        withAnimation {
+            SubredditUtils.shared.removeFromSubredditFavorites(managedObjectContext: managedObjectContext, subredditName: subredditName)
         }
-
-        withAnimation(.snappy) {
-            PersistenceController.shared.save()
-        }
-    }
-    
-     func saveToSubredditFavorites(name: String) {
-        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-                            .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
-                            .replacingOccurrences(of: "^r/", with: "", options: .regularExpression)
-
-        let tempSubreddit = LocalSubreddit(context: managedObjectContext)
-        tempSubreddit.name = cleanedName
         
-        withAnimation(.snappy) {
-            PersistenceController.shared.save()
-        }
+        visibleSubredditSections()
     }
 }

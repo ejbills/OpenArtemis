@@ -26,8 +26,7 @@ struct SubredditFeedView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
-                            
-                            PostFeedView(post: post, savedPosts: savedPosts)
+                            PostFeedView(post: post)
                                 .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {

@@ -55,7 +55,7 @@ extension RedditScraper {
         let mediaURL = try postElement.attr("data-url")
         let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
         
-        let type = PostUtils().determinePostType(mediaURL: mediaURL)
+        let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
         
         var thumbnailURL: String? = nil
         
