@@ -1,4 +1,8 @@
 # OpenArtemis
+[![GitHub stars](https://img.shields.io/github/stars/ejbills/OpenArtemis.svg)](https://github.com/ejbills/OpenArtemis/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ejbills/OpenArtemis.svg)](https://github.com/ejbills/OpenArtemis/network)
+[![GitHub issues](https://img.shields.io/github/issues/ejbills/OpenArtemis.svg)](https://github.com/ejbills/OpenArtemis/issues)
+
 OpenArtemis is a privacy-focused, read-only web scraping Reddit client built with SwiftUI. It places a strong emphasis on transparency and open collaboration. This project is open-source, allowing developers to contribute, inspect, and improve the codebase together.
 
 ## Features
