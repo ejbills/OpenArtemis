@@ -60,36 +60,40 @@ struct EmbeddedMultiMediaView: View {
         .padding(6)
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor))
         .onTapGesture {
-            isLoading = true
-
-            if determinedType == "gallery" {
-              MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
-                    if let imageUrls = imageUrls {
-                        DispatchQueue.main.async {
-                            ImageViewerController(images: imageUrls, imageTitle: title).present()
-                        }
-                    } else {
-                        print("Failed to extract image URLs.")
-                    }
-                    
-                    isLoading = false
+            if !isLoading {
+                withAnimation {
+                    isLoading = true
                 }
-            } else if determinedType == "video" {
-              MediaUtils.videoMediaExtractor(videoURL: URL(string: mediaURL.privateURL)!) { videoURL in
-                    if let videoURL = videoURL {
-                        DispatchQueue.main.async {
-                            VideoPlayerViewController(videoURL: videoURL).play()
+                
+                if determinedType == "gallery" {
+                    MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
+                        if let imageUrls = imageUrls {
+                            DispatchQueue.main.async {
+                                ImageViewerController(images: imageUrls, imageTitle: title).present()
+                            }
+                        } else {
+                            print("Failed to extract image URLs.")
+                        }
+                        
+                        isLoading = false
+                    }
+                } else if determinedType == "video" {
+                    MediaUtils.videoMediaExtractor(videoURL: URL(string: mediaURL.privateURL)!) { videoURL in
+                        if let videoURL = videoURL {
+                            DispatchQueue.main.async {
+                                VideoPlayerViewController(videoURL: videoURL).play()
                                 
+                            }
+                        } else {
+                            print("Failed to extract video URL.")
                         }
-                    } else {
-                        print("Failed to extract video URL.")
+                        
+                        isLoading = false
                     }
-                    
+                } else {
+                    SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
                     isLoading = false
                 }
-            } else {
-                SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
-                isLoading = false
             }
         }
         .loadingOverlay(isLoading: isLoading)

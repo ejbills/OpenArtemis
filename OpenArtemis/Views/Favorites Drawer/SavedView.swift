@@ -58,10 +58,8 @@ struct MixedContentView: View {
     
     @EnvironmentObject var coordinator: NavCoordinator
     
-    
     @State var isLoadingCommentPost: Bool = false
     @State var isCommentSaved: Bool = false
-    
     
     var body: some View {
         switch content {
@@ -72,12 +70,11 @@ struct MixedContentView: View {
                 }
         case .second(let comment):
             CommentView(comment: comment.comment, numberOfChildren: 0)
-                .allowsHitTesting(!isLoadingCommentPost)
                 .savedIndicator($isCommentSaved, offset: (-8,-8))
                 .onAppear{
                     isCommentSaved = savedComments.contains { $0.id == comment.comment.id }
                 }
-                .loadingOverlay(isLoading: isLoadingCommentPost)
+                .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
                     let commentsURL = comment.postLink
                     RedditScraper.scrapePostFromCommentsURL(url: commentsURL, trackingParamRemover: nil) { result in
@@ -91,18 +88,23 @@ struct MixedContentView: View {
                     
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
-                    withAnimation{
-                        isLoadingCommentPost = true
-                    }
-                    let commentsURL = comment.postLink
-                    RedditScraper.scrapePostFromCommentsURL(url: commentsURL, trackingParamRemover: nil) { result in
-                        switch result {
-                        case .success(let post):
-                            coordinator.path.append(PostResponse(post: post))
-                            isLoadingCommentPost = false
-                        case .failure(let failure):
-                            isLoadingCommentPost = false
-                            print("Error: \(failure)")
+                    if !isLoadingCommentPost {
+                        withAnimation{
+                            isLoadingCommentPost = true
+                        }
+                        
+                        let commentsURL = comment.postLink
+                        RedditScraper.scrapePostFromCommentsURL(url: commentsURL, trackingParamRemover: nil) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case .success(let post):
+                                    coordinator.path.append(PostResponse(post: post))
+                                case .failure(let failure):
+                                    print("Error: \(failure)")
+                                }
+                                
+                                isLoadingCommentPost = false
+                            }
                         }
                     }
                 }

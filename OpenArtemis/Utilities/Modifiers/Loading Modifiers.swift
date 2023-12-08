@@ -9,14 +9,16 @@ import SwiftUI
 
 struct LoadingOverlay: ViewModifier {
     var isLoading: Bool
+    var radius: CGFloat
+        
     func body(content: Content) -> some View {
         ZStack {
             content
+                .allowsHitTesting(!isLoading)
             if isLoading {
                 ProgressView()
-                
                 Color.gray.opacity(0.45)
-                    .cornerRadius(6)
+                    .cornerRadius(radius)
             }
         }
     }
@@ -41,8 +43,8 @@ struct AnimatedLoadingModifier: ViewModifier {
 }
 
 extension View {
-    func loadingOverlay(isLoading: Bool) -> some View {
-        self.modifier(LoadingOverlay(isLoading: isLoading).animation(.snappy))
+    func loadingOverlay(isLoading: Bool, radius: CGFloat? = nil) -> some View {
+        self.modifier(LoadingOverlay(isLoading: isLoading, radius: radius ?? 6).animation(.snappy))
     }
     
     func animatedLoading() -> some View {
