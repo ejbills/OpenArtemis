@@ -32,7 +32,7 @@ When contributing to OpenArtemis, it's important to follow clean coding practice
 3. **Documentation:**
    - Document your code using comments to explain complex logic or functionality.
 
-4. **Testing:**
+4. **Testing (optional):**
    - Write unit tests for new features or changes.
    - Ensure existing tests pass before submitting a pull request.
 
