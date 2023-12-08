@@ -12,7 +12,7 @@ import LazyPager
 
 struct MediaView: View {
     let determinedType: String
-    let mediaURL: PrivateURL
+    let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
     

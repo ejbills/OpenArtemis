@@ -63,7 +63,6 @@ struct SubredditDrawerView: View {
                                     }
                                     .opacity(0)
                                 )
-                                .disabledView(disabled: true)
                         }
                         
                         ForEach(availableIndexArr, id: \.self) { letter in
