@@ -55,24 +55,7 @@ Implemented dark mode support for a better user experience during low-light cond
 - Updated SwiftUI views to dynamically adjust to light and dark modes.
 
 #### Screenshots:
-![Dark Mode](screenshots/dark_mode.png)
-
-### Code Example
-
-```swift
-// Example code snippet illustrating dark mode implementation
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Text("Welcome to OpenArtemis")
-                .foregroundColor(Color.primaryText)
-                .padding()
-        }
-        .background(Color.background)
-        .edgesIgnoringSafeArea(.all)
-    }
-}
-```
+{Direct link or embed of image in PR comments/body}
 
 ### License
 This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details.
