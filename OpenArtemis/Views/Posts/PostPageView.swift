@@ -44,7 +44,7 @@ struct PostPageView: View {
                                 Text(postBody)
                                     .font(.body)
                             }
-                            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                             .background(tagBgColor)
                             .cornerRadius(6)
                             .padding(.horizontal, 8)

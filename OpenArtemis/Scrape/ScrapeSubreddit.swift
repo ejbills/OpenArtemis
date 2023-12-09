@@ -9,37 +9,79 @@ import Foundation
 import SwiftSoup
 
 class RedditScraper {
-    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[Post], Error>) -> Void) {
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, 
+                                trackingParamRemover: TrackingParamRemover?,
+                                over18: Bool? = false,
+                                completion: @escaping (Result<[Post], Error>) -> Void) {
+        
         // Construct the URL for the Reddit website based on the subreddit
-        guard let url = URL(string: lastPostAfter != nil ?
-                            "\(baseRedditURL)/r/\(subreddit)/\(basePostCount)&after=\(lastPostAfter ?? "")" :
-                                "\(baseRedditURL)/r/\(subreddit)") else {
+        guard var urlComponents = URLComponents(string: "\(baseRedditURL)/r/\(subreddit)") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-                
+
+        // Add parameters to the URL
+        if let lastPostAfter = lastPostAfter {
+            urlComponents.queryItems = [URLQueryItem(name: "count", value: basePostCount), URLQueryItem(name: "after", value: lastPostAfter)]
+        } else {
+            urlComponents.queryItems = [URLQueryItem(name: "count", value: basePostCount)]
+        }
+
+        guard let url = urlComponents.url else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
         // Create a URLSession and make a data task to fetch the HTML content
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
+
             guard let data = data else {
                 completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
                 return
             }
-            
+
             do {
-                // Parse the HTML data into an array of Post objects
-                // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
-                let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
-                completion(.success(posts))
+                // Check if the URL has been redirected to an over18 page
+                if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest="), over18 ?? false {
+                    // If redirected, send a POST request to the over18 endpoint
+                    sendOver18Request(url: redirectURL, completion: { result in
+                        switch result {
+                        case .success:
+                            // If the POST request is successful, reload the original URL
+                            scrapeSubreddit(subreddit: subreddit, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover, completion: completion)
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    })
+                } else {
+                    // If not redirected, parse the HTML data into an array of Post objects
+                    let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
+                    completion(.success(posts))
+                }
             } catch {
                 completion(.failure(error))
             }
         }.resume()
     }
+
+    static func sendOver18Request(url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = "over18=yes".data(using: .utf8)
+
+        URLSession.shared.dataTask(with: request) { _, _, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }.resume()
+    }
+
     
     private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!

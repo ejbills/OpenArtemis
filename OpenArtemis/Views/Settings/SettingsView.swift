@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
+    @Default(.over18) var over18
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -63,6 +64,10 @@ struct SettingsView: View {
                 Toggle("Jump to Next Comment Button", isOn: $showJumpToNextCommentButton)
             }
             Section("Subreddits"){
+                Picker("Are you over 18 (Allow NSFW content)?", selection: $over18) {
+                    Text("No").tag(false)
+                    Text("Yes").tag(true)
+                }
                 Button{
                     exportedURL = SubredditIOManager().exportSubs(fileName: "artemis_subs.json", subreddits: localFavorites.compactMap { $0.name })
                     presentingFileMover = exportedURL != nil
@@ -154,7 +159,6 @@ struct SettingsView: View {
         }
         .toast(isPresented: $showToast, style: .popup, title: toastTitle,systemIcon: toastIcon, speed: 1.5, tapToDismiss: false, onAppear: {})
     }
-    
 }
 
 

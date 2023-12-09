@@ -16,6 +16,7 @@ extension Defaults.Keys {
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
+    static let over18 = Key<Bool>("over18", default: false)
     
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
 }
