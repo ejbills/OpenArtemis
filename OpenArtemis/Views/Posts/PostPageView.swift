@@ -25,6 +25,7 @@ struct PostPageView: View {
     @State var previousScrollTarget: String? = nil
     
     @State private var postLoaded: Bool = false
+    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
 
     var body: some View {
         GeometryReader{ proxy in
@@ -104,14 +105,17 @@ struct PostPageView: View {
                                             }
                                         }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
-                                            // sharecomment? - coming soon
+                                            isShareSheetPresented.toggle()
                                         }),
                                         secondaryTrailingAction: nil
                                     )
                                     .contextMenu(ContextMenu(menuItems: {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     }))
-
+                                    .sheet(isPresented: $isShareSheetPresented) {
+                                                // Share sheet content
+                                        ShareSheet(activityItems: [comment.directURL])
+                                    }
                                     DividerView(frameHeight: 1)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                 }

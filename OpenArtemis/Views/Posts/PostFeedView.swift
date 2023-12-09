@@ -16,6 +16,8 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
+    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
+
     
     var body: some View {
         Group {
@@ -42,12 +44,20 @@ struct PostFeedView: View {
         .savedIndicator(isSaved)
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                withAnimation{
+                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                }
             }),
             secondaryLeadingAction: nil,
-            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),
+            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {
+                isShareSheetPresented.toggle() // Show the share sheet when the primaryTrailingAction is triggered
+            }),
             secondaryTrailingAction: nil
         )
+        .sheet(isPresented: $isShareSheetPresented) {
+                    // Share sheet content
+                    ShareSheet(activityItems: [post.commentsURL])
+        }
         
     }
 }
