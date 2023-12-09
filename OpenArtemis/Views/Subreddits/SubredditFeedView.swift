@@ -18,6 +18,7 @@ struct SubredditFeedView: View {
     @State private var lastPostAfter: String = ""
     
     @State private var isLoading: Bool = false
+    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
     
     var body: some View {
         Group {
@@ -67,7 +68,7 @@ struct SubredditFeedView: View {
         RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let newPosts):
-                withAnimation(.snappy) {
+                withAnimation(.smooth) {
                     for post in newPosts {
                         // Check if the post ID is not in the set to avoid duplicates
                         if !postIDs.contains(post.id) {
@@ -90,7 +91,7 @@ struct SubredditFeedView: View {
     }
     
     private func clearFeedAndReload() {
-        withAnimation(.snappy) {
+        withAnimation(.smooth) {
             self.posts.removeAll()
             self.postIDs.removeAll()
             self.lastPostAfter = ""

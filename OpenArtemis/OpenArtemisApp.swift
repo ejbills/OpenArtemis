@@ -21,7 +21,7 @@ struct OpenArtemisApp: App {
     
     // this is the shared context controller for our CoreData module
     let persistenceController = PersistenceController.shared
-    
+        
     var body: some Scene {
         WindowGroup {
             TabView {

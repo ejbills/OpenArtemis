@@ -40,9 +40,6 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
         }
     }
     
-    
-    
-    
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {}
     
     func play() {
@@ -63,4 +60,3 @@ struct VideoPlayerViewController: UIViewControllerRepresentable {
         }
     }
 }
-

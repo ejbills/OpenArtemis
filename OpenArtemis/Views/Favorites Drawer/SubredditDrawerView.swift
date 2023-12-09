@@ -26,87 +26,88 @@ struct SubredditDrawerView: View {
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                ZStack {
-                    List {
-                        Section(header: Text("Defaults")) {
-                            DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
-                                .background(
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
-                                        EmptyView()
-                                    }
-                                        .opacity(0)
-                                )
-                                .disabledView(disabled: localFavorites.isEmpty)
-                                
-                            
-                            DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
-                                .background(
-                                    // highlights button on tap (cant be modifier or inside child view)
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                )
-                            
-                            DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
-                                .background(
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                )
-                            
-                            DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
-                                .background(
-                                    NavigationLink(value: SubredditFeedResponse(subredditName: "Saved")) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                )
-                                .disabledView(disabled: true)
-                        }
-                        
-                        ForEach(availableIndexArr, id: \.self) { letter in
-                            Section(header: Text(letter).id(letter)) {
-                                ForEach(localFavorites
-                                    .filter { subreddit in
-                                        if let subName = subreddit.name {
-                                            let firstCharacter = subName.first
-                                            let startsWithNumber = firstCharacter?.isNumber ?? false
-                                            return (startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)
-                                        }
-                                        
-                                        return false
-                                    }
-                                ) { subreddit in
-                                    SubredditRowView(
-                                        subreddit: subreddit,
-                                        editMode: editMode,
-                                        removeFromSubredditFavorites: {
-                                            removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                            visibleSubredditSections()
-                                        }
-                                    )
+                List {
+                    Section(header: Text("Defaults")) {
+                        DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
+                            .background(
+                                NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
+                                    EmptyView()
                                 }
+                                    .opacity(0)
+                            )
+                            .disabledView(disabled: localFavorites.isEmpty)
+                            
+                        
+                        DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
+                            .background(
+                                // highlights button on tap (cant be modifier or inside child view)
+                                NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
+                            )
+                        
+                        DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
+                            .background(
+                                NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
+                            )
+                        
+                        DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
+                            .background(
+                                NavigationLink(value: SubredditFeedResponse(subredditName: "Saved")) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
+                            )
+                    }
+                    
+                    ForEach(availableIndexArr, id: \.self) { letter in
+                        Section(header: Text(letter).id(letter)) {
+                            ForEach(localFavorites
+                                .filter { subreddit in
+                                    if let subName = subreddit.name {
+                                        let firstCharacter = subName.first
+                                        let startsWithNumber = firstCharacter?.isNumber ?? false
+                                        return (startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)
+                                    }
+                                    
+                                    return false
+                                }
+                            ) { subreddit in
+                                SubredditRowView(
+                                    subreddit: subreddit,
+                                    editMode: editMode,
+                                    removeFromSubredditFavorites: {
+                                        removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                        visibleSubredditSections()
+                                    }
+                                )
                             }
                         }
                     }
-                    .scrollIndicators(.hidden)
-                    .onAppear {
-                        visibleSubredditSections()
-                    }
-                    
-                    SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing, 4)
                 }
+                .scrollIndicators(.hidden)
+                .onAppear {
+                    visibleSubredditSections()
+                }
+                .overlay(
+                    HStack {
+                        Spacer()
+                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
+                            .padding(.trailing, 4)
+                    }
+                )
             }
         }
         .navigationTitle("Favorites")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button(action: {
-                    withAnimation(.snappy) {
+                    withAnimation(.smooth) {
                         editMode.toggle()
                     }
                 }) {
@@ -127,7 +128,10 @@ struct SubredditDrawerView: View {
             TextField("Subreddit name", text: $subredditName)
             
             Button("Save") {
-                saveToSubredditFavorites(name: subredditName)
+                withAnimation {
+                    SubredditUtils.shared.saveToSubredditFavorites(managedObjectContext: managedObjectContext, name: subredditName)
+                }
+                
                 visibleSubredditSections()
                 showSaveDialog = false
             }
@@ -164,28 +168,12 @@ struct SubredditDrawerView: View {
         }
     }
     
+    // manage favorites
     private func removeFromSubredditFavorites(subredditName: String) {
-        let matchingSubreddits = localFavorites.filter { $0.name == subredditName }
-
-        for subreddit in matchingSubreddits {
-            managedObjectContext.delete(subreddit)
+        withAnimation {
+            SubredditUtils.shared.removeFromSubredditFavorites(managedObjectContext: managedObjectContext, subredditName: subredditName)
         }
-
-        withAnimation(.snappy) {
-            PersistenceController.shared.save()
-        }
-    }
-    
-     func saveToSubredditFavorites(name: String) {
-        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-                            .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
-                            .replacingOccurrences(of: "^r/", with: "", options: .regularExpression)
-
-        let tempSubreddit = LocalSubreddit(context: managedObjectContext)
-        tempSubreddit.name = cleanedName
         
-        withAnimation(.snappy) {
-            PersistenceController.shared.save()
-        }
+        visibleSubredditSections()
     }
 }

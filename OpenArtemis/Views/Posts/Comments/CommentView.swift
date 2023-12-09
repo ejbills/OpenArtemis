@@ -15,7 +15,7 @@ struct CommentView: View {
             HStack(spacing: 4) {
                 if comment.depth > 0 {
                     Rectangle()
-                        .fill(CommentUtils().commentIndentationColor(forDepth: comment.depth))
+                        .fill(CommentUtils.shared.commentIndentationColor(forDepth: comment.depth))
                         .frame(width: 2)
                 }
                 

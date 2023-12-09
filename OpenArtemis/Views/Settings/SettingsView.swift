@@ -147,6 +147,7 @@ struct SettingsView: View {
         }
         .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
         .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear{
             currentAppIcon = AppIconManager().getCurrentIconName()
             currentBlockedAmount = trackingParamRemover.trackinglistLength
