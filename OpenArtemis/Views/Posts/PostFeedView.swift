@@ -14,7 +14,8 @@ struct PostFeedView: View {
     
     let post: Post
     @State private var mediaSize: CGSize = .zero
-    @State var isSaved: Bool = false
+    @State private var isSaved: Bool = false
+    @State private var hasAppeared: Bool = false
     
     var body: some View {
         Group {
@@ -32,15 +33,16 @@ struct PostFeedView: View {
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: UIColor.systemBackground))
         }        
-        .onAppear{
-            isSaved = !(PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id).isEmpty)
+        .onAppear {
+            if !hasAppeared {
+                isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil
+                hasAppeared.toggle()
+            }
         }
-        .savedIndicator($isSaved, offset: (-8, 0))
+        .savedIndicator(isSaved)
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                let temp = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
-                isSaved = temp
-                print(temp)
+                isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),

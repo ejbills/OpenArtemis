@@ -40,10 +40,14 @@ struct MediaView: View {
                             }
                     },
                     placeholder: {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .frame(width: mediaSize.width != 0 ? mediaSize.width : roughWidth, height: mediaSize.height != 0 ? mediaSize.height : roughHeight)
-                            .animatedLoading()
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .frame(width: mediaSize.width != 0 ? mediaSize.width : roughWidth, height: mediaSize.height != 0 ? mediaSize.height : roughHeight)
+                                .animatedLoading()
+                            Spacer()
+                        }
                     }
                 )
                 .aspectRatio(contentMode: .fit)

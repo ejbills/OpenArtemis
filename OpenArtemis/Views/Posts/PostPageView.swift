@@ -9,21 +9,22 @@ import SwiftUI
 import Defaults
 
 struct PostPageView: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
   
-    @State private var commentUtils = CommentUtils()
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
+    @State private var perViewSavedComments: Set<String> = []
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
+    
+    @State private var postLoaded: Bool = false
 
     var body: some View {
         GeometryReader{ proxy in
@@ -58,11 +59,10 @@ struct PostPageView: View {
                                     Group {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
-                                                    commentUtils.getNumberOfDescendants(for: comment, in: comments) :
-                                                        0)
-                                        
+                                                        CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
+
                                             // next comment tracker
-                                            .if(rootComments.firstIndex(of: comment) != nil){ view in
+                                            .if(rootComments.firstIndex(of: comment) != nil) { view in
                                                 view.anchorPreference(
                                                     key: CommentUtils.AnchorsKey.self,
                                                     value: .center
@@ -73,20 +73,20 @@ struct PostPageView: View {
                                             .padding(.vertical, 4)
                                     }
                                     .background(Color(uiColor: UIColor.systemBackground))
+                                    .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
-                                        withAnimation(.snappy(duration: 0.25)) {
+                                        withAnimation(.smooth(duration: 0.25)) {
                                             comments[index].isRootCollapsed.toggle()
                                             collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                         }
                                     }
                                     .addGestureActions(
                                         primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
-                                            withAnimation(.snappy(duration: 0.25)) {
+                                            withAnimation(.smooth(duration: 0.25)) {
                                                 if comment.parentID == nil {
                                                     comments[index].isRootCollapsed.toggle()
                                                     collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                                 } else {
-                                                    //Find the root comment by traversing up the tree
                                                     if let rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
                                                         comments[rootIndex].isRootCollapsed = true
                                                         collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
@@ -95,17 +95,23 @@ struct PostPageView: View {
                                             }
                                         }),
                                         secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                                            CommentUtils().toggleSaved(comment: comment,post: post,savedComments: savedComments)
+                                            let commentSaveBool = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+                                            
+                                            if commentSaveBool {
+                                                perViewSavedComments.insert(comment.id)
+                                            } else {
+                                                perViewSavedComments.remove(comment.id)
+                                            }
                                         }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
-                                            shareComment(comment: comment, post: post)
+                                            // sharecomment? - coming soon
                                         }),
                                         secondaryTrailingAction: nil
                                     )
                                     .contextMenu(ContextMenu(menuItems: {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     }))
-                                    
+
                                     DividerView(frameHeight: 1)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                 }
@@ -115,48 +121,16 @@ struct PostPageView: View {
                         }
                     }                    
                 }
+                .commentSkipper(
+                    showJumpToNextCommentButton: $showJumpToNextCommentButton,
+                    topVisibleCommentId: $topVisibleCommentId,
+                    previousScrollTarget: $previousScrollTarget,
+                    rootComments: rootComments,
+                    reader: reader
+                )
                 .onPreferenceChange(CommentUtils.AnchorsKey.self) { anchors in
                     DispatchQueue.main.async {
-                        topVisibleCommentId = commentUtils.topCommentRow(of: anchors, in: proxy)
-                    }
-                }
-                .overlay {
-                    if showJumpToNextCommentButton {
-                        HStack {
-                            Spacer()
-                            VStack {
-                                Spacer()
-                                Button {
-                                    withAnimation{
-                                        if topVisibleCommentId == nil, let id = rootComments.first?.id {
-                                            reader.scrollTo(id, anchor: .top)
-                                            topVisibleCommentId = id
-                                            return
-                                        }
-                                        if let topVisibleCommentId {
-                                            let topVisibleCommentIndex = rootComments.map {$0.id}.firstIndex(of: topVisibleCommentId) ?? 0
-                                            
-                                            if topVisibleCommentId == previousScrollTarget {
-                                                reader.scrollTo(rootComments[topVisibleCommentIndex ].id, anchor: .top)
-                                                previousScrollTarget = rootComments[topVisibleCommentIndex + 1].id
-                                            } else {
-                                                reader.scrollTo(rootComments[topVisibleCommentIndex + 1].id, anchor: .top)
-                                                previousScrollTarget = topVisibleCommentId
-                                            }
-                                        }
-                                    }
-                                } label: {
-                                    Label("Jump to next Comment", systemImage: "chevron.down")
-                                        .labelStyle(.iconOnly)
-                                }
-                                .padding()
-                                .background{
-                                    Circle()
-                                        .foregroundStyle(.thinMaterial)
-                                }
-                            }
-                            .padding()
-                        }
+                        topVisibleCommentId = CommentUtils.shared.topCommentRow(of: anchors, in: proxy)
                     }
                 }
             }
@@ -170,17 +144,18 @@ struct PostPageView: View {
             if comments.isEmpty {
                 scrapeComments(post.commentsURL)
             }
+            
+            if !postLoaded {
+                let savedComments = CommentUtils.shared.fetchSavedComments(context: managedObjectContext)
+                for savedComment in savedComments {
+                    if let commentID = savedComment.id {
+                        perViewSavedComments.insert(commentID)
+                    }
+                }
+                
+                postLoaded.toggle()
+            }
         }
-    }
-    
-
-    
-    private func saveComment(comment: Comment) {
-        
-    }
-    
-    private func shareComment(comment: Comment, post: Post) {
-        
     }
     
     private func scrapeComments(_ commentsURL: String) {
@@ -189,7 +164,7 @@ struct PostPageView: View {
         RedditScraper.scrapeComments(commentURL: commentsURL) { result in
             switch result {
             case .success(let result):
-                withAnimation(.snappy) {
+                withAnimation(.smooth) {
                     for comment in result.comments {
                         self.comments.append(comment)
                         

@@ -21,7 +21,7 @@ class SubredditUtils: ObservableObject {
         let tempSubreddit = LocalSubreddit(context: managedObjectContext)
         tempSubreddit.name = cleanedName
 
-        withAnimation(.snappy) {
+        withAnimation(.smooth) {
             PersistenceController.shared.save()
         }
     }
@@ -33,7 +33,7 @@ class SubredditUtils: ObservableObject {
             managedObjectContext.delete(subreddit)
         }
 
-        withAnimation(.snappy) {
+        withAnimation(.smooth) {
             PersistenceController.shared.save()
         }
     }

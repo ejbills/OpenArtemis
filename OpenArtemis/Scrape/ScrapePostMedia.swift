@@ -81,8 +81,10 @@ extension RedditScraper {
             let stickiedElement = try commentElement.select("span.stickied-tagline").first()
             let stickied = stickiedElement != nil
             
+            let directURL = try commentElement.select("a.bylink").attr("href")
+            
             let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body,
-                                  depth: depth, stickied: stickied, isCollapsed: false, isRootCollapsed: stickied)
+                                  depth: depth, stickied: stickied, directURL: directURL, isCollapsed: false, isRootCollapsed: stickied)
             comments.append(comment)
             
             // Check for child comments

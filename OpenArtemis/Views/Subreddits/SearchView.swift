@@ -26,7 +26,6 @@ struct SearchView: View {
                     .foregroundColor(.white)
                     .background(Color.artemisAccent)
                     .cornerRadius(10)
-                    .transition(.opacity.animation(.linear))
             }
             .padding()
             

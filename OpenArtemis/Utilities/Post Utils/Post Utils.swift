@@ -8,7 +8,6 @@
 import Foundation
 import CoreData
 import Defaults
-import SwiftUI
 
 struct Post: Equatable, Hashable, Codable {
     let id: String
@@ -56,77 +55,18 @@ struct Post: Equatable, Hashable, Codable {
 
 
 class PostUtils {
+    // Singleton instance
     static let shared = PostUtils()
 
+    // Private initializer to enforce singleton pattern
     private init() {}
-
-    func savedPostToPost(context: NSManagedObjectContext, _ post: SavedPost) -> (Date?, Post) {
-        return (
-            post.savedTimestamp,
-            Post(
-                id: post.id ?? "",
-                subreddit: post.subreddit ?? "",
-                title: post.title ?? "",
-                author: post.author ?? "",
-                votes: post.votes ?? "",
-                mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
-                commentsURL: post.commentsURL ?? "",
-                type: post.type ?? "",
-                thumbnailURL: post.thumbnailURL ?? ""
-            )
-        )
-    }
-
-    func toggleSaved(context: NSManagedObjectContext, post: Post) -> Bool {
-        let savedPosts = fetchSavedPosts(context: context)
-        let isPostSaved = savedPosts.contains { $0.id == post.id }
-        if isPostSaved {
-            removeSavedPost(context: context, id: post.id)
-            return false
-        } else {
-            savePost(context: context, post: post)
-            return true
-        }
-    }
-
-    func savePost(context: NSManagedObjectContext, post: Post) {
-        @Default(.redirectToPrivateSites) var privULR
-        let tempPost = SavedPost(context: context)
-        tempPost.author = post.author
-        tempPost.subreddit = post.subreddit
-        tempPost.commentsURL = post.commentsURL
-        tempPost.id = post.id
-        tempPost.mediaURL = privULR ? post.mediaURL.privateURL : post.mediaURL.originalURL
-        tempPost.thumbnailURL = post.thumbnailURL
-        tempPost.title = post.title
-        tempPost.type = post.type
-        tempPost.votes = post.votes
-        tempPost.savedTimestamp = Date()
-
-        withAnimation {
-            do {
-                try context.save()
-            } catch {
-                print("Error saving post: \(error)")
-            }
-        }
-    }
-
-    func removeSavedPost(context: NSManagedObjectContext, id: String) {
-        let matchingPost = fetchSavedPost(context: context, id: id)
-        for post in matchingPost {
-            context.delete(post)
-        }
-
-        withAnimation {
-            do {
-                try context.save()
-            } catch {
-                print("Error removing saved post: \(error)")
-            }
-        }
-    }
-
+    
+    // General utilities
+    
+    /// Determines the type of a post based on its media URL.
+    ///
+    /// - Parameter mediaURL: The media URL of the post.
+    /// - Returns: A string representing the type of the post (e.g., "text", "image", "video").
     func determinePostType(mediaURL: String) -> String {
         let mediaURL = mediaURL.lowercased()
         
@@ -145,6 +85,97 @@ class PostUtils {
         }
     }
 
+    // Core Data integration
+    
+    /// Converts a `SavedPost` entity to a tuple containing the saved timestamp and a corresponding `Post`.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - post: The `SavedPost` entity to convert.
+    /// - Returns: A tuple containing the saved timestamp and the corresponding `Post`.
+    func savedPostToPost(context: NSManagedObjectContext, post: SavedPost) -> (Date?, Post) {
+        return (
+            post.savedTimestamp,
+            Post(
+                id: post.id ?? "",
+                subreddit: post.subreddit ?? "",
+                title: post.title ?? "",
+                author: post.author ?? "",
+                votes: post.votes ?? "",
+                mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
+                commentsURL: post.commentsURL ?? "",
+                type: post.type ?? "",
+                thumbnailURL: post.thumbnailURL ?? ""
+            )
+        )
+    }
+
+    /// Saves a `Post` entity to Core Data.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - post: The `Post` to save.
+    func savePost(context: NSManagedObjectContext, post: Post) {
+        @Default(.redirectToPrivateSites) var privULR
+        let tempPost = SavedPost(context: context)
+        tempPost.author = post.author
+        tempPost.subreddit = post.subreddit
+        tempPost.commentsURL = post.commentsURL
+        tempPost.id = post.id
+        tempPost.mediaURL = privULR ? post.mediaURL.privateURL : post.mediaURL.originalURL
+        tempPost.thumbnailURL = post.thumbnailURL
+        tempPost.title = post.title
+        tempPost.type = post.type
+        tempPost.votes = post.votes
+        tempPost.savedTimestamp = Date()
+
+        DispatchQueue.main.async {
+            do {
+                try context.save()
+            } catch {
+                print("Error removing saved post: \(error)")
+            }
+        }
+    }
+    
+    /// Toggles the saved status of a `Post` entity.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - post: The `Post` to toggle.
+    /// - Returns: A boolean indicating whether the post is now saved.
+    func toggleSaved(context: NSManagedObjectContext, post: Post) -> Bool {
+        if let savedPost = fetchSavedPost(context: context, id: post.id) {
+            removeSavedPost(context: context, savedPost: savedPost)
+            return false
+        } else {
+            savePost(context: context, post: post)
+            return true
+        }
+    }
+
+    /// Removes a saved `Post` entity from Core Data.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - savedPost: The `SavedPost` entity to remove.
+    func removeSavedPost(context: NSManagedObjectContext, savedPost: SavedPost) {
+        context.delete(savedPost)
+        
+        DispatchQueue.main.async {
+            do {
+                try context.save()
+            } catch {
+                print("Error removing saved post: \(error)")
+            }
+        }
+    }
+
+
+    /// Fetches all saved `Post` entities from Core Data.
+    ///
+    /// - Parameter context: The Core Data managed object context.
+    /// - Returns: An array of `SavedPost` entities.
     func fetchSavedPosts(context: NSManagedObjectContext) -> [SavedPost] {
         do {
             return try context.fetch(SavedPost.fetchRequest())
@@ -154,14 +185,24 @@ class PostUtils {
         }
     }
 
-    func fetchSavedPost(context: NSManagedObjectContext, id: String) -> [SavedPost] {
+    /// Fetches a specific saved `Post` entity from Core Data based on its identifier.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - id: The identifier of the post to fetch.
+    /// - Returns: The fetched `SavedPost` entity or nil if not found.
+    func fetchSavedPost(context: NSManagedObjectContext, id: String) -> SavedPost? {
         let request: NSFetchRequest<SavedPost> = SavedPost.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id)
+        
+        var savedPost: SavedPost? = nil
+        
         do {
-            return try context.fetch(request)
+            savedPost = try context.fetch(request).first
         } catch {
             print("Error fetching saved post: \(error)")
-            return []
         }
+        
+        return savedPost
     }
 }

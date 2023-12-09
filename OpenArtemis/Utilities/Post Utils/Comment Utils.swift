@@ -6,35 +6,45 @@
 //
 
 import Foundation
+import CoreData
+import Defaults
 import SwiftUI
 
-struct Comment: Equatable, Codable, Hashable{
+struct Comment: Equatable, Codable, Hashable {
     let id: String
     let parentID: String?
     let author: String
-    let score: String // since comments show score as "X votes" rather than just the int
+    let score: String
     let time: String
     let body: String
     let depth: Int
     let stickied: Bool
+    let directURL: String
     var isCollapsed: Bool
     var isRootCollapsed: Bool
 }
 
+/// Utility class for handling comments.
 class CommentUtils {
-    // comment section helpers
+    /// Shared instance of CommentUtils.
+    static let shared = CommentUtils()
+
+    /// Private initializer to enforce singleton pattern.
+    private init() {}
+
+    // MARK: - Comment Section Helpers
+
+    /// Preference key to track the anchor points of comments.
     struct AnchorsKey: PreferenceKey {
-        // Each key is a comment id. The corresponding value is the
-        // .center anchor of that row.
         typealias Value = [String: Anchor<CGPoint>]
-        
         static var defaultValue: Value { [:] }
-        
+
         static func reduce(value: inout Value, nextValue: () -> Value) {
             value.merge(nextValue()) { $1 }
         }
     }
-    
+
+    /// Finds the top comment row based on anchors and geometry proxy.
     func topCommentRow(of anchors: CommentUtils.AnchorsKey.Value, in proxy: GeometryProxy) -> String? {
         var yBest = CGFloat.infinity
         var answer: String?
@@ -46,38 +56,38 @@ class CommentUtils {
         }
         return answer
     }
-    
+
+    // MARK: - Comment Hierarchy and Count
+
+    /// Gets the number of descendants for a given comment.
     func getNumberOfDescendants(for comment: Comment, in comments: [Comment]) -> Int {
         return countDescendants(for: comment, in: comments)
     }
-    
+
+    /// Recursively counts descendants for a given comment.
     func countDescendants(for comment: Comment, in comments: [Comment]) -> Int {
-        // Filter comments that have the current comment as their parent
         let children = comments.filter { $0.parentID == comment.id }
-        
-        // Initialize the count with the number of immediate children
         var descendantCount = children.count
-        
-        // Recursively count descendants for each child
+
         for child in children {
             descendantCount += countDescendants(for: child, in: comments)
         }
-        
-        // Return the total count of descendants
+
         return descendantCount
     }
-    
+
+    // MARK: - Comment Styling
+
+    /// Determines the color for comment indentation based on depth.
     func commentIndentationColor(forDepth depth: Int) -> Color {
-        // Choose a color based on depth
         let colorIndex = depth % colorPalette.count
         return colorPalette[colorIndex]
     }
-    
-    /// Converts a `SavedComment` entity to a triple containing the saved timestamp, a corresponding `Comment`, and the post link.
-    ///
-    /// - Parameter comment: The `SavedComment` entity to convert.
-    /// - Returns: A triple containing the saved timestamp, the corresponding `Comment`, and the post link.
-    func savedCommentToComment(_ comment: SavedComment) -> (Date?, Comment, String) {
+
+    // MARK: - Saved Comment Handling
+
+    /// Converts a `SavedComment` entity to a tuple containing the saved timestamp and the corresponding `Comment`.
+    func savedCommentToComment(_ comment: SavedComment) -> (Date?, Comment) {
         return (
             comment.savedTimestamp,
             Comment(
@@ -89,39 +99,27 @@ class CommentUtils {
                 body: comment.body ?? "",
                 depth: Int(comment.depth),
                 stickied: comment.stickied,
+                directURL: comment.directURL ?? "",
                 isCollapsed: comment.isCollapsed,
                 isRootCollapsed: comment.isRootCollapsed
-            ),
-            comment.postLink ?? ""
+            )
         )
     }
 
     /// Toggles the saved status of a `Comment`.
-    ///
-    /// - Parameters:
-    ///   - comment: The `Comment` to toggle.
-    ///   - post: The associated `Post` of the comment.
-    ///   - savedComments: The fetched results containing saved comments.
-    func toggleSaved(comment: Comment, post: Post, savedComments: FetchedResults<SavedComment>) -> Bool{
-        let isCommentSaved = savedComments.contains { $0.id == comment.id }
-        
-        if isCommentSaved {
-            removeSavedComment(id: comment.id, savedComments: savedComments)
+    func toggleSaved(context: NSManagedObjectContext, comment: Comment) -> Bool {
+        if let savedComment = fetchSavedComment(context: context, id: comment.id) {
+            removeSavedComment(context: context, savedComment: savedComment)
             return false
         } else {
-            saveComment(comment: comment, post: post)
+            saveComment(context: context, comment: comment)
             return true
         }
     }
 
     /// Saves a `Comment` entity.
-    ///
-    /// - Parameters:
-    ///   - comment: The `Comment` to save.
-    ///   - post: The associated `Post` of the comment.
-    private func saveComment(comment: Comment, post: Post) {
-        let managedObjectContext = PersistenceController.shared.container.viewContext
-        let tempComment = SavedComment(context: managedObjectContext)
+    func saveComment(context: NSManagedObjectContext, comment: Comment) {
+        let tempComment = SavedComment(context: context)
         tempComment.id = comment.id
         tempComment.body = comment.body
         tempComment.depth = Int32(comment.depth)
@@ -131,30 +129,52 @@ class CommentUtils {
         tempComment.parentID = comment.parentID
         tempComment.score = comment.score
         tempComment.stickied = comment.stickied
+        tempComment.directURL = comment.directURL
         tempComment.time = comment.time
         tempComment.savedTimestamp = Date()
-        tempComment.postLink = post.commentsURL
-        
-        withAnimation {
-            PersistenceController.shared.save()
+
+        DispatchQueue.main.async {
+            do {
+                try context.save()
+            } catch {
+                print("Error removing saved post: \(error)")
+            }
         }
     }
 
     /// Removes a saved `Comment` entity.
-    ///
-    /// - Parameters:
-    ///   - id: The identifier of the `Comment` to remove.
-    ///   - savedComments: The fetched results containing saved comments.
-    private func removeSavedComment(id: String, savedComments: FetchedResults<SavedComment>) {
-        let managedObjectContext = PersistenceController.shared.container.viewContext
-        let matchingComment = savedComments.filter { $0.id == id }
-        for comment in matchingComment {
-            managedObjectContext.delete(comment)
-        }
-        
-        withAnimation {
-            PersistenceController.shared.save()
+    func removeSavedComment(context: NSManagedObjectContext, savedComment: SavedComment) {
+        context.delete(savedComment)
+
+        DispatchQueue.main.async {
+            do {
+                try context.save()
+            } catch {
+                print("Error removing saved post: \(error)")
+            }
         }
     }
 
+    /// Fetches all saved comments from the given context.
+    func fetchSavedComments(context: NSManagedObjectContext) -> [SavedComment] {
+        do {
+            return try context.fetch(SavedComment.fetchRequest())
+        } catch {
+            print("Error fetching saved comments: \(error)")
+            return []
+        }
+    }
+
+    /// Fetches a saved comment by its ID from the given context.
+    func fetchSavedComment(context: NSManagedObjectContext, id: String) -> SavedComment? {
+        let request: NSFetchRequest<SavedComment> = SavedComment.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Error fetching saved comment: \(error)")
+            return nil
+        }
+    }
 }
