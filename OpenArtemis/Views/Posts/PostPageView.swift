@@ -88,6 +88,7 @@ struct PostPageView: View {
                                                     collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                                 } else {
                                                     if let rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
+                                                        reader.scrollTo(comments[rootIndex].id)
                                                         comments[rootIndex].isRootCollapsed = true
                                                         collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
                                                     }
