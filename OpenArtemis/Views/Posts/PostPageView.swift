@@ -60,14 +60,6 @@ struct PostPageView: View {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
                                                     CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
-                                        
-                                        // next comment tracker
-                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
-                                            view.anchorPreference(
-                                                key: CommentUtils.AnchorsKey.self,
-                                                value: .center
-                                            ) { [comment.id: $0] }
-                                        }
                                         .frame(maxWidth: .infinity)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                         .padding(.vertical, 4)
@@ -114,6 +106,13 @@ struct PostPageView: View {
                                     }))
                                     DividerView(frameHeight: 1)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
+                                        // next comment tracker
+                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
+                                            view.anchorPreference(
+                                                key: CommentUtils.AnchorsKey.self,
+                                                value: .center
+                                            ) { [comment.id: $0] }
+                                        }
                                 }
                             }
                         } else {
