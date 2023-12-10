@@ -13,7 +13,7 @@ struct PostPageView: View {
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
-  
+    
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
     @State private var perViewSavedComments: Set<String> = []
@@ -25,8 +25,8 @@ struct PostPageView: View {
     @State var previousScrollTarget: String? = nil
     
     @State private var postLoaded: Bool = false
-    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
-
+    @State private var isShareSheetPresented: Bool = false
+    
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
@@ -51,7 +51,7 @@ struct PostPageView: View {
                             .padding(.horizontal, 8)
                             .padding(.bottom, 8)
                         }
-
+                        
                         DividerView(frameHeight: 10)
                         
                         if !comments.isEmpty {
@@ -60,18 +60,18 @@ struct PostPageView: View {
                                     Group {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
-                                                        CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
-
-                                            // next comment tracker
-                                            .if(rootComments.firstIndex(of: comment) != nil) { view in
-                                                view.anchorPreference(
-                                                    key: CommentUtils.AnchorsKey.self,
-                                                    value: .center
-                                                ) { [comment.id: $0] }
-                                            }
-                                            .frame(maxWidth: .infinity)
-                                            .padding(.leading, CGFloat(comment.depth) * 10)
-                                            .padding(.vertical, 4)
+                                                    CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
+                                        
+                                        // next comment tracker
+                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
+                                            view.anchorPreference(
+                                                key: CommentUtils.AnchorsKey.self,
+                                                value: .center
+                                            ) { [comment.id: $0] }
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.leading, CGFloat(comment.depth) * 10)
+                                        .padding(.vertical, 4)
                                     }
                                     .background(Color(uiColor: UIColor.systemBackground))
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
@@ -113,7 +113,6 @@ struct PostPageView: View {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     }))
                                     .sheet(isPresented: $isShareSheetPresented) {
-                                                // Share sheet content
                                         ShareSheet(activityItems: [comment.directURL])
                                     }
                                     DividerView(frameHeight: 1)
@@ -123,7 +122,7 @@ struct PostPageView: View {
                         } else {
                             LoadingAnimation(loadingText: "Loading comments...")
                         }
-                    }                    
+                    }
                 }
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,
@@ -189,7 +188,7 @@ struct PostPageView: View {
         }
         
     }
-        
+    
     private func collapseChildren(parentCommentID: String, rootCollapsedStatus: Bool) {
         // Find indices of comments that match the parentCommentID
         let matchingIndices = self.comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }

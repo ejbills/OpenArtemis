@@ -16,8 +16,8 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
-    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
-
+    @State private var isShareSheetPresented: Bool = false
+    
     
     var body: some View {
         Group {
@@ -50,13 +50,12 @@ struct PostFeedView: View {
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {
-                isShareSheetPresented.toggle() // Show the share sheet when the primaryTrailingAction is triggered
+                isShareSheetPresented.toggle()
             }),
             secondaryTrailingAction: nil
         )
         .sheet(isPresented: $isShareSheetPresented) {
-                    // Share sheet content
-                    ShareSheet(activityItems: [post.commentsURL])
+            ShareSheet(activityItems: [post.commentsURL])
         }
         
     }

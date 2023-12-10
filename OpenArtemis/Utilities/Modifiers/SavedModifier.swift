@@ -25,7 +25,7 @@ struct Saved: ViewModifier {
                             Spacer()
                         }
                     }
-                    .transition(.slide) // Add a transition
+                    .transition(.slide) 
                     .frame(maxWidth: .infinity)
                 : nil
             }

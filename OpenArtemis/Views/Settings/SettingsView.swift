@@ -11,18 +11,13 @@ import Defaults
 struct SettingsView: View {
     @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
-    @Default(.showOriginalURL) var showOriginalURL
-    @Default(.redirectToPrivateSites) var redirectToPrivateSites
-    @Default(.removeTrackingParams) var removeTrackingParams
+
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
-    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
     
     @State var currentAppIcon: String = "AppIcon"
-    @State var currentBlockedAmount: Int = 0
-    @State var showingSuccessfullUpdateAlert: Bool = false
     
     @State var showingImportDalog: Bool = false
     @State var showingURLImportSheet: Bool = false
@@ -111,38 +106,7 @@ struct SettingsView: View {
                 })
             }
             
-            Section{
-                Toggle("Redirect to Private Websites", isOn: $redirectToPrivateSites)
-                Toggle("Display Original URL", isOn: $showOriginalURL)
-                    .disabled(!redirectToPrivateSites)
-                Toggle("Remove Tracking Parameter", isOn: $removeTrackingParams)
-                //least confusing nested if
-                    .onChange(of: removeTrackingParams) { oldToggle, newToggle in
-                        newToggle ? trackingParamRemover.updateTrackingList{ res in
-                            if res {
-                                currentBlockedAmount = trackingParamRemover.trackinglistLength
-                            }
-                        } : trackingParamRemover.unloadTrackingList()
-                    }
-                Button{
-                    trackingParamRemover.unloadTrackingList()
-                    trackingParamRemover.updateTrackingList{ res in
-                        if res {
-                            currentBlockedAmount = trackingParamRemover.trackinglistLength
-                        }
-                        showingSuccessfullUpdateAlert = res
-                    }
-                } label: {
-                    Label("Update Blocklist", systemImage: "arrow.triangle.2.circlepath")
-                }
-                .alert(isPresented: $showingSuccessfullUpdateAlert, content: {
-                    Alert(title: Text("Successfully Updated Blocklist!"))
-                })
-            } header: {
-                Text("Privacy")
-            } footer: {
-                removeTrackingParams ? Text("\(currentBlockedAmount) blocklable Parameters loaded from [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).") : Text("Enabling Remove Tracking Parameter will download the [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).")
-            }
+            
             
         }
         .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
@@ -150,7 +114,7 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{
             currentAppIcon = AppIconManager().getCurrentIconName()
-            currentBlockedAmount = trackingParamRemover.trackinglistLength
+           
         }
         .toast(isPresented: $showToast, style: .popup, title: toastTitle,systemIcon: toastIcon, speed: 1.5, tapToDismiss: false, onAppear: {})
     }
