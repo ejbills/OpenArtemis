@@ -11,6 +11,10 @@ OpenArtemis is a privacy-focused, read-only web scraping Reddit client built wit
 - **Read-Only:** OpenArtemis operates in a read-only mode, ensuring that users cannot log in. All data, including local subreddit favorites, comment and post favorites, and the home feed, is stored locally.
 - **Open Source:** Contributions are welcome! Feel free to suggest improvements, report bugs, or add new features.
 
+## Discord
+
+Chat with us on your [discord server](https://discord.gg/4b9H8BtF2C).
+
 ## Getting Started
 To contribute to OpenArtemis, follow these steps:
 
