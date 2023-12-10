@@ -99,8 +99,10 @@ class RedditScraper {
                 let id = try postElement.attr("data-fullname")
                 let subreddit = try postElement.attr("data-subreddit")
                 let title = try postElement.select("p.title a.title").text()
+                let tag = try postElement.select("span.linkflairlabel").first()?.text() ?? ""
                 let author = try postElement.attr("data-author")
                 let votes = try postElement.attr("data-score")
+                let time = try postElement.select("time").attr("datetime")
                 let mediaURL = try postElement.attr("data-url")
                 let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
                 
@@ -112,7 +114,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, author: author, votes: votes, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")

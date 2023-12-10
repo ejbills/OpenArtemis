@@ -20,6 +20,10 @@ struct PostFeedView: View {
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 8) {
+                if !post.tag.isEmpty {
+                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
+                }
+                
                 Text(post.title)
                     .font(.headline)
                 
