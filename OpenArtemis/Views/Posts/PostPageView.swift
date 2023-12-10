@@ -105,7 +105,7 @@ struct PostPageView: View {
                                             }
                                         }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
-                                            // sharecomment? - coming soon
+                                            MiscUtils.shareItem(item: comment.directURL)
                                         }),
                                         secondaryTrailingAction: nil
                                     )
