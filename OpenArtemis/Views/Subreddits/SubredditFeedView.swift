@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct SubredditFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    @Default(.over18) var over18
     
     let subredditName: String
     let titleOverride: String?
@@ -65,7 +67,7 @@ struct SubredditFeedView: View {
     private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil) {
         self.isLoading = true
         
-        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover) { result in
+        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover, over18: over18) { result in
             switch result {
             case .success(let newPosts):
                 withAnimation(.smooth) {

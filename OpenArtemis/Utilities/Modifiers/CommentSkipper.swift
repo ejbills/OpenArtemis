@@ -22,6 +22,7 @@ struct CommentSkipper: ViewModifier {
                     VStack {
                         Spacer()
                         Button {
+                            HapticManager.shared.singleClick()
                             withAnimation {
                                 jumpToNextComment()
                             }

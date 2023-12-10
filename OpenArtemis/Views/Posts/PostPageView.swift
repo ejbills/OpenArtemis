@@ -13,7 +13,7 @@ struct PostPageView: View {
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
-    
+  
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
     @State private var perViewSavedComments: Set<String> = []
@@ -25,8 +25,8 @@ struct PostPageView: View {
     @State var previousScrollTarget: String? = nil
     
     @State private var postLoaded: Bool = false
-    @State private var isShareSheetPresented: Bool = false
-    
+    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
+
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
@@ -45,13 +45,13 @@ struct PostPageView: View {
                                 Text(postBody)
                                     .font(.body)
                             }
-                            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                             .background(tagBgColor)
                             .cornerRadius(6)
                             .padding(.horizontal, 8)
                             .padding(.bottom, 8)
                         }
-                        
+
                         DividerView(frameHeight: 10)
                         
                         if !comments.isEmpty {
@@ -60,35 +60,36 @@ struct PostPageView: View {
                                     Group {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
-                                                    CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
-                                        
-                                        // next comment tracker
-                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
-                                            view.anchorPreference(
-                                                key: CommentUtils.AnchorsKey.self,
-                                                value: .center
-                                            ) { [comment.id: $0] }
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.leading, CGFloat(comment.depth) * 10)
-                                        .padding(.vertical, 4)
+                                                        CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
+
+                                            // next comment tracker
+                                            .if(rootComments.firstIndex(of: comment) != nil) { view in
+                                                view.anchorPreference(
+                                                    key: CommentUtils.AnchorsKey.self,
+                                                    value: .center
+                                                ) { [comment.id: $0] }
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.leading, CGFloat(comment.depth) * 10)
+                                            .padding(.vertical, 4)
                                     }
                                     .background(Color(uiColor: UIColor.systemBackground))
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
-                                        withAnimation(.smooth(duration: 0.25)) {
+                                        withAnimation(.smooth(duration: 0.35)) {
                                             comments[index].isRootCollapsed.toggle()
                                             collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                         }
                                     }
                                     .addGestureActions(
                                         primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
-                                            withAnimation(.smooth(duration: 0.25)) {
+                                            withAnimation(.smooth(duration: 0.35)) {
                                                 if comment.parentID == nil {
                                                     comments[index].isRootCollapsed.toggle()
                                                     collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                                 } else {
                                                     if let rootComment = findRootComment(comment: comment), let rootIndex = comments.firstIndex(of: rootComment) {
+                                                        reader.scrollTo(comments[rootIndex].id)
                                                         comments[rootIndex].isRootCollapsed = true
                                                         collapseChildren(parentCommentID: rootComment.id, rootCollapsedStatus: comments[rootIndex].isRootCollapsed)
                                                     }
@@ -105,7 +106,7 @@ struct PostPageView: View {
                                             }
                                         }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
-                                            isShareSheetPresented.toggle()
+                                            MiscUtils.shareItem(item: comment.directURL)
                                         }),
                                         secondaryTrailingAction: nil
                                     )
@@ -113,6 +114,7 @@ struct PostPageView: View {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     }))
                                     .sheet(isPresented: $isShareSheetPresented) {
+                                                // Share sheet content
                                         ShareSheet(activityItems: [comment.directURL])
                                     }
                                     DividerView(frameHeight: 1)
@@ -122,7 +124,7 @@ struct PostPageView: View {
                         } else {
                             LoadingAnimation(loadingText: "Loading comments...")
                         }
-                    }
+                    }                    
                 }
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,
@@ -188,7 +190,7 @@ struct PostPageView: View {
         }
         
     }
-    
+        
     private func collapseChildren(parentCommentID: String, rootCollapsedStatus: Bool) {
         // Find indices of comments that match the parentCommentID
         let matchingIndices = self.comments.enumerated().filter { $0.element.parentID == parentCommentID }.map { $0.offset }
