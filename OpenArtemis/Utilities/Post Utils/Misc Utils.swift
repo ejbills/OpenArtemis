@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// A generic enum representing either the first type `A` or the second type `B`.
 enum Either<A: Codable & Hashable, B: Codable & Hashable>: Codable, Hashable {
@@ -55,4 +56,15 @@ struct MixedMediaTuple: Hashable {
     
     /// The content of either a `Post` or a `Comment`.
     var content: Either<Post, Comment>
+}
+
+class MiscUtils {
+    static func shareItem(item: String) {
+        guard let url = URL(string: item) else { return }
+
+        DispatchQueue.main.async {
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+        }
+    }
 }

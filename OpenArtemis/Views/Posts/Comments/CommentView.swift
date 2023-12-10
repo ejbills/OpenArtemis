@@ -25,7 +25,7 @@ struct CommentView: View {
                         DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
                         
                         Spacer()
-                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "0")
+                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]")
                         
                         if comment.isRootCollapsed {
                             HStack{

@@ -45,7 +45,9 @@ struct PostFeedView: View {
                 isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
             }),
             secondaryLeadingAction: nil,
-            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .blue, action: {}),
+            primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
+                MiscUtils.shareItem(item: post.commentsURL)
+            }),
             secondaryTrailingAction: nil
         )
         
