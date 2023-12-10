@@ -30,7 +30,7 @@ struct SavedView: View {
             } .onAppear {
                 updateFeed()
             }
-          
+            
         } else {
             ScrollView {
                 
@@ -107,9 +107,9 @@ struct MixedContentView: View {
                 }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                    withAnimation{
-                        isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-                    }
+                        withAnimation{
+                            isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+                        }
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
                     if !isLoadingCommentPost {
