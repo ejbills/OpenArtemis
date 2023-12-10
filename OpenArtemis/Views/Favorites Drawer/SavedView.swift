@@ -17,45 +17,63 @@ struct SavedView: View {
     @State var mixedMediaLinks: [MixedMediaTuple] = []
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                    MixedContentView(content: mixedMediaTuple.content, savedPosts: savedPosts, savedComments: savedComments)
-                    DividerView(frameHeight: 10)
+        if mixedMediaLinks.isEmpty {
+            HStack{
+                VStack{
+                    Text("In the lunar emptiness, Artemis, Apollo, and the moon share a quiet dance, their solitude echoing through the celestial silence...")
+                        .opacity(0.5)
+                        .padding()
+                    Image(systemName: "moon.fill")
+                        .foregroundStyle(.black.opacity(0.8))
+                        .font(.system(size: 20))
                 }
+            } .onAppear {
+                updateFeed()
             }
+            
+        } else {
+            ScrollView {
+                
+                LazyVStack(spacing: 0) {
+                    ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
+                        MixedContentView(content: mixedMediaTuple.content, savedPosts: savedPosts, savedComments: savedComments)
+                        DividerView(frameHeight: 10)
+                    }
+                }
+                
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                updateFeed()
+            }
+            .refreshable {
+                updateFeed()
+            }
+            .navigationTitle("Saved")
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            updateFeed()
-        }
-        .refreshable {
-            updateFeed()
-        }
-        .navigationTitle("Saved")
     }
     
     /// Updates the mixed media feed by loading saved posts and comments from CoreData,
     /// mapping them into `MixedMediaTuple` elements, and sorting the array by date in descending order.
     func updateFeed() {
         mixedMediaLinks = []
-
+        
         // Map the saved posts from CoreData to the mixedMediaLinks array
         let posts = savedPosts.map { post in
             let postTuple = PostUtils.shared.savedPostToPost(context: managedObjectContext, post: post)
             return MixedMediaTuple(date: postTuple.0 ?? Date(), content: .first(postTuple.1))
         }
-
+        
         // Map the saved comments from CoreData to the mixedMediaLinks array
         let comments = savedComments.map { savedComment in
             let commentTuple = CommentUtils.shared.savedCommentToComment(savedComment)
             return MixedMediaTuple(date: commentTuple.0 ?? Date(), content: .second(commentTuple.1))
         }
-
+        
         // Combine posts and comments into mixedMediaLinks array
         mixedMediaLinks += posts
         mixedMediaLinks += comments
-
+        
         // Sort mixedMediaLinks by date in descending order
         mixedMediaLinks.sort { $0.date > $1.date }
     }
@@ -89,7 +107,9 @@ struct MixedContentView: View {
                 }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                    isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+                        withAnimation{
+                            isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+                        }
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
                     if !isLoadingCommentPost {

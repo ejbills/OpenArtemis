@@ -19,12 +19,9 @@ struct Post: Equatable, Hashable, Codable {
     let time: String
     let mediaURL: PrivateURL
     let commentsURL: String
-    
     let type: String
-    
     // If post media has a thumbnail...
     let thumbnailURL: String?
-    
     // Ensure that PrivateURL also conforms to Codable
     struct PrivateURL: Codable {
         let originalURL: String

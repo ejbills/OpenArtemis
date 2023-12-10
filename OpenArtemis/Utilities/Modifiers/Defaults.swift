@@ -19,6 +19,20 @@ extension Defaults.Keys {
     static let over18 = Key<Bool>("over18", default: false)
     
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
+    
+    
+    // MARK: - Website Redirects
+    static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
+    static let twitterRedirect = Key<String>("twitterRedirect", default: "nitter.net")
+    static let mediumRedirect = Key<String>("mediumRedirect", default: "scribe.rip")
+    static let imgurRedirect = Key<String>("imgurRedirect", default: "rimgo.hostux.net")
+    
+    
+    // MARK: - Stats
+    static let trackStats = Key<Bool>("trackStats", default: true)
+    static let trackersRemoved = Key<Int>("trackersRemoved", default: 0)
+    static let URLsRedirected = Key<Int>("URLsRedirected", default: 0)
+    
 }
 
 enum PreferredThemeMode: Codable, CaseIterable, Identifiable, Defaults.Serializable {

@@ -22,24 +22,41 @@ class TrackingParamRemover: ObservableObject, Observable{
     }
     
     
+    @Default(.trackStats) var trackStats
+    @Default(.trackersRemoved) var trackersRemoved
+
     func cleanURL(_ url: URL) -> URL {
         guard !trackingList.isEmpty else {
             return url
         }
-        
+
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         guard var queryItems = components?.queryItems else {
             return url
         }
-        
+
+        // Count of removed parameters
+        var removedCount = 0
+
         queryItems = queryItems.filter { queryItem in
-            return !trackingList.contains { trackingParam in
+            let isTrackingParam = trackingList.contains { trackingParam in
                 return queryItem.name.lowercased() == trackingParam.lowercased()
             }
+
+            if isTrackingParam {
+                removedCount += 1
+            }
+
+            return !isTrackingParam
         }
-        
+
         components?.queryItems = queryItems.isEmpty ? nil : queryItems
-        
+
+        // Update the removedParametersCount
+        if trackStats {
+            trackersRemoved += removedCount
+        }
+
         if let cleanedURL = components?.url {
             return cleanedURL
         } else {

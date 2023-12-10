@@ -41,6 +41,13 @@ struct OpenArtemisApp: App {
                     Label("Search", systemImage: "text.magnifyingglass")
                 }
                 
+                NavigationStackWrapper(tabCoordinator: NavCoordinator()){
+                    PrivacyTab()
+                }
+                .tabItem {
+                    Label("Privacy", systemImage: "shield.lefthalf.filled")
+                }
+                
                 NavigationStackWrapper(tabCoordinator: NavCoordinator(), content: {
                     SettingsView()
                         .handleDeepLinkViews()
