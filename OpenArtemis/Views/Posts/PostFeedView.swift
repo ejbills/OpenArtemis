@@ -17,6 +17,7 @@ struct PostFeedView: View {
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
     
+    
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 8) {
@@ -42,7 +43,10 @@ struct PostFeedView: View {
         .savedIndicator(isSaved)
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                    withAnimation{
+                        isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                    }
+                
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
