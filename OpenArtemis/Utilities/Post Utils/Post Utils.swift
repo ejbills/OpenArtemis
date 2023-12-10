@@ -13,8 +13,10 @@ struct Post: Equatable, Hashable, Codable {
     let id: String
     let subreddit: String
     let title: String
+    let tag: String
     let author: String
     let votes: String
+    let time: String
     let mediaURL: PrivateURL
     let commentsURL: String
     let type: String
@@ -28,7 +30,7 @@ struct Post: Equatable, Hashable, Codable {
     
     // Conform to Codable
     enum CodingKeys: String, CodingKey {
-        case id, subreddit, title, author, votes, mediaURL, commentsURL, type, thumbnailURL
+        case id, subreddit, title, tag, author, votes, time, mediaURL, commentsURL, type, thumbnailURL
     }
 
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -40,8 +42,10 @@ struct Post: Equatable, Hashable, Codable {
         hasher.combine(id)
         hasher.combine(subreddit)
         hasher.combine(title)
+        hasher.combine(tag)
         hasher.combine(author)
         hasher.combine(votes)
+        hasher.combine(time)
         hasher.combine(commentsURL)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
@@ -97,8 +101,10 @@ class PostUtils {
                 id: post.id ?? "",
                 subreddit: post.subreddit ?? "",
                 title: post.title ?? "",
+                tag: post.tag ?? "",
                 author: post.author ?? "",
                 votes: post.votes ?? "",
+                time: post.time ?? "",
                 mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
                 commentsURL: post.commentsURL ?? "",
                 type: post.type ?? "",
@@ -122,8 +128,10 @@ class PostUtils {
         tempPost.mediaURL = privULR ? post.mediaURL.privateURL : post.mediaURL.originalURL
         tempPost.thumbnailURL = post.thumbnailURL
         tempPost.title = post.title
+        tempPost.tag = post.tag
         tempPost.type = post.type
         tempPost.votes = post.votes
+        tempPost.time = post.time
         tempPost.savedTimestamp = Date()
 
         DispatchQueue.main.async {

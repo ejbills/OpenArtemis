@@ -25,7 +25,9 @@
         <attribute name="mediaURL" optional="YES" attributeType="String"/>
         <attribute name="savedTimestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="subreddit" optional="YES" attributeType="String"/>
+        <attribute name="tag" optional="YES" attributeType="String"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="votes" optional="YES" attributeType="String"/>
