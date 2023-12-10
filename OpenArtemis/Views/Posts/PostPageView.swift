@@ -75,14 +75,14 @@ struct PostPageView: View {
                                     .background(Color(uiColor: UIColor.systemBackground))
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
-                                        withAnimation(.smooth(duration: 0.25)) {
+                                        withAnimation(.smooth(duration: 0.35)) {
                                             comments[index].isRootCollapsed.toggle()
                                             collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                         }
                                     }
                                     .addGestureActions(
                                         primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
-                                            withAnimation(.smooth(duration: 0.25)) {
+                                            withAnimation(.smooth(duration: 0.35)) {
                                                 if comment.parentID == nil {
                                                     comments[index].isRootCollapsed.toggle()
                                                     collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
