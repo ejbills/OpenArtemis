@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Defaults
+import MarkdownUI
 
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -41,8 +42,7 @@ struct PostPageView: View {
                                     Spacer()
                                 }
                                 
-                                Text(postBody)
-                                    .font(.body)
+                                Markdown(postBody)
                             }
                             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                             .background(tagBgColor)

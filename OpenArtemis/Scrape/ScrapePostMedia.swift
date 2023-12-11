@@ -14,7 +14,18 @@ private let noDataError = NSError(domain: "No data received", code: 0, userInfo:
 
 extension RedditScraper {
     private static func parseUserTextBody(data: Document) throws -> String? {
-        return try data.select("div.expando").first()?.text()
+        let postBody = try data.select("div.expando").first()
+        
+        var body: String? = nil
+        if let bodyElement = postBody, !(try bodyElement.text().isEmpty) {
+            let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
+            
+            var document = BasicHTML(rawHTML: modifiedHtmlBody)
+            try document.parse()
+            body = try document.asMarkdown()
+        }
+        
+        return body
     }
 
     static func scrapeComments(commentURL: String, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
@@ -39,11 +50,19 @@ extension RedditScraper {
             }
 
             do {
+                let startTime = DispatchTime.now()
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
 
                 let comments = try parseCommentsData(data: doc)
                 let postBody = try parseUserTextBody(data: doc)
+                
+                let endTime = DispatchTime.now()
+                        let elapsedTime = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+                        let executionTimeInMilliseconds = Double(elapsedTime) / 1_000_000
+
+                        print("Execution time: \(executionTimeInMilliseconds) ms")
+
 
                 completion(.success((comments: comments, postBody: postBody)))
             } catch {
@@ -76,8 +95,6 @@ extension RedditScraper {
         
         // Elements for reduced calls
         let topLevelComments = try? data.select("div.sitetable.nestedlisting > div.comment")
-        let stickiedElements = try? data.select("span.stickied-tagline")
-        let byLinkElements = try? data.select("a.bylink")
 
         // Function to recursively parse comments
         func parseComment(commentElement: Element, parentID: String?, depth: Int) throws {
@@ -106,8 +123,10 @@ extension RedditScraper {
             }
             
             // check for stickied tag
-            let stickied = stickiedElements?.contains(commentElement) == true
-            let directURL = byLinkElements?.contains(commentElement) == true ? try commentElement.attr("href") : ""
+            let stickiedElement = try commentElement.select("span.stickied-tagline").first()
+            let stickied = stickiedElement != nil
+            
+            let directURL = try commentElement.select("a.bylink").attr("href")
 
             let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body,
                                   depth: depth, stickied: stickied, directURL: directURL, isCollapsed: false, isRootCollapsed: stickied)
