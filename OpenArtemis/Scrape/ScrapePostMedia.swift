@@ -50,19 +50,11 @@ extension RedditScraper {
             }
 
             do {
-                let startTime = DispatchTime.now()
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
 
                 let comments = try parseCommentsData(data: doc)
                 let postBody = try parseUserTextBody(data: doc)
-                
-                let endTime = DispatchTime.now()
-                        let elapsedTime = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-                        let executionTimeInMilliseconds = Double(elapsedTime) / 1_000_000
-
-                        print("Execution time: \(executionTimeInMilliseconds) ms")
-
 
                 completion(.success((comments: comments, postBody: postBody)))
             } catch {
