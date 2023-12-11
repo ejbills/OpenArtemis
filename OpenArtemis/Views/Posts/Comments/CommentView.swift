@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkdownUI
 
 struct CommentView: View {
     var comment: Comment
@@ -34,7 +35,7 @@ struct CommentView: View {
                     }
                     
                     if !comment.isRootCollapsed {
-                        Text(comment.body)
+                        Markdown(comment.body)
                     }
                 }
             }            

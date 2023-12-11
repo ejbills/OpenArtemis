@@ -37,6 +37,8 @@
 		65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959B2B1F188B005BE493 /* ColorFromHex.swift */; };
 		65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959D2B1F3A54005BE493 /* HapticManager.swift */; };
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
+		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
+		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -172,7 +174,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
+				BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
+				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
 			);
@@ -486,6 +490,8 @@
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
+				BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */,
+				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -525,6 +531,8 @@
 				BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */,
 				65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */,
+				BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */,
+				BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -924,6 +932,22 @@
 				kind = branch;
 			};
 		};
+		BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ActuallyTaylor/SwiftHTMLToMarkdown";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
+		BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
 		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
@@ -960,6 +984,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */;
+			productName = SwiftHTMLtoMarkdown;
+		};
+		BB322CB92B26C0A300FC5849 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;
