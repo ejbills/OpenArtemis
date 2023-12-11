@@ -27,7 +27,7 @@ struct OpenArtemisApp: App {
             TabView {
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
                     SubredditDrawerView()
-                        .handleDeepLinkViews()
+                        
                 }
                 .tabItem {
                     Label("Feed", systemImage: "doc.richtext")
@@ -35,7 +35,6 @@ struct OpenArtemisApp: App {
                 
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
                     SearchView()
-                        .handleDeepLinkViews()
                 }
                 .tabItem {
                     Label("Search", systemImage: "text.magnifyingglass")
@@ -50,7 +49,6 @@ struct OpenArtemisApp: App {
                 
                 NavigationStackWrapper(tabCoordinator: NavCoordinator(), content: {
                     SettingsView()
-                        .handleDeepLinkViews()
                 })
                 .tabItem {
                     Label("Settings", systemImage: "gear")

@@ -152,6 +152,9 @@ func redditLinksToInternalLinks(_ element: Element) throws -> String {
             let originalHref = try link.attr("href")
             if originalHref.hasPrefix("/r/") || originalHref.hasPrefix("/u/") {
                 try link.attr("href", "openartemis://\(originalHref)")
+            } else {
+                let trimmedHref = originalHref.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
+                try link.attr("href", "openartemis://\(trimmedHref)")
             }
         }
 
