@@ -7,59 +7,78 @@
 
 import Foundation
 import SwiftSoup
+import SwiftHTMLtoMarkdown
+
+private let invalidURLError = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+private let noDataError = NSError(domain: "No data received", code: 0, userInfo: nil)
 
 extension RedditScraper {
-    private static func parseUserTextBody(data: Data) throws -> String? {
-        let htmlString = String(data: data, encoding: .utf8)!
-        let doc = try SwiftSoup.parse(htmlString)
-        
-        guard let userTextBody = try doc.select("div.expando").first()?.text() else {
-            throw NSError(domain: "Could not find user text body", code: 0, userInfo: nil)
-        }
-        
-        return userTextBody
+    private static func parseUserTextBody(data: Document) throws -> String? {
+        return try data.select("div.expando").first()?.text()
     }
-    
+
     static func scrapeComments(commentURL: String, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
-        guard let url = URL(string: commentURL) else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        let url = URL(string: commentURL)!
+        var request = URLRequest(url: url)
+        request.setValue("text/html", forHTTPHeaderField: "Accept")
+
+        let group = DispatchGroup()
+        var commentsResult: Result<[Comment], Error>?
+        var postBodyResult: Result<String?, Error>?
+
+        group.enter()
+        URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
+
             guard let data = data else {
                 completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
                 return
             }
-            
+
             do {
-                let comments = try parseCommentsData(data: data)
-                
-                // Call parseUserTextBody
-                if let postBody = try? parseUserTextBody(data: data) {
-                    completion(.success((comments: comments, postBody: postBody)))
-                } else {
-                    completion(.success((comments: comments, postBody: nil)))
-                }
-                
+                let htmlString = String(data: data, encoding: .utf8)!
+                let doc = try SwiftSoup.parse(htmlString)
+
+                let comments = try parseCommentsData(data: doc)
+                let postBody = try parseUserTextBody(data: doc)
+
+                completion(.success((comments: comments, postBody: postBody)))
             } catch {
                 completion(.failure(error))
             }
         }.resume()
+
+        group.notify(queue: .main) {
+            let result: Result<(comments: [Comment], postBody: String?), Error>
+
+            switch (commentsResult, postBodyResult) {
+            case let (.success(comments), .success(postBody)):
+                result = .success((comments: comments, postBody: postBody))
+            case let (.failure(error), _):
+                result = .failure(error)
+            case let (_, .failure(error)):
+                result = .failure(error)
+            default:
+                fatalError("Invalid state")
+            }
+
+            completion(result)
+        }
+
     }
     
-    private static func parseCommentsData(data: Data) throws -> [Comment] {
-        let htmlString = String(data: data, encoding: .utf8)!
-        let doc = try SwiftSoup.parse(htmlString)
-        
+    private static func parseCommentsData(data: Document) throws -> [Comment] {
         var comments: [Comment] = []
         var commentIDs = Set<String>()
         
+        // Elements for reduced calls
+        let topLevelComments = try? data.select("div.sitetable.nestedlisting > div.comment")
+        let stickiedElements = try? data.select("span.stickied-tagline")
+        let byLinkElements = try? data.select("a.bylink")
+
         // Function to recursively parse comments
         func parseComment(commentElement: Element, parentID: String?, depth: Int) throws {
             let id = try commentElement.attr("data-fullname")
@@ -70,19 +89,26 @@ extension RedditScraper {
             }
             
             let author = try commentElement.attr("data-author")
-            
             let scoreText = try commentElement.select("span.score.unvoted").first()?.text() ?? ""
             let score = scoreText.components(separatedBy: " ").first ?? "[score hidden]"
-            
             let time = try commentElement.select("time").first()?.attr("datetime") ?? ""
-            let body = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").text()
+            
+            let bodyElement = try commentElement.select("div.entry.unvoted > form[id^=form-\(id)]").first()
+
+            // Replace links in HTML with internal links, and convert body to markdown
+            var body = ""
+            if let bodyElement = bodyElement {
+                let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
+                
+                var document = BasicHTML(rawHTML: modifiedHtmlBody)
+                try document.parse()
+                body = try document.asMarkdown()
+            }
             
             // check for stickied tag
-            let stickiedElement = try commentElement.select("span.stickied-tagline").first()
-            let stickied = stickiedElement != nil
-            
-            let directURL = try commentElement.select("a.bylink").attr("href")
-            
+            let stickied = stickiedElements?.contains(commentElement) == true
+            let directURL = byLinkElements?.contains(commentElement) == true ? try commentElement.attr("href") : ""
+
             let comment = Comment(id: id, parentID: parentID, author: author, score: score, time: time, body: body,
                                   depth: depth, stickied: stickied, directURL: directURL, isCollapsed: false, isRootCollapsed: stickied)
             comments.append(comment)
@@ -96,7 +122,7 @@ extension RedditScraper {
         }
         
         // Parse top-level comments
-        if let topLevelComments = try? doc.select("div.sitetable.nestedlisting > div.comment") {
+        if let topLevelComments = topLevelComments {
             comments.reserveCapacity(topLevelComments.size())
             try topLevelComments.forEach { commentElement in
                 try parseComment(commentElement: commentElement, parentID: nil, depth: 0)
@@ -104,5 +130,22 @@ extension RedditScraper {
         }
         
         return comments
+    }
+}
+
+func redditLinksToInternalLinks(_ element: Element) throws -> String {
+    do {
+        let links = try element.select("a[href]")
+
+        for link in links.array() {
+            let originalHref = try link.attr("href")
+            if originalHref.hasPrefix("/r/") || originalHref.hasPrefix("/u/") {
+                try link.attr("href", "openartemis://\(originalHref)")
+            }
+        }
+
+        return try element.html()
+    } catch {
+        throw error
     }
 }
