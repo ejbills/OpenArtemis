@@ -23,15 +23,6 @@ struct HandleDeepLinksDisplay: ViewModifier {
             .navigationDestination(for: PostResponse.self) { response in
                 PostPageView(post: response.post)
             }
-        
-            .navigationDestination(for: SafariResponse.self) { response in
-                //                SafariHelper.openSafariView(withURL: response.url)
-                
-                //                EmptyView()
-                //                    .onAppear {
-                //                        SafariHelper.openSafariView(withURL: response.url)
-                //                    }
-            }
     }
 }
 
