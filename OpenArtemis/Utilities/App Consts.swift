@@ -10,7 +10,7 @@ import SwiftUI
 
 // Reddit backend
 let baseRedditURL = "https://old.reddit.com"
-let basePostCount = "?count=25"
+let basePostCount = "25"
 
 // Screen defaults
 let roughWidth = UIScreen.main.bounds.width * 0.90
