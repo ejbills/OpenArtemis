@@ -156,8 +156,11 @@ struct SubredditDrawerView: View {
         availableIndexArr = drawerChars.filter { letter in
             if letter == "#" {
                 return lowercaseLocalFavorites.contains { name in
-                    let firstCharacter = name[name.startIndex]
-                    return firstCharacter.isNumber
+                    if let firstCharacter = name.first {
+                        return firstCharacter.isNumber
+                    }
+                    
+                    return false
                 }
             } else {
                 return lowercaseLocalFavorites.contains { name in
