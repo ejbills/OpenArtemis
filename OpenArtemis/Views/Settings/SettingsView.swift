@@ -35,8 +35,6 @@ struct SettingsView: View {
     @State var toastIcon: String = "checkmark.circle.fill"
     var body: some View {
         List{
-            Link("OpenArtemis Discord server", destination: URL(string: "https://discord.gg/q3PgS7BJvt")!)
-            
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
                     preferredThemeMode
