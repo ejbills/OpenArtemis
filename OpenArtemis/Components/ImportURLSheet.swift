@@ -52,6 +52,10 @@ struct ImportURLSheet: View {
                         Material.ultraThinMaterial
                     )
                 }
+                if !displayImport{
+                    Text("Paste your Multireddit URL in here")
+                        .opacity(0.5)
+                }
                 if displayImport {
                     Spacer()
                 }

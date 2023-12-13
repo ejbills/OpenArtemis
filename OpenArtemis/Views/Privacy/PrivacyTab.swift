@@ -10,22 +10,6 @@ import Defaults
 
 struct PrivacyTab: View {
     
-    @Default(.showOriginalURL) var showOriginalURL
-    @Default(.redirectToPrivateSites) var redirectToPrivateSites
-    @Default(.removeTrackingParams) var removeTrackingParams
-    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
-    
-    @State var currentBlockedAmount: Int = 0
-    @State var showingSuccessfullUpdateAlert: Bool = false
-    
-    
-    // Redirects
-    
-    @Default(.youtubeRedirect) var youtubeRedirect
-    @Default(.twitterRedirect) var twitterRedirect
-    @Default(.mediumRedirect) var mediumRedirect
-    @Default(.imgurRedirect) var imgurRedirect
-    
     // Stats
     @Default(.trackStats) var trackStats
     @Default(.trackersRemoved) var trackersRemoved
@@ -48,67 +32,94 @@ struct PrivacyTab: View {
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             }
             
+            RemoveTrackinParamsView()
             
-            Section{
-                Toggle("Remove Tracking Parameter", isOn: $removeTrackingParams)
-                //least confusing nested if
-                    .onChange(of: removeTrackingParams) { oldToggle, newToggle in
-                        newToggle ? trackingParamRemover.updateTrackingList{ res in
-                            if res {
-                                currentBlockedAmount = trackingParamRemover.trackinglistLength
-                            }
-                        } : trackingParamRemover.unloadTrackingList()
-                    }
-                Button{
-                    trackingParamRemover.unloadTrackingList()
-                    trackingParamRemover.updateTrackingList{ res in
-                        if res {
-                            currentBlockedAmount = trackingParamRemover.trackinglistLength
-                        }
-                        showingSuccessfullUpdateAlert = res
-                    }
-                } label: {
-                    Label("Update Blocklist", systemImage: "arrow.triangle.2.circlepath")
-                }
-                .disabled(!removeTrackingParams)
-                .alert(isPresented: $showingSuccessfullUpdateAlert, content: {
-                    Alert(title: Text("Successfully Updated Blocklist!"))
-                })
-            } header: {
-                Text("Tracking")
-            } footer: {
-                removeTrackingParams ? Text("\(currentBlockedAmount) blocklable Parameters loaded from [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).") : Text("Enabling Remove Tracking Parameter will download the [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).")
-            }
             
-            Section("Redirect Websites"){
-                Toggle("Redirect to Private Websites", isOn: Binding(get: {
-                    redirectToPrivateSites
-                }, set: { val in
-                    withAnimation{
-                        redirectToPrivateSites = val
-                        showOriginalURL = false
-                    }
-                }))
-                Toggle("Display Original URL", isOn: $showOriginalURL)
-                    .disabled(!redirectToPrivateSites)
-                
-                if redirectToPrivateSites {
-                    RedirectElement(text: $youtubeRedirect, originalName: "Youtube", redirectName: "Invidious")
-                    RedirectElement(text: $twitterRedirect, originalName: "Twitter / X", redirectName: "Nitter")
-                    RedirectElement(text: $mediumRedirect, originalName: "Medium", redirectName: "Scribe")
-                    RedirectElement(text: $imgurRedirect, originalName: "Imgur", redirectName: "Rimgo")
-                }
-            }
-            
+            RedirectWebsitesView()
             
             Section("Other") {
                 Toggle("Track Stats", isOn: $trackStats)
             }
         }
-        .onAppear{
+       
+        .navigationTitle("Privacy")
+    }
+}
+
+struct RedirectWebsitesView: View {
+    // Redirects
+    
+    @Default(.youtubeRedirect) var youtubeRedirect
+    @Default(.twitterRedirect) var twitterRedirect
+    @Default(.mediumRedirect) var mediumRedirect
+    @Default(.imgurRedirect) var imgurRedirect
+    @Default(.showOriginalURL) var showOriginalURL
+    @Default(.redirectToPrivateSites) var redirectToPrivateSites
+    var body: some View {
+        Section("Redirect Websites"){
+            Toggle("Redirect to Private Websites", isOn: Binding(get: {
+                redirectToPrivateSites
+            }, set: { val in
+                withAnimation{
+                    redirectToPrivateSites = val
+                    showOriginalURL = false
+                }
+            }))
+            Toggle("Display Original URL", isOn: $showOriginalURL)
+                .disabled(!redirectToPrivateSites)
+            
+            if redirectToPrivateSites {
+                RedirectElement(text: $youtubeRedirect, originalName: "Youtube", redirectName: "Invidious")
+                RedirectElement(text: $twitterRedirect, originalName: "Twitter / X", redirectName: "Nitter")
+                RedirectElement(text: $mediumRedirect, originalName: "Medium", redirectName: "Scribe")
+                RedirectElement(text: $imgurRedirect, originalName: "Imgur", redirectName: "Rimgo")
+            }
+        }
+    }
+}
+
+struct RemoveTrackinParamsView: View {
+    
+    @Default(.removeTrackingParams) var removeTrackingParams
+    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    
+    @State var currentBlockedAmount: Int = 0
+    @State var showingSuccessfullUpdateAlert: Bool = false
+    
+    var body: some View {
+        Section{
+            Toggle("Remove Tracking Parameter", isOn: $removeTrackingParams)
+            //least confusing nested if
+                .onChange(of: removeTrackingParams) { oldToggle, newToggle in
+                    newToggle ? trackingParamRemover.updateTrackingList{ res in
+                        if res {
+                            currentBlockedAmount = trackingParamRemover.trackinglistLength
+                        }
+                    } : trackingParamRemover.unloadTrackingList()
+                }
+            Button{
+                trackingParamRemover.unloadTrackingList()
+                trackingParamRemover.updateTrackingList{ res in
+                    if res {
+                        currentBlockedAmount = trackingParamRemover.trackinglistLength
+                    }
+                    showingSuccessfullUpdateAlert = res
+                }
+            } label: {
+                Label("Update Blocklist", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .disabled(!removeTrackingParams)
+            .alert(isPresented: $showingSuccessfullUpdateAlert, content: {
+                Alert(title: Text("Successfully Updated Blocklist!"))
+            })
+        } header: {
+            Text("Tracking")
+        } footer: {
+            removeTrackingParams ? Text("\(currentBlockedAmount) blocklable Parameters loaded from [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).") : Text("Enabling Remove Tracking Parameter will download the [Adguard Tracking Params blocklist](https://github.com/AdguardTeam/AdguardFilters/blob/master/TrackParamFilter/sections/general_url.txt).")
+        }
+         .onAppear{
             currentBlockedAmount = trackingParamRemover.trackinglistLength
         }
-        .navigationTitle("Privacy")
     }
 }
 

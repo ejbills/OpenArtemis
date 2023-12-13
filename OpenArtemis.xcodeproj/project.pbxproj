@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6504FCA72B247A1E00598EFF /* (null) in Sources */ = {isa = PBXBuildFile; };
+		6526B3712B29F0E3009F6B4B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526B3702B29F0E3009F6B4B /* OnboardingView.swift */; };
+		6526B3752B29F123009F6B4B /* OOBE_WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526B3742B29F123009F6B4B /* OOBE_WelcomeView.swift */; };
+		6526B3772B29F1AD009F6B4B /* OOBE_PrivacySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526B3762B29F1AD009F6B4B /* OOBE_PrivacySelector.swift */; };
+		6526B3792B29F1CF009F6B4B /* OOBE_SubsImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526B3782B29F1CF009F6B4B /* OOBE_SubsImporter.swift */; };
+		6526B37B2B2A0072009F6B4B /* StarsBlinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526B37A2B2A0072009F6B4B /* StarsBlinkingView.swift */; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
@@ -89,6 +94,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6526B3702B29F0E3009F6B4B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		6526B3742B29F123009F6B4B /* OOBE_WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_WelcomeView.swift; sourceTree = "<group>"; };
+		6526B3762B29F1AD009F6B4B /* OOBE_PrivacySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_PrivacySelector.swift; sourceTree = "<group>"; };
+		6526B3782B29F1CF009F6B4B /* OOBE_SubsImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_SubsImporter.swift; sourceTree = "<group>"; };
+		6526B37A2B2A0072009F6B4B /* StarsBlinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarsBlinkingView.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
@@ -189,6 +199,18 @@
 			path = Privacy;
 			sourceTree = "<group>";
 		};
+		6526B36F2B29F0CC009F6B4B /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				6526B3702B29F0E3009F6B4B /* OnboardingView.swift */,
+				6526B3742B29F123009F6B4B /* OOBE_WelcomeView.swift */,
+				6526B3762B29F1AD009F6B4B /* OOBE_PrivacySelector.swift */,
+				6526B3782B29F1CF009F6B4B /* OOBE_SubsImporter.swift */,
+				6526B37A2B2A0072009F6B4B /* StarsBlinkingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		65A3329D2B1DED5500421162 /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +261,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6526B36F2B29F0CC009F6B4B /* Onboarding */,
 				6504FCA52B247A1400598EFF /* Privacy */,
 				BBE434822B1C0D0000886CAB /* Favorites Drawer */,
 				65D3DBB72B1B20E100BCCD38 /* Settings */,
@@ -574,6 +597,7 @@
 				65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */,
 				65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */,
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
+				6526B3792B29F1CF009F6B4B /* OOBE_SubsImporter.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
 				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
@@ -582,7 +606,9 @@
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
+				6526B3752B29F123009F6B4B /* OOBE_WelcomeView.swift in Sources */,
 				BB502DD32B23FD4A003C22DB /* CommentSkipper.swift in Sources */,
+				6526B3772B29F1AD009F6B4B /* OOBE_PrivacySelector.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
@@ -612,6 +638,7 @@
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
 				BB502DD12B23AACC003C22DB /* SubredditUtils.swift in Sources */,
 				BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */,
+				6526B37B2B2A0072009F6B4B /* StarsBlinkingView.swift in Sources */,
 				65D7E8562B23755A003FF5B5 /* SavedModifier.swift in Sources */,
 				BB502DD82B2419AD003C22DB /* ScrapePost.swift in Sources */,
 				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
@@ -620,6 +647,7 @@
 				BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */,
 				65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */,
 				65D3DBCF2B1B52EF00BCCD38 /* RemoveTrackingParams.swift in Sources */,
+				6526B3712B29F0E3009F6B4B /* OnboardingView.swift in Sources */,
 				BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */,
 				65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */,
 				BB8CAE782B1E73B600CA13BB /* CommentView.swift in Sources */,
@@ -819,6 +847,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -858,6 +887,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
