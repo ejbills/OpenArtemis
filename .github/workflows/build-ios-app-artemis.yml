@@ -1,5 +1,8 @@
 name: App build
-on: push
+on:
+  # manual trigger but change to any supported event
+  workflow_dispatch:
+    branches: [main]
 
 jobs:
   build_with_signing:
