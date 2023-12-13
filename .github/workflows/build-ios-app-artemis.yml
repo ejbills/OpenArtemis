@@ -3,7 +3,7 @@ on: push
 
 jobs:
   build_with_signing:
-    runs-on: macos-14
+    runs-on: macos-13
 
     steps:
       - name: Checkout repository
