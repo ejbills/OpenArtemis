@@ -16,7 +16,7 @@ jobs:
         run: /usr/bin/xcodebuild -version
 
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install the Apple certificate and provisioning profile
         env:
@@ -45,8 +45,8 @@ jobs:
 
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles          
-
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          
       - name: build archive
         run: |
           xcodebuild -scheme "OpenArtemis" \
