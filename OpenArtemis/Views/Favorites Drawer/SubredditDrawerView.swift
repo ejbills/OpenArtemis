@@ -89,10 +89,14 @@ struct SubredditDrawerView: View {
                         }
                     }
                 }
+                    .refreshable{
+                        visibleSubredditSections()
+                    }
                 .scrollIndicators(.hidden)
                 .onAppear {
                     visibleSubredditSections()
                 }
+            
                 .overlay(
                     HStack {
                         Spacer()

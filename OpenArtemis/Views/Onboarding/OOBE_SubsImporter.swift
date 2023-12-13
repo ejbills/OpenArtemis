@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OOBE_SubsImporter: View {
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack{
             HStack{
@@ -17,8 +18,14 @@ struct OOBE_SubsImporter: View {
             
             ImageDescription(text: "Search for the text 'multireddit of your subscriptions' and long press it:", image: "screen1")
             ImageDescription(text: "Next Press on Copy link and paste it into the next Sreen", image: "screen2")
-            
+            Button{
+                dismiss()
+            } label: {
+                Label("Skip this Step", systemImage: "pencil")
+                    .labelStyle(.titleOnly)
+            }
             Spacer()
+            
         }
         
     }
