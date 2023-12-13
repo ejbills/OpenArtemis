@@ -44,8 +44,7 @@ jobs:
           -sdk iphoneos \
           -configuration Debug \
           -destination generic/platform=iOS \
-          clean archive \
-          -disableAutomaticPackageResolution
+          clean archive
 
       - name: export ipa
         env:
