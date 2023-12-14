@@ -53,10 +53,12 @@ struct CommentSkipper: ViewModifier {
             let topVisibleCommentIndex = rootComments.map { $0.id }.firstIndex(of: topVisibleCommentId) ?? 0
 
             if topVisibleCommentId == previousScrollTarget {
-                reader.scrollTo(rootComments[topVisibleCommentIndex].id, anchor: .top)
-                previousScrollTarget = rootComments[topVisibleCommentIndex + 1].id
+                let nextIndex = min(topVisibleCommentIndex + 1, rootComments.count - 1)
+                reader.scrollTo(rootComments[nextIndex].id, anchor: .top)
+                previousScrollTarget = nextIndex < rootComments.count - 1 ? rootComments[nextIndex + 1].id : nil
             } else {
-                reader.scrollTo(rootComments[topVisibleCommentIndex + 1].id, anchor: .top)
+                let nextIndex = min(topVisibleCommentIndex + 1, rootComments.count - 1)
+                reader.scrollTo(rootComments[nextIndex].id, anchor: .top)
                 previousScrollTarget = topVisibleCommentId
             }
         }

@@ -24,6 +24,10 @@ struct PostFeedView: View {
                 Text(post.title)
                     .font(.headline)
                 
+                if !post.tag.isEmpty {
+                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
+                }
+                
                 Divider()
                 
                 MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)

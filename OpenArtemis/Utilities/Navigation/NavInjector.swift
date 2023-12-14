@@ -23,64 +23,60 @@ struct HandleDeepLinksDisplay: ViewModifier {
             .navigationDestination(for: PostResponse.self) { response in
                 PostPageView(post: response.post)
             }
-        
-            .navigationDestination(for: SafariResponse.self) { response in
-                //                SafariHelper.openSafariView(withURL: response.url)
-                
-                //                EmptyView()
-                //                    .onAppear {
-                //                        SafariHelper.openSafariView(withURL: response.url)
-                //                    }
-            }
     }
 }
 
-//struct HandleDeepLinkResolution: ViewModifier {
-//    let navigationPath: Binding<NavigationPath>
-//
-//    func body(content: Content) -> some View {
-//        content
-//            .environment(\.openURL, OpenURLAction(handler: handleIncomingURL))
-//    }
-//
-//    @MainActor
-//    func handleIncomingURL(_ url: URL) -> OpenURLAction.Result {
-//        guard url.scheme == "calipso-for-squabbles" else {
-//            return .systemAction
-//        }
-//        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-//            print("Invalid URL")
-//            return .discarded
-//        }
-//
-////        if let action = components.host, action == "embed" {
-////            if let taggedUsername = components.queryItems?.first(where: { $0.name == "name" })?.value {
-////                navigationPath.wrappedValue.append(ProfileResponse(username: taggedUsername))
-////            } else if let taggedCommunity = components.queryItems?.first(where: { $0.name == "community" })?.value {
-////                navigationPath.wrappedValue.append(FeedResponse(community: taggedCommunity))
-////            } else if let taggedPost = components.queryItems?.first(where: { $0.name == "postURL" })?.value {
-////                fetchPost(postURL: taggedPost) { result in
-////                    switch result {
-////                    case .success(let fetchedPost):
-////                        navigationPath.wrappedValue.append(PostResponse(post: fetchedPost))
-////                    case .failure(let error):
-////                        // Handle the error if the fetch fails
-////                        print("Fetch error:", error.localizedDescription)
-////                        navigationPath.wrappedValue.append(ErrorPostResponse(error: error.localizedDescription))
-////                    }
-////                }
-////            }
-////        }
-//        return .handled
-//    }
-//}
+struct HandleDeepLinkResolution: ViewModifier {
+    @EnvironmentObject var coordinator: NavCoordinator
+    
+    func body(content: Content) -> some View {
+        content
+            .environment(\.openURL, OpenURLAction(handler: handleIncomingURL))
+    }
+
+    @MainActor
+    func handleIncomingURL(_ url: URL) -> OpenURLAction.Result {
+        guard URLComponents(url: url, resolvingAgainstBaseURL: true) != nil else {
+            print("Invalid URL")
+            return .discarded
+        }
+
+        if url.absoluteString.starts(with: "openartemis://") {
+            let urlStringWithoutScheme = url.absoluteString.replacingOccurrences(of: "openartemis://", with: "")
+            
+            if urlStringWithoutScheme.hasPrefix("/u/") {
+                if let username = urlStringWithoutScheme.split(separator: "/u/").last {
+                    // handle profile viewing...
+                    print(username)
+                }
+            } else if urlStringWithoutScheme.hasPrefix("/r/") {
+                if let subreddit = urlStringWithoutScheme.split(separator: "/r/").last {
+                    // handle subreddit viewing...
+                    coordinator.path.append(SubredditFeedResponse(subredditName: String(subreddit)))
+                }
+            } else {
+                // handle regular link display in an in-app browser
+                let safariURL = URL(string: "https://" + urlStringWithoutScheme)
+                
+                if let safariURL = safariURL {
+                    SafariHelper.openSafariView(withURL: safariURL)
+                }
+            }
+        } else {
+            // handle link normally if its not an internal (deep) link
+            SafariHelper.openSafariView(withURL: url)
+        }
+
+        return .handled
+    }
+}
 
 extension View {
     func handleDeepLinkViews() -> some View {
         modifier(HandleDeepLinksDisplay())
     }
     
-    //    func handleDeepLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
-    //        modifier(HandleDeepLinkResolution(navigationPath: navigationPath))
-    //    }
+    func handleDeepLinkResolution() -> some View {
+        modifier(HandleDeepLinkResolution())
+    }
 }

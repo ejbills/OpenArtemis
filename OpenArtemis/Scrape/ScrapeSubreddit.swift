@@ -9,31 +9,41 @@ import Foundation
 import SwiftSoup
 
 class RedditScraper {
-    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, 
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SubListingSortOption? = nil,
                                 trackingParamRemover: TrackingParamRemover?,
                                 over18: Bool? = false,
                                 completion: @escaping (Result<[Post], Error>) -> Void) {
         
         // Construct the URL for the Reddit website based on the subreddit
-        guard var urlComponents = URLComponents(string: "\(baseRedditURL)/r/\(subreddit)") else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
-            return
+        var urlComponents = URLComponents(string: "\(baseRedditURL)/r/\(subreddit)")
+        var queryItems = [URLQueryItem]()
+
+        // Add sort path component
+        if let sort = sort {
+            switch sort {
+            case .best, .hot, .new, .controversial:
+                urlComponents?.path += "/\(sort.rawVal.value)"
+            case .top(let topOption):
+                urlComponents?.path += "/top"
+                queryItems.append(URLQueryItem(name: "t", value: topOption.rawValue))
+            }
         }
 
-        // Add parameters to the URL
+        // Add remaining parameters to the URL
+        queryItems.append(URLQueryItem(name: "count", value: basePostCount))
         if let lastPostAfter = lastPostAfter {
-            urlComponents.queryItems = [URLQueryItem(name: "count", value: basePostCount), URLQueryItem(name: "after", value: lastPostAfter)]
-        } else {
-            urlComponents.queryItems = [URLQueryItem(name: "count", value: basePostCount)]
+            queryItems.append(URLQueryItem(name: "after", value: lastPostAfter))
         }
 
-        guard let url = urlComponents.url else {
+        urlComponents?.queryItems = queryItems
+
+        guard let redditURL = urlComponents?.url else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
 
         // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: redditURL) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -52,7 +62,7 @@ class RedditScraper {
                         switch result {
                         case .success:
                             // If the POST request is successful, reload the original URL
-                            scrapeSubreddit(subreddit: subreddit, lastPostAfter: lastPostAfter, trackingParamRemover: trackingParamRemover, completion: completion)
+                            scrapeSubreddit(subreddit: subreddit, lastPostAfter: lastPostAfter, sort: sort, trackingParamRemover: trackingParamRemover, completion: completion)
                         case .failure(let error):
                             completion(.failure(error))
                         }
@@ -99,8 +109,10 @@ class RedditScraper {
                 let id = try postElement.attr("data-fullname")
                 let subreddit = try postElement.attr("data-subreddit")
                 let title = try postElement.select("p.title a.title").text()
+                let tag = try postElement.select("span.linkflairlabel").first()?.text() ?? ""
                 let author = try postElement.attr("data-author")
                 let votes = try postElement.attr("data-score")
+                let time = try postElement.select("time").attr("datetime")
                 let mediaURL = try postElement.attr("data-url")
                 let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
                 
@@ -112,7 +124,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, author: author, votes: votes, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
