@@ -12,6 +12,7 @@ import MarkdownUI
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
+    @Default(.compactMode) var compactMode
     
     let post: Post
     
@@ -32,7 +33,12 @@ struct PostPageView: View {
             ScrollViewReader { reader in
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        PostFeedView(post: post)
+                        if compactMode {
+                            PostFeedView(post: post)
+                                .frame(height: roughCompactHeight + 16) // apply height frame, accounts for padding
+                        } else {
+                            PostFeedView(post: post)
+                        }
                         if let postBody = postBody {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {

@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct DetailTagView: View {
+    @Default(.tagBackground) var tagBackground
+    
     let icon: String?
     let data: String
     let color: Color?
@@ -21,7 +24,7 @@ struct DetailTagView: View {
     }
     
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 6 * (paddingMultiplier ?? 1)) {
             if let iconString = icon {
                 Image(systemName: iconString)
                     .resizable()
@@ -35,6 +38,6 @@ struct DetailTagView: View {
         }
         .padding(.horizontal, 8 * (paddingMultiplier ?? 1))
         .padding(.vertical, 4 * (paddingMultiplier ?? 1))
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color))
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(tagBackground ? 1 : 0))
     }
 }
