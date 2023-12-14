@@ -13,7 +13,6 @@ struct SubredditFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
-    @Default(.compactMode) var compactMode
     
     let subredditName: String
     let titleOverride: String?
