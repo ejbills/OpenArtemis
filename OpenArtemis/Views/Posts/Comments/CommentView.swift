@@ -21,7 +21,7 @@ struct CommentView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(spacing: 4) {
                         DetailTagView(icon: "person", data: comment.author)
                         DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
                         

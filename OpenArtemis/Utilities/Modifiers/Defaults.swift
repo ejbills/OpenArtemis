@@ -10,9 +10,13 @@ import Defaults
 import SwiftUI
 
 extension Defaults.Keys {
+    // MARK: - Theming
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
+    static let compactMode = Key<Bool>("compactMode", default: false)
+    static let tagBackground = Key<Bool>("tagBackground", default: true)
     
+    // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
