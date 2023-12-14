@@ -11,7 +11,6 @@ import Defaults
 private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRemover? = nil) -> Post.PrivateURL {
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     
-    
     @Default(.youtubeRedirect) var youtubeRedirect
     @Default(.twitterRedirect) var twitterRedirect
     @Default(.mediumRedirect) var mediumRedirect
@@ -65,9 +64,66 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
     return Post.PrivateURL(originalURL: dirtyURL, privateURL: privateURL)
 }
 
+
+private func transformedMarkdown(_ string: String, trackingParamRemover: TrackingParamRemover?) -> String {
+    
+    @Default(.showOriginalURL) var showOriginalURL
+    
+    var transformedString = string
+    
+    // Case both sides are the url: [https://www.irunfar.com/2023-big-dogs-backyard-ultra-results](openartemis://www.irunfar.com/2023-big-dogs-backyard-ultra-results)
+    let case2Regex = try! NSRegularExpression(pattern: "\\[https?:\\/\\/[a-zA-Z0-9.\\/?=_-]*\\]\\(openartemis:\\/\\/[a-zA-Z0-9.\\/?=_-]*\\)")
+    // Case url but with text: [Hello World](openartemis://www.irunfar.com/2023-big-dogs-backyard-ultra-results)
+    let case3Regex = try! NSRegularExpression(pattern: "\\[[^https?:\\/\\/].*\\]\\(openartemis:\\/\\/[a-zA-Z0-9.\\/?=_-]*\\)")
+    
+    //Find matches
+    let case2Matches = case2Regex.matches(in: transformedString, options: [], range: NSMakeRange(0, transformedString.count))
+    let case3Matches = case3Regex.matches(in: transformedString, options: [], range: NSMakeRange(0, transformedString.count))
+
+    // - Loop throug the matches
+    // - Get the url from the comment
+    // - make the url private using transformedURL
+    // - reconstruct the text
+    // - replace old text with new text
+    for match in case2Matches {
+        let range = match.range(at: 0)
+        if let swiftRange = Range(range, in: transformedString) {
+            let matchingText = transformedString[swiftRange]
+            let url = String(String(matchingText).split(separator: "(")[1]).replacingOccurrences(of: ")", with: "")
+            let newURL = transformedURL(url, trackingParamRemover: trackingParamRemover)
+            let newText = "[\((showOriginalURL ? newURL.originalURL : newURL.privateURL).replacingOccurrences(of: "openartemis", with: "https"))](\(newURL.privateURL))"
+            transformedString.replaceSubrange(swiftRange, with: newText)
+            
+        }
+    }
+
+    for match in case3Matches {
+        let range = match.range(at: 0)
+        if let swiftRange = Range(range, in: transformedString) {
+            let matchingText = transformedString[swiftRange]
+            let url = String(String(matchingText).split(separator: "(")[1]).replacingOccurrences(of: ")", with: "")
+            let text = String(String(matchingText).split(separator: "]")[0]).replacingOccurrences(of: "[", with: "")
+            let newURL = transformedURL(url, trackingParamRemover: trackingParamRemover)
+            let newText = "[\(text)](\(newURL.privateURL))"
+            transformedString.replaceSubrange(swiftRange, with: newText)
+
+        }
+    }
+    
+    return transformedString
+}
+
+
+
+
+
 extension String {
     func privacyURL(trackingParamRemover: TrackingParamRemover? = nil) -> Post.PrivateURL {
         transformedURL(self,trackingParamRemover: trackingParamRemover)
+    }
+    
+    func detectAndReplacePrivateURLSinMarkdown(trackingParamRemover: TrackingParamRemover? = nil) -> String {
+        transformedMarkdown(self, trackingParamRemover: trackingParamRemover)
     }
 }
 
@@ -82,3 +138,4 @@ func conditionalIncreaseStats(){
         URLsRedirected += 1
     }
 }
+
