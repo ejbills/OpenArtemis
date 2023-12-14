@@ -33,12 +33,7 @@ struct PostPageView: View {
             ScrollViewReader { reader in
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        if compactMode {
-                            PostFeedView(post: post)
-                                .frame(height: roughCompactHeight + 16) // apply height frame, accounts for padding
-                        } else {
-                            PostFeedView(post: post)
-                        }
+                        PostFeedView(post: post)
                         if let postBody = postBody {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {

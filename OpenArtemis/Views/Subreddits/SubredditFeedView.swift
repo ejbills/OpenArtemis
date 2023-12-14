@@ -33,22 +33,15 @@ struct SubredditFeedView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
-                            Group {
-                                if compactMode {
-                                    PostFeedView(post: post)
-                                        .frame(height: roughCompactHeight + 16) // apply height frame, accounts for padding
-                                } else {
-                                    PostFeedView(post: post)
+                            PostFeedView(post: post)
+                                .id(post.id)
+                                .contentShape(Rectangle())
+                                .onAppear {
+                                    handlePostAppearance(post)
                                 }
-                            }
-                            .id(post.id)
-                            .contentShape(Rectangle())
-                            .onAppear {
-                                handlePostAppearance(post)
-                            }
-                            .onTapGesture {
-                                coordinator.path.append(PostResponse(post: post))
-                            }
+                                .onTapGesture {
+                                    coordinator.path.append(PostResponse(post: post))
+                                }
                             
                             DividerView(frameHeight: 10)
                         }

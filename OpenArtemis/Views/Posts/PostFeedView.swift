@@ -34,7 +34,7 @@ struct PostFeedView: View {
                     
                     MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
                     
-                    PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
+                    PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0)
                     
                 } else { // render compact mode
                     HStack {
@@ -54,11 +54,8 @@ struct PostFeedView: View {
                                     DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
                                 }
                                 
-                                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
+                                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0)
                             }
-                            
-                            Spacer()
-                                .padding(.bottom, -16) // push to the top of the vstack, also reclaim the trailing padding
                         }
                         
                         Spacer()
