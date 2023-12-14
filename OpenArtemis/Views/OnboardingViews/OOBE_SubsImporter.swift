@@ -11,13 +11,13 @@ struct OOBE_SubsImporter: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack{
-            HStack{
-                Text("Now if to transfer over your subscriptions from Reddit. Got to https://old.reddit.com/subreddits/")
+           HStack {
+                Text("Now, transfer your subscriptions from Reddit by visiting https://old.reddit.com/subreddits/")
                     .padding()
             }
             
-            ImageDescription(text: "Search for the text 'multireddit of your subscriptions' and long press it:", image: "screen1")
-            ImageDescription(text: "Next Press on Copy link and paste it into the next Sreen", image: "screen2")
+            ImageDescription(text: "Search for the text 'multireddit of your subscriptions' and long-press it:", image: "screen1")
+            ImageDescription(text: "Next, press on 'Copy link' and paste it into the next screen:", image: "screen2")
             Button{
                 dismiss()
             } label: {
