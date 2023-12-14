@@ -15,6 +15,8 @@ let basePostCount = "25"
 // Screen defaults
 let roughWidth = UIScreen.main.bounds.width * 0.90
 let roughHeight = UIScreen.main.bounds.height * 0.45
+let roughCompactWidth = UIScreen.main.bounds.width * 0.20
+let roughCompactHeight = roughCompactWidth // this is because we want to force it to be a square
 extension UIScreen {
   static let screenWidth = UIScreen.main.bounds.size.width
   static let screenHeight = UIScreen.main.bounds.size.height

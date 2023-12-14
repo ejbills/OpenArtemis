@@ -11,6 +11,7 @@ import Defaults
 
 struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Default(.compactMode) var compactMode
     
     let post: Post
     @State private var mediaSize: CGSize = .zero
@@ -21,23 +22,52 @@ struct PostFeedView: View {
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 8) {
-                Text(post.title)
-                    .font(.headline)
-                
-                if !post.tag.isEmpty {
-                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
+                if !compactMode { // render normally
+                    Text(post.title)
+                        .font(.headline)
+                    
+                    if !post.tag.isEmpty {
+                        DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
+                    }
+                    
+                    Divider()
+                    
+                    MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+                    
+                    PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
+                    
+                } else { // render compact mode
+                    HStack {
+                        VStack {
+                            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+                                .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
+                            
+                            Spacer()
+                                .padding(.bottom, -16) // push to the top of the vstack, also reclaim the trailing padding
+                        }
+                        
+                        VStack {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(post.title)
+                                
+                                if !post.tag.isEmpty {
+                                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25), paddingMultiplier: 0.5)
+                                }
+                                
+                                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
+                            }
+                            
+                            Spacer()
+                                .padding(.bottom, -16) // push to the top of the vstack, also reclaim the trailing padding
+                        }
+                        
+                        Spacer()
+                    }
                 }
-                
-                Divider()
-                
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
-                
-                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
             }
-            .padding(8)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: UIColor.systemBackground))
-        }        
+        }
+        .padding(8)
+        .background(Color(uiColor: UIColor.systemBackground))
         .onAppear {
             if !hasAppeared {
                 isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil

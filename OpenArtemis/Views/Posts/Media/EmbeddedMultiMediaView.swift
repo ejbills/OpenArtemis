@@ -13,6 +13,7 @@ import CachedImage
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Default(.showOriginalURL) private var showOriginalURL
+    @Default(.compactMode) var compactMode
     
     let determinedType: String
     let mediaURL: Post.PrivateURL
@@ -22,43 +23,63 @@ struct EmbeddedMultiMediaView: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
+            // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
+            let mediaHeight = compactMode ? roughCompactHeight : 50
+            let mediaWidth = compactMode ? roughCompactWidth : 50
+            let mediaIcon = determinedType == "video" ? "play.square.fill" : (determinedType == "gallery" ? "photo.on.rectangle" : "safari")
+            
             if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
-                AsyncImage(url: formattedThumbnailURL) { image in
-                    image
+                CachedImage(
+                    url: formattedThumbnailURL,
+                    content: { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: mediaWidth, height: mediaHeight)
+                            .cornerRadius(6)
+                    },
+                    placeholder: {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .frame(width: mediaWidth, height: mediaHeight)
+                            .cornerRadius(6)
+                            .animatedLoading()
+                    }
+                )
+                .overlay {
+                    Image(systemName: mediaIcon)
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(6)
-                } placeholder: {
-                    Color.gray
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(6)
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color.white.opacity(0.75))
+                        .padding(4)
                 }
             } else {
                 Image(systemName: "link")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 50)
+                    .frame(width: mediaWidth, height: mediaHeight)
                     .foregroundColor(.blue)
             }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Open \(determinedType) media")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .lineLimit(1)
-                    .foregroundColor(.primary)
-
-              Text(showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
-                    .font(.callout)
-                    .foregroundColor(.secondary)
-                    .lineLimit(2)
-                    .italic()
+            if !compactMode {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Open \(determinedType) media")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                        .foregroundColor(.primary)
+                    
+                    Text(showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
+                        .font(.callout)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .italic()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(6)
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor))
+        .padding(compactMode ? 0 : 6) // less spacing in compact ^.^
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor).opacity(compactMode ? 0 : 1))
         .onTapGesture {
             if !isLoading {
                 withAnimation {

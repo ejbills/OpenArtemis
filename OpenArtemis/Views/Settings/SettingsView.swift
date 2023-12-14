@@ -11,6 +11,8 @@ import Defaults
 struct SettingsView: View {
     @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
+    @Default(.compactMode) var compactMode
+    @Default(.tagBackground) var tagBackground
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
@@ -46,6 +48,8 @@ struct SettingsView: View {
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }
                 ColorPicker("Accent Color", selection: $accentColor)
+                Toggle("Compact mode", isOn: $compactMode)
+                Toggle("Show tags with background", isOn: $tagBackground)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {
                     HStack{
