@@ -19,6 +19,10 @@
 		6504FCA72B247A1E00598EFF /* (null) in Sources */ = {isa = PBXBuildFile; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
+		6504FCA42B24789500598EFF /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6504FCA32B24789500598EFF /* ShareSheet.swift */; };
+		6504FCA72B247A1E00598EFF /* (null) in Sources */ = {isa = PBXBuildFile; };
+		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
+		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
 		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
@@ -100,13 +104,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6526B3702B29F0E3009F6B4B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		6526B3742B29F123009F6B4B /* OOBE_WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_WelcomeView.swift; sourceTree = "<group>"; };
-		6526B3762B29F1AD009F6B4B /* OOBE_PrivacySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_PrivacySelector.swift; sourceTree = "<group>"; };
-		6526B3782B29F1CF009F6B4B /* OOBE_SubsImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOBE_SubsImporter.swift; sourceTree = "<group>"; };
-		6526B37A2B2A0072009F6B4B /* StarsBlinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarsBlinkingView.swift; sourceTree = "<group>"; };
-		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
-		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
@@ -224,7 +221,6 @@
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
-				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				6504FCA32B24789500598EFF /* ShareSheet.swift */,
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 			);

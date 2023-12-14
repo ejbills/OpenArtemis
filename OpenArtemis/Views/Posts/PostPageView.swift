@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Defaults
+import MarkdownUI
 
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -41,8 +42,7 @@ struct PostPageView: View {
                                     Spacer()
                                 }
                                 
-                                Text(postBody)
-                                    .font(.body)
+                                Markdown(postBody)
                             }
                             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                             .background(tagBgColor)
@@ -60,14 +60,6 @@ struct PostPageView: View {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
                                                     CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
-                                        
-                                        // next comment tracker
-                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
-                                            view.anchorPreference(
-                                                key: CommentUtils.AnchorsKey.self,
-                                                value: .center
-                                            ) { [comment.id: $0] }
-                                        }
                                         .frame(maxWidth: .infinity)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                         .padding(.vertical, 4)
@@ -114,6 +106,13 @@ struct PostPageView: View {
                                     }))
                                     DividerView(frameHeight: 1)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
+                                        // next comment tracker
+                                        .if(rootComments.firstIndex(of: comment) != nil) { view in
+                                            view.anchorPreference(
+                                                key: CommentUtils.AnchorsKey.self,
+                                                value: .center
+                                            ) { [comment.id: $0] }
+                                        }
                                 }
                             }
                         } else {
