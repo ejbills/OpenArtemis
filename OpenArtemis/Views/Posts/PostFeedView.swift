@@ -10,8 +10,8 @@ import CoreData
 import Defaults
 
 struct PostFeedView: View {
-    @Environment(\.managedObjectContext) private var managedObjectContext
-    @Default(.compactMode) private var compactMode
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @Default(.compactMode) var compactMode
     
     let post: Post
     @State private var mediaSize: CGSize = .zero
