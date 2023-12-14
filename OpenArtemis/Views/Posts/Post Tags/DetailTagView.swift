@@ -36,7 +36,7 @@ struct DetailTagView: View {
                 .font(.footnote)
                 .lineLimit(1)
         }
-        .padding(.horizontal, 8 * (paddingMultiplier ?? 1))
+        .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
         .padding(.vertical, 4 * (paddingMultiplier ?? 1))
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(tagBackground ? 1 : 0))
     }
