@@ -12,7 +12,6 @@ import MarkdownUI
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
-    @Default(.compactMode) var compactMode
     
     let post: Post
     
