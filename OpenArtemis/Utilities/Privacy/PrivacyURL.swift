@@ -25,29 +25,29 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
             
             //TwitterA
         case let str where str.contains("twitter.com"):
-            privateURL = str.replacingOccurrences(of: "twitter.com", with: twitterRedirect) //Instance located in the Netherlands
+            privateURL = str.replacingOccurrences(of: "twitter.com", with: twitterRedirect == "" ? "twitter.com" : twitterRedirect) //Instance located in the Netherlands
             conditionalIncreaseStats()
         case let str where str.contains("x.com"):
-            privateURL = str.replacingOccurrences(of: "x.com", with: twitterRedirect)
+            privateURL = str.replacingOccurrences(of: "x.com", with: twitterRedirect == "" ? "x.com" : twitterRedirect)
             conditionalIncreaseStats()
             //Youtube
         case let str where str.contains("youtube.com"):
-            privateURL = str.replacingOccurrences(of: "youtube.com", with: youtubeRedirect).replacingOccurrences(of: "www.", with: "") //Instance located in the Netherlands
+            privateURL = str.replacingOccurrences(of: "youtube.com", with: youtubeRedirect == "" ? "youtube.com" : youtubeRedirect).replacingOccurrences(of: "www.", with: "") //Instance located in the Netherlands
             conditionalIncreaseStats()
         case let str where str.contains("youtu.be"):
-            privateURL = str.replacingOccurrences(of: "youtu.be/", with: "\(youtubeRedirect)/watch?v=")
+            privateURL = str.replacingOccurrences(of: "youtu.be/", with: "\(youtubeRedirect == "" ? "youtube.com" : youtubeRedirect)/watch?v=")
             conditionalIncreaseStats()
             
             //Medium
         case let str where str.contains("medium.com"):
-            privateURL = str.replacingOccurrences(of: "medium.com", with: mediumRedirect) //Instance located in the Netherlands
+            privateURL = str.replacingOccurrences(of: "medium.com", with: mediumRedirect == "" ? "medium.com" : mediumRedirect) //Instance located in the Netherlands
             conditionalIncreaseStats()
             
             //Imgur
         case let str where str.contains(try! Regex("i.imgur.com/[a-zA-Z0-9]*.gifv")):
             privateURL = str
-                .replacingOccurrences(of: "i.imgur.com", with: imgurRedirect) //rimgo.hostux.net is a french instance provided by Gandi.net
-                .replacingOccurrences(of: ".gifv", with: ".mp4")
+                .replacingOccurrences(of: "i.imgur.com", with: imgurRedirect == "" ? "i.imgur.com" : imgurRedirect) //rimgo.hostux.net is a french instance provided by Gandi.net
+                .replacingOccurrences(of: ".gifv", with: imgurRedirect == "" ? ".gifv" : ".mp4")
             conditionalIncreaseStats()
             
             //If it cant match it just returns the url
