@@ -51,7 +51,7 @@ struct PostFeedView: View {
                                 Text(post.title)
                                 
                                 if !post.tag.isEmpty {
-                                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25), paddingMultiplier: 0.5)
+                                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
                                 }
                                 
                                 PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
