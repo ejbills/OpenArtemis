@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkdownUI
 
 struct CommentView: View {
     var comment: Comment
@@ -28,21 +29,13 @@ struct CommentView: View {
                         DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]")
                         
                         if comment.isRootCollapsed {
-                            HStack{
-                                Text("\(numberOfChildren)")
-                                    .foregroundStyle(.white)
-                                    .padding(1)
-                                    .padding(.horizontal, 2.5)
-                                    .background(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)).foregroundStyle(Color(uiColor: UIColor.systemGray4)))
-                                Image(systemName: "chevron.down")
-                                    .opacity(0.3)
-                            }
+                            DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)")
                         }
                         
                     }
                     
                     if !comment.isRootCollapsed {
-                        Text(comment.body)
+                        Markdown(comment.body)
                     }
                 }
             }            

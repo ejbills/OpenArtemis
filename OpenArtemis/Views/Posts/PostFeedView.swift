@@ -16,14 +16,17 @@ struct PostFeedView: View {
     @State private var mediaSize: CGSize = .zero
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
-    @State private var isShareSheetPresented: Bool = false // New state to control the share sheet presentation
-
+    
     
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 8) {
                 Text(post.title)
                     .font(.headline)
+                
+                if !post.tag.isEmpty {
+                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
+                }
                 
                 Divider()
                 
@@ -44,9 +47,10 @@ struct PostFeedView: View {
         .savedIndicator(isSaved)
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                withAnimation{
-                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
-                }
+                    withAnimation{
+                        isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                    }
+                
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
@@ -54,10 +58,6 @@ struct PostFeedView: View {
             }),
             secondaryTrailingAction: nil
         )
-        .sheet(isPresented: $isShareSheetPresented) {
-                    // Share sheet content
-                    ShareSheet(activityItems: [post.commentsURL])
-        }
         
     }
 }

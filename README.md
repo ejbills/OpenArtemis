@@ -11,7 +11,42 @@ OpenArtemis is a privacy-focused, read-only web scraping Reddit client built wit
 - **Read-Only:** OpenArtemis operates in a read-only mode, ensuring that users cannot log in. All data, including local subreddit favorites, comment and post favorites, and the home feed, is stored locally.
 - **Open Source:** Contributions are welcome! Feel free to suggest improvements, report bugs, or add new features.
 
-## Getting Started
+## Discord
+
+Chat with us on your [discord server](https://discord.gg/4b9H8BtF2C).
+
+## How do I open a feature request or a bug report?
+*Please note, we use github issues to track both bug reports and feature requests! To do so, simply navigate to the Issues tab on the GitHub repository, click on the "New Issue" button, and use the provided template to fill in the details.*
+
+### Opening a Feature Request:
+Title: FR: Add support for user-customized themes
+
+Description:
+I would like to propose the addition of a feature that allows users to customize the app's theme colors according to their preferences. This would enhance the overall user experience and provide a more personalized feel to the app.
+
+### Opening a Bug Report Issue:
+Title: BUG: App crashes when navigating to a specific subreddit
+
+Description:
+I encountered a bug where the app crashes consistently when attempting to navigate to the "example" subreddit. This issue occurs every time I try to access that specific subreddit, and it's affecting my overall experience with the app.
+
+Steps to Reproduce:
+
+    Open the app.
+    Navigate to the "example" subreddit.
+
+Expected Behavior:
+The app should navigate to the selected subreddit without any issues.
+
+Actual Behavior:
+The app crashes immediately upon attempting to access the "example" subreddit.
+
+Additional Information:
+
+    Device: iPhone X
+    iOS Version: 15.0
+
+## Getting Started for Contributing to OpenArtemis
 To contribute to OpenArtemis, follow these steps:
 
 ### Prerequisites
