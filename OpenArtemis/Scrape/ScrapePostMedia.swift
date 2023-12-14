@@ -8,6 +8,7 @@
 import Foundation
 import SwiftSoup
 import SwiftHTMLtoMarkdown
+import Defaults
 
 private let invalidURLError = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 private let noDataError = NSError(domain: "No data received", code: 0, userInfo: nil)
@@ -22,7 +23,7 @@ extension RedditScraper {
             
             var document = BasicHTML(rawHTML: modifiedHtmlBody)
             try document.parse()
-            body = try document.asMarkdown().detectAndReplacePrivateURLSinMarkdown(trackingParamRemover: trackingParamRemover)
+            body = try document.asMarkdown()
         }
         
         return body
@@ -50,6 +51,7 @@ extension RedditScraper {
             }
 
             do {
+                
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
 
@@ -111,7 +113,7 @@ extension RedditScraper {
                 
                 var document = BasicHTML(rawHTML: modifiedHtmlBody)
                 try document.parse()
-                body = try document.asMarkdown().detectAndReplacePrivateURLSinMarkdown(trackingParamRemover: trackingParamRemover)
+                body = try document.asMarkdown()
             }
             
             // check for stickied tag
@@ -150,14 +152,17 @@ func redditLinksToInternalLinks(_ element: Element) throws -> String {
 
         for link in links.array() {
             let originalHref = try link.attr("href")
+    
             if originalHref.hasPrefix("/r/") || originalHref.hasPrefix("/u/") {
                 try link.attr("href", "openartemis://\(originalHref)")
             } else {
-                let trimmedHref = originalHref.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
+                let trimmedHref = originalHref.privacyURL().privateURL.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
+                if !Defaults[.showOriginalURL] {
+                    try link.text(originalHref.replacingOccurrences(of: "https:\\/\\/[a-zA-Z-0-9.\\/?=_\\-\\:]*", with: originalHref.privacyURL().privateURL, options: .regularExpression))
+                }
                 try link.attr("href", "openartemis://\(trimmedHref)")
             }
         }
-
         return try element.html()
     } catch {
         throw error
