@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6504FCA72B247A1E00598EFF /* (null) in Sources */ = {isa = PBXBuildFile; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
+		653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */; };
+		653245C22B2AF5D500227019 /* OOBE_SubsImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BD2B2AF5D500227019 /* OOBE_SubsImporter.swift */; };
+		653245C32B2AF5D500227019 /* StarsBlinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BE2B2AF5D500227019 /* StarsBlinkingView.swift */; };
+		653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */; };
+		653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245C02B2AF5D500227019 /* OnboardingView.swift */; };
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
 		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
@@ -93,6 +97,11 @@
 /* Begin PBXFileReference section */
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
+		653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_PrivacySelector.swift; sourceTree = "<group>"; };
+		653245BD2B2AF5D500227019 /* OOBE_SubsImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_SubsImporter.swift; sourceTree = "<group>"; };
+		653245BE2B2AF5D500227019 /* StarsBlinkingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarsBlinkingView.swift; sourceTree = "<group>"; };
+		653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_WelcomeView.swift; sourceTree = "<group>"; };
+		653245C02B2AF5D500227019 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
@@ -193,6 +202,18 @@
 			path = Privacy;
 			sourceTree = "<group>";
 		};
+		653245BB2B2AF5C000227019 /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				653245C02B2AF5D500227019 /* OnboardingView.swift */,
+				653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */,
+				653245BD2B2AF5D500227019 /* OOBE_SubsImporter.swift */,
+				653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */,
+				653245BE2B2AF5D500227019 /* StarsBlinkingView.swift */,
+			);
+			path = OnboardingViews;
+			sourceTree = "<group>";
+		};
 		65A3329D2B1DED5500421162 /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +264,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				653245BB2B2AF5C000227019 /* OnboardingViews */,
 				6504FCA52B247A1400598EFF /* Privacy */,
 				BBE434822B1C0D0000886CAB /* Favorites Drawer */,
 				65D3DBB72B1B20E100BCCD38 /* Settings */,
@@ -584,6 +606,7 @@
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
+				653245C32B2AF5D500227019 /* StarsBlinkingView.swift in Sources */,
 				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
 				BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
@@ -594,14 +617,16 @@
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
+				653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */,
 				65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */,
+				653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */,
 				65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */,
 				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
-				6504FCA72B247A1E00598EFF /* (null) in Sources */,
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
 				BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
+				653245C22B2AF5D500227019 /* OOBE_SubsImporter.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
@@ -635,6 +660,7 @@
 				652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */,
+				653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */,
 				BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */,
@@ -816,7 +842,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = TCHY3UX6JP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
@@ -827,6 +853,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -855,7 +882,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = TCHY3UX6JP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
@@ -866,6 +893,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

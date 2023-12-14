@@ -8,12 +8,13 @@
 import Foundation
 import SwiftSoup
 import SwiftHTMLtoMarkdown
+import Defaults
 
 private let invalidURLError = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 private let noDataError = NSError(domain: "No data received", code: 0, userInfo: nil)
 
 extension RedditScraper {
-    private static func parseUserTextBody(data: Document) throws -> String? {
+    private static func parseUserTextBody(data: Document, trackingParamRemover: TrackingParamRemover) throws -> String? {
         let postBody = try data.select("div.expando").first()
         
         var body: String? = nil
@@ -28,7 +29,7 @@ extension RedditScraper {
         return body
     }
 
-    static func scrapeComments(commentURL: String, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
+    static func scrapeComments(commentURL: String,trackingParamRemover: TrackingParamRemover, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
         let url = URL(string: commentURL)!
         var request = URLRequest(url: url)
         request.setValue("text/html", forHTTPHeaderField: "Accept")
@@ -50,11 +51,12 @@ extension RedditScraper {
             }
 
             do {
+                
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
 
-                let comments = try parseCommentsData(data: doc)
-                let postBody = try parseUserTextBody(data: doc)
+                let comments = try parseCommentsData(data: doc, trackingParamRemover: trackingParamRemover)
+                let postBody = try parseUserTextBody(data: doc, trackingParamRemover: trackingParamRemover)
 
                 completion(.success((comments: comments, postBody: postBody)))
             } catch {
@@ -81,7 +83,7 @@ extension RedditScraper {
 
     }
     
-    private static func parseCommentsData(data: Document) throws -> [Comment] {
+    private static func parseCommentsData(data: Document, trackingParamRemover: TrackingParamRemover) throws -> [Comment] {
         var comments: [Comment] = []
         var commentIDs = Set<String>()
         
@@ -150,14 +152,17 @@ func redditLinksToInternalLinks(_ element: Element) throws -> String {
 
         for link in links.array() {
             let originalHref = try link.attr("href")
+    
             if originalHref.hasPrefix("/r/") || originalHref.hasPrefix("/u/") {
                 try link.attr("href", "openartemis://\(originalHref)")
             } else {
-                let trimmedHref = originalHref.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
+                let trimmedHref = originalHref.privacyURL().privateURL.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
+                if !Defaults[.showOriginalURL] {
+                    try link.text(originalHref.replacingOccurrences(of: "https:\\/\\/[a-zA-Z-0-9.\\/?=_\\-\\:]*", with: originalHref.privacyURL().privateURL, options: .regularExpression))
+                }
                 try link.attr("href", "openartemis://\(trimmedHref)")
             }
         }
-
         return try element.html()
     } catch {
         throw error

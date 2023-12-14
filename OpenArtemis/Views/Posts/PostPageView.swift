@@ -26,6 +26,7 @@ struct PostPageView: View {
     @State var previousScrollTarget: String? = nil
     
     @State private var postLoaded: Bool = false
+    @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
     var body: some View {
         GeometryReader{ proxy in
@@ -141,7 +142,7 @@ struct PostPageView: View {
         .navigationTitle("\(comments.count) Comments")
         .onAppear {
             if comments.isEmpty {
-                scrapeComments(post.commentsURL)
+                scrapeComments(post.commentsURL,trackingParamRemover: trackingParamRemover)
             }
             
             if !postLoaded {
@@ -157,10 +158,10 @@ struct PostPageView: View {
         }
     }
     
-    private func scrapeComments(_ commentsURL: String) {
+    private func scrapeComments(_ commentsURL: String, trackingParamRemover: TrackingParamRemover) {
         self.isLoading = true
         
-        RedditScraper.scrapeComments(commentURL: commentsURL) { result in
+        RedditScraper.scrapeComments(commentURL: commentsURL, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let result):
                 withAnimation(.smooth) {

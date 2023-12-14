@@ -24,6 +24,8 @@ extension Defaults.Keys {
     
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
     
+    static let showingOOBE = Key<Bool>("showingOOBE", default: true)
+    
     
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
