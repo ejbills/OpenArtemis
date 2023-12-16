@@ -8,7 +8,7 @@
 import SwiftUI
 import MarkdownUI
 
-struct CommentView: View {
+struct CommentView: View {    
     var comment: Comment
     var numberOfChildren: Int
     var body: some View {
@@ -44,6 +44,6 @@ struct CommentView: View {
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
-        .background(Color(uiColor: UIColor.systemBackground))
+        .themedBackground()
     }
 }

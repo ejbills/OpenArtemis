@@ -16,7 +16,7 @@ struct PrivacyTab: View {
     @Default(.URLsRedirected) var URLsRedirected
     
     var body: some View {
-        List {
+        ThemedList {
             
             if trackStats {
                 Section{

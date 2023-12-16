@@ -27,5 +27,6 @@ struct NavigationStackWrapper<Content: View>: View {
         }
         .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
+        
     }
 }

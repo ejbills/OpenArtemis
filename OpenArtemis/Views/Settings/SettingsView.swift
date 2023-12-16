@@ -11,8 +11,11 @@ import Defaults
 struct SettingsView: View {
     @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
+    @Default(.darkBackground) var darkBackground
+    @Default(.lightBackground) var lightBackground
     @Default(.compactMode) var compactMode
     @Default(.tagBackground) var tagBackground
+    @Default(.showAuthor) var showAuthor
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
@@ -36,7 +39,7 @@ struct SettingsView: View {
     @State var toastTitle: String = "Success!"
     @State var toastIcon: String = "checkmark.circle.fill"
     var body: some View {
-        List{
+        ThemedList {
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
                     preferredThemeMode
@@ -48,8 +51,11 @@ struct SettingsView: View {
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }
                 ColorPicker("Accent Color", selection: $accentColor)
+                ColorPicker("Light Mode Background Color", selection: $lightBackground)
+                ColorPicker("Dark Mode Background Color", selection: $darkBackground)
                 Toggle("Compact mode", isOn: $compactMode)
                 Toggle("Show tags with background", isOn: $tagBackground)
+                Toggle("Show author tag on posts", isOn: $showAuthor)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {
                     HStack{

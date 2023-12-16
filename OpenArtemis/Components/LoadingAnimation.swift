@@ -34,5 +34,6 @@ struct LoadingAnimation: View {
                 .foregroundStyle(.secondary)
         }
         .padding()
+        .themedBackground(isDarker: true)
     }
 }

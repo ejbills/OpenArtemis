@@ -32,6 +32,7 @@ struct SearchView: View {
             Spacer()
         }
         .padding()
+        .themedBackground(isDarker: true)
     }
     
     private func goToSubreddit() {

@@ -26,7 +26,7 @@ struct SubredditDrawerView: View {
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                List {
+                ThemedList {
                     Section(header: Text("Defaults")) {
                         DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
                             .background(
@@ -96,7 +96,6 @@ struct SubredditDrawerView: View {
                 .onAppear {
                     visibleSubredditSections()
                 }
-            
                 .overlay(
                     HStack {
                         Spacer()

@@ -11,6 +11,7 @@ import SwiftUI
 struct PostDetailsView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Default(.compactMode) var compactMode
+    @Default(.showAuthor) var showAuthor
     
     let postAuthor: String
     let subreddit: String
@@ -19,7 +20,9 @@ struct PostDetailsView: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            DetailTagView(icon: "person", data: postAuthor)
+            if showAuthor {
+                DetailTagView(icon: "person", data: postAuthor)
+            }
             
             DetailTagView(icon: "location", data: subreddit)
                 .onTapGesture {

@@ -13,7 +13,7 @@ struct OOBE_PrivacySelector: View {
             .padding(.top, 8)
             .padding(.horizontal)
             .opacity(0.8)
-        List{
+        ThemedList {
             RedirectWebsitesView()
             RemoveTrackinParamsView()
         }

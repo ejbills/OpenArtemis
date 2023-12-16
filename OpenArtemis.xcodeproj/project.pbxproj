@@ -24,7 +24,7 @@
 		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
 		65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */; };
 		65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBB2B1B212800BCCD38 /* Defaults.swift */; };
-		65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */; };
+		65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBD2B1B228300BCCD38 /* ThemeColors.swift */; };
 		65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */; };
 		65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */; };
 		65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBCA2B1B3DAC00BCCD38 /* PrivacyURL.swift */; };
@@ -43,8 +43,8 @@
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
 		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
 		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
+		BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
-		BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA12B1ADD140014FB18 /* DividerView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
 		BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA52B1ADD540014FB18 /* DetailTagView.swift */; };
 		BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */; };
@@ -112,7 +112,7 @@
 		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
 		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		65D3DBBB2B1B212800BCCD38 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
-		65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorModifier.swift; sourceTree = "<group>"; };
+		65D3DBBD2B1B228300BCCD38 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeAppIconView.swift; sourceTree = "<group>"; };
 		65D3DBC72B1B296E00BCCD38 /* AppIconManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconManager.swift; sourceTree = "<group>"; };
 		65D3DBCA2B1B3DAC00BCCD38 /* PrivacyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyURL.swift; sourceTree = "<group>"; };
@@ -130,8 +130,8 @@
 		65F5959B2B1F188B005BE493 /* ColorFromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFromHex.swift; sourceTree = "<group>"; };
 		65F5959D2B1F3A54005BE493 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		65F5959F2B1F3A69005BE493 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
+		BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme Wrappers.swift"; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
-		BB391FA12B1ADD140014FB18 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		BB391FA52B1ADD540014FB18 /* DetailTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTagView.swift; sourceTree = "<group>"; };
 		BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedMultiMediaView.swift; sourceTree = "<group>"; };
@@ -261,9 +261,18 @@
 			path = OpenArtemisTests;
 			sourceTree = "<group>";
 		};
+		BB3387012B2C171200EF4D5C /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BB3387012B2C171200EF4D5C /* Themes */,
 				653245BB2B2AF5C000227019 /* OnboardingViews */,
 				6504FCA52B247A1400598EFF /* Privacy */,
 				BBE434822B1C0D0000886CAB /* Favorites Drawer */,
@@ -290,7 +299,6 @@
 			isa = PBXGroup;
 			children = (
 				BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */,
-				BB391FA12B1ADD140014FB18 /* DividerView.swift */,
 				BB391FA22B1ADD140014FB18 /* SearchView.swift */,
 			);
 			path = Subreddits;
@@ -351,7 +359,7 @@
 				65D3DBBB2B1B212800BCCD38 /* Defaults.swift */,
 				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
 				BB391FC12B1ADE700014FB18 /* SizeModifier.swift */,
-				65D3DBBD2B1B228300BCCD38 /* AccentColorModifier.swift */,
+				65D3DBBD2B1B228300BCCD38 /* ThemeColors.swift */,
 				65D3DBCC2B1B4DCF00BCCD38 /* MediaURL.swift */,
 				BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */,
 				65EFE40A2B1CC37F00517EBE /* If.swift */,
@@ -623,9 +631,8 @@
 				65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */,
 				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
-				BB391FA32B1ADD140014FB18 /* DividerView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
-				65D3DBBE2B1B228300BCCD38 /* AccentColorModifier.swift in Sources */,
+				65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */,
 				653245C22B2AF5D500227019 /* OOBE_SubsImporter.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
@@ -649,6 +656,7 @@
 				BB502DD82B2419AD003C22DB /* ScrapePost.swift in Sources */,
 				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
 				BBE434772B1BE35F00886CAB /* PersistenceController.swift in Sources */,
+				BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */,
 				BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */,
 				BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */,
 				65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */,
