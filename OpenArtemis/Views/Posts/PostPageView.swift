@@ -11,7 +11,6 @@ import MarkdownUI
 
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.colorScheme) private var colorScheme
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post

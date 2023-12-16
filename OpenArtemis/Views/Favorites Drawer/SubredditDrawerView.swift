@@ -96,14 +96,13 @@ struct SubredditDrawerView: View {
                 .onAppear {
                     visibleSubredditSections()
                 }
-            
-//                .overlay(
-//                    HStack {
-//                        Spacer()
-//                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
-//                            .padding(.trailing, 4)
-//                    }
-//                )
+                .overlay(
+                    HStack {
+                        Spacer()
+                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
+                            .padding(.trailing, 4)
+                    }
+                )
             }
         }
         .navigationTitle("Favorites")

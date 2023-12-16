@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ThemedList<Content: View>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     let content: () -> Content
 
     init(@ViewBuilder content: @escaping () -> Content) {
@@ -26,9 +24,7 @@ struct ThemedList<Content: View>: View {
     }
 }
 
-struct ThemedScrollView<Content: View>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
+struct ThemedScrollView<Content: View>: View {    
     let content: () -> Content
 
     init(@ViewBuilder content: @escaping () -> Content) {

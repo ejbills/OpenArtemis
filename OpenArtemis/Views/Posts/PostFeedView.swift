@@ -11,7 +11,6 @@ import Defaults
 
 struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.colorScheme) private var colorScheme
     @Default(.compactMode) var compactMode
     
     let post: Post
@@ -63,9 +62,7 @@ struct PostFeedView: View {
             if !post.tag.isEmpty {
                 DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
             }
-            
-            Divider()
-            
+                        
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
             
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0)

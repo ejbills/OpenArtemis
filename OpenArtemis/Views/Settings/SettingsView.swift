@@ -55,7 +55,7 @@ struct SettingsView: View {
                 ColorPicker("Dark Mode Background Color", selection: $darkBackground)
                 Toggle("Compact mode", isOn: $compactMode)
                 Toggle("Show tags with background", isOn: $tagBackground)
-                Toggle("Show author tag", isOn: $showAuthor)
+                Toggle("Show author tag on posts", isOn: $showAuthor)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {
                     HStack{

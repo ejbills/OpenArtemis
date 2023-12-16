@@ -8,9 +8,7 @@
 import SwiftUI
 import MarkdownUI
 
-struct CommentView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
+struct CommentView: View {    
     var comment: Comment
     var numberOfChildren: Int
     var body: some View {
