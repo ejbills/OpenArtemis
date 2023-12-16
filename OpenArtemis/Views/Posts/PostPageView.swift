@@ -11,6 +11,7 @@ import MarkdownUI
 
 struct PostPageView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) private var colorScheme
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
@@ -52,7 +53,7 @@ struct PostPageView: View {
                             .padding(.bottom, 8)
                         }
                         
-                        DividerView(frameHeight: 10)
+                        Divider()
                         
                         if !comments.isEmpty {
                             ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
@@ -63,9 +64,8 @@ struct PostPageView: View {
                                                     CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
                                         .frame(maxWidth: .infinity)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
-                                        .padding(.vertical, 4)
                                     }
-                                    .background(Color.themeBackgroundColor.darker(by: 3))
+                                    .themedBackground(isDarker: true)
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
                                         withAnimation(.smooth(duration: 0.35)) {
@@ -105,7 +105,7 @@ struct PostPageView: View {
                                     .contextMenu(ContextMenu(menuItems: {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     }))
-                                    DividerView(frameHeight: 1)
+                                    Divider()
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                         // next comment tracker
                                         .if(rootComments.firstIndex(of: comment) != nil) { view in
@@ -120,7 +120,7 @@ struct PostPageView: View {
                             LoadingAnimation(loadingText: "Loading comments...")
                         }
                     }
-                    .background(Color.themeBackgroundColor)
+                    .themedBackground()
                 }
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,
@@ -136,8 +136,6 @@ struct PostPageView: View {
                 }
             }
         }
-        .frame(maxWidth: UIScreen.main.bounds.width,
-               maxHeight: UIScreen.main.bounds.height) // prevents animated comment loading from twitching
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("\(comments.count) Comments")

@@ -9,6 +9,8 @@ import SwiftUI
 import MarkdownUI
 
 struct CommentView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     var comment: Comment
     var numberOfChildren: Int
     var body: some View {
@@ -44,6 +46,6 @@ struct CommentView: View {
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
-        .background(Color.themeBackgroundColor)
+        .themedBackground()
     }
 }

@@ -12,6 +12,7 @@ import Defaults
 struct OpenArtemisApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Default(.preferredThemeMode) var preferredThemeMode
+    @Environment(\.colorScheme) private var colorScheme
     
     //TrackingParamRemover as Environment Object so it loads / downloads the tracking params list only once and doesnt unload / load them all the time
     @ObservedObject private var trackingParamRemover = TrackingParamRemover()
@@ -55,7 +56,6 @@ struct OpenArtemisApp: App {
             }
             .accentColor(Color.artemisAccent)
             .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
-            .background(Color.themeBackgroundColor)
             .sheet(isPresented: $showingOOBE){
                 OnboardingView()
             }

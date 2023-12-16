@@ -11,6 +11,7 @@ import Defaults
 
 struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.colorScheme) private var colorScheme
     @Default(.compactMode) var compactMode
     
     let post: Post
@@ -23,7 +24,7 @@ struct PostFeedView: View {
             renderContent()
         }
         .padding(8)
-        .background(Color.themeBackgroundColor)
+        .themedBackground()
         .onAppear {
             if !hasAppeared {
                 isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil

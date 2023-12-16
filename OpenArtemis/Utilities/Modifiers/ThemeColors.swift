@@ -1,43 +1,76 @@
-//
-//  ThemeColors.swift
-//  OpenArtemis
-//
-//  Created by daniel on 02/12/23.
-//
-
 import Foundation
 import SwiftUI
 import Defaults
 
-
-extension Color {
-    /// This is the accent Color for the app which can be modified by the user in Settings
-    static let artemisAccent = Defaults[.accentColor]
-    
-    static var themeBackgroundColor: Color {
-        let preferredThemeMode = Defaults[.preferredThemeMode]
-        let lightBackground = Defaults[.lightBackground]
-        let darkBackground = Defaults[.darkBackground]
-        
-        let isDarkMode = UITraitCollection.current.userInterfaceStyle == .dark
-
-        switch preferredThemeMode.id {
-        case 0:
-            // Use the current color scheme for light or dark with the custom bg
-            return isDarkMode ? darkBackground : lightBackground
-        case 1:
-            return lightBackground
-        case 2:
-            return darkBackground
-        default:
-            return Color(uiColor: UIColor.secondarySystemBackground)
-        }
+extension UIColor {
+    func darker(by percentage: CGFloat) -> UIColor {
+        return self.adjust(by: -abs(percentage))
     }
-    
-    func darker(by percentage: CGFloat) -> Color {
-        let baseUIColor = UIColor(self)
-        let darkenedUIColor = baseUIColor.darker(by: percentage)
-        return Color(darkenedUIColor)
+
+    private func adjust(by percentage: CGFloat) -> UIColor {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        guard self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
+            return self
+        }
+        return UIColor(red: max(red + percentage/100, 0.0),
+                       green: max(green + percentage/100, 0.0),
+                       blue: max(blue + percentage/100, 0.0),
+                       alpha: alpha)
     }
 }
 
+
+extension Color {
+    static let artemisAccent = Defaults[.accentColor]
+    
+    func darker(by percentage: CGFloat) -> Color {
+        let baseUIColor = UIColor(self)
+        return Color(baseUIColor.darker(by: percentage))
+    }
+}
+
+struct BackgroundModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+    @Default(.darkBackground) private var darkBackground
+    @Default(.lightBackground) private var lightBackground
+    @Default(.preferredThemeMode) private var preferredThemeMode
+    let isDarker: Bool
+    let isListRow: Bool
+
+    private func calculateBackgroundColor() -> Color {
+        var backgroundColor: Color
+
+        switch preferredThemeMode.id {
+        case 0:
+            backgroundColor = colorScheme == .dark ? darkBackground : lightBackground
+        case 1:
+            backgroundColor = lightBackground
+        case 2:
+            backgroundColor = darkBackground
+        default:
+            backgroundColor = Color(uiColor: UIColor.systemBackground)
+        }
+
+        if isDarker {
+            backgroundColor = backgroundColor.darker(by: 3)
+        }
+
+        return backgroundColor
+    }
+
+    func body(content: Content) -> some View {
+        Group {
+            if isListRow {
+                content.listRowBackground(calculateBackgroundColor())
+            } else {
+                content.background(calculateBackgroundColor())
+            }
+        }
+    }
+}
+
+extension View {
+    func themedBackground(isDarker: Bool = false, isListRow: Bool = false) -> some View {
+        self.modifier(BackgroundModifier(isDarker: isDarker, isListRow: isListRow))
+    }
+}

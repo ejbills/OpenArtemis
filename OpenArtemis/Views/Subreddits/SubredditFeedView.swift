@@ -42,11 +42,11 @@ struct SubredditFeedView: View {
                                     coordinator.path.append(PostResponse(post: post))
                                 }
                             
-                            DividerView(frameHeight: 10)
+                            Divider()
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading Feed...")
+                    LoadingAnimation(loadingText: "Loading feed...")
                 }
             }
         }

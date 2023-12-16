@@ -15,6 +15,7 @@ struct SettingsView: View {
     @Default(.lightBackground) var lightBackground
     @Default(.compactMode) var compactMode
     @Default(.tagBackground) var tagBackground
+    @Default(.showAuthor) var showAuthor
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
@@ -54,6 +55,7 @@ struct SettingsView: View {
                 ColorPicker("Dark Mode Background Color", selection: $darkBackground)
                 Toggle("Compact mode", isOn: $compactMode)
                 Toggle("Show tags with background", isOn: $tagBackground)
+                Toggle("Show author tag", isOn: $showAuthor)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {
                     HStack{
