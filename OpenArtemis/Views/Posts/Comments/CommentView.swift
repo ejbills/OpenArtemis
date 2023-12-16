@@ -44,6 +44,6 @@ struct CommentView: View {
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
-        .background(Color(uiColor: UIColor.systemBackground))
+        .background(Color.themeBackgroundColor)
     }
 }

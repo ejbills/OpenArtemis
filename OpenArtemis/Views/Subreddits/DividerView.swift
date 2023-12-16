@@ -12,7 +12,7 @@ struct DividerView: View {
     
     var body: some View {
         Rectangle()
-            .fill(Color.gray.opacity(0.15))
+            .fill(Color.clear)
             .frame(height: frameHeight)
             .edgesIgnoringSafeArea(.all)
     }

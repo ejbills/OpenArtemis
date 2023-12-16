@@ -15,6 +15,8 @@ extension Defaults.Keys {
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
     static let compactMode = Key<Bool>("compactMode", default: false)
     static let tagBackground = Key<Bool>("tagBackground", default: true)
+    static let lightBackground = Key<Color>("lightBackground", default: Color(uiColor: UIColor.secondarySystemBackground))
+    static let darkBackground = Key<Color>("darkBackground", default: Color(uiColor: UIColor.secondarySystemBackground))
     
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)

@@ -32,7 +32,7 @@ struct SavedView: View {
             }
             
         } else {
-            ScrollView {
+            ThemedScrollView {
                 
                 LazyVStack(spacing: 0) {
                     ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in

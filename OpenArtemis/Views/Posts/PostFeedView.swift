@@ -23,7 +23,7 @@ struct PostFeedView: View {
             renderContent()
         }
         .padding(8)
-        .background(Color(uiColor: UIColor.systemBackground))
+        .background(Color.themeBackgroundColor)
         .onAppear {
             if !hasAppeared {
                 isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil

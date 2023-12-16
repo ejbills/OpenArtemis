@@ -31,7 +31,7 @@ struct PostPageView: View {
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
-                ScrollView {
+                ThemedScrollView {
                     LazyVStack(spacing: 0) {
                         PostFeedView(post: post)
                         if let postBody = postBody {
@@ -65,7 +65,7 @@ struct PostPageView: View {
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                         .padding(.vertical, 4)
                                     }
-                                    .background(Color(uiColor: UIColor.systemBackground))
+                                    .background(Color.themeBackgroundColor.darker(by: 3))
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
                                         withAnimation(.smooth(duration: 0.35)) {
@@ -120,6 +120,7 @@ struct PostPageView: View {
                             LoadingAnimation(loadingText: "Loading comments...")
                         }
                     }
+                    .background(Color.themeBackgroundColor)
                 }
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,

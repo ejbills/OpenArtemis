@@ -28,8 +28,8 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            if !posts.isEmpty {
-                ScrollView {
+            ThemedScrollView {
+                if !posts.isEmpty {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
@@ -45,12 +45,12 @@ struct SubredditFeedView: View {
                             DividerView(frameHeight: 10)
                         }
                     }
+                } else {
+                    LoadingAnimation(loadingText: "Loading Feed...")
                 }
-                .scrollIndicators(.hidden)
-            } else {
-                LoadingAnimation(loadingText: "Loading Feed...")
             }
         }
+        .scrollIndicators(.hidden)
         .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)

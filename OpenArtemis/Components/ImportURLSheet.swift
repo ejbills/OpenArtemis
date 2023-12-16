@@ -17,7 +17,7 @@ struct ImportURLSheet: View {
     var body: some View {
         ZStack {
             if displayImport {
-                List {
+                ThemedList {
                     Spacer()
                         .frame(height: 50)
                     

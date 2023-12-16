@@ -55,6 +55,7 @@ struct OpenArtemisApp: App {
             }
             .accentColor(Color.artemisAccent)
             .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+            .background(Color.themeBackgroundColor)
             .sheet(isPresented: $showingOOBE){
                 OnboardingView()
             }

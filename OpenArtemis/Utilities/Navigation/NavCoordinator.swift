@@ -23,9 +23,10 @@ struct NavigationStackWrapper<Content: View>: View {
     var body: some View {
         NavigationStack(path: $tabCoordinator.path) {
             content()
-                .handleDeepLinkViews()
+                .handleDeepLinkViews()                
         }
         .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
+        
     }
 }
