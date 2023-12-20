@@ -23,15 +23,15 @@ struct PostDetailsView: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            if showAuthor {
-                DetailTagView(icon: "person", data: postAuthor)
-            }
-            
             DetailTagView(icon: "location", data: subreddit)
                 .onTapGesture {
                     coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
                 }
-                .foregroundColor(highlightSubreddit ? Color.artemisAccent : nil)
+                .foregroundColor(highlightSubreddit ? Color.artemisAccent : tagBackground ? .primary : .secondary)
+            
+            if showAuthor {
+                DetailTagView(icon: "person", data: postAuthor)
+            }
             
             if !compactMode { // upvotes get pushed all the way acrossed the view in compact mode, it looks weird. disabling it here
                 Spacer()
