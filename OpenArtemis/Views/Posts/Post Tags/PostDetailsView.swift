@@ -13,11 +13,13 @@ struct PostDetailsView: View {
     @Default(.compactMode) var compactMode
     @Default(.showAuthor) var showAuthor
     @Default(.tagBackground) var tagBackground
+    @Default(.highlightSubreddit) var highlightSubreddit
     
     let postAuthor: String
     let subreddit: String
     let time: String
     let votes: Int
+    let commentsCount: Int
     
     var body: some View {
         HStack(spacing: 4) {
@@ -29,6 +31,7 @@ struct PostDetailsView: View {
                 .onTapGesture {
                     coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
                 }
+                .foregroundColor(highlightSubreddit ? Color.artemisAccent : nil)
             
             if !compactMode { // upvotes get pushed all the way acrossed the view in compact mode, it looks weird. disabling it here
                 Spacer()
@@ -37,6 +40,8 @@ struct PostDetailsView: View {
             DetailTagView(icon: "clock", data: TimeFormatUtil().formatTimeAgo(fromUTCString: time))
             
             DetailTagView(icon: "arrow.up", data: votes.roundedWithAbbreviations)
+            
+            DetailTagView(icon: "rectangle.3.group.bubble.left", data: commentsCount.roundedWithAbbreviations)
         }
         .foregroundStyle(tagBackground ? .primary : .secondary)
     }

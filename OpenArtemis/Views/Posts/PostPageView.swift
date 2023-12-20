@@ -64,7 +64,7 @@ struct PostPageView: View {
                                         .frame(maxWidth: .infinity)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                     }
-                                    .themedBackground(isDarker: true)
+                                    .themedBackground()
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
                                         withAnimation(.smooth(duration: 0.35)) {
@@ -137,7 +137,7 @@ struct PostPageView: View {
         }
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("\(comments.count) Comments")
+        .navigationTitle("\((Int(post.commentsCount) ?? 0).roundedWithAbbreviations) Comments")
         .onAppear {
             if comments.isEmpty {
                 scrapeComments(post.commentsURL,trackingParamRemover: trackingParamRemover)

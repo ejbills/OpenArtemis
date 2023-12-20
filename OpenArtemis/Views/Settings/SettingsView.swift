@@ -16,6 +16,7 @@ struct SettingsView: View {
     @Default(.compactMode) var compactMode
     @Default(.thinDivider) var thinDivider
     @Default(.tagBackground) var tagBackground
+    @Default(.highlightSubreddit) var highlightSubreddit
     @Default(.showAuthor) var showAuthor
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
@@ -58,6 +59,7 @@ struct SettingsView: View {
                 Toggle("Thin divider between posts", isOn: $thinDivider)
                 Toggle("Show info tags with background", isOn: $tagBackground)
                 Toggle("Show author tag on posts", isOn: $showAuthor)
+                Toggle("Highlight subreddit with accent color", isOn: $highlightSubreddit)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {
                     HStack{

@@ -19,6 +19,7 @@ struct Post: Equatable, Hashable, Codable {
     let time: String
     let mediaURL: PrivateURL
     let commentsURL: String
+    let commentsCount: String
     let type: String
     // If post media has a thumbnail...
     let thumbnailURL: String?
@@ -30,7 +31,7 @@ struct Post: Equatable, Hashable, Codable {
     
     // Conform to Codable
     enum CodingKeys: String, CodingKey {
-        case id, subreddit, title, tag, author, votes, time, mediaURL, commentsURL, type, thumbnailURL
+        case id, subreddit, title, tag, author, votes, time, mediaURL, commentsURL, commentsCount, type, thumbnailURL
     }
 
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -47,6 +48,7 @@ struct Post: Equatable, Hashable, Codable {
         hasher.combine(votes)
         hasher.combine(time)
         hasher.combine(commentsURL)
+        hasher.combine(commentsCount)
         hasher.combine(mediaURL.originalURL)
         hasher.combine(mediaURL.privateURL)
         hasher.combine(type)
@@ -107,6 +109,7 @@ class PostUtils {
                 time: post.time ?? "",
                 mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
                 commentsURL: post.commentsURL ?? "",
+                commentsCount: post.commentsCount ?? "",
                 type: post.type ?? "",
                 thumbnailURL: post.thumbnailURL ?? ""
             )
@@ -124,6 +127,7 @@ class PostUtils {
         tempPost.author = post.author
         tempPost.subreddit = post.subreddit
         tempPost.commentsURL = post.commentsURL
+        tempPost.commentsCount = post.commentsCount
         tempPost.id = post.id
         tempPost.mediaURL = privULR ? post.mediaURL.privateURL : post.mediaURL.originalURL
         tempPost.thumbnailURL = post.thumbnailURL

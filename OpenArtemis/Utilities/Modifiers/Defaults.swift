@@ -16,6 +16,7 @@ extension Defaults.Keys {
     static let compactMode = Key<Bool>("compactMode", default: false)
     static let thinDivider = Key<Bool>("thinDivider", default: false)
     static let tagBackground = Key<Bool>("tagBackground", default: true)
+    static let highlightSubreddit = Key<Bool>("highlightSubreddit", default: true)
     static let showAuthor = Key<Bool>("showAuthor", default: true)
     static let lightBackground = Key<Color>("lightBackground", default: .white)
     static let darkBackground = Key<Color>("darkBackground", default: Color(hex: 0x111112))
