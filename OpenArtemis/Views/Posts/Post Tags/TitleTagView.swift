@@ -23,6 +23,9 @@ struct TitleTagView: View {
         if let range = attributedString.range(of: tag, options: .backwards) {
             attributedString[range].foregroundColor = Color.artemisAccent
             attributedString[range].font = .footnote
+            
+            let middleOffset = (UIFont.preferredFont(forTextStyle: .body).capHeight - UIFont.preferredFont(forTextStyle: .footnote).capHeight) / 2
+            attributedString[range].baselineOffset = middleOffset
         }
 
         return attributedString
