@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Default(.darkBackground) var darkBackground
     @Default(.lightBackground) var lightBackground
     @Default(.compactMode) var compactMode
+    @Default(.thinDivider) var thinDivider
     @Default(.tagBackground) var tagBackground
     @Default(.showAuthor) var showAuthor
     @Default(.showOriginalURL) var showOriginalURL
@@ -54,7 +55,8 @@ struct SettingsView: View {
                 ColorPicker("Light Mode Background Color", selection: $lightBackground)
                 ColorPicker("Dark Mode Background Color", selection: $darkBackground)
                 Toggle("Compact mode", isOn: $compactMode)
-                Toggle("Show tags with background", isOn: $tagBackground)
+                Toggle("Thin divider between posts", isOn: $thinDivider)
+                Toggle("Show info tags with background", isOn: $tagBackground)
                 Toggle("Show author tag on posts", isOn: $showAuthor)
                 
                 NavigationLink(destination: ChangeAppIconView(), label: {

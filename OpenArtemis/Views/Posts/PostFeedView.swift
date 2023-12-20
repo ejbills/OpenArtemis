@@ -56,12 +56,7 @@ struct PostFeedView: View {
 
     private func renderNormalContent() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(post.title)
-                .font(.headline)
-            
-            if !post.tag.isEmpty {
-                DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
-            }
+            TitleTagView(title: post.title, tag: post.tag)
                         
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
             
@@ -70,28 +65,17 @@ struct PostFeedView: View {
     }
 
     private func renderCompactContent() -> some View {
-        HStack {
+        HStack(alignment: .top) {
             VStack {
                 MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
-                
-                Spacer()
-                    .padding(.bottom, -16) // push to the top of the vstack, also reclaim the trailing padding
             }
             
-            VStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(post.title)
-                    
-                    if !post.tag.isEmpty {
-                        DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
-                    }
-                    
-                    PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0)
-                }
+            VStack(alignment: .leading, spacing: 4) {
+                TitleTagView(title: post.title, tag: post.tag)
+                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0)
             }
-            
-            Spacer()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
     }
 }

@@ -42,7 +42,7 @@ struct SubredditFeedView: View {
                                     coordinator.path.append(PostResponse(post: post))
                                 }
                             
-                            Divider()
+                            DividerView(frameHeight: 10)
                         }
                     }
                 } else {

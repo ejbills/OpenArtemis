@@ -14,6 +14,7 @@ extension Defaults.Keys {
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
     static let compactMode = Key<Bool>("compactMode", default: false)
+    static let thinDivider = Key<Bool>("thinDivider", default: false)
     static let tagBackground = Key<Bool>("tagBackground", default: true)
     static let showAuthor = Key<Bool>("showAuthor", default: true)
     static let lightBackground = Key<Color>("lightBackground", default: .white)

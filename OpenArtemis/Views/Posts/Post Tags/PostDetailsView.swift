@@ -12,6 +12,7 @@ struct PostDetailsView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Default(.compactMode) var compactMode
     @Default(.showAuthor) var showAuthor
+    @Default(.tagBackground) var tagBackground
     
     let postAuthor: String
     let subreddit: String
@@ -37,5 +38,6 @@ struct PostDetailsView: View {
             
             DetailTagView(icon: "arrow.up", data: votes.roundedWithAbbreviations)
         }
+        .foregroundStyle(tagBackground ? .primary : .secondary)
     }
 }

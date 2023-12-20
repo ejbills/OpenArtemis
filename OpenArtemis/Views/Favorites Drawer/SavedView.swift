@@ -37,7 +37,7 @@ struct SavedView: View {
                 LazyVStack(spacing: 0) {
                     ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
                         MixedContentView(content: mixedMediaTuple.content, savedPosts: savedPosts, savedComments: savedComments)
-                        Divider()
+                        DividerView(frameHeight: 10)
                     }
                 }
                 

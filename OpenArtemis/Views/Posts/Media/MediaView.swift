@@ -36,7 +36,9 @@ struct MediaView: View {
                             .onSizeChange { newSize in
                                 Task(priority: .background) {
                                     if abs(mediaSize.width - newSize.width) > 25 && abs(mediaSize.height - newSize.height) > 25 {
-                                        mediaSize = newSize
+                                        withAnimation {
+                                            mediaSize = newSize
+                                        }
                                     }
                                 }
                             }
@@ -70,11 +72,8 @@ struct MediaView: View {
                                 .font(.largeTitle)
                         )
                         .foregroundColor(tagBgColor)
-                } else {
-                    // Display empty view with negative padding to make up for the spacing
-                    EmptyView().padding(-16)
                 }
-
+                // else, literally do nothing so it takes up no space :D
             default:
                 EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title)
             }
