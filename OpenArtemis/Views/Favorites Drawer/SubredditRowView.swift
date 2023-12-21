@@ -33,8 +33,6 @@ struct SubredditRowView: View {
             
             VStack(alignment: .leading) {
                 Text(subreddit.name ?? "")
-                Text("Tap to go to r/\(subreddit.name ?? "")")
-                    .foregroundColor(.secondary)
             }
             
             
