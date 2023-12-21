@@ -151,7 +151,7 @@ struct MixedContentView: View {
                     }
                 }
         case .subreddit(let subreddit):
-            Text(subreddit.subreddit)
+            SubredditRowView(subredditName: subreddit.subreddit)
         }
     }
 }

@@ -145,7 +145,7 @@ extension RedditScraper {
         return comments
     }
     
-    static func scrapePostFromCommentsURL(url: String,trackingParamRemover: TrackingParamRemover?,completion: @escaping (Result<Post, Error>) -> Void) {
+    static func scrapePostFromCommentsURL(url: String,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<Post, Error>) -> Void) {
         guard let url = URL(string: url) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return

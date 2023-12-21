@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 extension RedditScraper {
-    static func search(query: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    static func search(query: String, completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
         // Construct the URL for the Reddit search based on the query
         var urlComponents = URLComponents(string: "\(baseRedditURL)/search")
         var queryItems = [URLQueryItem(name: "q", value: query)]
@@ -38,17 +38,45 @@ extension RedditScraper {
             do {
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
+                
+                var mixedMediaResults: [MixedMedia] = []
 
-                // Call hypothetical methods
-                // Uncomment and implement these methods as needed
-                // scrapeSubredditResults(data: doc, trackingParamRemover: nil)
+                let subreddits = scrapeSubredditResults(data: doc)
+//                let postsElement = try doc.select("div.listing search-result-listing").last()
+                let posts = try parsePostData(data: data, trackingParamRemover: nil)
                 // scrapePosts(data: doc, trackingParamRemover: nil)
 
-                completion(.success(()))
+                mixedMediaResults.append(contentsOf: subreddits.map { MixedMedia.subreddit($0) })
+                mixedMediaResults.append(contentsOf: posts.map { MixedMedia.post($0, date: nil) })
+
+                completion(.success(mixedMediaResults))
             } catch {
                 completion(.failure(error))
             }
         }.resume()
+    }
+    
+    private static func scrapeSubredditResults(data: Document) -> [Subreddit] {
+        do {
+            // Select all elements with class "search-result-subreddit"
+            let subredditElements = try data.select("div.search-result-subreddit")
+            
+            // Create an array to store the results
+            var subreddits: [Subreddit] = []
+            
+            // Iterate over each subreddit element
+            for subredditElement in subredditElements {
+                // Extract the subreddit name from the "search-title" class
+                let subredditName = try subredditElement.select("a.search-subreddit-link.may-blank").text().split(separator: "/").last.map { String($0) } ?? ""
+                // Create a Subreddit object and add it to the array
+                let subreddit = Subreddit(subreddit: subredditName)
+                subreddits.append(subreddit)
+            }
+            
+            return subreddits
+        } catch {
+            return []
+        }
     }
 }
 
