@@ -93,7 +93,7 @@ class RedditScraper {
     }
 
     
-    private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
+    static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!
         let doc = try SwiftSoup.parse(htmlString)
         let postElements = try doc.select("div.link")

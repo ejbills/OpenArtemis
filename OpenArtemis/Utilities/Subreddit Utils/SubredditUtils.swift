@@ -9,6 +9,10 @@ import SwiftUI
 import CoreData
 import Defaults
 
+struct Subreddit: Encodable, Equatable, Hashable, Decodable {
+    let subreddit: String
+}
+
 class SubredditUtils: ObservableObject {
     static let shared = SubredditUtils()
 

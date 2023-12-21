@@ -8,54 +8,53 @@
 import Foundation
 import SwiftUI
 
-/// A generic enum representing either the first type `A` or the second type `B`.
-enum Either<A: Codable & Hashable, B: Codable & Hashable>: Codable, Hashable {
+enum MixedMedia: Codable, Hashable {
+    case post(Post, date: Date?)
+    case comment(Comment, date: Date?)
+    case subreddit(Subreddit)
     
-    /// Represents the first type.
-    case first(A)
+    private enum CodingKeys: String, CodingKey {
+        case type, content, date
+    }
     
-    /// Represents the second type.
-    case second(B)
-    
-    /// Initializes an instance by decoding from the given decoder.
-    /// Throws a `DecodingError` if there is a type mismatch for both types.
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        do {
-            let firstType = try container.decode(A.self)
-            self = .first(firstType)
-        } catch let firstError {
-            do {
-                let secondType = try container.decode(B.self)
-                self = .second(secondType)
-            } catch let secondError {
-                let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Type mismatch for both types.", underlyingError: Swift.DecodingError.typeMismatch(Any.self, DecodingError.Context.init(codingPath: decoder.codingPath, debugDescription: "First type error: \(firstError). Second type error: \(secondError)")))
-                throw DecodingError.dataCorrupted(context)
-            }
+        let type = try container.decode(String.self, forKey: .type)
+        switch type {
+        case "post":
+            let post = try container.decode(Post.self, forKey: .content)
+            let date = try container.decodeIfPresent(Date.self, forKey: .date)
+            self = .post(post, date: date)
+        case "comment":
+            let comment = try container.decode(Comment.self, forKey: .content)
+            let date = try container.decodeIfPresent(Date.self, forKey: .date)
+            self = .comment(comment, date: date)
+        case "subreddit":
+            let subreddit = try container.decode(Subreddit.self, forKey: .content)
+            self = .subreddit(subreddit)
+        default:
+            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Invalid type")
         }
     }
     
-    /// Encodes the instance to the given encoder.
     func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
         switch self {
-        case .first(let value):
-            try container.encode(value)
-        case .second(let value):
-            try container.encode(value)
+        case .post(let value, let date):
+            try container.encode("post", forKey: .type)
+            try container.encode(value, forKey: .content)
+            try container.encodeIfPresent(date, forKey: .date)
+        case .comment(let value, let date):
+            try container.encode("comment", forKey: .type)
+            try container.encode(value, forKey: .content)
+            try container.encodeIfPresent(date, forKey: .date)
+        case .subreddit(let value):
+            try container.encode("subreddit", forKey: .type)
+            try container.encode(value, forKey: .content)
         }
     }
-}
-
-/// A struct representing a tuple containing a date and content of either a `Post` or a `Comment`.
-struct MixedMediaTuple: Hashable {
-    
-    /// The date associated with the tuple.
-    var date: Date
-    
-    /// The content of either a `Post` or a `Comment`.
-    var content: Either<Post, Comment>
 }
 
 class MiscUtils {
