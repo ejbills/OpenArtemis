@@ -13,13 +13,8 @@ extension Defaults.Keys {
     // MARK: - Theming
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
-    static let compactMode = Key<Bool>("compactMode", default: false)
-    static let thinDivider = Key<Bool>("thinDivider", default: false)
-    static let tagBackground = Key<Bool>("tagBackground", default: true)
-    static let highlightSubreddit = Key<Bool>("highlightSubreddit", default: true)
-    static let showAuthor = Key<Bool>("showAuthor", default: true)
-    static let lightBackground = Key<Color>("lightBackground", default: .white)
-    static let darkBackground = Key<Color>("darkBackground", default: Color(hex: 0x111112))
+    
+    static let appTheme = Key<AppThemeSettings>("appTheme", default: AppThemeSettings())
     
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
@@ -65,4 +60,17 @@ enum PreferredThemeMode: Codable, CaseIterable, Identifiable, Defaults.Serializa
             2
         }
     }
+}
+
+struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
+    var preferredThemeMode: PreferredThemeMode = .automatic
+    
+    var compactMode: Bool = false
+    var thinDivider: Bool = false
+    var tagBackground: Bool = true
+    var highlightSubreddit: Bool = true
+    var showAuthor: Bool = true
+
+    var lightBackground: Color = .white
+    var darkBackground: Color = Color(hex: "111112")
 }

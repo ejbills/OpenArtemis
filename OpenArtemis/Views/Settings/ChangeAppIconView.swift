@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ChangeAppIconView: View {
     var appIconManager = AppIconManager()
+    let appTheme: AppThemeSettings
     @State var currentAppicon: String = "Default"
     var body: some View {
-        ThemedList {
+        ThemedList(appTheme: appTheme) {
             ForEach(appIconManager.getIcons().sorted(), id: \.self){ icon in
                 AppIconElement(icon: icon, currentAppIcon: $currentAppicon)
             }

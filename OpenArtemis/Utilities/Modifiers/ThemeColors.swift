@@ -31,22 +31,20 @@ extension Color {
 
 struct BackgroundModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
-    @Default(.darkBackground) private var darkBackground
-    @Default(.lightBackground) private var lightBackground
-    @Default(.preferredThemeMode) private var preferredThemeMode
     let isDarker: Bool
     let isListRow: Bool
+    let appTheme: AppThemeSettings
 
     private func calculateBackgroundColor() -> Color {
         var backgroundColor: Color
 
-        switch preferredThemeMode.id {
+        switch appTheme.preferredThemeMode.id {
         case 0:
-            backgroundColor = colorScheme == .dark ? darkBackground : lightBackground
+            backgroundColor = colorScheme == .dark ? appTheme.darkBackground : appTheme.lightBackground
         case 1:
-            backgroundColor = lightBackground
+            backgroundColor = appTheme.lightBackground
         case 2:
-            backgroundColor = darkBackground
+            backgroundColor = appTheme.darkBackground
         default:
             backgroundColor = Color(uiColor: UIColor.systemBackground)
         }
@@ -70,7 +68,7 @@ struct BackgroundModifier: ViewModifier {
 }
 
 extension View {
-    func themedBackground(isDarker: Bool = false, isListRow: Bool = false) -> some View {
-        self.modifier(BackgroundModifier(isDarker: isDarker, isListRow: isListRow))
+    func themedBackground(isDarker: Bool = false, isListRow: Bool = false, appTheme: AppThemeSettings) -> some View {
+        self.modifier(BackgroundModifier(isDarker: isDarker, isListRow: isListRow, appTheme: appTheme))
     }
 }

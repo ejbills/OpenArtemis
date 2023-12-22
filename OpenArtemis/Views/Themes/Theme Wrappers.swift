@@ -8,26 +8,30 @@
 import SwiftUI
 
 struct ThemedList<Content: View>: View {
+    let appTheme: AppThemeSettings
     let content: () -> Content
 
-    init(@ViewBuilder content: @escaping () -> Content) {
+    init(appTheme: AppThemeSettings, @ViewBuilder content: @escaping () -> Content) {
+        self.appTheme = appTheme
         self.content = content
     }
 
     var body: some View {
         List {
             content()
-                .themedBackground(isListRow: true)
+                .themedBackground(isListRow: true, appTheme: appTheme)
         }
         .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
-        .themedBackground(isDarker: true)
+        .themedBackground(isDarker: true, appTheme: appTheme)
     }
 }
 
-struct ThemedScrollView<Content: View>: View {    
+struct ThemedScrollView<Content: View>: View {  
+    let appTheme: AppThemeSettings
     let content: () -> Content
 
-    init(@ViewBuilder content: @escaping () -> Content) {
+    init(appTheme: AppThemeSettings, @ViewBuilder content: @escaping () -> Content) {
+        self.appTheme = appTheme
         self.content = content
     }
 
@@ -36,6 +40,6 @@ struct ThemedScrollView<Content: View>: View {
             content()
         }
         .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
-        .themedBackground(isDarker: true)
+        .themedBackground(isDarker: true, appTheme: appTheme)
     }
 }

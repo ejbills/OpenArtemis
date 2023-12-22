@@ -43,6 +43,6 @@ struct LoadingAnimation: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .themedBackground(isDarker: true)
+        .background(Color.clear)
     }
 }

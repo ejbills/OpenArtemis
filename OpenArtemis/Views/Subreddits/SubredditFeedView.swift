@@ -16,6 +16,7 @@ struct SubredditFeedView: View {
     
     let subredditName: String
     let titleOverride: String?
+    let appTheme: AppThemeSettings
     
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
@@ -28,11 +29,11 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            ThemedScrollView {
+            ThemedScrollView(appTheme: appTheme) {
                 if !posts.isEmpty {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
-                            PostFeedView(post: post)
+                            PostFeedView(post: post, appTheme: appTheme)
                                 .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {
@@ -42,7 +43,7 @@ struct SubredditFeedView: View {
                                     coordinator.path.append(PostResponse(post: post))
                                 }
                             
-                            DividerView(frameHeight: 10)
+                            DividerView(frameHeight: 10, appTheme: appTheme)
                         }
                         
                         if isLoading { // show spinner at the bottom of the feed

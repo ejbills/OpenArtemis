@@ -9,15 +9,10 @@ import SwiftUI
 import Defaults
 
 struct SettingsView: View {
-    @Default(.preferredThemeMode) var preferredThemeMode
+//    @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
-    @Default(.darkBackground) var darkBackground
-    @Default(.lightBackground) var lightBackground
-    @Default(.compactMode) var compactMode
-    @Default(.thinDivider) var thinDivider
-    @Default(.tagBackground) var tagBackground
-    @Default(.highlightSubreddit) var highlightSubreddit
-    @Default(.showAuthor) var showAuthor
+    @Default(.appTheme) var appTheme
+        
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
@@ -41,27 +36,27 @@ struct SettingsView: View {
     @State var toastTitle: String = "Success!"
     @State var toastIcon: String = "checkmark.circle.fill"
     var body: some View {
-        ThemedList {
+        ThemedList(appTheme: appTheme) {
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
-                    preferredThemeMode
+                    appTheme.preferredThemeMode
                 }, set: { val, _ in
-                    preferredThemeMode = val
+                    appTheme.preferredThemeMode = val
                 })){
                     Text("Automatic").tag(PreferredThemeMode.automatic)
                     Text("Light").tag(PreferredThemeMode.light)
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }
                 ColorPicker("Accent Color", selection: $accentColor)
-                ColorPicker("Light Mode Background Color", selection: $lightBackground)
-                ColorPicker("Dark Mode Background Color", selection: $darkBackground)
-                Toggle("Compact mode", isOn: $compactMode)
-                Toggle("Thin divider between posts", isOn: $thinDivider)
-                Toggle("Show info tags with background", isOn: $tagBackground)
-                Toggle("Show author tag on posts", isOn: $showAuthor)
-                Toggle("Highlight subreddit with accent color", isOn: $highlightSubreddit)
+                ColorPicker("Light Mode Background Color", selection: $appTheme.lightBackground)
+                ColorPicker("Dark Mode Background Color", selection: $appTheme.darkBackground)
+                Toggle("Compact mode", isOn: $appTheme.compactMode)
+                Toggle("Thin divider between posts", isOn: $appTheme.thinDivider)
+                Toggle("Show info tags with background", isOn: $appTheme.tagBackground)
+                Toggle("Show author tag on posts", isOn: $appTheme.showAuthor)
+                Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
                 
-                NavigationLink(destination: ChangeAppIconView(), label: {
+                NavigationLink(destination: ChangeAppIconView(appTheme: appTheme), label: {
                     HStack{
                         Image(uiImage: UIImage(named: currentAppIcon)!)
                             .resizable()
@@ -104,7 +99,7 @@ struct SettingsView: View {
                     }
                 })
                 .sheet(isPresented: $showingURLImportSheet, content: {
-                    ImportURLSheet(showingThisSheet: $showingURLImportSheet)
+                    ImportURLSheet(showingThisSheet: $showingURLImportSheet, appTheme: appTheme)
                     
                 })
                 .fileMover(isPresented: $presentingFileMover, file: URL(string: exportedURL ?? ""), onCompletion: { _ in })
@@ -131,7 +126,7 @@ struct SettingsView: View {
             
             
         }
-        .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+        .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{

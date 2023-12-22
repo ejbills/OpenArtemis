@@ -64,6 +64,7 @@
 		BB502DD12B23AACC003C22DB /* SubredditUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD02B23AACC003C22DB /* SubredditUtils.swift */; };
 		BB502DD32B23FD4A003C22DB /* CommentSkipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */; };
 		BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD52B2403D6003C22DB /* Misc Utils.swift */; };
+		BB853E702B35E3210041150C /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB853E6F2B35E3210041150C /* CodableColor.swift */; };
 		BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE722B1E735F00CA13BB /* PostPageView.swift */; };
 		BB8CAE782B1E73B600CA13BB /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE772B1E73B600CA13BB /* CommentView.swift */; };
 		BB8CAE7A2B1E73CE00CA13BB /* Comment Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */; };
@@ -154,6 +155,7 @@
 		BB502DD02B23AACC003C22DB /* SubredditUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditUtils.swift; sourceTree = "<group>"; };
 		BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSkipper.swift; sourceTree = "<group>"; };
 		BB502DD52B2403D6003C22DB /* Misc Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Misc Utils.swift"; sourceTree = "<group>"; };
+		BB853E6F2B35E3210041150C /* CodableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColor.swift; sourceTree = "<group>"; };
 		BB8CAE722B1E735F00CA13BB /* PostPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPageView.swift; sourceTree = "<group>"; };
 		BB8CAE772B1E73B600CA13BB /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment Utils.swift"; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */,
+				BB853E6F2B35E3210041150C /* CodableColor.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
 				BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */,
 				BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */,
+				BB853E702B35E3210041150C /* CodableColor.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB2C90EC2B352D2D0034E511 /* ChristmasTree.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,

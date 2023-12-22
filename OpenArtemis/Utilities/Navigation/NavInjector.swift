@@ -7,21 +7,24 @@
 
 import Foundation
 import SwiftUI
+import Defaults
 
 struct HandleDeepLinksDisplay: ViewModifier {
+    @Default(.appTheme) var appTheme
+    
     func body(content: Content) -> some View {
         content
         // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
                 if response.subredditName == "Saved" {
-                    SavedView()
+                    SavedView(appTheme: appTheme)
                 } else {
-                    SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride)
+                    SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride, appTheme: appTheme)
                 }
                 
             }
             .navigationDestination(for: PostResponse.self) { response in
-                PostPageView(post: response.post)
+                PostPageView(post: response.post, appTheme: appTheme)
             }
     }
 }

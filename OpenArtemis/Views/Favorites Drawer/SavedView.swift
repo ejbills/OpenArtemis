@@ -16,6 +16,8 @@ struct SavedView: View {
     
     @State var mixedMediaLinks: [MixedMedia] = []
     
+    let appTheme: AppThemeSettings
+    
     var body: some View {
         if mixedMediaLinks.isEmpty {
             HStack{
@@ -32,11 +34,11 @@ struct SavedView: View {
             }
             
         } else {
-            ThemedScrollView {
+            ThemedScrollView(appTheme: appTheme) {
                 LazyVStack(spacing: 0) {
                     ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                        MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments)
-                        DividerView(frameHeight: 10)
+                        MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                        DividerView(frameHeight: 10, appTheme: appTheme)
                     }
                 }
                 
@@ -106,6 +108,7 @@ struct MixedContentView: View {
     var content: MixedMedia
     let savedPosts: FetchedResults<SavedPost>
     let savedComments: FetchedResults<SavedComment>
+    let appTheme: AppThemeSettings
     
     @State var isLoadingCommentPost: Bool = false
     @State var isCommentSaved: Bool = false
@@ -113,12 +116,12 @@ struct MixedContentView: View {
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post)
+            PostFeedView(post: post, appTheme: appTheme)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
                 }
         case .comment(let comment, _):
-            CommentView(comment: comment, numberOfChildren: 0)
+            CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme)
                 .savedIndicator(isCommentSaved)
                 .onAppear{
                     isCommentSaved = savedComments.contains { $0.id == comment.id }

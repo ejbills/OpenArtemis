@@ -13,19 +13,19 @@ import CachedImage
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Default(.showOriginalURL) private var showOriginalURL
-    @Default(.compactMode) var compactMode
     
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
+    let appTheme: AppThemeSettings
     @State private var isLoading: Bool = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
-            let mediaHeight = compactMode ? roughCompactHeight : 50
-            let mediaWidth = compactMode ? roughCompactWidth : 50
+            let mediaHeight = appTheme.compactMode ? roughCompactHeight : 50
+            let mediaWidth = appTheme.compactMode ? roughCompactWidth : 50
             let mediaIcon = determinedType == "video" ? "play.square.fill" : (determinedType == "gallery" ? "photo.on.rectangle" : "safari")
             
             if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
@@ -61,7 +61,7 @@ struct EmbeddedMultiMediaView: View {
                     .foregroundColor(.blue)
             }
 
-            if !compactMode {
+            if !appTheme.compactMode {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Open \(determinedType) media")
                         .font(.headline)
@@ -78,8 +78,8 @@ struct EmbeddedMultiMediaView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(compactMode ? 0 : 6) // less spacing in compact ^.^
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor).opacity(compactMode ? 0 : 1))
+        .padding(appTheme.compactMode ? 0 : 6) // less spacing in compact ^.^
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor).opacity(appTheme.compactMode ? 0 : 1))
         .onTapGesture {
             if !isLoading {
                 withAnimation {

@@ -14,6 +14,7 @@ struct PostPageView: View {
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
+    let appTheme: AppThemeSettings
     
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
@@ -31,9 +32,9 @@ struct PostPageView: View {
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
-                ThemedScrollView {
+                ThemedScrollView(appTheme: appTheme) {
                     LazyVStack(spacing: 0) {
-                        PostFeedView(post: post)
+                        PostFeedView(post: post, appTheme: appTheme)
                         if let postBody = postBody {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
@@ -60,11 +61,12 @@ struct PostPageView: View {
                                     Group {
                                         CommentView(comment: comment,
                                                     numberOfChildren: comment.isRootCollapsed ?
-                                                    CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0)
+                                                    CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0,
+                                                    appTheme: appTheme)
                                         .frame(maxWidth: .infinity)
                                         .padding(.leading, CGFloat(comment.depth) * 10)
                                     }
-                                    .themedBackground()
+                                    .themedBackground(appTheme: appTheme)
                                     .savedIndicator(perViewSavedComments.contains(comment.id))
                                     .onTapGesture {
                                         withAnimation(.smooth(duration: 0.35)) {
@@ -119,7 +121,7 @@ struct PostPageView: View {
                             LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
                         }
                     }
-                    .themedBackground()
+                    .themedBackground(appTheme: appTheme)
                 }
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,

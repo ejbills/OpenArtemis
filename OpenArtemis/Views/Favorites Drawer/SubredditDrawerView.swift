@@ -23,10 +23,12 @@ struct SubredditDrawerView: View {
     
     @State private var editMode = false
     
+    let appTheme: AppThemeSettings
+    
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                ThemedList {
+                ThemedList(appTheme: appTheme) {
                     Section(header: Text("Defaults")) {
                         DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
                             .background(
