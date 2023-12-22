@@ -36,7 +36,7 @@ struct SubredditFeedView: View {
                                 .id(post.id)
                                 .contentShape(Rectangle())
                                 .onAppear {
-                                    handlePostAppearance(post)
+                                    handlePostAppearance(post.id)
                                 }
                                 .onTapGesture {
                                     coordinator.path.append(PostResponse(post: post))
@@ -76,9 +76,9 @@ struct SubredditFeedView: View {
     
     // MARK: - Private Methods
     
-    private func handlePostAppearance(_ post: Post) {
+    private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
-            if post.id == posts[Int(Double(posts.count) * 0.85)].id {
+            if postId == posts[Int(Double(posts.count) * 0.85)].id {
                 scrapeSubreddit(subredditName, lastPostAfter, sort: sortOption)
             }
         }
