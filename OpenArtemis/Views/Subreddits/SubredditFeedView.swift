@@ -44,9 +44,16 @@ struct SubredditFeedView: View {
                             
                             DividerView(frameHeight: 10)
                         }
+                        
+                        if isLoading { // show spinner at the bottom of the feed
+                            ProgressView()
+                                .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
+                                .padding()
+                        }
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
+                    SwiftUIXmasTree2()
                 }
             }
         }

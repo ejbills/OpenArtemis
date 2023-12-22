@@ -41,6 +41,7 @@
 		65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959B2B1F188B005BE493 /* ColorFromHex.swift */; };
 		65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959D2B1F3A54005BE493 /* HapticManager.swift */; };
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
+		BB2C90EC2B352D2D0034E511 /* ChristmasTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */; };
 		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
 		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
 		BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */; };
@@ -132,6 +133,7 @@
 		65F5959B2B1F188B005BE493 /* ColorFromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFromHex.swift; sourceTree = "<group>"; };
 		65F5959D2B1F3A54005BE493 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		65F5959F2B1F3A69005BE493 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
+		BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChristmasTree.swift; sourceTree = "<group>"; };
 		BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme Wrappers.swift"; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
 		BB391FA22B1ADD140014FB18 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
+				BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */,
 				BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
+				BB2C90EC2B352D2D0034E511 /* ChristmasTree.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
 				BBACCB402B3231E100A9F550 /* TitleTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,

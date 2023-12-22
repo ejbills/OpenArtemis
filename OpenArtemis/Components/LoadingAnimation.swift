@@ -13,8 +13,13 @@ struct LoadingAnimation: View {
     @State private var moveRightLeft = false
     var body: some View {
         LazyVStack {
-            ZStack {
-                if isLoading {
+            if isLoading {
+                Text(loadingText)
+                    .font(.subheadline)
+                    .italic()
+                    .foregroundStyle(.secondary)
+                
+                ZStack {
                     Capsule()
                         .frame(width: 128, height: 6, alignment: .center)
                         .foregroundColor(Color(.systemGray4))
@@ -28,17 +33,12 @@ struct LoadingAnimation: View {
                                 moveRightLeft.toggle()
                             }
                         }
-                } else {
-                    Text("*Nothing here...*")
-                        .foregroundStyle(.secondary)
                 }
-            }
-            
-            if isLoading {
-                Text(loadingText)
-                    .font(.subheadline)
-                    .italic()
+            } else {
+                Text("*Nothing here...*")
                     .foregroundStyle(.secondary)
+                
+                SwiftUIXmasTree2()
             }
         }
         .padding()

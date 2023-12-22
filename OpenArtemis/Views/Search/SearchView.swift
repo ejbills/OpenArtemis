@@ -23,20 +23,6 @@ struct SearchView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                TextField("Enter search query", text: $inputText)
-                    .textFieldStyle(.roundedBorder)
-                
-                Button(action: {
-                    performSearch()
-                }) {
-                    Text("Search")
-                        .foregroundStyle(Color.artemisAccent)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.bottom)
-            
             if searchType == "sr" {
                 if !isLoading {
                     ThemedList {
@@ -44,8 +30,6 @@ struct SearchView: View {
                             MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments)
                         }
                     }
-                    .listStyle(.plain)
-                    
                 } else {
                     LoadingAnimation(loadingText: "Loading subreddits...", isLoading: isLoading)
                 }
@@ -74,6 +58,11 @@ struct SearchView: View {
                     Text("Posts").tag("")
                 }
         )
+        .searchable(text: $inputText)
+        .onSubmit(of: .search) {
+            performSearch()
+        }
+        .animation(.default, value: inputText)
         .onChange(of: searchType) { oldVal, _ in
             clearFeed()
         }
