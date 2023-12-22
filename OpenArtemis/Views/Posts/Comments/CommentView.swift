@@ -7,8 +7,11 @@
 
 import SwiftUI
 import MarkdownUI
+import Defaults
 
 struct CommentView: View {
+    @Default(.tagBackground) var tagBackground
+    
     var comment: Comment
     var numberOfChildren: Int
     var body: some View {
@@ -21,7 +24,7 @@ struct CommentView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(spacing: 4) {
                         DetailTagView(icon: "person", data: comment.author)
                         DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
                         
@@ -31,8 +34,8 @@ struct CommentView: View {
                         if comment.isRootCollapsed {
                             DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)")
                         }
-                        
                     }
+                    .foregroundStyle(tagBackground ? .primary : .secondary)
                     
                     if !comment.isRootCollapsed {
                         Markdown(comment.body)
@@ -44,6 +47,6 @@ struct CommentView: View {
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
-        .background(Color(uiColor: UIColor.systemBackground))
+        .themedBackground()
     }
 }

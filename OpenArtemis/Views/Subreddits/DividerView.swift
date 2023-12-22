@@ -6,14 +6,21 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct DividerView: View {
+    @Default(.thinDivider) var thinDivider
+    
     let frameHeight: CGFloat
     
     var body: some View {
-        Rectangle()
-            .fill(Color.gray.opacity(0.15))
-            .frame(height: frameHeight)
-            .edgesIgnoringSafeArea(.all)
+        if !thinDivider {
+            Rectangle()
+                .fill(Color.gray.opacity(0.15))
+                .frame(height: frameHeight)
+                .edgesIgnoringSafeArea(.all)
+        } else {
+            Divider()
+        }
     }
 }

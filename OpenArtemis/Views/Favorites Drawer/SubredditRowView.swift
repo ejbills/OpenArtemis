@@ -9,16 +9,15 @@ import SwiftUI
 import CoreData
 
 struct SubredditRowView: View {
-    var subreddit: LocalSubreddit
-    var editMode: Bool
-    var removeFromSubredditFavorites: () -> Void
+    var subredditName: String
+    var editMode: Bool = false
+    var removeFromSubredditFavorites: (() -> Void)? = nil
     
     var body: some View {
-        HStack { 
-            if editMode {
-                
+        HStack {
+            if editMode, let removeFromFavorites = removeFromSubredditFavorites {
                 Button(action: {
-                    removeFromSubredditFavorites()
+                    removeFromFavorites()
                 }) {
                     Image(systemName: "minus.circle.fill")
                         .foregroundColor(.red)
@@ -26,34 +25,30 @@ struct SubredditRowView: View {
                 }
             }
             
-            
-            getColorFromInputString(subreddit.name ?? "")
+            getColorFromInputString(subredditName)
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
             
             VStack(alignment: .leading) {
-                Text(subreddit.name ?? "")
-                Text("Tap to go to r/\(subreddit.name ?? "")")
-                    .foregroundColor(.secondary)
+                Text(subredditName)
             }
-            
-            
         }
         .background(
-            NavigationLink(value: SubredditFeedResponse(subredditName: subreddit.name ?? "")) {
+            NavigationLink(value: SubredditFeedResponse(subredditName: subredditName)) {
                 EmptyView()
             }
-                .opacity(0)
-                .disabled(editMode)
+            .opacity(0)
+            .disabled(editMode)
         )
-        .contextMenu(ContextMenu(menuItems: {
-            Button{
-                removeFromSubredditFavorites()
-            } label: {
-                Label("Remove from Favorites", systemImage: "trash")
-                    .foregroundColor(.red)
+        .contextMenu {
+            if let removeFromFavorites = removeFromSubredditFavorites {
+                Button(action: {
+                    removeFromFavorites()
+                }) {
+                    Label("Remove from Favorites", systemImage: "trash")
+                        .foregroundColor(.red)
+                }
             }
-            
-        }))
+        }
     }
 }

@@ -17,7 +17,7 @@ struct ImportURLSheet: View {
     var body: some View {
         ZStack {
             if displayImport {
-                List {
+                ThemedList {
                     Spacer()
                         .frame(height: 50)
                     
@@ -51,6 +51,10 @@ struct ImportURLSheet: View {
                     view.background(
                         Material.ultraThinMaterial
                     )
+                }
+                if !displayImport{
+                    Text("Paste your Multireddit URL in here")
+                        .opacity(0.5)
                 }
                 if displayImport {
                     Spacer()

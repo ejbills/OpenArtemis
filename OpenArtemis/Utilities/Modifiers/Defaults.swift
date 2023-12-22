@@ -10,15 +10,26 @@ import Defaults
 import SwiftUI
 
 extension Defaults.Keys {
+    // MARK: - Theming
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
+    static let compactMode = Key<Bool>("compactMode", default: false)
+    static let thinDivider = Key<Bool>("thinDivider", default: false)
+    static let tagBackground = Key<Bool>("tagBackground", default: true)
+    static let highlightSubreddit = Key<Bool>("highlightSubreddit", default: true)
+    static let showAuthor = Key<Bool>("showAuthor", default: true)
+    static let lightBackground = Key<Color>("lightBackground", default: .white)
+    static let darkBackground = Key<Color>("darkBackground", default: Color(hex: 0x111112))
     
+    // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
     static let over18 = Key<Bool>("over18", default: false)
     
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
+    
+    static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     
     
     // MARK: - Website Redirects

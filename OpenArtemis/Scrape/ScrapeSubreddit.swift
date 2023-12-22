@@ -93,7 +93,7 @@ class RedditScraper {
     }
 
     
-    private static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
+    static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!
         let doc = try SwiftSoup.parse(htmlString)
         let postElements = try doc.select("div.link")
@@ -114,7 +114,10 @@ class RedditScraper {
                 let votes = try postElement.attr("data-score")
                 let time = try postElement.select("time").attr("datetime")
                 let mediaURL = try postElement.attr("data-url")
-                let commentsURL = try postElement.select("a.bylink.comments.may-blank").attr("href")
+                
+                let commentsElement = try postElement.select("a.bylink.comments.may-blank")
+                let commentsURL = try commentsElement.attr("href")
+                let commentsCount = try commentsElement.text().split(separator: " ").first.map(String.init) ?? ""
                 
                 let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
                 
@@ -124,7 +127,7 @@ class RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")

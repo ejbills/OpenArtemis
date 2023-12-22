@@ -26,7 +26,7 @@ struct SubredditDrawerView: View {
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                List {
+                ThemedList {
                     Section(header: Text("Defaults")) {
                         DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
                             .background(
@@ -77,18 +77,23 @@ struct SubredditDrawerView: View {
                                     return false
                                 }
                             ) { subreddit in
-                                SubredditRowView(
-                                    subreddit: subreddit,
-                                    editMode: editMode,
-                                    removeFromSubredditFavorites: {
-                                        removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                        visibleSubredditSections()
-                                    }
-                                )
+                                if let subredditName = subreddit.name {
+                                    SubredditRowView(
+                                        subredditName: subredditName,
+                                        editMode: editMode,
+                                        removeFromSubredditFavorites: {
+                                            removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            visibleSubredditSections()
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
                 }
+                    .refreshable{
+                        visibleSubredditSections()
+                    }
                 .scrollIndicators(.hidden)
                 .onAppear {
                     visibleSubredditSections()

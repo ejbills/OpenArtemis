@@ -11,33 +11,19 @@ import Defaults
 
 struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Default(.compactMode) var compactMode
     
     let post: Post
     @State private var mediaSize: CGSize = .zero
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
     
-    
     var body: some View {
-        Group {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(post.title)
-                    .font(.headline)
-                
-                if !post.tag.isEmpty {
-                    DetailTagView(data: post.tag, color: getColorFromInputString(post.tag).opacity(0.25))
-                }
-                
-                Divider()
-                
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
-                
-                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, votes: Int(post.votes) ?? 0)
-            }
-            .padding(8)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: UIColor.systemBackground))
-        }        
+        VStack(alignment: .leading, spacing: 8) {
+            renderContent()
+        }
+        .padding(8)
+        .themedBackground()
         .onAppear {
             if !hasAppeared {
                 isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil
@@ -47,10 +33,9 @@ struct PostFeedView: View {
         .savedIndicator(isSaved)
         .addGestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                    withAnimation{
-                        isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
-                    }
-                
+                withAnimation {
+                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                }
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
@@ -58,6 +43,40 @@ struct PostFeedView: View {
             }),
             secondaryTrailingAction: nil
         )
-        
+    }
+
+    @ViewBuilder
+    private func renderContent() -> some View {
+        if !compactMode {
+            renderNormalContent()
+        } else {
+            renderCompactContent()
+        }
+    }
+
+    private func renderNormalContent() -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            TitleTagView(title: post.title, tag: post.tag)
+                        
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+            
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0)
+        }
+    }
+
+    private func renderCompactContent() -> some View {
+        HStack(alignment: .top) {
+            VStack {
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, mediaSize: $mediaSize)
+                    .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                TitleTagView(title: post.title, tag: post.tag)
+                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        }
     }
 }
+

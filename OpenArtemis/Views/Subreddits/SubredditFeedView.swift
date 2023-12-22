@@ -28,8 +28,8 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            if !posts.isEmpty {
-                ScrollView {
+            ThemedScrollView {
+                if !posts.isEmpty {
                     LazyVStack(spacing: 0) {
                         ForEach(posts, id: \.id) { post in
                             PostFeedView(post: post)
@@ -44,13 +44,20 @@ struct SubredditFeedView: View {
                             
                             DividerView(frameHeight: 10)
                         }
+                        
+                        if isLoading { // show spinner at the bottom of the feed
+                            ProgressView()
+                                .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
+                                .padding()
+                        }
                     }
+                } else {
+                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
+                    SwiftUIXmasTree2()
                 }
-                .scrollIndicators(.hidden)
-            } else {
-                LoadingAnimation(loadingText: "Loading Feed...")
             }
         }
+        .scrollIndicators(.hidden)
         .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
@@ -134,12 +141,10 @@ struct SubredditFeedView: View {
     private func handleScrapeResult(_ result: Result<[Post], Error>) {
         switch result {
         case .success(let newPosts):
-            withAnimation(.smooth) {
-                for post in newPosts {
-                    if !postIDs.contains(post.id) {
-                        posts.append(post)
-                        postIDs.insert(post.id)
-                    }
+            for post in newPosts {
+                if !postIDs.contains(post.id) {
+                    posts.append(post)
+                    postIDs.insert(post.id)
                 }
             }
 

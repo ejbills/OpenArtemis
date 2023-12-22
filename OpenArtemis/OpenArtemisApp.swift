@@ -18,10 +18,9 @@ struct OpenArtemisApp: App {
     
     // Scene phase tracks when the app goes to the background
     @Environment(\.scenePhase) var scenePhase
-    
     // this is the shared context controller for our CoreData module
     let persistenceController = PersistenceController.shared
-        
+    @Default(.showingOOBE) var showingOOBE
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -56,6 +55,9 @@ struct OpenArtemisApp: App {
             }
             .accentColor(Color.artemisAccent)
             .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+            .sheet(isPresented: $showingOOBE){
+                OnboardingView()
+            }
         }
         .environment(\.managedObjectContext, persistenceController.container.viewContext)
         .environment(trackingParamRemover)

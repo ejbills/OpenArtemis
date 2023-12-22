@@ -11,7 +11,7 @@ struct ChangeAppIconView: View {
     var appIconManager = AppIconManager()
     @State var currentAppicon: String = "Default"
     var body: some View {
-        List{
+        ThemedList {
             ForEach(appIconManager.getIcons().sorted(), id: \.self){ icon in
                 AppIconElement(icon: icon, currentAppIcon: $currentAppicon)
             }
