@@ -9,10 +9,20 @@ import Foundation
 import SwiftSoup
 
 extension RedditScraper {
-    static func search(query: String, completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
+    static func search(query: String, searchType: String, trackingParamRemover: TrackingParamRemover?,
+                       over18: Bool? = false, completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
         // Construct the URL for the Reddit search based on the query
         var urlComponents = URLComponents(string: "\(baseRedditURL)/search")
-        var queryItems = [URLQueryItem(name: "q", value: query)]
+        var queryItems = [
+            URLQueryItem(name: "q", value: query),
+            URLQueryItem(name: "type", value: searchType),
+        ]
+        
+        // Add include_over_18=on if over18 is true
+        if over18 == true {
+            queryItems.append(URLQueryItem(name: "include_over_18", value: "on"))
+        }
+        
         urlComponents?.queryItems = queryItems
 
         guard let searchURL = urlComponents?.url else {
@@ -41,13 +51,13 @@ extension RedditScraper {
                 
                 var mixedMediaResults: [MixedMedia] = []
 
-                let subreddits = scrapeSubredditResults(data: doc)
-//                let postsElement = try doc.select("div.listing search-result-listing").last()
-                let posts = try parsePostData(data: data, trackingParamRemover: nil)
-                // scrapePosts(data: doc, trackingParamRemover: nil)
-
-                mixedMediaResults.append(contentsOf: subreddits.map { MixedMedia.subreddit($0) })
-                mixedMediaResults.append(contentsOf: posts.map { MixedMedia.post($0, date: nil) })
+                if searchType == "sr" { // subreddit search
+                    let subreddits = scrapeSubredditResults(data: doc)
+                    mixedMediaResults.append(contentsOf: subreddits.map { MixedMedia.subreddit($0) })
+                } else if searchType.isEmpty { // no filter is a post search
+                    let posts = scrapePostResults(data: doc, trackingParamRemover: trackingParamRemover)
+                    mixedMediaResults.append(contentsOf: posts.map { MixedMedia.post($0, date: nil) })
+                }
 
                 completion(.success(mixedMediaResults))
             } catch {
@@ -78,5 +88,42 @@ extension RedditScraper {
             return []
         }
     }
-}
+    
+    private static func scrapePostResults(data: Document, trackingParamRemover: TrackingParamRemover?) -> [Post] {
+        let postElements = try? data.select("div.search-result-link")
 
+        return postElements?.compactMap { postElement -> Post? in
+            do {
+                let id = try postElement.attr("data-fullname")
+                let title = try postElement.select("a.search-title.may-blank").text()
+                let subreddit = try postElement.select("a.search-subreddit-link.may-blank").text()
+                let tagElement = try postElement.select("span.linkflairlabel").first()
+                let tag = try tagElement?.text() ?? ""
+                let author = try postElement.select("span.search-author a").text()
+                let votes = try postElement.select("span.search-score").text()
+                let time = try postElement.select("span.search-time time").attr("datetime")
+                
+                let commentsURL = try postElement.select("a.search-comments.may-blank").attr("href")
+                let commentsCount = try postElement.select("a.search-comments.may-blank").text().split(separator: " ").first.map(String.init) ?? ""
+                
+                let footerElement = try postElement.select("div.search-result-footer").first()
+                let mediaURL = try footerElement?.select("a.search-link.may-blank").attr("href") ?? commentsURL // bail to comments link (text post for example - which does not have a media url)
+                
+                let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
+
+                var thumbnailURL: String? = nil
+
+                if type == "video" || type == "gallery" || type == "article", let thumbnailElement = try? postElement.select("a.thumbnail img").first() {
+                    thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
+                }
+
+                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
+            } catch {
+                // Handle any specific errors here if needed
+                print("Error parsing post element: \(error)")
+                return nil
+            }
+        } ?? []
+    }
+
+}

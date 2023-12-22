@@ -79,6 +79,7 @@ struct SettingsView: View {
                     Text("No").tag(false)
                     Text("Yes").tag(true)
                 }
+                
                 Button{
                     exportedURL = SubredditIOManager().exportSubs(fileName: "artemis_subs.json", subreddits: localFavorites.compactMap { $0.name })
                     presentingFileMover = exportedURL != nil

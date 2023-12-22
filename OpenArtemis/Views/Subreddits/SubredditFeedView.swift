@@ -46,7 +46,7 @@ struct SubredditFeedView: View {
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading feed...")
+                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
                 }
             }
         }
@@ -134,12 +134,10 @@ struct SubredditFeedView: View {
     private func handleScrapeResult(_ result: Result<[Post], Error>) {
         switch result {
         case .success(let newPosts):
-            withAnimation(.smooth) {
-                for post in newPosts {
-                    if !postIDs.contains(post.id) {
-                        posts.append(post)
-                        postIDs.insert(post.id)
-                    }
+            for post in newPosts {
+                if !postIDs.contains(post.id) {
+                    posts.append(post)
+                    postIDs.insert(post.id)
                 }
             }
 
