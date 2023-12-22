@@ -77,14 +77,16 @@ struct SubredditDrawerView: View {
                                     return false
                                 }
                             ) { subreddit in
-                                SubredditRowView(
-                                    subreddit: subreddit,
-                                    editMode: editMode,
-                                    removeFromSubredditFavorites: {
-                                        removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                        visibleSubredditSections()
-                                    }
-                                )
+                                if let subredditName = subreddit.name {
+                                    SubredditRowView(
+                                        subredditName: subredditName,
+                                        editMode: editMode,
+                                        removeFromSubredditFavorites: {
+                                            removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            visibleSubredditSections()
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

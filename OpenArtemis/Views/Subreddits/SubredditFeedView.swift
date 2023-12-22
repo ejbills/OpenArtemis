@@ -44,9 +44,16 @@ struct SubredditFeedView: View {
                             
                             DividerView(frameHeight: 10)
                         }
+                        
+                        if isLoading { // show spinner at the bottom of the feed
+                            ProgressView()
+                                .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
+                                .padding()
+                        }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading feed...")
+                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
+                    SwiftUIXmasTree2()
                 }
             }
         }
@@ -134,12 +141,10 @@ struct SubredditFeedView: View {
     private func handleScrapeResult(_ result: Result<[Post], Error>) {
         switch result {
         case .success(let newPosts):
-            withAnimation(.smooth) {
-                for post in newPosts {
-                    if !postIDs.contains(post.id) {
-                        posts.append(post)
-                        postIDs.insert(post.id)
-                    }
+            for post in newPosts {
+                if !postIDs.contains(post.id) {
+                    posts.append(post)
+                    postIDs.insert(post.id)
                 }
             }
 

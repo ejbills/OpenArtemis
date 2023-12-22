@@ -14,7 +14,7 @@ struct SavedView: View {
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
     @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
     
-    @State var mixedMediaLinks: [MixedMediaTuple] = []
+    @State var mixedMediaLinks: [MixedMedia] = []
     
     var body: some View {
         if mixedMediaLinks.isEmpty {
@@ -33,10 +33,9 @@ struct SavedView: View {
             
         } else {
             ThemedScrollView {
-                
                 LazyVStack(spacing: 0) {
                     ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                        MixedContentView(content: mixedMediaTuple.content, savedPosts: savedPosts, savedComments: savedComments)
+                        MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments)
                         DividerView(frameHeight: 10)
                     }
                 }
@@ -57,25 +56,44 @@ struct SavedView: View {
     /// mapping them into `MixedMediaTuple` elements, and sorting the array by date in descending order.
     func updateFeed() {
         mixedMediaLinks = []
-        
+
         // Map the saved posts from CoreData to the mixedMediaLinks array
         let posts = savedPosts.map { post in
             let postTuple = PostUtils.shared.savedPostToPost(context: managedObjectContext, post: post)
-            return MixedMediaTuple(date: postTuple.0 ?? Date(), content: .first(postTuple.1))
+            return MixedMedia.post(postTuple.1, date: postTuple.0)
         }
-        
+
         // Map the saved comments from CoreData to the mixedMediaLinks array
         let comments = savedComments.map { savedComment in
             let commentTuple = CommentUtils.shared.savedCommentToComment(savedComment)
-            return MixedMediaTuple(date: commentTuple.0 ?? Date(), content: .second(commentTuple.1))
+            return MixedMedia.comment(commentTuple.1, date: commentTuple.0)
         }
-        
+
         // Combine posts and comments into mixedMediaLinks array
         mixedMediaLinks += posts
         mixedMediaLinks += comments
-        
+
         // Sort mixedMediaLinks by date in descending order
-        mixedMediaLinks.sort { $0.date > $1.date }
+        mixedMediaLinks.sort { (lhs: MixedMedia, rhs: MixedMedia) -> Bool in
+            var localDate1: Date
+            var localDate2: Date
+            
+            switch lhs {
+            case .post(_, let date), .comment(_, let date):
+                localDate1 = date ?? Date()
+            default:
+                localDate1 = Date()
+            }
+            
+            switch rhs {
+            case .post(_, let date), .comment(_, let date):
+                localDate2 = date ?? Date()
+            default:
+                localDate2 = Date()
+            }
+            
+            return localDate1 > localDate2
+        }
     }
 }
 
@@ -85,7 +103,7 @@ struct MixedContentView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    var content: Either<Post, Comment>
+    var content: MixedMedia
     let savedPosts: FetchedResults<SavedPost>
     let savedComments: FetchedResults<SavedComment>
     
@@ -94,12 +112,12 @@ struct MixedContentView: View {
     
     var body: some View {
         switch content {
-        case .first(let post):
+        case .post(let post, _):
             PostFeedView(post: post)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
                 }
-        case .second(let comment):
+        case .comment(let comment, _):
             CommentView(comment: comment, numberOfChildren: 0)
                 .savedIndicator(isCommentSaved)
                 .onAppear{
@@ -132,6 +150,8 @@ struct MixedContentView: View {
                         }
                     }
                 }
+        case .subreddit(let subreddit):
+            SubredditRowView(subredditName: subreddit.subreddit)
         }
     }
 }

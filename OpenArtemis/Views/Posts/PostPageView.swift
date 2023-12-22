@@ -116,7 +116,7 @@ struct PostPageView: View {
                                 }
                             }
                         } else {
-                            LoadingAnimation(loadingText: "Loading comments...")
+                            LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
                         }
                     }
                     .themedBackground()
@@ -162,18 +162,16 @@ struct PostPageView: View {
         RedditScraper.scrapeComments(commentURL: commentsURL, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let result):
-                withAnimation(.smooth) {
-                    for comment in result.comments {
-                        self.comments.append(comment)
-                        
-                        if comment.depth == 0 {
-                            self.rootComments.append(comment)
-                        }
-                    }
+                for comment in result.comments {
+                    self.comments.append(comment)
                     
-                    if let postBody = result.postBody, !(postBody.isEmpty) {
-                        self.postBody = postBody
+                    if comment.depth == 0 {
+                        self.rootComments.append(comment)
                     }
+                }
+                
+                if let postBody = result.postBody, !(postBody.isEmpty) {
+                    self.postBody = postBody
                 }
             case .failure(let error):
                 print("Error: \(error)")
@@ -211,5 +209,6 @@ struct PostPageView: View {
         }
         return currentComment
     }
+        
     
 }
