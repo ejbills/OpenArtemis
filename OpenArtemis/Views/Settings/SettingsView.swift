@@ -17,6 +17,7 @@ struct SettingsView: View {
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
+    @Default(.swipeAnywhere) var swipeAnywhere
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -37,6 +38,15 @@ struct SettingsView: View {
     @State var toastIcon: String = "checkmark.circle.fill"
     var body: some View {
         ThemedList(appTheme: appTheme) {
+            Section("General") {
+                Group {
+                    Toggle("Swipe anywhere to go back", isOn: $swipeAnywhere)
+                    Text("Note: This option will disable swipe gestures on posts and comments.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 4)
+                }
+            }
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
                     appTheme.preferredThemeMode
