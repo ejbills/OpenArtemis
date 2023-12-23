@@ -24,6 +24,8 @@ struct SettingsView: View {
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
     
     @State var currentAppIcon: String = "AppIcon"
+    @State private var selectedLightModeBackground: Color = .white
+    @State private var selectedDarkModeBackground: Color = .black
     
     @State var showingImportDalog: Bool = false
     @State var showingURLImportSheet: Bool = false
@@ -31,7 +33,6 @@ struct SettingsView: View {
     @State var exportedURL: String? = nil
     @State var presentingFileMover: Bool = false
     @State var doImport: Bool = false
-    
     
     @State var showToast: Bool = false
     @State var toastTitle: String = "Success!"
@@ -53,13 +54,19 @@ struct SettingsView: View {
                 }, set: { val, _ in
                     appTheme.preferredThemeMode = val
                 })){
-                    Text("Automatic").tag(PreferredThemeMode.automatic)
+                    Text("Automatic").tag(PreferredThemeMode.automatic) 
                     Text("Light").tag(PreferredThemeMode.light)
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }
                 ColorPicker("Accent Color", selection: $accentColor)
-                ColorPicker("Light Mode Background Color", selection: $appTheme.lightBackground)
-                ColorPicker("Dark Mode Background Color", selection: $appTheme.darkBackground)
+                ColorPicker("Light Mode Background Color", selection: $selectedLightModeBackground)
+                    .onChange(of: selectedLightModeBackground) { _, newColor in
+                        appTheme.lightBackground = newColor
+                    }
+                ColorPicker("Dark Mode Background Color", selection: $selectedDarkModeBackground)
+                    .onChange(of: selectedDarkModeBackground) { _, newColor in
+                        appTheme.darkBackground = newColor
+                    }
                 Toggle("Compact mode", isOn: $appTheme.compactMode)
                 Toggle("Thin divider between posts", isOn: $appTheme.thinDivider)
                 Toggle("Show info tags with background", isOn: $appTheme.tagBackground)
@@ -141,7 +148,8 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{
             currentAppIcon = AppIconManager().getCurrentIconName()
-           
+            selectedLightModeBackground = appTheme.lightBackground
+            selectedDarkModeBackground = appTheme.darkBackground
         }
         .toast(isPresented: $showToast, style: .popup, title: toastTitle,systemIcon: toastIcon, speed: 1.5, tapToDismiss: false, onAppear: {})
     }
