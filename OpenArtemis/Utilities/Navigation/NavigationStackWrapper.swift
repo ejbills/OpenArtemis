@@ -3,7 +3,7 @@
 //  OpenArtemis
 //
 //  Created by Ethan Bills on 12/22/23.
-//
+//  I DID NOT MAKE THIS. I GOT IT FROM THIS VIDEO: https://www.youtube.com/watch?v=4ceKPSTlL4I
 
 import SwiftUI
 import Defaults
