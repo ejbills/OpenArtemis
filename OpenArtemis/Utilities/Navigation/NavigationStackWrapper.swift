@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct NavigationStackWrapper<Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
+    @Default(.swipeAnywhere) var swipeAnywhere
     var content: () -> Content
     
     @State private var swipeGesture: UIPanGestureRecognizer = {
@@ -30,7 +32,7 @@ struct NavigationStackWrapper<Content: View>: View {
                     AttachGestureView(gesture: $swipeGesture, navigationDepth: tabCoordinator.path.count)
                 }
         }
-        .enabledFullSwipePop(true)
+        .enabledFullSwipePop(swipeAnywhere)
         .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
         .environment(\.popGestureID, swipeGesture.name)
