@@ -25,8 +25,7 @@ struct OpenArtemisApp: App {
         WindowGroup {
             TabView {
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SubredditDrawerView(appTheme: appTheme)
-                        
+                    SubredditDrawerView(appTheme: appTheme)                        
                 }
                 .tabItem {
                     Label("Feed", systemImage: "doc.richtext")
