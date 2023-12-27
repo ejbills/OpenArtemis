@@ -90,13 +90,7 @@ struct PostPageView: View {
                                             }
                                         }),
                                         secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                                                let commentSaveBool = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-                                                
-                                                if commentSaveBool {
-                                                    perViewSavedComments.insert(comment.id)
-                                                } else {
-                                                    perViewSavedComments.remove(comment.id)
-                                                }
+                                            saveComment(comment)
                                         }),
                                         primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
                                             MiscUtils.shareItem(item: comment.directURL)
@@ -105,6 +99,13 @@ struct PostPageView: View {
                                     )
                                     .contextMenu(ContextMenu(menuItems: {
                                         ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
+                                        
+                                        Button(action: {
+                                            saveComment(comment)
+                                        }) {
+                                            Text(perViewSavedComments.contains(comment.id) ? "Unsave" : "Save")
+                                            Image(systemName: perViewSavedComments.contains(comment.id) ? "bookmark.fill" : "bookmark")
+                                        }
                                     }))
                                     Divider()
                                         .padding(.leading, CGFloat(comment.depth) * 10)
@@ -212,5 +213,15 @@ struct PostPageView: View {
         return currentComment
     }
         
+    private func saveComment(_ comment: Comment) {
+        // Toggle save and update the saved comments set
+        let commentSaveBool = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+
+        if commentSaveBool {
+            perViewSavedComments.insert(comment.id)
+        } else {
+            perViewSavedComments.remove(comment.id)
+        }
+    }
     
 }

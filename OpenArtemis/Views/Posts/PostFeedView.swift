@@ -43,6 +43,17 @@ struct PostFeedView: View {
             }),
             secondaryTrailingAction: nil
         )
+        .contextMenu(menuItems: {
+            ShareLink(item: URL(string: post.commentsURL)!)
+            Button(action: {
+                withAnimation {
+                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
+                }
+            }) {
+                Text(isSaved ? "Unsave" : "Save")
+                Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+            }
+        })
     }
 
     @ViewBuilder

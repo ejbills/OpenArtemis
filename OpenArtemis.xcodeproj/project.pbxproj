@@ -41,6 +41,7 @@
 		65F5959C2B1F188B005BE493 /* ColorFromHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959B2B1F188B005BE493 /* ColorFromHex.swift */; };
 		65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959D2B1F3A54005BE493 /* HapticManager.swift */; };
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
+		BB05568F2B367B2C00BB71F1 /* NavigationStackWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */; };
 		BB2C90EC2B352D2D0034E511 /* ChristmasTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */; };
 		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
 		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
@@ -134,6 +135,7 @@
 		65F5959B2B1F188B005BE493 /* ColorFromHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFromHex.swift; sourceTree = "<group>"; };
 		65F5959D2B1F3A54005BE493 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		65F5959F2B1F3A69005BE493 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
+		BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackWrapper.swift; sourceTree = "<group>"; };
 		BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChristmasTree.swift; sourceTree = "<group>"; };
 		BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme Wrappers.swift"; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 		BB391FBE2B1ADE600014FB18 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */,
 				BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */,
 				BB391FC42B1ADE790014FB18 /* NavInjector.swift */,
 				BB391FC52B1ADE790014FB18 /* NavPayloads.swift */,
@@ -659,6 +662,7 @@
 				65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */,
 				653245C22B2AF5D500227019 /* OOBE_SubsImporter.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
+				BB05568F2B367B2C00BB71F1 /* NavigationStackWrapper.swift in Sources */,
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
 				65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */,

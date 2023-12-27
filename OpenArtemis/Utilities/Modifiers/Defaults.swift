@@ -13,7 +13,6 @@ extension Defaults.Keys {
     // MARK: - Theming
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
-    
     static let appTheme = Key<AppThemeSettings>("appTheme", default: AppThemeSettings())
     
     // MARK: - General
@@ -21,11 +20,9 @@ extension Defaults.Keys {
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
     static let over18 = Key<Bool>("over18", default: false)
-    
+    static let swipeAnywhere = Key<Bool>("swipeAnywhere", default: false)
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
-    
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
-    
     
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
