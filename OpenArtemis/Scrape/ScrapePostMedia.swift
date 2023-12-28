@@ -21,7 +21,7 @@ extension RedditScraper {
         if let bodyElement = postBody, !(try bodyElement.text().isEmpty) {
             let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
             
-            var document = BasicHTML(rawHTML: modifiedHtmlBody)
+            var document = MastodonHTML(rawHTML: modifiedHtmlBody)
             try document.parse()
             body = try document.asMarkdown()
         }
@@ -83,7 +83,7 @@ extension RedditScraper {
 
     }
     
-    private static func parseCommentsData(data: Document, trackingParamRemover: TrackingParamRemover) throws -> [Comment] {
+    static func parseCommentsData(data: Document, trackingParamRemover: TrackingParamRemover) throws -> [Comment] {
         var comments: [Comment] = []
         var commentIDs = Set<String>()
         
@@ -111,7 +111,7 @@ extension RedditScraper {
             if let bodyElement = bodyElement {
                 let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
                 
-                var document = BasicHTML(rawHTML: modifiedHtmlBody)
+                var document = MastodonHTML(rawHTML: modifiedHtmlBody)
                 try document.parse()
                 body = try document.asMarkdown()
             }

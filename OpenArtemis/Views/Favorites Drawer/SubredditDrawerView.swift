@@ -93,10 +93,9 @@ struct SubredditDrawerView: View {
                         }
                     }
                 }
-                    .refreshable{
-                        visibleSubredditSections()
-                    }
-                .scrollIndicators(.hidden)
+                .refreshable{
+                    visibleSubredditSections()
+                }
                 .onAppear {
                     visibleSubredditSections()
                 }

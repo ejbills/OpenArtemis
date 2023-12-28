@@ -23,8 +23,11 @@ struct HandleDeepLinksDisplay: ViewModifier {
                 }
                 
             }
+            .navigationDestination(for: ProfileResponse.self) { response in
+                ProfileView(username: response.username, appTheme: appTheme)
+            }
             .navigationDestination(for: PostResponse.self) { response in
-                PostPageView(post: response.post, appTheme: appTheme)
+                PostPageView(post: response.post, commentsURLOverride: response.commentsURLOverride, appTheme: appTheme)
             }
     }
 }
@@ -50,7 +53,7 @@ struct HandleDeepLinkResolution: ViewModifier {
             if urlStringWithoutScheme.hasPrefix("/u/") {
                 if let username = urlStringWithoutScheme.split(separator: "/u/").last {
                     // handle profile viewing...
-                    print(username)
+                    coordinator.path.append(ProfileResponse(username: String(username)))
                 }
             } else if urlStringWithoutScheme.hasPrefix("/r/") {
                 if let subreddit = urlStringWithoutScheme.split(separator: "/r/").last {

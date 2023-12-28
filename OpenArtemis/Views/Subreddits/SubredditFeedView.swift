@@ -54,11 +54,9 @@ struct SubredditFeedView: View {
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
-                    SwiftUIXmasTree2()
                 }
             }
         }
-        .scrollIndicators(.hidden)
         .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
@@ -67,7 +65,7 @@ struct SubredditFeedView: View {
         }
         .onAppear {
             if posts.isEmpty {
-                scrapeSubreddit(subredditName)
+                scrapeSubreddit()
             }
         }
         .refreshable {
@@ -80,7 +78,7 @@ struct SubredditFeedView: View {
     private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
             if postId == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(subredditName, lastPostAfter, sort: sortOption)
+                scrapeSubreddit(lastPostAfter, sort: sortOption)
             }
         }
     }
@@ -130,10 +128,10 @@ struct SubredditFeedView: View {
         })
     }
 
-    private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
         self.isLoading = true
 
-        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort, 
+        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
                                       trackingParamRemover: trackingParamRemover, over18: over18) { result in
             handleScrapeResult(result)
         }
@@ -167,6 +165,6 @@ struct SubredditFeedView: View {
             isLoading = false
         }
         
-        scrapeSubreddit(subredditName, sort: sortOption)
+        scrapeSubreddit(sort: sortOption)
     }
 }

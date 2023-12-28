@@ -28,6 +28,9 @@ struct PostDetailsView: View {
             
             if appTheme.showAuthor {
                 DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme)
+                    .onTapGesture {
+                        coordinator.path.append(ProfileResponse(username: postAuthor))
+                    }
             }
             
             if !appTheme.compactMode { // upvotes get pushed all the way acrossed the view in compact mode, it looks weird. disabling it here
