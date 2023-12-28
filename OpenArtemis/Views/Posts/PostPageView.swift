@@ -63,18 +63,17 @@ struct PostPageView: View {
                                     clearCommentsAndReload()
                                 }) {
                                     Group {
-                                        Label("Load All Other Comments", systemImage: "rectangle.expand.vertical")
+                                        Label("Load all other comments", systemImage: "rectangle.expand.vertical")
                                         Spacer()
                                     }
                                     .contentShape(Rectangle())
                                 }
                                 .padding(8)
-                                .font(.caption)
                                 .italic()
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color.artemisAccent)
                                 .disabled(isLoadAllCommentsPressed)
                                 
-                                DividerView(frameHeight: 10, appTheme: appTheme)
+                                Divider()
                             }
 
                             
