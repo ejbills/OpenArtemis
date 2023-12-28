@@ -44,7 +44,7 @@ struct ProfileView: View {
                     }
                 }
             } else {
-                LoadingAnimation(loadingText: "Loading profile...", isLoading: isLoading)
+                LoadingView(loadingText: "Loading profile...", isLoading: isLoading)
             }
         }
         .navigationTitle(username)

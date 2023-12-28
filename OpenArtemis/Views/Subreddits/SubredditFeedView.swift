@@ -55,7 +55,7 @@ struct SubredditFeedView: View {
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
+                    LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
                 }
             }
         }

@@ -21,7 +21,7 @@ extension RedditScraper {
         if let bodyElement = postBody, !(try bodyElement.text().isEmpty) {
             let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
             
-            var document = MastodonHTML(rawHTML: modifiedHtmlBody)
+            var document = BasicHTML(rawHTML: modifiedHtmlBody)
             try document.parse()
             body = try document.asMarkdown()
         }
@@ -111,7 +111,7 @@ extension RedditScraper {
             if let bodyElement = bodyElement {
                 let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
                 
-                var document = MastodonHTML(rawHTML: modifiedHtmlBody)
+                var document = BasicHTML(rawHTML: modifiedHtmlBody)
                 try document.parse()
                 body = try document.asMarkdown()
             }

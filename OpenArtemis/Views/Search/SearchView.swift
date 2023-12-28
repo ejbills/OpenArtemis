@@ -33,7 +33,7 @@ struct SearchView: View {
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading subreddits...", isLoading: true)
+                    LoadingView(loadingText: "Loading subreddits...", isLoading: true)
                 }
             } else {
                 ThemedList(appTheme: appTheme, stripStyling: true) {
@@ -43,7 +43,7 @@ struct SearchView: View {
                             DividerView(frameHeight: 10, appTheme: appTheme)
                         }
                     } else {
-                        LoadingAnimation(loadingText: "Loading posts...", isLoading: true)
+                        LoadingView(loadingText: "Loading posts...", isLoading: true)
                     }
                 }
             }

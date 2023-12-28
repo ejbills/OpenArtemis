@@ -21,7 +21,7 @@
 		65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */; };
 		65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 65D3DBAE2B1B1AFA00BCCD38 /* Defaults */; };
 		65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */; };
-		65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */; };
+		65D3DBB62B1B1F2200BCCD38 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB52B1B1F2200BCCD38 /* LoadingView.swift */; };
 		65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */; };
 		65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBB2B1B212800BCCD38 /* Defaults.swift */; };
 		65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D3DBBD2B1B228300BCCD38 /* ThemeColors.swift */; };
@@ -116,7 +116,7 @@
 		65AD50B22B1E38B9008B39E9 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		65BE32262B1CE91E00DBC067 /* FormatBigNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatBigNumbers.swift; sourceTree = "<group>"; };
 		65D3DBB12B1B1C0300BCCD38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
+		65D3DBB52B1B1F2200BCCD38 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		65D3DBBB2B1B212800BCCD38 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		65D3DBBD2B1B228300BCCD38 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 			children = (
 				65A332992B1DDD2F00421162 /* Toaster.swift */,
 				BBE434712B1BD6A400886CAB /* String Hex.swift */,
-				65D3DBB52B1B1F2200BCCD38 /* LoadingAnimation.swift */,
+				65D3DBB52B1B1F2200BCCD38 /* LoadingView.swift */,
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				BB853E6F2B35E3210041150C /* CodableColor.swift */,
@@ -697,7 +697,7 @@
 				BB502DD12B23AACC003C22DB /* SubredditUtils.swift in Sources */,
 				BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */,
 				65D7E8562B23755A003FF5B5 /* SavedModifier.swift in Sources */,
-				65D3DBB62B1B1F2200BCCD38 /* LoadingAnimation.swift in Sources */,
+				65D3DBB62B1B1F2200BCCD38 /* LoadingView.swift in Sources */,
 				BBE434772B1BE35F00886CAB /* PersistenceController.swift in Sources */,
 				BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */,
 				BB391FC82B1ADE790014FB18 /* NavPayloads.swift in Sources */,

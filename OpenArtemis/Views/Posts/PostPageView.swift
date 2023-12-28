@@ -140,7 +140,7 @@ struct PostPageView: View {
                             }
                         }
                     } else {
-                        LoadingAnimation(loadingText: "Loading comments...", isLoading: isLoading)
+                        LoadingView(loadingText: "Loading comments...", isLoading: isLoading)
                     }
                 }
                 .commentSkipper(
