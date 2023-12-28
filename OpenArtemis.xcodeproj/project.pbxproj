@@ -42,6 +42,8 @@
 		65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959D2B1F3A54005BE493 /* HapticManager.swift */; };
 		65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5959F2B1F3A69005BE493 /* GestureActions.swift */; };
 		BB05568F2B367B2C00BB71F1 /* NavigationStackWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */; };
+		BB0556932B3BAF1E00BB71F1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556922B3BAF1E00BB71F1 /* ProfileView.swift */; };
+		BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */; };
 		BB2C90EC2B352D2D0034E511 /* ChristmasTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */; };
 		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
 		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
@@ -70,6 +72,7 @@
 		BB8CAE782B1E73B600CA13BB /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE772B1E73B600CA13BB /* CommentView.swift */; };
 		BB8CAE7A2B1E73CE00CA13BB /* Comment Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */; };
 		BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE7B2B1E73D400CA13BB /* TimeFormatter.swift */; };
+		BB93194B2B3CDA2C00863302 /* DateSorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB93194A2B3CDA2C00863302 /* DateSorting.swift */; };
 		BBACCB402B3231E100A9F550 /* TitleTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBACCB3F2B3231E100A9F550 /* TitleTagView.swift */; };
 		BBB101D02B20154600691B2F /* PostDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB101CF2B20154600691B2F /* PostDetailsView.swift */; };
 		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
@@ -136,6 +139,8 @@
 		65F5959D2B1F3A54005BE493 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		65F5959F2B1F3A69005BE493 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
 		BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackWrapper.swift; sourceTree = "<group>"; };
+		BB0556922B3BAF1E00BB71F1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeProfile.swift; sourceTree = "<group>"; };
 		BB2C90EB2B352D2D0034E511 /* ChristmasTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChristmasTree.swift; sourceTree = "<group>"; };
 		BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme Wrappers.swift"; sourceTree = "<group>"; };
 		BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditFeedView.swift; sourceTree = "<group>"; };
@@ -162,6 +167,7 @@
 		BB8CAE772B1E73B600CA13BB /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment Utils.swift"; sourceTree = "<group>"; };
 		BB8CAE7B2B1E73D400CA13BB /* TimeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
+		BB93194A2B3CDA2C00863302 /* DateSorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSorting.swift; sourceTree = "<group>"; };
 		BBACCB3F2B3231E100A9F550 /* TitleTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTagView.swift; sourceTree = "<group>"; };
 		BBB101CF2B20154600691B2F /* PostDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailsView.swift; sourceTree = "<group>"; };
 		BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArtemis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +279,14 @@
 			path = OpenArtemisTests;
 			sourceTree = "<group>";
 		};
+		BB0556912B3BAF0F00BB71F1 /* Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				BB0556922B3BAF1E00BB71F1 /* ProfileView.swift */,
+			);
+			path = Profiles;
+			sourceTree = "<group>";
+		};
 		BB3387012B2C171200EF4D5C /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,6 +298,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BB0556912B3BAF0F00BB71F1 /* Profiles */,
 				BBEB46E12B34981300C33D33 /* Search */,
 				BB3387012B2C171200EF4D5C /* Themes */,
 				653245BB2B2AF5C000227019 /* OnboardingViews */,
@@ -342,6 +357,7 @@
 				65F595972B1F116F005BE493 /* ScrapeSubreddit.swift */,
 				65F595992B1F1195005BE493 /* ScrapePostMedia.swift */,
 				BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */,
+				BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */,
 			);
 			path = Scrape;
 			sourceTree = "<group>";
@@ -362,6 +378,7 @@
 				65A332922B1DCDCD00421162 /* SubredditIOManager.swift */,
 				65F5959D2B1F3A54005BE493 /* HapticManager.swift */,
 				65F5959F2B1F3A69005BE493 /* GestureActions.swift */,
+				BB93194A2B3CDA2C00863302 /* DateSorting.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -635,6 +652,7 @@
 				65D3DBB92B1B20ED00BCCD38 /* SettingsView.swift in Sources */,
 				65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */,
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
+				BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
 				653245C32B2AF5D500227019 /* StarsBlinkingView.swift in Sources */,
@@ -649,6 +667,7 @@
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
 				BB502DD32B23FD4A003C22DB /* CommentSkipper.swift in Sources */,
+				BB93194B2B3CDA2C00863302 /* DateSorting.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
@@ -670,6 +689,7 @@
 				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
 				BB391FC72B1ADE790014FB18 /* NavInjector.swift in Sources */,
+				BB0556932B3BAF1E00BB71F1 /* ProfileView.swift in Sources */,
 				65D7E84F2B234B4F003FF5B5 /* SavedView.swift in Sources */,
 				BB391FB22B1ADDB00014FB18 /* VideoPlayerViewController.swift in Sources */,
 				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,

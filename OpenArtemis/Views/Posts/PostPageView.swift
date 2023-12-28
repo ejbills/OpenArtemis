@@ -138,7 +138,6 @@ struct PostPageView: View {
                 }
             }
         }
-        .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("\((Int(post.commentsCount) ?? 0).roundedWithAbbreviations) Comments")
         .onAppear {

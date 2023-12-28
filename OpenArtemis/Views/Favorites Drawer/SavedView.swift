@@ -75,27 +75,7 @@ struct SavedView: View {
         mixedMediaLinks += posts
         mixedMediaLinks += comments
 
-        // Sort mixedMediaLinks by date in descending order
-        mixedMediaLinks.sort { (lhs: MixedMedia, rhs: MixedMedia) -> Bool in
-            var localDate1: Date
-            var localDate2: Date
-            
-            switch lhs {
-            case .post(_, let date), .comment(_, let date):
-                localDate1 = date ?? Date()
-            default:
-                localDate1 = Date()
-            }
-            
-            switch rhs {
-            case .post(_, let date), .comment(_, let date):
-                localDate2 = date ?? Date()
-            default:
-                localDate2 = Date()
-            }
-            
-            return localDate1 > localDate2
-        }
+        DateSortingUtils.sortMixedMediaByDateDescending(&mixedMediaLinks)
     }
 }
 
@@ -110,6 +90,8 @@ struct MixedContentView: View {
     let savedComments: FetchedResults<SavedComment>
     let appTheme: AppThemeSettings
     
+    var bypassFetchSavedStatus: Bool = false
+    
     @State var isLoadingCommentPost: Bool = false
     @State var isCommentSaved: Bool = false
     
@@ -123,18 +105,20 @@ struct MixedContentView: View {
         case .comment(let comment, _):
             CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme)
                 .savedIndicator(isCommentSaved)
-                .onAppear{
-                    isCommentSaved = savedComments.contains { $0.id == comment.id }
+                .onAppear {
+                    if !bypassFetchSavedStatus { // in profiles for example, we want to bypass fetching the status of every comment - it leads to stuttering
+                        isCommentSaved = savedComments.contains { $0.id == comment.id }
+                    }
                 }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                        withAnimation{
-                            isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-                        }
+                    withAnimation {
+                        isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
+                    }
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
                     if !isLoadingCommentPost {
-                        withAnimation{
+                        withAnimation {
                             isLoadingCommentPost = true
                         }
                         

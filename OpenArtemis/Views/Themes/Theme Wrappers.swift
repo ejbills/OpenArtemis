@@ -21,6 +21,7 @@ struct ThemedList<Content: View>: View {
             content()
                 .themedBackground(isListRow: true, appTheme: appTheme)
         }
+        .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
         .themedBackground(isDarker: true, appTheme: appTheme)
     }
@@ -39,6 +40,7 @@ struct ThemedScrollView<Content: View>: View {
         ScrollView {
             content()
         }
+        .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
         .themedBackground(isDarker: true, appTheme: appTheme)
     }

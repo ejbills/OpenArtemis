@@ -10,6 +10,8 @@ import MarkdownUI
 import Defaults
 
 struct CommentView: View {
+    @EnvironmentObject var coordinator: NavCoordinator
+    
     var comment: Comment
     var numberOfChildren: Int
     let appTheme: AppThemeSettings
@@ -25,6 +27,9 @@ struct CommentView: View {
                 VStack(alignment: .leading) {
                     HStack(spacing: 4) {
                         DetailTagView(icon: "person", data: comment.author, appTheme: appTheme)
+                            .onTapGesture {
+                                coordinator.path.append(ProfileResponse(username: comment.author))
+                            }
                         DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time), appTheme: appTheme)
                         
                         Spacer()

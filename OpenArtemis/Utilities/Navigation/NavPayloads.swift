@@ -19,6 +19,14 @@ struct SubredditFeedResponse: Hashable {
     }
 }
 
+struct ProfileResponse: Hashable {
+    var username: String
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(username)
+    }
+}
+
 struct PostResponse: Hashable {
     var post: Post
     
