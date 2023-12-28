@@ -11,7 +11,7 @@ import Defaults
 @main
 struct OpenArtemisApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @Default(.preferredThemeMode) var preferredThemeMode
+    @Default(.appTheme) var appTheme
     
     //TrackingParamRemover as Environment Object so it loads / downloads the tracking params list only once and doesnt unload / load them all the time
     @ObservedObject private var trackingParamRemover = TrackingParamRemover()
@@ -25,22 +25,21 @@ struct OpenArtemisApp: App {
         WindowGroup {
             TabView {
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SubredditDrawerView()
-                        
+                    SubredditDrawerView(appTheme: appTheme)                        
                 }
                 .tabItem {
                     Label("Feed", systemImage: "doc.richtext")
                 }
                 
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SearchView()
+                    SearchView(appTheme: appTheme)
                 }
                 .tabItem {
                     Label("Search", systemImage: "text.magnifyingglass")
                 }
                 
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()){
-                    PrivacyTab()
+                    PrivacyTab(appTheme: appTheme)
                 }
                 .tabItem {
                     Label("Privacy", systemImage: "shield.lefthalf.filled")
@@ -54,9 +53,9 @@ struct OpenArtemisApp: App {
                 }
             }
             .accentColor(Color.artemisAccent)
-            .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+            .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
             .sheet(isPresented: $showingOOBE){
-                OnboardingView()
+                OnboardingView(appTheme: appTheme)
             }
         }
         .environment(\.managedObjectContext, persistenceController.container.viewContext)

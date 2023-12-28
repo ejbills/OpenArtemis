@@ -15,8 +15,10 @@ struct PrivacyTab: View {
     @Default(.trackersRemoved) var trackersRemoved
     @Default(.URLsRedirected) var URLsRedirected
     
+    let appTheme: AppThemeSettings
+    
     var body: some View {
-        ThemedList {
+        ThemedList(appTheme: appTheme) {
             
             if trackStats {
                 Section{

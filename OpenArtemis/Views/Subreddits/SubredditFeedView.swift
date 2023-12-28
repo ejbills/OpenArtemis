@@ -16,6 +16,7 @@ struct SubredditFeedView: View {
     
     let subredditName: String
     let titleOverride: String?
+    let appTheme: AppThemeSettings
     
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
@@ -28,36 +29,36 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            ThemedScrollView {
+            ThemedList(appTheme: appTheme, stripStyling: true) {
                 if !posts.isEmpty {
-                    LazyVStack(spacing: 0) {
-                        ForEach(posts, id: \.id) { post in
-                            PostFeedView(post: post)
-                                .id(post.id)
-                                .contentShape(Rectangle())
-                                .onAppear {
-                                    handlePostAppearance(post)
-                                }
-                                .onTapGesture {
-                                    coordinator.path.append(PostResponse(post: post))
-                                }
-                            
-                            DividerView(frameHeight: 10)
-                        }
+                    ForEach(posts, id: \.id) { post in
+                        PostFeedView(post: post, appTheme: appTheme)
+                            .id(post.id)
+                            .contentShape(Rectangle())
+                            .onAppear {
+                                handlePostAppearance(post.id)
+                            }
+                            .onTapGesture {
+                                coordinator.path.append(PostResponse(post: post))
+                            }
                         
-                        if isLoading { // show spinner at the bottom of the feed
+                        DividerView(frameHeight: 10, appTheme: appTheme)
+                    }
+                        
+                    if isLoading { // show spinner at the bottom of the feed
+                        HStack {
+                            Spacer()
                             ProgressView()
                                 .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
                                 .padding()
+                            Spacer()
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
-                    SwiftUIXmasTree2()
+                    LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
                 }
             }
         }
-        .scrollIndicators(.hidden)
         .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
@@ -66,7 +67,7 @@ struct SubredditFeedView: View {
         }
         .onAppear {
             if posts.isEmpty {
-                scrapeSubreddit(subredditName)
+                scrapeSubreddit()
             }
         }
         .refreshable {
@@ -76,10 +77,10 @@ struct SubredditFeedView: View {
     
     // MARK: - Private Methods
     
-    private func handlePostAppearance(_ post: Post) {
+    private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
-            if post.id == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(subredditName, lastPostAfter, sort: sortOption)
+            if postId == posts[Int(Double(posts.count) * 0.85)].id {
+                scrapeSubreddit(lastPostAfter, sort: sortOption)
             }
         }
     }
@@ -129,10 +130,10 @@ struct SubredditFeedView: View {
         })
     }
 
-    private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
         self.isLoading = true
 
-        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort, 
+        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
                                       trackingParamRemover: trackingParamRemover, over18: over18) { result in
             handleScrapeResult(result)
         }
@@ -166,6 +167,6 @@ struct SubredditFeedView: View {
             isLoading = false
         }
         
-        scrapeSubreddit(subredditName, sort: sortOption)
+        scrapeSubreddit(sort: sortOption)
     }
 }

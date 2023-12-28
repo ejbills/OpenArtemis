@@ -14,10 +14,13 @@ struct ImportURLSheet: View {
     @State var displayImport: Bool = false
     
     @Binding var showingThisSheet: Bool
+    
+    let appTheme: AppThemeSettings
+    
     var body: some View {
         ZStack {
             if displayImport {
-                ThemedList {
+                ThemedList(appTheme: appTheme) {
                     Spacer()
                         .frame(height: 50)
                     

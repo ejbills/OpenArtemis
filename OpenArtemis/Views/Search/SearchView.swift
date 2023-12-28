@@ -20,35 +20,35 @@ struct SearchView: View {
     
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
     @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+    
+    let appTheme: AppThemeSettings
 
     var body: some View {
         VStack(spacing: 0) {
             if searchType == "sr" {
                 if !isLoading {
-                    ThemedList {
+                    ThemedList(appTheme: appTheme) {
                         ForEach(searchResults, id: \.self) { result in
-                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments)
+                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading subreddits...", isLoading: isLoading)
+                    LoadingView(loadingText: "Loading subreddits...", isLoading: true)
                 }
             } else {
-                ThemedScrollView {
+                ThemedList(appTheme: appTheme, stripStyling: true) {
                     if !isLoading {
-                        LazyVStack(spacing: 0) {
-                            ForEach(searchResults, id: \.self) { result in
-                                MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments)
-                                DividerView(frameHeight: 10)
-                            }
+                        ForEach(searchResults, id: \.self) { result in
+                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                            DividerView(frameHeight: 10, appTheme: appTheme)
                         }
                     } else {
-                        LoadingAnimation(loadingText: "Loading posts...", isLoading: isLoading)
+                        LoadingView(loadingText: "Loading posts...", isLoading: true)
                     }
                 }
             }
         }
-        .themedBackground(isDarker: true)
+        .themedBackground(isDarker: true, appTheme: appTheme)
         .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(

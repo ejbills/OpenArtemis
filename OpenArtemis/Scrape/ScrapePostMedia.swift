@@ -83,7 +83,7 @@ extension RedditScraper {
 
     }
     
-    private static func parseCommentsData(data: Document, trackingParamRemover: TrackingParamRemover) throws -> [Comment] {
+    static func parseCommentsData(data: Document, trackingParamRemover: TrackingParamRemover) throws -> [Comment] {
         var comments: [Comment] = []
         var commentIDs = Set<String>()
         

@@ -12,14 +12,15 @@ struct OnboardingView: View {
     @State var done: Bool = true
     @Environment(\.dismiss) private var dismiss
     @Default(.showingOOBE) var showingOOBE
+    let appTheme: AppThemeSettings
     var body: some View {
         ZStack{
             VStack {
                 switch currentPage {
                 case 0: OOBE_WelcomeView()
-                case 1: OOBE_PrivacySelector()
+                case 1: OOBE_PrivacySelector(appTheme: appTheme)
                 case 2: OOBE_SubsImporter()
-                case 3: ImportURLSheet(showingThisSheet: $done)
+                case 3: ImportURLSheet(showingThisSheet: $done, appTheme: appTheme)
                 default: OOBE_WelcomeView()
                 }
                 
@@ -42,7 +43,7 @@ struct OnboardingView: View {
                 .ignoresSafeArea()
             }
         }
-        .onChange(of: done){ _ in
+        .onChange(of: done){ _, _ in
             dismiss()
         }
         .onDisappear{

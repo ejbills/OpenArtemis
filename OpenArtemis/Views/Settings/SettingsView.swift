@@ -9,25 +9,23 @@ import SwiftUI
 import Defaults
 
 struct SettingsView: View {
-    @Default(.preferredThemeMode) var preferredThemeMode
+//    @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
-    @Default(.darkBackground) var darkBackground
-    @Default(.lightBackground) var lightBackground
-    @Default(.compactMode) var compactMode
-    @Default(.thinDivider) var thinDivider
-    @Default(.tagBackground) var tagBackground
-    @Default(.highlightSubreddit) var highlightSubreddit
-    @Default(.showAuthor) var showAuthor
+    @Default(.appTheme) var appTheme
+        
     @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
+    @Default(.swipeAnywhere) var swipeAnywhere
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
     
     @State var currentAppIcon: String = "AppIcon"
+    @State private var selectedLightModeBackground: Color = .white
+    @State private var selectedDarkModeBackground: Color = .black
     
     @State var showingImportDalog: Bool = false
     @State var showingURLImportSheet: Bool = false
@@ -36,32 +34,46 @@ struct SettingsView: View {
     @State var presentingFileMover: Bool = false
     @State var doImport: Bool = false
     
-    
     @State var showToast: Bool = false
     @State var toastTitle: String = "Success!"
     @State var toastIcon: String = "checkmark.circle.fill"
     var body: some View {
-        ThemedList {
+        ThemedList(appTheme: appTheme) {
+            Section("General") {
+                Group {
+                    Toggle("Swipe anywhere to go back", isOn: $swipeAnywhere)
+                    Text("Note: This option will disable swipe gestures on posts and comments.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 4)
+                }
+            }
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
-                    preferredThemeMode
+                    appTheme.preferredThemeMode
                 }, set: { val, _ in
-                    preferredThemeMode = val
+                    appTheme.preferredThemeMode = val
                 })){
-                    Text("Automatic").tag(PreferredThemeMode.automatic)
+                    Text("Automatic").tag(PreferredThemeMode.automatic) 
                     Text("Light").tag(PreferredThemeMode.light)
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }
                 ColorPicker("Accent Color", selection: $accentColor)
-                ColorPicker("Light Mode Background Color", selection: $lightBackground)
-                ColorPicker("Dark Mode Background Color", selection: $darkBackground)
-                Toggle("Compact mode", isOn: $compactMode)
-                Toggle("Thin divider between posts", isOn: $thinDivider)
-                Toggle("Show info tags with background", isOn: $tagBackground)
-                Toggle("Show author tag on posts", isOn: $showAuthor)
-                Toggle("Highlight subreddit with accent color", isOn: $highlightSubreddit)
+                ColorPicker("Light Mode Background Color", selection: $selectedLightModeBackground)
+                    .onChange(of: selectedLightModeBackground) { _, newColor in
+                        appTheme.lightBackground = newColor
+                    }
+                ColorPicker("Dark Mode Background Color", selection: $selectedDarkModeBackground)
+                    .onChange(of: selectedDarkModeBackground) { _, newColor in
+                        appTheme.darkBackground = newColor
+                    }
+                Toggle("Compact mode", isOn: $appTheme.compactMode)
+                Toggle("Thin divider between posts", isOn: $appTheme.thinDivider)
+                Toggle("Show info tags with background", isOn: $appTheme.tagBackground)
+                Toggle("Show author tag on posts", isOn: $appTheme.showAuthor)
+                Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
                 
-                NavigationLink(destination: ChangeAppIconView(), label: {
+                NavigationLink(destination: ChangeAppIconView(appTheme: appTheme), label: {
                     HStack{
                         Image(uiImage: UIImage(named: currentAppIcon)!)
                             .resizable()
@@ -104,7 +116,7 @@ struct SettingsView: View {
                     }
                 })
                 .sheet(isPresented: $showingURLImportSheet, content: {
-                    ImportURLSheet(showingThisSheet: $showingURLImportSheet)
+                    ImportURLSheet(showingThisSheet: $showingURLImportSheet, appTheme: appTheme)
                     
                 })
                 .fileMover(isPresented: $presentingFileMover, file: URL(string: exportedURL ?? ""), onCompletion: { _ in })
@@ -131,12 +143,13 @@ struct SettingsView: View {
             
             
         }
-        .preferredColorScheme(preferredThemeMode.id == 0 ? nil : preferredThemeMode.id == 1 ? .light : .dark)
+        .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{
             currentAppIcon = AppIconManager().getCurrentIconName()
-           
+            selectedLightModeBackground = appTheme.lightBackground
+            selectedDarkModeBackground = appTheme.darkBackground
         }
         .toast(isPresented: $showToast, style: .popup, title: toastTitle,systemIcon: toastIcon, speed: 1.5, tapToDismiss: false, onAppear: {})
     }

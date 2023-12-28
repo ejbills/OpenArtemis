@@ -16,6 +16,8 @@ struct SavedView: View {
     
     @State var mixedMediaLinks: [MixedMedia] = []
     
+    let appTheme: AppThemeSettings
+    
     var body: some View {
         if mixedMediaLinks.isEmpty {
             HStack{
@@ -30,14 +32,12 @@ struct SavedView: View {
             } .onAppear {
                 updateFeed()
             }
-          
+            
         } else {
-            ThemedScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                        MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments)
-                        DividerView(frameHeight: 10)
-                    }
+            ThemedList(appTheme: appTheme, stripStyling: true) {
+                ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
+                    MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                    DividerView(frameHeight: 10, appTheme: appTheme)
                 }
                 
             }
@@ -73,27 +73,7 @@ struct SavedView: View {
         mixedMediaLinks += posts
         mixedMediaLinks += comments
 
-        // Sort mixedMediaLinks by date in descending order
-        mixedMediaLinks.sort { (lhs: MixedMedia, rhs: MixedMedia) -> Bool in
-            var localDate1: Date
-            var localDate2: Date
-            
-            switch lhs {
-            case .post(_, let date), .comment(_, let date):
-                localDate1 = date ?? Date()
-            default:
-                localDate1 = Date()
-            }
-            
-            switch rhs {
-            case .post(_, let date), .comment(_, let date):
-                localDate2 = date ?? Date()
-            default:
-                localDate2 = Date()
-            }
-            
-            return localDate1 > localDate2
-        }
+        DateSortingUtils.sortMixedMediaByDateDescending(&mixedMediaLinks)
     }
 }
 
@@ -106,6 +86,9 @@ struct MixedContentView: View {
     var content: MixedMedia
     let savedPosts: FetchedResults<SavedPost>
     let savedComments: FetchedResults<SavedComment>
+    let appTheme: AppThemeSettings
+    
+    var bypassFetchSavedStatus: Bool = false
     
     @State var isLoadingCommentPost: Bool = false
     @State var isCommentSaved: Bool = false
@@ -113,25 +96,27 @@ struct MixedContentView: View {
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post)
+            PostFeedView(post: post, appTheme: appTheme)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
                 }
         case .comment(let comment, _):
-            CommentView(comment: comment, numberOfChildren: 0)
+            CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme)
                 .savedIndicator(isCommentSaved)
-                .onAppear{
-                    isCommentSaved = savedComments.contains { $0.id == comment.id }
+                .onAppear {
+                    if !bypassFetchSavedStatus { // in profiles for example, we want to bypass fetching the status of every comment - it leads to stuttering
+                        isCommentSaved = savedComments.contains { $0.id == comment.id }
+                    }
                 }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                    withAnimation{
+                    withAnimation {
                         isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
                     }
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
                     if !isLoadingCommentPost {
-                        withAnimation{
+                        withAnimation {
                             isLoadingCommentPost = true
                         }
                         
@@ -139,8 +124,8 @@ struct MixedContentView: View {
                         RedditScraper.scrapePostFromCommentsURL(url: commentURL, trackingParamRemover: nil) { result in
                             DispatchQueue.main.async {
                                 switch result {
-                                case .success(let post):
-                                    coordinator.path.append(PostResponse(post: post))
+                                case .success(var post):
+                                    coordinator.path.append(PostResponse(post: post, commentsURLOverride: commentURL))
                                 case .failure(let failure):
                                     print("Error: \(failure)")
                                 }

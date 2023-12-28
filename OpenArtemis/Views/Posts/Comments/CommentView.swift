@@ -10,10 +10,11 @@ import MarkdownUI
 import Defaults
 
 struct CommentView: View {
-    @Default(.tagBackground) var tagBackground
+    @EnvironmentObject var coordinator: NavCoordinator
     
     var comment: Comment
     var numberOfChildren: Int
+    let appTheme: AppThemeSettings
     var body: some View {
         Group {
             HStack(spacing: 4) {
@@ -25,17 +26,20 @@ struct CommentView: View {
                 
                 VStack(alignment: .leading) {
                     HStack(spacing: 4) {
-                        DetailTagView(icon: "person", data: comment.author)
-                        DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time))
+                        DetailTagView(icon: "person", data: comment.author, appTheme: appTheme)
+                            .onTapGesture {
+                                coordinator.path.append(ProfileResponse(username: comment.author))
+                            }
+                        DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time), appTheme: appTheme)
                         
                         Spacer()
-                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]")
+                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]", appTheme: appTheme)
                         
                         if comment.isRootCollapsed {
-                            DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)")
+                            DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)", appTheme: appTheme)
                         }
                     }
-                    .foregroundStyle(tagBackground ? .primary : .secondary)
+                    .foregroundStyle(appTheme.tagBackground ? .primary : .secondary)
                     
                     if !comment.isRootCollapsed {
                         Markdown(comment.body)
@@ -47,6 +51,6 @@ struct CommentView: View {
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
-        .themedBackground()
+        .themedBackground(appTheme: appTheme)
     }
 }

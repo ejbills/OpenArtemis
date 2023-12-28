@@ -9,18 +9,18 @@ import SwiftUI
 import Defaults
 
 struct DetailTagView: View {
-    @Default(.tagBackground) var tagBackground
-    
     let icon: String?
     let data: String
     let color: Color?
     let paddingMultiplier: CGFloat?
+    let appTheme: AppThemeSettings
     
-    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1) {
+    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings) {
         self.icon = icon
         self.data = data
         self.color = color
         self.paddingMultiplier = paddingMultiplier
+        self.appTheme = appTheme
     }
     
     var body: some View {
@@ -38,6 +38,6 @@ struct DetailTagView: View {
         }
         .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
         .padding(.vertical, 4 * (paddingMultiplier ?? 1))
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(tagBackground ? 1 : 0))
+        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
     }
 }
