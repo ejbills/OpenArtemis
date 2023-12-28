@@ -68,6 +68,7 @@ struct PostPageView: View {
                                 .contentShape(Rectangle())
                             }
                             .padding(8)
+                            .font(.caption)
                             .italic()
                             .foregroundStyle(Color.artemisAccent)
                             .disabled(isLoadAllCommentsPressed)
