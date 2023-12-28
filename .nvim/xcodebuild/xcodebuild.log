@@ -1,0 +1,20 @@
+Resolving Package Graph
+Resolved source packages
+LazyPager - https://github.com/gh123man/LazyPager @ 1.0.5
+NetworkImage - https://github.com/gonzalezreal/NetworkImage @ 6.0.0
+SKPhotoBrowser - https://github.com/suzuki-0000/SKPhotoBrowser @ 7.1.0
+SwiftHTMLtoMarkdown - https://github.com/ActuallyTaylor/SwiftHTMLToMarkdown @ 1.1.1
+swift-markdown-ui - https://github.com/gonzalezreal/swift-markdown-ui @ 2.2.0
+SwiftSoup - https://github.com/scinfu/SwiftSoup @ 2.6.1
+CachedImage - https://github.com/leoz/CachedImage @ 0.0.5
+[!]  --- xcodebuild: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, id:FCF997FD-7185-48E8-B4B4-DF12AE17CB85, OS:17.2, name:iPhone 15 Pro }
+{ platform:iOS Simulator, id:FCF997FD-7185-48E8-B4B4-DF12AE17CB85, OS:17.2, name:iPhone 15 Pro }
+Build Succeeded
+
+-----------------------------
+-- xcodebuild.nvim summary --
+-----------------------------
+
+  ✔ Build Succeeded
+

@@ -22,6 +22,7 @@ struct SettingsView: View {
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
+    @Default(.nlpSearch) var nlpSearch
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -126,6 +127,10 @@ struct SettingsView: View {
                     }
                     
                 })
+            }
+            
+            Section("Search"){
+                Toggle("Use Natural Language", isOn: $nlpSearch)
             }
             
             
