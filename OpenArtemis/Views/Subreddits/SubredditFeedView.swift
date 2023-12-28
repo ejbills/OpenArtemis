@@ -29,27 +29,29 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            ThemedScrollView(appTheme: appTheme) {
+            ThemedList(appTheme: appTheme, stripStyling: true) {
                 if !posts.isEmpty {
-                    LazyVStack(spacing: 0) {
-                        ForEach(posts, id: \.id) { post in
-                            PostFeedView(post: post, appTheme: appTheme)
-                                .id(post.id)
-                                .contentShape(Rectangle())
-                                .onAppear {
-                                    handlePostAppearance(post.id)
-                                }
-                                .onTapGesture {
-                                    coordinator.path.append(PostResponse(post: post))
-                                }
-                            
-                            DividerView(frameHeight: 10, appTheme: appTheme)
-                        }
+                    ForEach(posts, id: \.id) { post in
+                        PostFeedView(post: post, appTheme: appTheme)
+                            .id(post.id)
+                            .contentShape(Rectangle())
+                            .onAppear {
+                                handlePostAppearance(post.id)
+                            }
+                            .onTapGesture {
+                                coordinator.path.append(PostResponse(post: post))
+                            }
                         
-                        if isLoading { // show spinner at the bottom of the feed
+                        DividerView(frameHeight: 10, appTheme: appTheme)
+                    }
+                        
+                    if isLoading { // show spinner at the bottom of the feed
+                        HStack {
+                            Spacer()
                             ProgressView()
                                 .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
                                 .padding()
+                            Spacer()
                         }
                     }
                 } else {

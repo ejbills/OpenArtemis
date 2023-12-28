@@ -34,12 +34,10 @@ struct SavedView: View {
             }
             
         } else {
-            ThemedScrollView(appTheme: appTheme) {
-                LazyVStack(spacing: 0) {
-                    ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                        MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
-                        DividerView(frameHeight: 10, appTheme: appTheme)
-                    }
+            ThemedList(appTheme: appTheme, stripStyling: true) {
+                ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
+                    MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                    DividerView(frameHeight: 10, appTheme: appTheme)
                 }
                 
             }

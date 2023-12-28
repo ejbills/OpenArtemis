@@ -24,25 +24,27 @@ struct ProfileView: View {
     @State private var filterType: String = ""
 
     var body: some View {
-        ThemedScrollView(appTheme: appTheme) {
-            LazyVStack(spacing: 0) {
-                if !mixedMedia.isEmpty {
-                    ForEach(mixedMedia, id: \.self) { media in
-                        MixedContentView(content: media, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme, bypassFetchSavedStatus: true)
-                            .onAppear {
-                                handleMediaAppearance(extractMediaId(from: media))
-                            }
-                        DividerView(frameHeight: 10, appTheme: appTheme)
-                    }
-                    
-                    if isLoading { // show spinner at the bottom of the feed
+        ThemedList(appTheme: appTheme, stripStyling: true) {
+            if !mixedMedia.isEmpty {
+                ForEach(mixedMedia, id: \.self) { media in
+                    MixedContentView(content: media, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme, bypassFetchSavedStatus: true)
+                        .onAppear {
+                            handleMediaAppearance(extractMediaId(from: media))
+                        }
+                    DividerView(frameHeight: 10, appTheme: appTheme)
+                }
+                
+                if isLoading { // show spinner at the bottom of the feed
+                    HStack {
+                        Spacer()
                         ProgressView()
                             .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
                             .padding()
+                        Spacer()
                     }
-                } else {
-                    LoadingAnimation(loadingText: "Loading profile...", isLoading: isLoading)
                 }
+            } else {
+                LoadingAnimation(loadingText: "Loading profile...", isLoading: isLoading)
             }
         }
         .navigationTitle(username)

@@ -36,13 +36,11 @@ struct SearchView: View {
                     LoadingAnimation(loadingText: "Loading subreddits...", isLoading: true)
                 }
             } else {
-                ThemedScrollView(appTheme: appTheme) {
+                ThemedList(appTheme: appTheme, stripStyling: true) {
                     if !isLoading {
-                        LazyVStack(spacing: 0) {
-                            ForEach(searchResults, id: \.self) { result in
-                                MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
-                                DividerView(frameHeight: 10, appTheme: appTheme)
-                            }
+                        ForEach(searchResults, id: \.self) { result in
+                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                            DividerView(frameHeight: 10, appTheme: appTheme)
                         }
                     } else {
                         LoadingAnimation(loadingText: "Loading posts...", isLoading: true)
