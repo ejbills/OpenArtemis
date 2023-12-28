@@ -8,34 +8,37 @@
 import SwiftUI
 
 struct ThemedList<Content: View>: View {
+    let appTheme: AppThemeSettings
     let content: () -> Content
+    let stripStyling: Bool
 
-    init(@ViewBuilder content: @escaping () -> Content) {
+    init(appTheme: AppThemeSettings, stripStyling: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+        self.appTheme = appTheme
+        self.stripStyling = stripStyling
         self.content = content
     }
 
     var body: some View {
-        List {
-            content()
-                .themedBackground(isListRow: true)
+        Group {
+            if stripStyling {
+                List {
+                    content()
+                        .themedBackground(isListRow: true, appTheme: appTheme)
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
+                }
+                .scrollContentBackground(.hidden)
+                .listStyle(.plain)
+                .environment(\.defaultMinListRowHeight, 0)
+            } else {
+                List {
+                    content()
+                        .themedBackground(isListRow: true, appTheme: appTheme)
+                }
+                .scrollContentBackground(.hidden)
+            }
         }
-        .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
-        .themedBackground(isDarker: true)
-    }
-}
-
-struct ThemedScrollView<Content: View>: View {    
-    let content: () -> Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
-
-    var body: some View {
-        ScrollView {
-            content()
-        }
-        .scrollContentBackground(.hidden) // hide all scroll content bg so background shows up
-        .themedBackground(isDarker: true)
+        .scrollIndicators(.hidden)
+        .themedBackground(isDarker: true, appTheme: appTheme)
     }
 }

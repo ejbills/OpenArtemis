@@ -5,85 +5,82 @@
 //  Created by Ethan Bills on 12/1/23.
 //
 
-import Defaults
 import SwiftUI
+import Defaults
 
 struct SubredditFeedView: View {
     // MARK: - Properties
-
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
-
+    
     let subredditName: String
     let titleOverride: String?
-
+    let appTheme: AppThemeSettings
+    
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
     @State private var sortOption: SubListingSortOption = .best
     @State private var isLoading: Bool = false
-
+    
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-
+    
     // MARK: - Body
-
     var body: some View {
         Group {
-            ThemedScrollView {
+            ThemedList(appTheme: appTheme, stripStyling: true) {
                 if !posts.isEmpty {
-                    LazyVStack(spacing: 0) {
-                        ForEach(posts, id: \.id) { post in
-                            PostFeedView(post: post)
-                                .id(post.id)
-                                .contentShape(Rectangle())
-                                .onAppear {
-                                    handlePostAppearance(post)
-                                }
-                                .onTapGesture {
-                                    coordinator.path.append(PostResponse(post: post))
-                                }
-
-                            DividerView(frameHeight: 10)
-                        }
-
-                        if isLoading { // show spinner at the bottom of the feed
+                    ForEach(posts, id: \.id) { post in
+                        PostFeedView(post: post, appTheme: appTheme)
+                            .id(post.id)
+                            .contentShape(Rectangle())
+                            .onAppear {
+                                handlePostAppearance(post.id)
+                            }
+                            .onTapGesture {
+                                coordinator.path.append(PostResponse(post: post))
+                            }
+                        
+                        DividerView(frameHeight: 10, appTheme: appTheme)
+                    }
+                        
+                    if isLoading { // show spinner at the bottom of the feed
+                        HStack {
+                            Spacer()
                             ProgressView()
                                 .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
                                 .padding()
+                            Spacer()
                         }
                     }
                 } else {
-                    LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
-                    SwiftUIXmasTree2()
+                    LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
                 }
             }
         }
-        .scrollIndicators(.hidden)
         .id("\(subredditName)-feed-view")
-        // When titleOverride is not nil use that else use the subreddit name except if title is random then extract subreddit name from first posts
-        // Its ugly but it works
-        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName == "random" ? posts.first?.subreddit ?? "" : subredditName)
+        .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             buildSortingMenu()
         }
         .onAppear {
             if posts.isEmpty {
-                scrapeSubreddit(subredditName)
+                scrapeSubreddit()
             }
         }
         .refreshable {
             clearFeedAndReload()
         }
     }
-
+    
     // MARK: - Private Methods
-
-    private func handlePostAppearance(_ post: Post) {
+    
+    private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
-            if post.id == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(subredditName, lastPostAfter, sort: sortOption)
+            if postId == posts[Int(Double(posts.count) * 0.85)].id {
+                scrapeSubreddit(lastPostAfter, sort: sortOption)
             }
         }
     }
@@ -91,7 +88,7 @@ struct SubredditFeedView: View {
     private func buildSortingMenu() -> some View {
         Menu(content: {
             ForEach(SubListingSortOption.allCases) { opt in
-                if case .top = opt {
+                if case .top(_) = opt {
                     Menu {
                         ForEach(SubListingSortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
                             Button {
@@ -133,19 +130,18 @@ struct SubredditFeedView: View {
         })
     }
 
-    private func scrapeSubreddit(_ subredditName: String, _ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
-        isLoading = true
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
+        self.isLoading = true
 
         RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
-                                      trackingParamRemover: trackingParamRemover, over18: over18)
-        { result in
+                                      trackingParamRemover: trackingParamRemover, over18: over18) { result in
             handleScrapeResult(result)
         }
     }
-
+    
     private func handleScrapeResult(_ result: Result<[Post], Error>) {
         switch result {
-        case let .success(newPosts):
+        case .success(let newPosts):
             for post in newPosts {
                 if !postIDs.contains(post.id) {
                     posts.append(post)
@@ -156,13 +152,13 @@ struct SubredditFeedView: View {
             if let lastPost = newPosts.last {
                 lastPostAfter = lastPost.id
             }
-        case let .failure(error):
+        case .failure(let error):
             print("Error: \(error.localizedDescription)")
         }
 
         isLoading = false
     }
-
+    
     private func clearFeedAndReload() {
         withAnimation(.smooth) {
             posts.removeAll()
@@ -170,7 +166,7 @@ struct SubredditFeedView: View {
             lastPostAfter = ""
             isLoading = false
         }
-
-        scrapeSubreddit(subredditName, sort: sortOption)
+        
+        scrapeSubreddit(sort: sortOption)
     }
 }

@@ -12,12 +12,11 @@ import LazyPager
 import Defaults
 
 struct MediaView: View {
-    @Default(.compactMode) var compactMode
-    
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
+    let appTheme: AppThemeSettings
     
     @Binding var mediaSize: CGSize
     
@@ -45,8 +44,8 @@ struct MediaView: View {
                     },
                     placeholder: {
                         HStack {
-                            let width: CGFloat = compactMode ? roughCompactWidth : mediaSize.width != 0 ? mediaSize.width : roughWidth
-                            let height: CGFloat = compactMode ? roughCompactHeight : mediaSize.height != 0 ? mediaSize.height : roughHeight
+                            let width: CGFloat = appTheme.compactMode ? roughCompactWidth : mediaSize.width != 0 ? mediaSize.width : roughWidth
+                            let height: CGFloat = appTheme.compactMode ? roughCompactHeight : mediaSize.height != 0 ? mediaSize.height : roughHeight
 
                             Spacer()
                             ProgressView()
@@ -64,7 +63,7 @@ struct MediaView: View {
                 .cornerRadius(6)
                 
             case "text":
-                if compactMode {
+                if appTheme.compactMode {
                     RoundedRectangle(cornerRadius: 6)
                         .overlay(
                             Image(systemName: "line.horizontal.3")
@@ -75,13 +74,13 @@ struct MediaView: View {
                 }
                 // else, literally do nothing so it takes up no space :D
             default:
-                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title)
+                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, appTheme: appTheme)
             }
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(tagBgColor)
-                .opacity(compactMode ? 1 : 0) // only display gray bg in compact mode
+                .opacity(appTheme.compactMode ? 1 : 0) // only display gray bg in compact mode
                 .frame(width: roughCompactWidth, height: roughCompactWidth)
         )
     }

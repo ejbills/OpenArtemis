@@ -9,12 +9,11 @@ import SwiftUI
 import Defaults
 
 struct DividerView: View {
-    @Default(.thinDivider) var thinDivider
-    
     let frameHeight: CGFloat
+    let appTheme: AppThemeSettings
     
     var body: some View {
-        if !thinDivider {
+        if !appTheme.thinDivider {
             Rectangle()
                 .fill(Color.gray.opacity(0.15))
                 .frame(height: frameHeight)
