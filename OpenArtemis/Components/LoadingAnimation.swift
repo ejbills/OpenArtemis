@@ -36,9 +36,7 @@ struct LoadingAnimation: View {
                 }
             } else {
                 Text("*Nothing here...*")
-                    .foregroundStyle(.secondary)
-                
-                SwiftUIXmasTree2()
+                    .foregroundStyle(.secondary)                
             }
         }
         .padding()

@@ -27,7 +27,7 @@ struct HandleDeepLinksDisplay: ViewModifier {
                 ProfileView(username: response.username, appTheme: appTheme)
             }
             .navigationDestination(for: PostResponse.self) { response in
-                PostPageView(post: response.post, appTheme: appTheme)
+                PostPageView(post: response.post, commentsURLOverride: response.commentsURLOverride, appTheme: appTheme)
             }
     }
 }

@@ -14,6 +14,7 @@ struct PostPageView: View {
     @Default(.showJumpToNextCommentButton) private var showJumpToNextCommentButton
     
     let post: Post
+    var commentsURLOverride: String?
     let appTheme: AppThemeSettings
     
     @State private var comments: [Comment] = []
@@ -21,6 +22,7 @@ struct PostPageView: View {
     @State private var perViewSavedComments: Set<String> = []
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
+    @State private var isLoadAllCommentsPressed = false
     
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
@@ -56,6 +58,26 @@ struct PostPageView: View {
                         Divider()
                         
                         if !comments.isEmpty {
+                            if commentsURLOverride != nil && !isLoadAllCommentsPressed {
+                                Button(action: {
+                                    clearCommentsAndReload()
+                                }) {
+                                    Group {
+                                        Label("Load All Other Comments", systemImage: "rectangle.expand.vertical")
+                                        Spacer()
+                                    }
+                                    .contentShape(Rectangle())
+                                }
+                                .padding(8)
+                                .font(.caption)
+                                .italic()
+                                .foregroundStyle(.secondary)
+                                .disabled(isLoadAllCommentsPressed)
+                                
+                                DividerView(frameHeight: 10, appTheme: appTheme)
+                            }
+
+                            
                             ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
                                 if !comment.isCollapsed {
                                     Group {
@@ -142,7 +164,11 @@ struct PostPageView: View {
         .navigationTitle("\((Int(post.commentsCount) ?? 0).roundedWithAbbreviations) Comments")
         .onAppear {
             if comments.isEmpty {
-                scrapeComments(post.commentsURL,trackingParamRemover: trackingParamRemover)
+                if let commentsURLOverride {
+                    scrapeComments(commentsURLOverride, trackingParamRemover: trackingParamRemover)
+                } else {
+                    scrapeComments(post.commentsURL, trackingParamRemover: trackingParamRemover)
+                }
             }
             
             if !postLoaded {
@@ -223,4 +249,12 @@ struct PostPageView: View {
         }
     }
     
+    private func clearCommentsAndReload() {
+        withAnimation {
+            self.comments.removeAll()
+            self.isLoadAllCommentsPressed = true
+        }
+        
+        scrapeComments(post.commentsURL, trackingParamRemover: trackingParamRemover)
+    }
 }

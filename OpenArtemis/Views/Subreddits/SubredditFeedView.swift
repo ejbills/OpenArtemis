@@ -54,7 +54,6 @@ struct SubredditFeedView: View {
                     }
                 } else {
                     LoadingAnimation(loadingText: "Loading feed...", isLoading: isLoading)
-                    SwiftUIXmasTree2()
                 }
             }
         }

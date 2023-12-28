@@ -29,6 +29,7 @@ struct ProfileResponse: Hashable {
 
 struct PostResponse: Hashable {
     var post: Post
+    var commentsURLOverride: String? = nil
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(post)

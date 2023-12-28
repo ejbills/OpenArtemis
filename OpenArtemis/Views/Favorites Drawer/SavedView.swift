@@ -126,8 +126,8 @@ struct MixedContentView: View {
                         RedditScraper.scrapePostFromCommentsURL(url: commentURL, trackingParamRemover: nil) { result in
                             DispatchQueue.main.async {
                                 switch result {
-                                case .success(let post):
-                                    coordinator.path.append(PostResponse(post: post))
+                                case .success(var post):
+                                    coordinator.path.append(PostResponse(post: post, commentsURLOverride: commentURL))
                                 case .failure(let failure):
                                     print("Error: \(failure)")
                                 }
