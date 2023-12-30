@@ -25,26 +25,17 @@ struct SearchView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if searchType == "sr" {
+            let isSubredditSearch = searchType == "sr"
+            ThemedList(appTheme: appTheme, stripStyling: !isSubredditSearch) {
                 if !isLoading {
-                    ThemedList(appTheme: appTheme) {
-                        ForEach(searchResults, id: \.self) { result in
-                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                    ForEach(searchResults, id: \.self) { result in
+                        MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                        if !isSubredditSearch {
+                            DividerView(frameHeight: 10, appTheme: appTheme)
                         }
                     }
                 } else {
-                    LoadingView(loadingText: "Loading subreddits...", isLoading: true)
-                }
-            } else {
-                ThemedList(appTheme: appTheme, stripStyling: true) {
-                    if !isLoading {
-                        ForEach(searchResults, id: \.self) { result in
-                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
-                            DividerView(frameHeight: 10, appTheme: appTheme)
-                        }
-                    } else {
-                        LoadingView(loadingText: "Loading posts...", isLoading: true)
-                    }
+                    LoadingView(loadingText: "Loading search...", isLoading: true)
                 }
             }
         }

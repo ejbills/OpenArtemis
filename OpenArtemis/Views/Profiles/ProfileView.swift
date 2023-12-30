@@ -100,7 +100,7 @@ struct ProfileView: View {
     private func clearFeedAndReload() {
         withAnimation(.smooth) {
             mixedMedia.removeAll()
-//            postIDs.removeAll()
+            mediaIDs.removeAll()
             lastPostAfter = ""
             isLoading = false
         }
