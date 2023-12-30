@@ -42,11 +42,7 @@ struct PostFeedView: View {
                 MiscUtils.shareItem(item: post.commentsURL)
             }),
             secondaryTrailingAction: GestureAction(symbol: .init(emptyName: "safari", fillName: "safari.fill"), color: .brown, action: {
-                DispatchQueue.main.async {
-                    if let url = URL(string: post.commentsURL) {
-                        SafariHelper.openSafariView(withURL: url)
-                    }
-                }
+                MiscUtils.openInBrowser(urlString: post.commentsURL)
             })
         )
         .contextMenu(menuItems: {
@@ -58,6 +54,12 @@ struct PostFeedView: View {
             }) {
                 Text(isSaved ? "Unsave" : "Save")
                 Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+            }
+            Button(action: {
+                MiscUtils.openInBrowser(urlString: post.commentsURL)
+            }) {
+                Text("Open in in-app browser")
+                Image(systemName: "safari")
             }
         })
     }
@@ -96,4 +98,3 @@ struct PostFeedView: View {
         }
     }
 }
-

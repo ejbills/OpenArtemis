@@ -74,4 +74,12 @@ class MiscUtils {
             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
         }
     }
+    
+    static func openInBrowser(urlString: String) {
+        DispatchQueue.main.async {
+            if let url = URL(string: urlString) {
+                SafariHelper.openSafariView(withURL: url)
+            }
+        }
+    }
 }

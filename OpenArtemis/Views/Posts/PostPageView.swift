@@ -117,11 +117,7 @@ struct PostPageView: View {
                                         MiscUtils.shareItem(item: comment.directURL)
                                     }),
                                     secondaryTrailingAction: GestureAction(symbol: .init(emptyName: "safari", fillName: "safari.fill"), color: .brown, action: {
-                                        DispatchQueue.main.async {
-                                            if let url = URL(string: comment.directURL) {
-                                                SafariHelper.openSafariView(withURL: url)
-                                            }
-                                        }
+                                        MiscUtils.openInBrowser(urlString: comment.directURL)
                                     })
                                 )
                                 .contextMenu(ContextMenu(menuItems: {
@@ -132,6 +128,12 @@ struct PostPageView: View {
                                     }) {
                                         Text(perViewSavedComments.contains(comment.id) ? "Unsave" : "Save")
                                         Image(systemName: perViewSavedComments.contains(comment.id) ? "bookmark.fill" : "bookmark")
+                                    }
+                                    Button(action: {
+                                        MiscUtils.openInBrowser(urlString: comment.directURL)
+                                    }) {
+                                        Text("Open in in-app browser")
+                                        Image(systemName: "safari")
                                     }
                                 }))
                                 Divider()
