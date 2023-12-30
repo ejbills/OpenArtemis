@@ -95,7 +95,7 @@ struct PostPageView: View {
                                         collapseChildren(parentCommentID: comment.id, rootCollapsedStatus: comments[index].isRootCollapsed)
                                     }
                                 }
-                                .addGestureActions(
+                                .gestureActions(
                                     primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
                                         withAnimation(.smooth(duration: 0.35)) {
                                             if comment.parentID == nil {
@@ -116,7 +116,13 @@ struct PostPageView: View {
                                     primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
                                         MiscUtils.shareItem(item: comment.directURL)
                                     }),
-                                    secondaryTrailingAction: nil
+                                    secondaryTrailingAction: GestureAction(symbol: .init(emptyName: "safari", fillName: "safari.fill"), color: .brown, action: {
+                                        DispatchQueue.main.async {
+                                            if let url = URL(string: comment.directURL) {
+                                                SafariHelper.openSafariView(withURL: url)
+                                            }
+                                        }
+                                    })
                                 )
                                 .contextMenu(ContextMenu(menuItems: {
                                     ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)

@@ -31,7 +31,7 @@ struct PostFeedView: View {
             }
         }
         .savedIndicator(isSaved)
-        .addGestureActions(
+        .gestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
                 withAnimation {
                     isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
@@ -41,7 +41,13 @@ struct PostFeedView: View {
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
                 MiscUtils.shareItem(item: post.commentsURL)
             }),
-            secondaryTrailingAction: nil
+            secondaryTrailingAction: GestureAction(symbol: .init(emptyName: "safari", fillName: "safari.fill"), color: .brown, action: {
+                DispatchQueue.main.async {
+                    if let url = URL(string: post.commentsURL) {
+                        SafariHelper.openSafariView(withURL: url)
+                    }
+                }
+            })
         )
         .contextMenu(menuItems: {
             ShareLink(item: URL(string: post.commentsURL)!)

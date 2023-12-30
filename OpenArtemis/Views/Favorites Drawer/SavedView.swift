@@ -109,7 +109,7 @@ struct MixedContentView: View {
                     }
                 }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
-                .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
+                .gestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
                     withAnimation {
                         isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
                     }
