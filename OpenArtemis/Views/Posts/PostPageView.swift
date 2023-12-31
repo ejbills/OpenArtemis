@@ -23,6 +23,7 @@ struct PostPageView: View {
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     @State private var isLoadAllCommentsPressed = false
+    @State private var sortOption: SubListingSortOption = .best
     
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
@@ -168,6 +169,12 @@ struct PostPageView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("\((Int(post.commentsCount) ?? 0).roundedWithAbbreviations) Comments")
+        .toolbar {
+            buildSortingMenu()
+        }
+        .refreshable {
+            clearCommentsAndReload()
+        }
         .onAppear {
             if comments.isEmpty {
                 if let commentsURLOverride {
@@ -190,10 +197,10 @@ struct PostPageView: View {
         }
     }
     
-    private func scrapeComments(_ commentsURL: String, trackingParamRemover: TrackingParamRemover) {
+    private func scrapeComments(_ commentsURL: String, sort: SubListingSortOption? = nil, trackingParamRemover: TrackingParamRemover) {
         self.isLoading = true
         
-        RedditScraper.scrapeComments(commentURL: commentsURL, trackingParamRemover: trackingParamRemover) { result in
+        RedditScraper.scrapeComments(commentURL: commentsURL, sort: sort, trackingParamRemover: trackingParamRemover) { result in
             switch result {
             case .success(let result):
                 for comment in result.comments {
@@ -243,11 +250,11 @@ struct PostPageView: View {
         }
         return currentComment
     }
-        
+    
     private func saveComment(_ comment: Comment) {
         // Toggle save and update the saved comments set
         let commentSaveBool = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-
+        
         if commentSaveBool {
             perViewSavedComments.insert(comment.id)
         } else {
@@ -261,6 +268,28 @@ struct PostPageView: View {
             self.isLoadAllCommentsPressed = true
         }
         
-        scrapeComments(post.commentsURL, trackingParamRemover: trackingParamRemover)
+        scrapeComments(post.commentsURL, sort: sortOption, trackingParamRemover: trackingParamRemover)
+    }
+    
+    private func buildSortingMenu() -> some View {
+        Menu(content: {
+            ForEach(SubListingSortOption.allCases) { opt in
+                Button {
+                    sortOption = opt
+                    clearCommentsAndReload()
+                } label: {
+                    HStack {
+                        Text(opt.rawVal.value.capitalized)
+                        Spacer()
+                        Image(systemName: opt.rawVal.icon)
+                            .foregroundColor(Color.artemisAccent)
+                            .font(.system(size: 17, weight: .bold))
+                    }
+                }
+            }
+        }, label: {
+            Image(systemName: sortOption.rawVal.icon)
+                .foregroundColor(Color.artemisAccent)
+        })
     }
 }
