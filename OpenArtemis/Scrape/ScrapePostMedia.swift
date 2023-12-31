@@ -189,7 +189,7 @@ func redditLinksToInternalLinks(_ element: Element) throws -> String {
                 try link.attr("href", "openartemis://\(originalHref)")
             } else {
                 let trimmedHref = originalHref.privacyURL().privateURL.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
-                if !Defaults[.showOriginalURL] {
+                if !Defaults[.appTheme].showOriginalURL {
                     try link.text(originalHref.replacingOccurrences(of: "https:\\/\\/[a-zA-Z-0-9.\\/?=_\\-\\:]*", with: originalHref.privacyURL().privateURL, options: .regularExpression))
                 }
                 try link.attr("href", "openartemis://\(trimmedHref)")

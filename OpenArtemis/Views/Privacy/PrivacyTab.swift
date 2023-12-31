@@ -55,8 +55,8 @@ struct RedirectWebsitesView: View {
     @Default(.twitterRedirect) var twitterRedirect
     @Default(.mediumRedirect) var mediumRedirect
     @Default(.imgurRedirect) var imgurRedirect
-    @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
+    @Default(.appTheme) var appTheme
     var body: some View {
         Section("Redirect Websites"){
             Toggle("Redirect to Private Websites", isOn: Binding(get: {
@@ -64,10 +64,10 @@ struct RedirectWebsitesView: View {
             }, set: { val in
                 withAnimation{
                     redirectToPrivateSites = val
-                    showOriginalURL = false
+                    appTheme.showOriginalURL = false
                 }
             }))
-            Toggle("Display Original URL", isOn: $showOriginalURL)
+            Toggle("Display Original URL", isOn: $appTheme.showOriginalURL)
                 .disabled(!redirectToPrivateSites)
             
             if redirectToPrivateSites {

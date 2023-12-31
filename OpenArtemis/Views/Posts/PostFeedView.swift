@@ -82,7 +82,7 @@ struct PostFeedView: View {
 
     private func renderNormalContent() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            TitleTagView(title: post.title, domain: post.mediaURL.originalURL, tag: post.tag)
+            TitleTagView(title: post.title, domain: "", tag: post.tag)
                         
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
             
@@ -98,7 +98,7 @@ struct PostFeedView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                TitleTagView(title: post.title, domain: post.mediaURL.originalURL, tag: post.tag)
+                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL, tag: post.tag)
                 PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay,  appTheme: appTheme)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

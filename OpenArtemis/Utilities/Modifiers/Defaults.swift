@@ -17,7 +17,6 @@ extension Defaults.Keys {
     
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
-    static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
     static let over18 = Key<Bool>("over18", default: false)
     static let swipeAnywhere = Key<Bool>("swipeAnywhere", default: false)
@@ -67,6 +66,7 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
     var tagBackground: Bool = true
     var highlightSubreddit: Bool = true
     var showAuthor: Bool = true
+    var showOriginalURL: Bool = false
 
     var lightBackground: Color = .white
     var darkBackground: Color = Color(hex: "111112")

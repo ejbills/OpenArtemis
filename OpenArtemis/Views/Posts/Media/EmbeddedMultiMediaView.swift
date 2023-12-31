@@ -9,18 +9,19 @@ import SwiftUI
 import Defaults
 import LazyPager
 import CachedImage
+import LinkPresentation
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
-    @Default(.showOriginalURL) private var showOriginalURL
     
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
     let appTheme: AppThemeSettings
+    
     @State private var isLoading: Bool = false
-
+    
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
@@ -28,39 +29,38 @@ struct EmbeddedMultiMediaView: View {
             let mediaWidth = appTheme.compactMode ? roughCompactWidth : 50
             let mediaIcon = determinedType == "video" ? "play.square.fill" : (determinedType == "gallery" ? "photo.on.rectangle" : "safari")
             
-            if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
-                CachedImage(
-                    url: formattedThumbnailURL,
-                    content: { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: mediaWidth, height: mediaHeight)
-                            .cornerRadius(6)
-                    },
-                    placeholder: {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .frame(width: mediaWidth, height: mediaHeight)
-                            .cornerRadius(6)
-                            .animatedLoading()
-                    }
-                )
-                .overlay {
-                    Image(systemName: mediaIcon)
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(Color.white.opacity(0.75))
-                        .padding(4)
+            Group {
+                if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
+                    CachedImage(
+                        url: formattedThumbnailURL,
+                        content: { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: mediaWidth, height: mediaHeight)
+                                .cornerRadius(6)
+                        },
+                        placeholder: {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .frame(width: mediaWidth, height: mediaHeight)
+                                .cornerRadius(6)
+                                .animatedLoading()
+                        }
+                    )
+                } else {
+                    let vm = LinkViewModel(link: mediaURL.originalURL)
+                    MetadataView(vm: vm, width: mediaWidth, height: mediaHeight)
                 }
-            } else {
-                Image(systemName: "link")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: mediaWidth, height: mediaHeight)
-                    .foregroundColor(.blue)
             }
-
+            .overlay {
+                Image(systemName: mediaIcon)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(Color.white.opacity(0.75))
+                    .padding(4)
+            }
+            
             if !appTheme.compactMode {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Open \(determinedType) media")
@@ -69,7 +69,7 @@ struct EmbeddedMultiMediaView: View {
                         .lineLimit(1)
                         .foregroundColor(.primary)
                     
-                    Text(showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
+                    Text(appTheme.showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
                         .font(.callout)
                         .foregroundColor(.secondary)
                         .lineLimit(2)

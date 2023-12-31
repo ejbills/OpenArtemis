@@ -13,7 +13,6 @@ struct SettingsView: View {
     @Default(.accentColor) var accentColor
     @Default(.appTheme) var appTheme
         
-    @Default(.showOriginalURL) var showOriginalURL
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
