@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct ProfileView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    @Default(.over18) var over18
     
     let username: String
     let appTheme: AppThemeSettings
@@ -72,7 +74,7 @@ struct ProfileView: View {
     private func scrapeProfile(_ lastPostAfter: String? = nil, sort: String? = nil) {
         isLoading = true
         
-        RedditScraper.scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover) { result in
+        RedditScraper.scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, over18: over18) { result in
             switch result {
             case .success(let media):
                 // Filter out duplicates based on media ID
