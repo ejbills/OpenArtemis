@@ -29,7 +29,7 @@ extension RedditScraper {
         return body
     }
 
-    static func scrapeComments(commentURL: String, sort: SubListingSortOption? = nil, trackingParamRemover: TrackingParamRemover,
+    static func scrapeComments(commentURL: String, sort: SortOption? = nil, trackingParamRemover: TrackingParamRemover,
                                completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
         var urlComponents = URLComponents(string: commentURL)
         var queryItems = [URLQueryItem]()

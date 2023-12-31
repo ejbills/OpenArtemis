@@ -23,7 +23,7 @@ struct PostPageView: View {
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     @State private var isLoadAllCommentsPressed = false
-    @State private var sortOption: SubListingSortOption = .best
+    @State private var sortOption: SortOption = .best
     
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
@@ -197,7 +197,7 @@ struct PostPageView: View {
         }
     }
     
-    private func scrapeComments(_ commentsURL: String, sort: SubListingSortOption? = nil, trackingParamRemover: TrackingParamRemover) {
+    private func scrapeComments(_ commentsURL: String, sort: SortOption? = nil, trackingParamRemover: TrackingParamRemover) {
         self.isLoading = true
         
         RedditScraper.scrapeComments(commentURL: commentsURL, sort: sort, trackingParamRemover: trackingParamRemover) { result in
@@ -273,7 +273,7 @@ struct PostPageView: View {
     
     private func buildSortingMenu() -> some View {
         Menu(content: {
-            ForEach(SubListingSortOption.allCases) { opt in
+            ForEach(SortOption.allCases) { opt in
                 Button {
                     sortOption = opt
                     clearCommentsAndReload()

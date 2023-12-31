@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 class RedditScraper {
-    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SubListingSortOption? = nil,
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SortOption? = nil,
                                 trackingParamRemover: TrackingParamRemover?,
                                 over18: Bool? = false,
                                 completion: @escaping (Result<[Post], Error>) -> Void) {

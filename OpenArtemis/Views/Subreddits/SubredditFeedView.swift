@@ -21,7 +21,7 @@ struct SubredditFeedView: View {
     @State private var posts: [Post] = []
     @State private var postIDs: Set<String> = Set()
     @State private var lastPostAfter: String = ""
-    @State private var sortOption: SubListingSortOption = .best
+    @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
@@ -87,10 +87,10 @@ struct SubredditFeedView: View {
 
     private func buildSortingMenu() -> some View {
         Menu(content: {
-            ForEach(SubListingSortOption.allCases) { opt in
+            ForEach(SortOption.allCases) { opt in
                 if case .top(_) = opt {
                     Menu {
-                        ForEach(SubListingSortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
+                        ForEach(SortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
                             Button {
                                 sortOption = .top(topOpt)
                                 clearFeedAndReload()
@@ -130,7 +130,7 @@ struct SubredditFeedView: View {
         })
     }
 
-    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SortOption? = nil) {
         self.isLoading = true
 
         RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
