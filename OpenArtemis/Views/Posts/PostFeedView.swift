@@ -16,6 +16,7 @@ struct PostFeedView: View {
     let forceAuthorToDisplay: Bool
     let appTheme: AppThemeSettings
     @State private var mediaSize: CGSize = .zero
+    @State private var metadataThumbnailURL: String? = nil
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
     
@@ -34,6 +35,16 @@ struct PostFeedView: View {
         .onAppear {
             if !hasAppeared {
                 isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil
+                
+                // grab the thumbnail from article opengraph metadata
+                let type = post.type
+                if (type == "video" || type == "gallery" || type == "article") && post.thumbnailURL == nil {
+                    MediaUtils.fetchImageURL(urlString: post.mediaURL.originalURL) { imageURL in
+                        if let imageURL, !imageURL.isEmpty {
+                            metadataThumbnailURL = imageURL
+                        }
+                    }
+                }
                 hasAppeared.toggle()
             }
         }
@@ -84,7 +95,7 @@ struct PostFeedView: View {
         VStack(alignment: .leading, spacing: 8) {
             TitleTagView(title: post.title, domain: "", tag: post.tag)
                         
-            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
             
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme)
         }
@@ -93,7 +104,7 @@ struct PostFeedView: View {
     private func renderCompactContent() -> some View {
         HStack(alignment: .top) {
             VStack {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
             }
             
@@ -103,5 +114,9 @@ struct PostFeedView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
+    }
+    
+    private func getThumbnailURL() -> String? {
+        return post.thumbnailURL != nil ? post.thumbnailURL : metadataThumbnailURL
     }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 import Defaults
 import LazyPager
 import CachedImage
-import LinkPresentation
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
@@ -27,38 +26,44 @@ struct EmbeddedMultiMediaView: View {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
             let mediaHeight = appTheme.compactMode ? roughCompactHeight : 50
             let mediaWidth = appTheme.compactMode ? roughCompactWidth : 50
-            let mediaIcon = determinedType == "video" ? "play.square.fill" : (determinedType == "gallery" ? "photo.on.rectangle" : "safari")
-            
-            Group {
-                if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
-                    CachedImage(
-                        url: formattedThumbnailURL,
-                        content: { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: mediaWidth, height: mediaHeight)
-                                .cornerRadius(6)
-                        },
-                        placeholder: {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .frame(width: mediaWidth, height: mediaHeight)
-                                .cornerRadius(6)
-                                .animatedLoading()
-                        }
-                    )
-                } else {
-                    let vm = LinkViewModel(link: mediaURL.originalURL)
-                    MetadataView(vm: vm, width: mediaWidth, height: mediaHeight)
+            let mediaIcon = getMediaIcon(type: determinedType)
+
+            if let thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
+                CachedImage(
+                    url: formattedThumbnailURL,
+                    content: { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: mediaWidth, height: mediaHeight)
+                            .cornerRadius(6)
+                    },
+                    placeholder: {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .frame(width: mediaWidth, height: mediaHeight)
+                            .cornerRadius(6)
+                            .animatedLoading()
+                    }
+                )
+                .overlay {
+                    Image(systemName: mediaIcon)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color.white.opacity(0.75))
+                        .padding(4)
                 }
-            }
-            .overlay {
-                Image(systemName: mediaIcon)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(Color.white.opacity(0.75))
-                    .padding(4)
+            } else {
+                RoundedRectangle(cornerRadius: 6)
+                   .foregroundColor(.clear)
+                   .frame(width: mediaWidth, height: mediaHeight)
+                   .overlay(
+                       Image(systemName: mediaIcon)
+                           .resizable()
+                           .frame(width: 30, height: 30)
+                           .foregroundColor(.white)
+                   )
+                   .animatedLoading()
             }
             
             if !appTheme.compactMode {
@@ -119,4 +124,18 @@ struct EmbeddedMultiMediaView: View {
         }
         .loadingOverlay(isLoading: isLoading)
     }
+    
+    private func getMediaIcon(type: String) -> String {
+        switch type {
+        case "gallery":
+            return "photo.on.rectangle"
+        case "video", "gif":
+            return "play.square.fill"
+        case "article":
+            return "safari"
+        default:
+            return "link"
+        }
+    }
+
 }

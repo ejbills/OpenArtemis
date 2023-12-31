@@ -79,7 +79,7 @@
 		BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0DE2B1AD939003C8ACC /* CachedImage */; };
 		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
-		BBB6932D2B41F9240094DFEE /* MetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6932C2B41F9240094DFEE /* MetadataView.swift */; };
+		BBB693302B420C550094DFEE /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = BBB6932F2B420C550094DFEE /* OpenGraph */; };
 		BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */; };
 		BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */; };
 		BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434712B1BD6A400886CAB /* String Hex.swift */; };
@@ -173,7 +173,6 @@
 		BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisApp.swift; sourceTree = "<group>"; };
-		BBB6932C2B41F9240094DFEE /* MetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataView.swift; sourceTree = "<group>"; };
 		BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditDrawerView.swift; sourceTree = "<group>"; };
 		BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitlesView.swift; sourceTree = "<group>"; };
 		BBE434712B1BD6A400886CAB /* String Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String Hex.swift"; sourceTree = "<group>"; };
@@ -199,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
+				BBB693302B420C550094DFEE /* OpenGraph in Frameworks */,
 				BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
@@ -334,7 +334,6 @@
 		BB391FA92B1ADD700014FB18 /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				BBB6932C2B41F9240094DFEE /* MetadataView.swift */,
 				BB391FAE2B1ADDAA0014FB18 /* Media View Controllers */,
 				BB391FAC2B1ADDA00014FB18 /* MediaView.swift */,
 				BB391FAA2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift */,
@@ -562,6 +561,7 @@
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
 				BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */,
 				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
+				BBB6932F2B420C550094DFEE /* OpenGraph */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -603,6 +603,7 @@
 				65AD50AF2B1E2725008B39E9 /* XCRemoteSwiftPackageReference "LazyPager" */,
 				BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */,
 				BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -672,7 +673,6 @@
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
 				653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */,
 				65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */,
-				BBB6932D2B41F9240094DFEE /* MetadataView.swift in Sources */,
 				653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */,
 				65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */,
 				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
@@ -1058,6 +1058,14 @@
 				minimumVersion = 2.6.1;
 			};
 		};
+		BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/satoshi-takano/OpenGraph";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1090,6 +1098,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BBB2C0E52B1AD9A7003C8ACC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		BBB6932F2B420C550094DFEE /* OpenGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */;
+			productName = OpenGraph;
 		};
 /* End XCSwiftPackageProductDependency section */
 
