@@ -35,7 +35,7 @@ struct PostPageView: View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
                 ThemedList(appTheme: appTheme, stripStyling: true) {
-                    PostFeedView(post: post, appTheme: appTheme)
+                    PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme)
                     if let postBody = postBody {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -83,6 +83,7 @@ struct PostPageView: View {
                                     CommentView(comment: comment,
                                                 numberOfChildren: comment.isRootCollapsed ?
                                                 CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0,
+                                                postAuthor: post.author,
                                                 appTheme: appTheme)
                                     .frame(maxWidth: .infinity)
                                     .padding(.leading, CGFloat(comment.depth) * 10)

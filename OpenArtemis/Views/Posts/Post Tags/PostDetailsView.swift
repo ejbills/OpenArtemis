@@ -16,6 +16,7 @@ struct PostDetailsView: View {
     let time: String
     let votes: Int
     let commentsCount: Int
+    let forceAuthorToDisplay: Bool
     let appTheme: AppThemeSettings
     
     var body: some View {
@@ -26,7 +27,7 @@ struct PostDetailsView: View {
                 }
                 .foregroundColor(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             
-            if appTheme.showAuthor {
+            if appTheme.showAuthor || forceAuthorToDisplay {
                 DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme)
                     .onTapGesture {
                         coordinator.path.append(ProfileResponse(username: postAuthor))

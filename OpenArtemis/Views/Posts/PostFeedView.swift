@@ -13,10 +13,17 @@ struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     let post: Post
+    let forceAuthorToDisplay: Bool
     let appTheme: AppThemeSettings
     @State private var mediaSize: CGSize = .zero
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
+    
+    init(post: Post, forceAuthorToDisplay: Bool = false, appTheme: AppThemeSettings) {
+        self.post = post
+        self.forceAuthorToDisplay = forceAuthorToDisplay
+        self.appTheme = appTheme
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -79,7 +86,7 @@ struct PostFeedView: View {
                         
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: post.thumbnailURL, title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
             
-            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, appTheme: appTheme)
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme)
         }
     }
 
@@ -92,7 +99,7 @@ struct PostFeedView: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 TitleTagView(title: post.title, tag: post.tag)
-                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, appTheme: appTheme)
+                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay,  appTheme: appTheme)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }

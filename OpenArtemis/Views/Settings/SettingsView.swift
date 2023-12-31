@@ -70,7 +70,7 @@ struct SettingsView: View {
                 Toggle("Compact mode", isOn: $appTheme.compactMode)
                 Toggle("Thin divider between posts", isOn: $appTheme.thinDivider)
                 Toggle("Show info tags with background", isOn: $appTheme.tagBackground)
-                Toggle("Show author tag on posts", isOn: $appTheme.showAuthor)
+                Toggle("Show author tag on posts in feed", isOn: $appTheme.showAuthor)
                 Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme), label: {
