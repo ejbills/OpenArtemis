@@ -71,6 +71,7 @@ struct SettingsView: View {
                 Toggle("Show info tags with background", isOn: $appTheme.tagBackground)
                 Toggle("Show author tag on posts in feed", isOn: $appTheme.showAuthor)
                 Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
+                Toggle("Highlight author with accent color", isOn: $appTheme.highlightAuthor)
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme), label: {
                     HStack{

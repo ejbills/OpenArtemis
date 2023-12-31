@@ -65,6 +65,7 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
     var thinDivider: Bool = false
     var tagBackground: Bool = true
     var highlightSubreddit: Bool = true
+    var highlightAuthor: Bool = false
     var showAuthor: Bool = true
     var showOriginalURL: Bool = false
 
