@@ -50,8 +50,7 @@ struct EmbeddedMultiMediaView: View {
                     Image(systemName: mediaIcon)
                         .resizable()
                         .frame(width: 30, height: 30)
-                        .foregroundColor(Color.white.opacity(0.75))
-                        .padding(4)
+                        .foregroundStyle(Color.white.opacity(0.75))
                 }
             } else {
                 RoundedRectangle(cornerRadius: 6)
@@ -61,9 +60,8 @@ struct EmbeddedMultiMediaView: View {
                        Image(systemName: mediaIcon)
                            .resizable()
                            .frame(width: 30, height: 30)
-                           .foregroundColor(.white)
+                           .foregroundStyle(Color.white.opacity(0.75))
                    )
-                   .animatedLoading()
             }
             
             if !appTheme.compactMode {

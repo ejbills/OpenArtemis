@@ -15,7 +15,6 @@ struct TitleTagView: View {
     
     var body: some View {
         Text(attributedString)
-            .cornerRadius(6)
     }
     
     private var attributedString: AttributedString {
@@ -41,5 +40,3 @@ struct TitleTagView: View {
         return attributedString
     }
 }
-
-
