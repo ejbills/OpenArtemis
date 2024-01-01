@@ -68,13 +68,11 @@ struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
         } content: {
             detail()
         } detail: {
-            ZStack {
-                NavigationStackWrapper(tabCoordinator: tabCoordinator, disableSwipeAnywhere: true) {
-                    detail()
-                }
+            NavigationStackWrapper(tabCoordinator: tabCoordinator, disableSwipeAnywhere: true) {
+                detail()
             }
         }
-        .environmentObject(tabCoordinator)        
+        .environmentObject(tabCoordinator)
     }
 }
 
