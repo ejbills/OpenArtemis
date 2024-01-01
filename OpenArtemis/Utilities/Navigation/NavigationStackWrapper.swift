@@ -11,7 +11,6 @@ import Defaults
 struct NavigationStackWrapper<Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
     @Default(.swipeAnywhere) var swipeAnywhere
-    var disableSwipeAnywhere: Bool
     var content: () -> Content
     
     @State private var swipeGesture: UIPanGestureRecognizer = {
@@ -20,9 +19,8 @@ struct NavigationStackWrapper<Content: View>: View {
         gesture.isEnabled = false
         return gesture
     }()
-    init(tabCoordinator: NavCoordinator, disableSwipeAnywhere: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+    init(tabCoordinator: NavCoordinator, @ViewBuilder content: @escaping () -> Content) {
         self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
-        self.disableSwipeAnywhere = disableSwipeAnywhere
         self.content = content
     }
     
@@ -34,7 +32,7 @@ struct NavigationStackWrapper<Content: View>: View {
                     AttachGestureView(gesture: $swipeGesture, navigationDepth: tabCoordinator.path.count)
                 }
         }
-        .enabledFullSwipePop(swipeAnywhere && !disableSwipeAnywhere)
+        .enabledFullSwipePop(swipeAnywhere)
         .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
         .environment(\.popGestureID, swipeGesture.name)
