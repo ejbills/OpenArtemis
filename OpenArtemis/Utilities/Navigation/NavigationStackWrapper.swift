@@ -68,10 +68,12 @@ struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
         } content: {
             detail()
         } detail: {
-            NavigationStackWrapper(tabCoordinator: tabCoordinator, disableSwipeAnywhere: true) {
+            NavigationStack(path: $tabCoordinator.path) {
                 detail()
+                    .handleDeepLinkViews()
             }
         }
+        .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
     }
 }
