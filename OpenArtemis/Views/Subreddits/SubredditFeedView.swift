@@ -59,7 +59,6 @@ struct SubredditFeedView: View {
                 }
             }
         }
-        .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -71,6 +70,9 @@ struct SubredditFeedView: View {
             }
         }
         .refreshable {
+            clearFeedAndReload()
+        }
+        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui reuses the initial view from the sidebar selection.
             clearFeedAndReload()
         }
     }

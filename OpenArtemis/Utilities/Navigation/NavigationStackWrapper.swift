@@ -11,6 +11,7 @@ import Defaults
 struct NavigationStackWrapper<Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
     @Default(.swipeAnywhere) var swipeAnywhere
+    var disableSwipeAnywhere: Bool
     var content: () -> Content
     
     @State private var swipeGesture: UIPanGestureRecognizer = {
@@ -19,8 +20,9 @@ struct NavigationStackWrapper<Content: View>: View {
         gesture.isEnabled = false
         return gesture
     }()
-    init(tabCoordinator: NavCoordinator, @ViewBuilder content: @escaping () -> Content) {
+    init(tabCoordinator: NavCoordinator, disableSwipeAnywhere: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
+        self.disableSwipeAnywhere = disableSwipeAnywhere
         self.content = content
     }
     
@@ -32,7 +34,7 @@ struct NavigationStackWrapper<Content: View>: View {
                     AttachGestureView(gesture: $swipeGesture, navigationDepth: tabCoordinator.path.count)
                 }
         }
-        .enabledFullSwipePop(swipeAnywhere)
+        .enabledFullSwipePop(swipeAnywhere && !disableSwipeAnywhere)
         .handleDeepLinkResolution()
         .environmentObject(tabCoordinator)
         .environment(\.popGestureID, swipeGesture.name)
@@ -45,6 +47,36 @@ struct NavigationStackWrapper<Content: View>: View {
     }
 }
 
+struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
+    @StateObject private var tabCoordinator: NavCoordinator
+    var sidebar: () -> Sidebar
+    var detail: () -> Content
+    
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    
+    init(tabCoordinator: NavCoordinator, @ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Content) {
+        self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
+        self.sidebar = sidebar
+        self.detail = detail
+    }
+    
+    var body: some View {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            sidebar()
+                .handleDeepLinkViews()
+            
+        } content: {
+            detail()
+        } detail: {
+            ZStack {
+                NavigationStackWrapper(tabCoordinator: tabCoordinator, disableSwipeAnywhere: true) {
+                    detail()
+                }
+            }
+        }
+        .environmentObject(tabCoordinator)        
+    }
+}
 
 fileprivate struct PopNotificationID: EnvironmentKey {
     static var defaultValue: String?

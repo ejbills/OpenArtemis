@@ -90,6 +90,7 @@
 		BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */; };
 		BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46DF2B32812100C33D33 /* DividerView.swift */; };
 		BBEB46E32B34999B00C33D33 /* ScrapeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */; };
+		BBF5A0AE2B429279000B3E75 /* NothingHereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +184,7 @@
 		BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSubredditRowView.swift; sourceTree = "<group>"; };
 		BBEB46DF2B32812100C33D33 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeSearch.swift; sourceTree = "<group>"; };
+		BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NothingHereView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +249,7 @@
 				65EFE4082B1CBCAA00517EBE /* ImportURLSheet.swift */,
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				BB853E6F2B35E3210041150C /* CodableColor.swift */,
+				BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -673,6 +676,7 @@
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
 				653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */,
 				65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */,
+				BBF5A0AE2B429279000B3E75 /* NothingHereView.swift in Sources */,
 				653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */,
 				65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */,
 				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
