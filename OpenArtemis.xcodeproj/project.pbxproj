@@ -91,6 +91,7 @@
 		BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46DF2B32812100C33D33 /* DividerView.swift */; };
 		BBEB46E32B34999B00C33D33 /* ScrapeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */; };
 		BBF5A0AE2B429279000B3E75 /* NothingHereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */; };
+		BBF5A0B02B43C1E7000B3E75 /* ReadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +186,7 @@
 		BBEB46DF2B32812100C33D33 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeSearch.swift; sourceTree = "<group>"; };
 		BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NothingHereView.swift; sourceTree = "<group>"; };
+		BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -398,6 +400,7 @@
 				65F5959B2B1F188B005BE493 /* ColorFromHex.swift */,
 				65D7E8552B23755A003FF5B5 /* SavedModifier.swift */,
 				BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */,
+				BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -663,6 +666,7 @@
 				65D3DBCD2B1B4DCF00BCCD38 /* MediaURL.swift in Sources */,
 				BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */,
 				BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */,
+				BBF5A0B02B43C1E7000B3E75 /* ReadModifier.swift in Sources */,
 				BB853E702B35E3210041150C /* CodableColor.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,

@@ -24,7 +24,10 @@ struct SubredditFeedView: View {
     @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
     @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
+    @FetchRequest(sortDescriptors: []) var readPosts: FetchedResults<ReadPost>
     
     // MARK: - Body
     var body: some View {
@@ -32,6 +35,8 @@ struct SubredditFeedView: View {
             ThemedList(appTheme: appTheme, stripStyling: true) {
                 if !posts.isEmpty {
                     ForEach(posts, id: \.id) { post in
+                        let isRead = readPosts.contains(where: { $0.readPostId == post.id })
+                        
                         PostFeedView(post: post, appTheme: appTheme)
                             .id(post.id)
                             .contentShape(Rectangle())
@@ -40,8 +45,13 @@ struct SubredditFeedView: View {
                             }
                             .onTapGesture {
                                 coordinator.path.append(PostResponse(post: post))
+                                
+                                if !isRead {
+                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                }
                             }
-                        
+                            .markRead(isRead: isRead)
+
                         DividerView(frameHeight: 10, appTheme: appTheme)
                     }
                         

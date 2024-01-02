@@ -60,17 +60,17 @@ enum MixedMedia: Codable, Hashable {
 class MiscUtils {
     static func shareItem(item: String, sourceView: UIView? = nil) {
         guard let url = URL(string: item) else { return }
-
+        
         DispatchQueue.main.async {
             let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-
+            
             // Set the source view for iPad
             if let popoverController = activityViewController.popoverPresentationController {
                 popoverController.sourceView = sourceView ?? UIApplication.shared.windows.first
                 popoverController.sourceRect = sourceView?.bounds ?? CGRect(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY, width: 0, height: 0)
                 popoverController.permittedArrowDirections = []
             }
-
+            
             UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
         }
     }
@@ -79,6 +79,19 @@ class MiscUtils {
         DispatchQueue.main.async {
             if let url = URL(string: urlString) {
                 SafariHelper.openSafariView(withURL: url)
+            }
+        }
+    }
+    
+    static func showAlert(message: String, title: String = "Alert", completion: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                completion?()
+            })
+            
+            if let topViewController = UIApplication.shared.windows.first?.rootViewController {
+                topViewController.present(alertController, animated: true, completion: nil)
             }
         }
     }

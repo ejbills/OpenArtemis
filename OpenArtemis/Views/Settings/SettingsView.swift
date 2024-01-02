@@ -20,7 +20,9 @@ struct SettingsView: View {
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
+    @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
+    @FetchRequest(sortDescriptors: []) var readPosts: FetchedResults<ReadPost>
     
     @State var currentAppIcon: String = "AppIcon"
     @State private var selectedLightModeBackground: Color = .white
@@ -81,6 +83,15 @@ struct SettingsView: View {
                             .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
                         Text("App Icon")
                     }
+                })
+            }
+            Section("Posts"){
+                Button(action: {
+                    PostUtils.shared.removeAllReadPosts(context: managedObjectContext)
+                    MiscUtils.showAlert(message: "Read posts cleared.")
+                }, label: {
+                    Label("Clear Read Posts", systemImage: "xmark.circle.fill")
+                        .foregroundColor(.red)
                 })
             }
             Section("Comments"){
