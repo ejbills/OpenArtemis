@@ -50,7 +50,6 @@ struct SubredditFeedView: View {
                                     PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
                                 }
                             }
-                            .markRead(isRead: isRead)
 
                         DividerView(frameHeight: 10, appTheme: appTheme)
                     }

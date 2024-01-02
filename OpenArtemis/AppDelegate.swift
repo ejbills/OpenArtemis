@@ -14,14 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Correct the transparency bug for Tab bars
         let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.configureWithDefaultBackground()
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-        
-        // Correct the transparency bug for Navigation bars
-        let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.configureWithOpaqueBackground()
-        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
-        
+                
         return true
     }
     
