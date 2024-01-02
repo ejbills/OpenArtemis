@@ -17,9 +17,18 @@ struct PostPageView: View {
     var commentsURLOverride: String?
     let appTheme: AppThemeSettings
     
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+
+    @FetchRequest(
+        entity: SavedComment.entity(),
+        sortDescriptors: []
+    ) var savedComments: FetchedResults<SavedComment>
+    
     @State private var comments: [Comment] = []
     @State private var rootComments: [Comment] = []
-    @State private var perViewSavedComments: Set<String> = []
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     @State private var isLoadAllCommentsPressed = false
@@ -29,14 +38,19 @@ struct PostPageView: View {
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
     
-    @State private var postLoaded: Bool = false
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
                 ThemedList(appTheme: appTheme, stripStyling: true) {
+                    var isSaved: Bool {
+                        savedPosts.contains(where: { $0.id == post.id })
+                    }
+                    
                     PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme)
+                        .savedIndicator(isSaved)
+                    
                     if let postBody = postBody {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -79,6 +93,10 @@ struct PostPageView: View {
                         
                         
                         ForEach(Array(comments.enumerated()), id: \.1.id) { (index, comment) in
+                            var isSaved: Bool {
+                                savedComments.contains(where: { $0.id == comment.id })
+                            }
+                            
                             if !comment.isCollapsed {
                                 Group {
                                     CommentView(comment: comment,
@@ -90,7 +108,7 @@ struct PostPageView: View {
                                     .padding(.leading, CGFloat(comment.depth) * 10)
                                 }
                                 .themedBackground(appTheme: appTheme)
-                                .savedIndicator(perViewSavedComments.contains(comment.id))
+                                .savedIndicator(isSaved)
                                 .onTapGesture {
                                     withAnimation(.smooth(duration: 0.35)) {
                                         comments[index].isRootCollapsed.toggle()
@@ -113,7 +131,7 @@ struct PostPageView: View {
                                         }
                                     }),
                                     secondaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                                        saveComment(comment)
+                                        CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
                                     }),
                                     primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
                                         MiscUtils.shareItem(item: comment.directURL)
@@ -126,10 +144,10 @@ struct PostPageView: View {
                                     ShareLink(item: URL(string: "\(post.commentsURL)\(comment.id.replacingOccurrences(of: "t1_", with: ""))")!)
                                     
                                     Button(action: {
-                                        saveComment(comment)
+                                        CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
                                     }) {
-                                        Text(perViewSavedComments.contains(comment.id) ? "Unsave" : "Save")
-                                        Image(systemName: perViewSavedComments.contains(comment.id) ? "bookmark.fill" : "bookmark")
+                                        Text("Toggle save")
+                                        Image(systemName: "bookmark")
                                     }
                                     Button(action: {
                                         MiscUtils.openInBrowser(urlString: comment.directURL)
@@ -182,17 +200,6 @@ struct PostPageView: View {
                 } else {
                     scrapeComments(post.commentsURL, trackingParamRemover: trackingParamRemover)
                 }
-            }
-            
-            if !postLoaded {
-                let savedComments = CommentUtils.shared.fetchSavedComments(context: managedObjectContext)
-                for savedComment in savedComments {
-                    if let commentID = savedComment.id {
-                        perViewSavedComments.insert(commentID)
-                    }
-                }
-                
-                postLoaded.toggle()
             }
         }
     }
@@ -249,17 +256,6 @@ struct PostPageView: View {
             }
         }
         return currentComment
-    }
-    
-    private func saveComment(_ comment: Comment) {
-        // Toggle save and update the saved comments set
-        let commentSaveBool = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-        
-        if commentSaveBool {
-            perViewSavedComments.insert(comment.id)
-        } else {
-            perViewSavedComments.remove(comment.id)
-        }
     }
     
     private func clearCommentsAndReload() {

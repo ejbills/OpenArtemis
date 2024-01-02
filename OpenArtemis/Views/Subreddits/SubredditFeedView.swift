@@ -25,9 +25,17 @@ struct SubredditFeedView: View {
     @State private var isLoading: Bool = false
     
     @Environment(\.managedObjectContext) var managedObjectContext
-    
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var readPosts: FetchedResults<ReadPost>
+        
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
+
     
     // MARK: - Body
     var body: some View {
@@ -35,9 +43,15 @@ struct SubredditFeedView: View {
             ThemedList(appTheme: appTheme, stripStyling: true) {
                 if !posts.isEmpty {
                     ForEach(posts, id: \.id) { post in
-                        let isRead = readPosts.contains(where: { $0.readPostId == post.id })
+                        var isRead: Bool {
+                            readPosts.contains(where: { $0.readPostId == post.id })
+                        }
+                        var isSaved: Bool {
+                            savedPosts.contains { $0.id == post.id }
+                        }
                         
                         PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+                            .savedIndicator(isSaved)
                             .id(post.id)
                             .contentShape(Rectangle())
                             .onAppear {

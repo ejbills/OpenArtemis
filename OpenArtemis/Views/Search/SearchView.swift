@@ -18,8 +18,20 @@ struct SearchView: View {
     @State private var searchResults: [MixedMedia] = []
     @State private var isLoading: Bool = false
     
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+    
+    @FetchRequest(
+        entity: SavedComment.entity(),
+        sortDescriptors: []
+    ) var savedComments: FetchedResults<SavedComment>
+    
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
     
     let appTheme: AppThemeSettings
     
@@ -51,7 +63,26 @@ struct SearchView: View {
                             .foregroundColor(.secondary)
                     } else {
                         ForEach(searchResults, id: \.self) { result in
-                            MixedContentView(content: result, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
+                            var isRead: Bool {
+                                switch result {
+                                case .post(let post, _):
+                                    readPosts.contains(where: { $0.readPostId == post.id })
+                                default:
+                                    false
+                                }
+                            }
+                            var isSaved: Bool {
+                                switch result {
+                                case .post(let post, _):
+                                    savedPosts.contains { $0.id == post.id }
+                                case .comment(let comment, _):
+                                    savedComments.contains { $0.id == comment.id }
+                                default:
+                                    false
+                                }
+                            }
+                            MixedContentView(content: result, isRead: isRead, appTheme: appTheme)
+                                .savedIndicator(isSaved)
                             if !isSubredditSearch {
                                 DividerView(frameHeight: 10, appTheme: appTheme)
                             }
@@ -62,7 +93,6 @@ struct SearchView: View {
                 }
             }
         }
-
         .themedBackground(isDarker: true, appTheme: appTheme)
         .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)

@@ -18,7 +18,6 @@ struct PostFeedView: View {
     let appTheme: AppThemeSettings
     @State private var mediaSize: CGSize = .zero
     @State private var metadataThumbnailURL: String? = nil
-    @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
     
     init(post: Post, forceAuthorToDisplay: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings) {
@@ -37,8 +36,6 @@ struct PostFeedView: View {
         .themedBackground(appTheme: appTheme)
         .onAppear {
             if !hasAppeared {
-                isSaved = PostUtils.shared.fetchSavedPost(context: managedObjectContext, id: post.id) != nil
-                
                 // grab the thumbnail from article opengraph metadata
                 let type = post.type
                 if (type == "video" || type == "gallery" || type == "article") && post.thumbnailURL == nil {
@@ -51,12 +48,9 @@ struct PostFeedView: View {
                 hasAppeared.toggle()
             }
         }
-        .savedIndicator(isSaved)
         .gestureActions(
             primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                withAnimation {
-                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
-                }
+                PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
             }),
             secondaryLeadingAction: nil,
             primaryTrailingAction: GestureAction(symbol: .init(emptyName: "square.and.arrow.up", fillName: "square.and.arrow.up.fill"), color: .purple, action: {
@@ -69,12 +63,10 @@ struct PostFeedView: View {
         .contextMenu(menuItems: {
             ShareLink(item: URL(string: post.commentsURL)!)
             Button(action: {
-                withAnimation {
-                    isSaved = PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
-                }
+                PostUtils.shared.toggleSaved(context: managedObjectContext, post: post)
             }) {
-                Text(isSaved ? "Unsave" : "Save")
-                Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                Text("Toggle save")
+                Image(systemName: "bookmark")
             }
             Button(action: {
                 MiscUtils.openInBrowser(urlString: post.commentsURL)

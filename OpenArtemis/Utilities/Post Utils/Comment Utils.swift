@@ -107,13 +107,11 @@ class CommentUtils {
     }
 
     /// Toggles the saved status of a `Comment`.
-    func toggleSaved(context: NSManagedObjectContext, comment: Comment) -> Bool {
+    func toggleSaved(context: NSManagedObjectContext, comment: Comment) {
         if let savedComment = fetchSavedComment(context: context, id: comment.id) {
             removeSavedComment(context: context, savedComment: savedComment)
-            return false
         } else {
             saveComment(context: context, comment: comment)
-            return true
         }
     }
 

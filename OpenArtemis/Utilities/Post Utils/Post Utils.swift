@@ -153,13 +153,11 @@ class PostUtils {
     ///   - context: The Core Data managed object context.
     ///   - post: The `Post` to toggle.
     /// - Returns: A boolean indicating whether the post is now saved.
-    func toggleSaved(context: NSManagedObjectContext, post: Post) -> Bool {
+    func toggleSaved(context: NSManagedObjectContext, post: Post) {
         if let savedPost = fetchSavedPost(context: context, id: post.id) {
             removeSavedPost(context: context, savedPost: savedPost)
-            return false
         } else {
             savePost(context: context, post: post)
-            return true
         }
     }
     

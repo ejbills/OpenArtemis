@@ -15,8 +15,20 @@ struct ProfileView: View {
     let username: String
     let appTheme: AppThemeSettings
     
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+    
+    @FetchRequest(
+        entity: SavedComment.entity(),
+        sortDescriptors: []
+    ) var savedComments: FetchedResults<SavedComment>
+    
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
 
     @State private var mixedMedia: [MixedMedia] = []
     @State private var mediaIDs: Set<String> = Set()
@@ -29,7 +41,27 @@ struct ProfileView: View {
         ThemedList(appTheme: appTheme, stripStyling: true) {
             if !mixedMedia.isEmpty {
                 ForEach(mixedMedia, id: \.self) { media in
-                    MixedContentView(content: media, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme, bypassFetchSavedStatus: true)
+                    var isRead: Bool {
+                        switch media {
+                        case .post(let post, _):
+                            readPosts.contains(where: { $0.readPostId == post.id })
+                        default:
+                            false
+                        }
+                    }
+                    var isSaved: Bool {
+                        switch media {
+                        case .post(let post, _):
+                            savedPosts.contains { $0.id == post.id }
+                        case .comment(let comment, _):
+                            savedComments.contains { $0.id == comment.id }
+                        default:
+                            false
+                        }
+                    }
+                    
+                    MixedContentView(content: media, isRead: isRead, appTheme: appTheme)
+                        .savedIndicator(isSaved)
                         .onAppear {
                             handleMediaAppearance(extractMediaId(from: media))
                         }
