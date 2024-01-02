@@ -11,7 +11,7 @@ struct ReadModifier: ViewModifier {
     let isRead: Bool
     func body(content: Content) -> some View {
         content
-            .opacity(isRead ? 0.65 : 1)
+            .opacity(isRead ? 0.55 : 1)
     }
 }
 

@@ -37,7 +37,7 @@ struct SubredditFeedView: View {
                     ForEach(posts, id: \.id) { post in
                         let isRead = readPosts.contains(where: { $0.readPostId == post.id })
                         
-                        PostFeedView(post: post, appTheme: appTheme)
+                        PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
                             .id(post.id)
                             .contentShape(Rectangle())
                             .onAppear {

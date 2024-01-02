@@ -14,21 +14,24 @@ struct PostFeedView: View {
     
     let post: Post
     let forceAuthorToDisplay: Bool
+    let isRead: Bool
     let appTheme: AppThemeSettings
     @State private var mediaSize: CGSize = .zero
     @State private var metadataThumbnailURL: String? = nil
     @State private var isSaved: Bool = false
     @State private var hasAppeared: Bool = false
     
-    init(post: Post, forceAuthorToDisplay: Bool = false, appTheme: AppThemeSettings) {
+    init(post: Post, forceAuthorToDisplay: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings) {
         self.post = post
         self.forceAuthorToDisplay = forceAuthorToDisplay
+        self.isRead = isRead
         self.appTheme = appTheme
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             renderContent()
+                .markRead(isRead: isRead)
         }
         .padding(8)
         .themedBackground(appTheme: appTheme)
