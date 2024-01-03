@@ -13,7 +13,6 @@ struct Saved: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay {
-                
                 isShowing ?
                     HStack {
                         Spacer()
@@ -26,7 +25,7 @@ struct Saved: ViewModifier {
                             Spacer()
                         }
                     }
-                    .transition(.slide) 
+                    .transition(.slide) // Add a transition
                     .frame(maxWidth: .infinity)
                 : nil
             }

@@ -23,22 +23,27 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
         switch url {
             
             //TwitterA
-        case let str where str.contains("twitter.com"):
+        //TODO: Use the regex (\.|\/)twitter\.com instead of just finding any x.com link
+        case let str where str.contains(try! Regex("(.|/)twitter.com")):
             privateURL = str.replacingOccurrences(of: "twitter.com", with: twitterRedirect == "" ? "twitter.com" : twitterRedirect) //Instance located in the Netherlands
             conditionalIncreaseStats()
-        case let str where str.contains("x.com"):
+        //TODO: Use the regex (\.|\/)x\.com instead of just finding any x.com link
+        case let str where str.contains(try! Regex("(.|/)x.com")):
             privateURL = str.replacingOccurrences(of: "x.com", with: twitterRedirect == "" ? "x.com" : twitterRedirect)
             conditionalIncreaseStats()
             //Youtube
-        case let str where str.contains("youtube.com"):
+        //TODO: Use the regex (\.|\/)youtube\.com instead of just finding any x.com link
+        case let str where str.contains(try! Regex("(.|/)youtube.com")):
             privateURL = str.replacingOccurrences(of: "youtube.com", with: youtubeRedirect == "" ? "youtube.com" : youtubeRedirect).replacingOccurrences(of: "www.", with: "") //Instance located in the Netherlands
             conditionalIncreaseStats()
-        case let str where str.contains("youtu.be"):
+        //TODO: Use the regex (\.|\/)youtu\.be instead of just finding any x.com link
+        case let str where str.contains(try! Regex("(.|/)youtu.be")):
             privateURL = str.replacingOccurrences(of: "youtu.be/", with: "\(youtubeRedirect == "" ? "youtube.com" : youtubeRedirect)/watch?v=")
             conditionalIncreaseStats()
             
             //Medium
-        case let str where str.contains("medium.com"):
+        //TODO: Use the regex (\.|\/)medium\.com instead of just finding any x.com link
+        case let str where str.contains(try! Regex("(.|/)medium.com")):
             privateURL = str.replacingOccurrences(of: "medium.com", with: mediumRedirect == "" ? "medium.com" : mediumRedirect) //Instance located in the Netherlands
             conditionalIncreaseStats()
             

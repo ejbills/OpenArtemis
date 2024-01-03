@@ -59,8 +59,7 @@ private struct ImageView: View {
             CachedImage(
                 url: url,
                 content: { image in
-                    image
-                        .resizable()
+                   LiveTextInteraction(image: image)
                         .scaledToFit()
                 },
                 placeholder: {
