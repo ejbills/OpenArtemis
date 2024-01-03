@@ -16,7 +16,7 @@ struct SearchView: View {
     @State private var inputText: String = ""
     @State private var searchType: String = "sr"
     @State private var searchResults: [MixedMedia] = []
-    @State private var mixedMediaIDs: Set<String> = Set()
+    @State private var mixedMediaIDs = LimitedSet<String>(maxLength: 300)
     @State private var isLoading: Bool = false
     
     @State private var selectedSortOption: PostSortOption = .relevance

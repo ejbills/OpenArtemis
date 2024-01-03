@@ -20,14 +20,14 @@ struct SubredditFeedView: View {
     let appTheme: AppThemeSettings
     
     @State private var posts: [Post] = []
-    @State private var postIDs: Set<String> = Set()
+    @State private var postIDs = LimitedSet<String>(maxLength: 300)
     @State private var lastPostAfter: String = ""
     @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
     @State private var searchTerm: String = ""
     @State private var searchResults: [MixedMedia] = []
-    @State private var mixedMediaIDs: Set<String> = Set()
+    @State private var mixedMediaIDs = LimitedSet<String>(maxLength: 300)
     @State private var selectedSearchSortOption: PostSortOption = .relevance
     @State private var selectedSearchTopOption: TopPostListingSortOption = .all
     
@@ -57,11 +57,7 @@ struct SubredditFeedView: View {
                         
                         PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
                             .savedIndicator(isSaved)
-                            .id(post.id)
                             .contentShape(Rectangle())
-                            .onAppear {
-                                handlePostAppearance(post.id)
-                            }
                             .onTapGesture {
                                 coordinator.path.append(PostResponse(post: post))
                                 
@@ -72,6 +68,13 @@ struct SubredditFeedView: View {
                         
                         DividerView(frameHeight: 10, appTheme: appTheme)
                     }
+                    
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 1)
+                        .onAppear {
+                            scrapeSubreddit(lastPostAfter)
+                        }
                     
                     if isLoading { // show spinner at the bottom of the feed
                         HStack {

@@ -72,6 +72,7 @@
 		BB8CAE7A2B1E73CE00CA13BB /* Comment Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */; };
 		BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE7B2B1E73D400CA13BB /* TimeFormatter.swift */; };
 		BB93194B2B3CDA2C00863302 /* DateSorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB93194A2B3CDA2C00863302 /* DateSorting.swift */; };
+		BBA6FD6A2B45303C0096242E /* LimitedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA6FD692B45303C0096242E /* LimitedSet.swift */; };
 		BBACCB402B3231E100A9F550 /* TitleTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBACCB3F2B3231E100A9F550 /* TitleTagView.swift */; };
 		BBB101D02B20154600691B2F /* PostDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB101CF2B20154600691B2F /* PostDetailsView.swift */; };
 		BBB2C0C62B1AD88F003C8ACC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */; };
@@ -170,6 +171,7 @@
 		BB8CAE792B1E73CE00CA13BB /* Comment Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment Utils.swift"; sourceTree = "<group>"; };
 		BB8CAE7B2B1E73D400CA13BB /* TimeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
 		BB93194A2B3CDA2C00863302 /* DateSorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSorting.swift; sourceTree = "<group>"; };
+		BBA6FD692B45303C0096242E /* LimitedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedSet.swift; sourceTree = "<group>"; };
 		BBACCB3F2B3231E100A9F550 /* TitleTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTagView.swift; sourceTree = "<group>"; };
 		BBB101CF2B20154600691B2F /* PostDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailsView.swift; sourceTree = "<group>"; };
 		BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArtemis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -254,6 +256,7 @@
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				BB853E6F2B35E3210041150C /* CodableColor.swift */,
 				BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */,
+				BBA6FD692B45303C0096242E /* LimitedSet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -728,6 +731,7 @@
 				652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */,
+				BBA6FD6A2B45303C0096242E /* LimitedSet.swift in Sources */,
 				653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
 				BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */,

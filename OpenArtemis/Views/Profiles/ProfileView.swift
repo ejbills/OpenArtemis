@@ -31,7 +31,7 @@ struct ProfileView: View {
     ) var readPosts: FetchedResults<ReadPost>
 
     @State private var mixedMedia: [MixedMedia] = []
-    @State private var mediaIDs: Set<String> = Set()
+    @State private var mediaIDs = LimitedSet<String>(maxLength: 300)
     @State private var isLoading: Bool = true
     
     @State private var lastPostAfter: String = ""
