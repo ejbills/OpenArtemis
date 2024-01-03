@@ -10,9 +10,16 @@ import CoreData
 
 struct SavedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-    
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+        
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+
+    @FetchRequest(
+        entity: SavedComment.entity(),
+        sortDescriptors: []
+    ) var savedComments: FetchedResults<SavedComment>
     
     @State var mixedMediaLinks: [MixedMedia] = []
     
@@ -35,11 +42,13 @@ struct SavedView: View {
             
         } else {
             ThemedList(appTheme: appTheme, stripStyling: true) {
-                ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                    MixedContentView(content: mixedMediaTuple, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme)
-                    DividerView(frameHeight: 10, appTheme: appTheme)
-                }
-                
+                ContentListView(
+                    content: $mixedMediaLinks,
+                    savedPosts: savedPosts,
+                    savedComments: savedComments,
+                    appTheme: appTheme,
+                    preventRead: true
+                )
             }
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
@@ -83,36 +92,34 @@ struct MixedContentView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    var content: MixedMedia
-    let savedPosts: FetchedResults<SavedPost>
-    let savedComments: FetchedResults<SavedComment>
+    let content: MixedMedia
+    let isRead: Bool
     let appTheme: AppThemeSettings
-    
-    var bypassFetchSavedStatus: Bool = false
-    
+        
     @State var isLoadingCommentPost: Bool = false
-    @State var isCommentSaved: Bool = false
+    
+    init(content: MixedMedia, isRead: Bool = false, appTheme: AppThemeSettings) {
+        self.content = content
+        self.isRead = isRead
+        self.appTheme = appTheme
+    }
     
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post, appTheme: appTheme)
+            PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
+                    
+                    if !isRead {
+                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                    }
                 }
         case .comment(let comment, _):
             CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme)
-                .savedIndicator(isCommentSaved)
-                .onAppear {
-                    if !bypassFetchSavedStatus { // in profiles for example, we want to bypass fetching the status of every comment - it leads to stuttering
-                        isCommentSaved = savedComments.contains { $0.id == comment.id }
-                    }
-                }
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
-                .addGestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
-                    withAnimation {
-                        isCommentSaved = CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
-                    }
+                .gestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
+                    CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)
                 }), secondaryLeadingAction: nil, primaryTrailingAction: nil, secondaryTrailingAction: nil)
                 .onTapGesture {
                     if !isLoadingCommentPost {
@@ -124,7 +131,7 @@ struct MixedContentView: View {
                         RedditScraper.scrapePostFromCommentsURL(url: commentURL, trackingParamRemover: nil) { result in
                             DispatchQueue.main.async {
                                 switch result {
-                                case .success(var post):
+                                case .success(let post):
                                     coordinator.path.append(PostResponse(post: post, commentsURLOverride: commentURL))
                                 case .failure(let failure):
                                     print("Error: \(failure)")

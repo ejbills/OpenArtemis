@@ -33,7 +33,7 @@ struct Post: Equatable, Hashable, Codable {
     enum CodingKeys: String, CodingKey {
         case id, subreddit, title, tag, author, votes, time, mediaURL, commentsURL, commentsCount, type, thumbnailURL
     }
-
+    
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
     }
@@ -60,7 +60,7 @@ struct Post: Equatable, Hashable, Codable {
 class PostUtils {
     // Singleton instance
     static let shared = PostUtils()
-
+    
     // Private initializer to enforce singleton pattern
     private init() {}
     
@@ -87,7 +87,7 @@ class PostUtils {
             return "article"
         }
     }
-
+    
     // Core Data integration
     
     /// Converts a `SavedPost` entity to a tuple containing the saved timestamp and a corresponding `Post`.
@@ -115,7 +115,7 @@ class PostUtils {
             )
         )
     }
-
+    
     /// Saves a `Post` entity to Core Data.
     ///
     /// - Parameters:
@@ -137,7 +137,7 @@ class PostUtils {
         tempPost.votes = post.votes
         tempPost.time = post.time
         tempPost.savedTimestamp = Date()
-
+        
         DispatchQueue.main.async {
             do {
                 try context.save()
@@ -153,16 +153,14 @@ class PostUtils {
     ///   - context: The Core Data managed object context.
     ///   - post: The `Post` to toggle.
     /// - Returns: A boolean indicating whether the post is now saved.
-    func toggleSaved(context: NSManagedObjectContext, post: Post) -> Bool {
+    func toggleSaved(context: NSManagedObjectContext, post: Post) {
         if let savedPost = fetchSavedPost(context: context, id: post.id) {
             removeSavedPost(context: context, savedPost: savedPost)
-            return false
         } else {
             savePost(context: context, post: post)
-            return true
         }
     }
-
+    
     /// Removes a saved `Post` entity from Core Data.
     ///
     /// - Parameters:
@@ -179,8 +177,8 @@ class PostUtils {
             }
         }
     }
-
-
+    
+    
     /// Fetches all saved `Post` entities from Core Data.
     ///
     /// - Parameter context: The Core Data managed object context.
@@ -193,7 +191,7 @@ class PostUtils {
             return []
         }
     }
-
+    
     /// Fetches a specific saved `Post` entity from Core Data based on its identifier.
     ///
     /// - Parameters:
@@ -214,4 +212,83 @@ class PostUtils {
         
         return savedPost
     }
+    
+    /// Toggles the read status of a `Post` entity.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - postId: The identifier of the post to toggle.
+    func toggleRead(context: NSManagedObjectContext, postId: String) {
+        guard fetchReadPost(context: context, postId: postId) == nil else {
+            // ReadPost already exists, no need to toggle
+            return
+        }
+        
+        let newReadPost = ReadPost(context: context)
+        newReadPost.readPostId = postId
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving ReadPost: \(error)")
+        }
+    }
+    
+    /// Fetches a specific read `Post` entity from Core Data based on its identifier.
+    ///
+    /// - Parameters:
+    ///   - context: The Core Data managed object context.
+    ///   - postId: The identifier of the post to fetch.
+    /// - Returns: The fetched `ReadPost` entity or nil if not found.
+    func fetchReadPost(context: NSManagedObjectContext, postId: String) -> ReadPost? {
+        let request: NSFetchRequest<ReadPost> = ReadPost.fetchRequest()
+        request.predicate = NSPredicate(format: "readPostId == %@", postId)
+        
+        var readPost: ReadPost? = nil
+        
+        do {
+            readPost = try context.fetch(request).first
+        } catch {
+            print("Error fetching ReadPost: \(error)")
+        }
+        
+        return readPost
+    }
+    
+    /// Removes all read posts from Core Data.
+    ///
+    /// - Parameter context: The Core Data managed object context.
+    func removeAllReadPosts(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "ReadPost")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+        } catch {
+            print("Error clearing read posts: \(error)")
+        }
+    }
+}
+
+
+// MARK: Post sorting options (within the search view)
+enum PostSortOption: String, CaseIterable, Identifiable, Hashable {
+    case relevance
+    case new
+    case top
+
+    var id: String { rawValue }
+}
+
+// Enum for top options
+enum TopPostListingSortOption: String, CaseIterable, Identifiable, Hashable {
+    case hour
+    case day
+    case week
+    case month
+    case year
+    case all
+
+    var id: String { rawValue }
 }

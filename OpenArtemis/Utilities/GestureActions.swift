@@ -2,7 +2,8 @@
 //  GestureActions.swift
 //  OpenArtemis
 //
-//  Created by daniel on 05/12/23.
+//  Created by Ethan Bills on 05/12/23.
+//  Based on Mlem for Lemmy swipe actions - https://github.com/mlemgroup/swipeyactions
 //
 
 import Foundation
@@ -106,7 +107,7 @@ struct GestureView: ViewModifier {
                         }
                     }
             )
-            .onChange(of: dragState) { newDragState in
+            .onChange(of: dragState) { _, newDragState in
                 // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
                 if newDragState == .zero {
                     draggingDidEnd()
@@ -272,7 +273,7 @@ struct GestureView: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func addGestureActions(primaryLeadingAction: GestureAction?,
+    func gestureActions(primaryLeadingAction: GestureAction?,
                           secondaryLeadingAction: GestureAction?,
                           primaryTrailingAction: GestureAction?,
                           secondaryTrailingAction: GestureAction?

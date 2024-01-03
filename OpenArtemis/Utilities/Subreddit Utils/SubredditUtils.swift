@@ -60,7 +60,7 @@ struct SubListingSort: Codable, Identifiable {
     }
 }
 
-enum SubListingSortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
+enum SortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
     var id: String {
         self.rawVal.id
     }
@@ -107,8 +107,8 @@ enum SubListingSortOption: Codable, Identifiable, Defaults.Serializable, Hashabl
     }
 }
 
-extension SubListingSortOption: CaseIterable {
-    static var allCases: [SubListingSortOption] {
+extension SortOption: CaseIterable {
+    static var allCases: [SortOption] {
         return [.best, .hot, .new, .controversial, .top(.all)]
     }
 }
