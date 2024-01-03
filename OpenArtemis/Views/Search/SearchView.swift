@@ -60,7 +60,6 @@ struct SearchView: View {
 
                 
             }
-            .themedBackground(isDarker: true)
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $inputText)

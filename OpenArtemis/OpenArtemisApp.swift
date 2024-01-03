@@ -32,7 +32,7 @@ struct OpenArtemisApp: App {
                 }
                 
                 NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SearchView(appTheme: appTheme)
+                    SearchView()
                 }
                 .tabItem {
                     Label("Search", systemImage: "text.magnifyingglass")
