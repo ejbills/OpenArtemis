@@ -269,5 +269,26 @@ class PostUtils {
             print("Error clearing read posts: \(error)")
         }
     }
-    
+}
+
+
+// MARK: Post sorting options (within the search view)
+enum PostSortOption: String, CaseIterable, Identifiable, Hashable {
+    case relevance
+    case new
+    case top
+
+    var id: String { rawValue }
+}
+
+// Enum for top options
+enum TopPostListingSortOption: String, CaseIterable, Identifiable, Hashable {
+    case hour
+    case day
+    case week
+    case month
+    case year
+    case all
+
+    var id: String { rawValue }
 }

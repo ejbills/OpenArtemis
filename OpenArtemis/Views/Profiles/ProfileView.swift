@@ -47,7 +47,7 @@ struct ProfileView: View {
                     savedComments: savedComments,
                     appTheme: appTheme,
                     onListElementAppearance: { media in
-                        handleMediaAppearance(extractMediaId(from: media))
+                        handleMediaAppearance(MiscUtils.extractMediaId(from: media))
                     }
                 )
                 
@@ -94,7 +94,7 @@ struct ProfileView: View {
             case .success(let media):
                 // Filter out duplicates based on media ID
                 let uniqueMedia = media.filter { mediaID in
-                    let id = extractMediaId(from: mediaID)
+                    let id = MiscUtils.extractMediaId(from: mediaID)
                     if !mediaIDs.contains(id) {
                         mediaIDs.insert(id)
                         return true
@@ -105,7 +105,7 @@ struct ProfileView: View {
                 mixedMedia.append(contentsOf: uniqueMedia)
                 
                 if let lastLink = uniqueMedia.last {
-                    self.lastPostAfter = extractMediaId(from: lastLink)
+                    self.lastPostAfter = MiscUtils.extractMediaId(from: lastLink)
                 }
             case .failure(let err):
                 print("Error: \(err)")
@@ -135,21 +135,10 @@ struct ProfileView: View {
             return
         }
 
-        let tempMediaId = extractMediaId(from: mixedMedia[index])
+        let tempMediaId = MiscUtils.extractMediaId(from: mixedMedia[index])
 
         if mediaId == tempMediaId {
             scrapeProfile(lastPostAfter, sort: filterType)
-        }
-    }
-                        
-    private func extractMediaId(from media: MixedMedia) -> String {
-        switch media {
-        case .post(let post, _):
-            return post.id
-        case .comment(let comment, _):
-            return comment.id
-        default:
-            return ""
         }
     }
 }

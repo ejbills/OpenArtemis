@@ -27,6 +27,9 @@ struct SubredditFeedView: View {
     
     @State private var searchTerm: String = ""
     @State private var searchResults: [MixedMedia] = []
+    @State private var mixedMediaIDs: Set<String> = Set()
+    @State private var selectedSearchSortOption: PostSortOption = .relevance
+    @State private var selectedSearchTopOption: TopPostListingSortOption = .all
     
     @FetchRequest(
         entity: SavedPost.entity(),
@@ -79,7 +82,10 @@ struct SubredditFeedView: View {
                             Spacer()
                         }
                     }
-                } else if !searchResults.isEmpty {
+                } else if !searchResults.isEmpty || !searchTerm.isEmpty {
+                    FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
+                        clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
+                    }
                     ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme)
                 } else {
                     LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
@@ -105,7 +111,6 @@ struct SubredditFeedView: View {
         .searchable(text: $searchTerm, prompt: "Search r/\((titleOverride != nil) ? titleOverride! : subredditName)")
         .onSubmit(of: .search) {
             clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
-            print("subreddit:\(subredditName) \(searchTerm)")
         }
         .onChange(of: searchTerm) { val, _ in if searchTerm.isEmpty { clearFeedAndReload() }}
     }
@@ -192,19 +197,20 @@ struct SubredditFeedView: View {
                 }
             }
         } else {
-            print("im in here \(searchTerm)")
-            RedditScraper.search(query: searchTerm, searchType: "",
-                                 trackingParamRemover: trackingParamRemover,
-                                 over18: over18) { result in
+            RedditScraper.search(query: searchTerm, searchType: "", sortBy: selectedSearchSortOption, topSortBy: selectedSearchTopOption,
+                                 trackingParamRemover: trackingParamRemover, over18: over18) { result in
                 defer {
                     isLoading = false
                 }
                 
                 switch result {
-                case .success(let results):
-                    print(results.count)
-                    DispatchQueue.main.async {
-                        searchResults = results
+                case .success(let newMedia):
+                    for media in newMedia {
+                        let mediaID = MiscUtils.extractMediaId(from: media)
+                        if !mixedMediaIDs.contains(mediaID) {
+                            searchResults.append(media)
+                            mixedMediaIDs.insert(mediaID)
+                        }
                     }
                 case .failure(let error):
                     print("Search error: \(error)")
@@ -218,6 +224,7 @@ struct SubredditFeedView: View {
             posts.removeAll()
             postIDs.removeAll()
             searchResults.removeAll()
+            mixedMediaIDs.removeAll()
             lastPostAfter = ""
             isLoading = false
         }

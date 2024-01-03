@@ -95,4 +95,15 @@ class MiscUtils {
             }
         }
     }
+    
+    static func extractMediaId(from media: MixedMedia) -> String {
+        switch media {
+        case .post(let post, _):
+            return post.id
+        case .comment(let comment, _):
+            return comment.id
+        default:
+            return ""
+        }
+    }
 }
