@@ -22,12 +22,7 @@ struct SearchView: View {
         entity: SavedPost.entity(),
         sortDescriptors: []
     ) var savedPosts: FetchedResults<SavedPost>
-    
-    @FetchRequest(
-        entity: SavedComment.entity(),
-        sortDescriptors: []
-    ) var savedComments: FetchedResults<SavedComment>
-    
+        
     @FetchRequest(
         entity: ReadPost.entity(),
         sortDescriptors: []
@@ -62,31 +57,13 @@ struct SearchView: View {
                             """)
                             .foregroundColor(.secondary)
                     } else {
-                        ForEach(searchResults, id: \.self) { result in
-                            var isRead: Bool {
-                                switch result {
-                                case .post(let post, _):
-                                    readPosts.contains(where: { $0.readPostId == post.id })
-                                default:
-                                    false
-                                }
-                            }
-                            var isSaved: Bool {
-                                switch result {
-                                case .post(let post, _):
-                                    savedPosts.contains { $0.id == post.id }
-                                case .comment(let comment, _):
-                                    savedComments.contains { $0.id == comment.id }
-                                default:
-                                    false
-                                }
-                            }
-                            MixedContentView(content: result, isRead: isRead, appTheme: appTheme)
-                                .savedIndicator(isSaved)
-                            if !isSubredditSearch {
-                                DividerView(frameHeight: 10, appTheme: appTheme)
-                            }
-                        }
+                        ContentListView(
+                            content: $searchResults,
+                            readPosts: readPosts,
+                            savedPosts: savedPosts,
+                            appTheme: appTheme,
+                            preventDivider: true
+                        )
                     }
                 } else {
                     LoadingView(loadingText: "Loading search...", isLoading: true)

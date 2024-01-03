@@ -40,33 +40,16 @@ struct ProfileView: View {
     var body: some View {
         ThemedList(appTheme: appTheme, stripStyling: true) {
             if !mixedMedia.isEmpty {
-                ForEach(mixedMedia, id: \.self) { media in
-                    var isRead: Bool {
-                        switch media {
-                        case .post(let post, _):
-                            readPosts.contains(where: { $0.readPostId == post.id })
-                        default:
-                            false
-                        }
+                ContentListView(
+                    content: $mixedMedia,
+                    readPosts: readPosts,
+                    savedPosts: savedPosts,
+                    savedComments: savedComments,
+                    appTheme: appTheme,
+                    onListElementAppearance: { media in
+                        handleMediaAppearance(extractMediaId(from: media))
                     }
-                    var isSaved: Bool {
-                        switch media {
-                        case .post(let post, _):
-                            savedPosts.contains { $0.id == post.id }
-                        case .comment(let comment, _):
-                            savedComments.contains { $0.id == comment.id }
-                        default:
-                            false
-                        }
-                    }
-                    
-                    MixedContentView(content: media, isRead: isRead, appTheme: appTheme)
-                        .savedIndicator(isSaved)
-                        .onAppear {
-                            handleMediaAppearance(extractMediaId(from: media))
-                        }
-                    DividerView(frameHeight: 10, appTheme: appTheme)
-                }
+                )
                 
                 if isLoading { // show spinner at the bottom of the feed
                     HStack {

@@ -42,24 +42,13 @@ struct SavedView: View {
             
         } else {
             ThemedList(appTheme: appTheme, stripStyling: true) {
-                ForEach(mixedMediaLinks, id: \.self) { mixedMediaTuple in
-                    var isSaved: Bool {
-                        switch mixedMediaTuple {
-                        case .post(let post, _):
-                            savedPosts.contains { $0.id == post.id }
-                        case .comment(let comment, _):
-                            savedComments.contains { $0.id == comment.id }
-                        default:
-                            false
-                        }
-                    }
-                    
-                    MixedContentView(content: mixedMediaTuple, appTheme: appTheme)
-                            .savedIndicator(isSaved)
-                        
-                    DividerView(frameHeight: 10, appTheme: appTheme)
-                }
-                
+                ContentListView(
+                    content: $mixedMediaLinks,
+                    savedPosts: savedPosts,
+                    savedComments: savedComments,
+                    appTheme: appTheme,
+                    preventRead: true
+                )
             }
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {

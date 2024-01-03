@@ -10,6 +10,7 @@ import Defaults
 
 struct SubredditFeedView: View {
     // MARK: - Properties
+    @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
@@ -24,24 +25,25 @@ struct SubredditFeedView: View {
     @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
-    @Environment(\.managedObjectContext) var managedObjectContext
-        
+    @State private var searchTerm: String = ""
+    @State private var searchResults: [MixedMedia] = []
+    
     @FetchRequest(
         entity: SavedPost.entity(),
         sortDescriptors: []
     ) var savedPosts: FetchedResults<SavedPost>
-
+    
     @FetchRequest(
         entity: ReadPost.entity(),
         sortDescriptors: []
     ) var readPosts: FetchedResults<ReadPost>
-
+    
     
     // MARK: - Body
     var body: some View {
         Group {
             ThemedList(appTheme: appTheme, stripStyling: true) {
-                if !posts.isEmpty {
+                if !posts.isEmpty && searchTerm.isEmpty {
                     ForEach(posts, id: \.id) { post in
                         var isRead: Bool {
                             readPosts.contains(where: { $0.readPostId == post.id })
@@ -64,10 +66,10 @@ struct SubredditFeedView: View {
                                     PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
                                 }
                             }
-
+                        
                         DividerView(frameHeight: 10, appTheme: appTheme)
                     }
-                        
+                    
                     if isLoading { // show spinner at the bottom of the feed
                         HStack {
                             Spacer()
@@ -77,6 +79,8 @@ struct SubredditFeedView: View {
                             Spacer()
                         }
                     }
+                } else if !searchResults.isEmpty {
+                    ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme)
                 } else {
                     LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
                 }
@@ -98,6 +102,12 @@ struct SubredditFeedView: View {
         .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui reuses the initial view from the sidebar selection.
             clearFeedAndReload()
         }
+        .searchable(text: $searchTerm, prompt: "Search r/\((titleOverride != nil) ? titleOverride! : subredditName)")
+        .onSubmit(of: .search) {
+            clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
+            print("subreddit:\(subredditName) \(searchTerm)")
+        }
+        .onChange(of: searchTerm) { val, _ in if searchTerm.isEmpty { clearFeedAndReload() }}
     }
     
     // MARK: - Private Methods
@@ -109,7 +119,7 @@ struct SubredditFeedView: View {
             }
         }
     }
-
+    
     private func buildSortingMenu() -> some View {
         Menu(content: {
             ForEach(SortOption.allCases) { opt in
@@ -154,44 +164,64 @@ struct SubredditFeedView: View {
                 .foregroundColor(Color.artemisAccent)
         })
     }
-
-    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SortOption? = nil) {
-        self.isLoading = true
-
-        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
-                                      trackingParamRemover: trackingParamRemover, over18: over18) { result in
-            handleScrapeResult(result)
-        }
-    }
     
-    private func handleScrapeResult(_ result: Result<[Post], Error>) {
-        switch result {
-        case .success(let newPosts):
-            for post in newPosts {
-                if !postIDs.contains(post.id) {
-                    posts.append(post)
-                    postIDs.insert(post.id)
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
+        self.isLoading = true
+        
+        if searchTerm.isEmpty {
+            RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
+                                          trackingParamRemover: trackingParamRemover, over18: over18) { result in
+                defer {
+                    isLoading = false
+                }
+                
+                switch result {
+                case .success(let newPosts):
+                    for post in newPosts {
+                        if !postIDs.contains(post.id) {
+                            posts.append(post)
+                            postIDs.insert(post.id)
+                        }
+                    }
+                    
+                    if let lastPost = newPosts.last {
+                        self.lastPostAfter = lastPost.id
+                    }
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
                 }
             }
-
-            if let lastPost = newPosts.last {
-                lastPostAfter = lastPost.id
+        } else {
+            print("im in here \(searchTerm)")
+            RedditScraper.search(query: searchTerm, searchType: "",
+                                 trackingParamRemover: trackingParamRemover,
+                                 over18: over18) { result in
+                defer {
+                    isLoading = false
+                }
+                
+                switch result {
+                case .success(let results):
+                    print(results.count)
+                    DispatchQueue.main.async {
+                        searchResults = results
+                    }
+                case .failure(let error):
+                    print("Search error: \(error)")
+                }
             }
-        case .failure(let error):
-            print("Error: \(error.localizedDescription)")
         }
-
-        isLoading = false
     }
     
-    private func clearFeedAndReload() {
+    private func clearFeedAndReload(withSearchTerm: String = "") {
         withAnimation(.smooth) {
             posts.removeAll()
             postIDs.removeAll()
+            searchResults.removeAll()
             lastPostAfter = ""
             isLoading = false
         }
         
-        scrapeSubreddit(sort: sortOption)
+        scrapeSubreddit(sort: sortOption, searchTerm: withSearchTerm)
     }
 }

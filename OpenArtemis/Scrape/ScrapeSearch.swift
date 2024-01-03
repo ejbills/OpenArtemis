@@ -96,7 +96,10 @@ extension RedditScraper {
             do {
                 let id = try postElement.attr("data-fullname")
                 let title = try postElement.select("a.search-title.may-blank").text()
+                
                 let subreddit = try postElement.select("a.search-subreddit-link.may-blank").text()
+                let cleanedSubredditLink = subreddit.replacingOccurrences(of: "^(r/|/r/)", with: "", options: .regularExpression)
+                
                 let tagElement = try postElement.select("span.linkflairlabel").first()
                 let tag = try tagElement?.text() ?? ""
                 let author = try postElement.select("span.search-author a").text()
@@ -117,7 +120,7 @@ extension RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
 
-                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: cleanedSubredditLink, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
