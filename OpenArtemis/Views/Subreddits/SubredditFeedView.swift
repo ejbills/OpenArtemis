@@ -85,7 +85,7 @@ struct SubredditFeedView: View {
                             Spacer()
                         }
                     }
-                } else if !searchResults.isEmpty || !searchTerm.isEmpty {
+                } else if (!searchResults.isEmpty || !searchTerm.isEmpty) && !isLoading {
                     FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
                         clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
                     }
