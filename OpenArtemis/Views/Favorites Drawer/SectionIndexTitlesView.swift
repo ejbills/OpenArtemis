@@ -18,9 +18,8 @@ struct SectionIndexTitlesView: View {
         VStack {
             ForEach(availChars, id: \.self) { letter in
                 Text(letter)
-                    .fontWeight(.medium)
-                    .font(.system(size: 15))
-                    .frame(width: 25)
+                    .foregroundStyle(Color.artemisAccent)
+                    .font(.footnote)
                     .offset(
                         x: letter == lastSelectedLabel ? -50 : 0
                     )
@@ -29,7 +28,7 @@ struct SectionIndexTitlesView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .foregroundStyle(tagBgColor)
+                .foregroundStyle(Color.clear)
         )
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .global)
