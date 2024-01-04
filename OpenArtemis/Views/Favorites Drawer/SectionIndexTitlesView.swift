@@ -24,12 +24,15 @@ struct SectionIndexTitlesView: View {
                         x: letter == lastSelectedLabel ? -50 : 0
                     )
                     .background(dragObserver(label: letter))
+                    .contentShape(Rectangle())
+                    .frame(minWidth: 15, alignment: .center)
             }
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .foregroundStyle(Color.clear)
         )
+        .padding(.trailing, -2)
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .global)
                 .updating($dragLocation) { value, state, _ in
