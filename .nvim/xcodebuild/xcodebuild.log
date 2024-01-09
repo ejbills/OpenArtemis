@@ -1,20 +1,38 @@
 Resolving Package Graph
 Resolved source packages
-LazyPager - https://github.com/gh123man/LazyPager @ 1.0.5
-NetworkImage - https://github.com/gonzalezreal/NetworkImage @ 6.0.0
-SKPhotoBrowser - https://github.com/suzuki-0000/SKPhotoBrowser @ 7.1.0
 SwiftHTMLtoMarkdown - https://github.com/ActuallyTaylor/SwiftHTMLToMarkdown @ 1.1.1
-swift-markdown-ui - https://github.com/gonzalezreal/swift-markdown-ui @ 2.2.0
 SwiftSoup - https://github.com/scinfu/SwiftSoup @ 2.6.1
+NetworkImage - https://github.com/gonzalezreal/NetworkImage @ 6.0.0
+LazyPager - https://github.com/gh123man/LazyPager @ 1.0.5
+swift-markdown-ui - https://github.com/gonzalezreal/swift-markdown-ui @ 2.2.0
+SKPhotoBrowser - https://github.com/suzuki-0000/SKPhotoBrowser @ 7.1.0
 CachedImage - https://github.com/leoz/CachedImage @ 0.0.5
+OpenGraph - https://github.com/satoshi-takano/OpenGraph @ 1.5.0
 [!]  --- xcodebuild: Using the first of multiple matching destinations:
 { platform:iOS Simulator, id:FCF997FD-7185-48E8-B4B4-DF12AE17CB85, OS:17.2, name:iPhone 15 Pro }
 { platform:iOS Simulator, id:FCF997FD-7185-48E8-B4B4-DF12AE17CB85, OS:17.2, name:iPhone 15 Pro }
+[!]  /Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Views/Search/SearchView.swift:141:18: result of call to 'onAppear(perform:)' is unused
+                .onAppear {
+                 ^        ~
+[!]  /Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Views/Search/SearchView.swift:145:14: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+            .onChange(of: inputText) { text in
+             ^
+Signing OpenArtemis.app (in target 'OpenArtemis' from project 'OpenArtemis')
 Build Succeeded
 
 -----------------------------
 -- xcodebuild.nvim summary --
 -----------------------------
+
+Warnings:
+   /Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Views/Search/SearchView.swift:141:18
+    result of call to 'onAppear(perform:)' is unused
+                    .onAppear {
+                     ^        ~
+   /Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Views/Search/SearchView.swift:145:14
+    'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+                .onChange(of: inputText) { text in
+                 ^
 
   ✔ Build Succeeded
 

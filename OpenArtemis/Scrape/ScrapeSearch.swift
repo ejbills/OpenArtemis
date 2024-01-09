@@ -9,27 +9,28 @@ import Foundation
 import SwiftSoup
 
 extension RedditScraper {
-    static func search(query: String, searchType: String, sortBy: PostSortOption, topSortBy: TopPostListingSortOption,
+    static func search(query: String, searchType: SearchTypes, sortBy: PostSortOption, topSortBy: TopPostListingSortOption,
                        trackingParamRemover: TrackingParamRemover?, over18: Bool? = false,
-                       completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
+                       completion: @escaping (Result<[MixedMedia], Error>) -> Void)
+    {
         // Construct the URL for the Reddit search based on the query
         var urlComponents = URLComponents(string: "\(baseRedditURL)/search")
         var queryItems = [
             URLQueryItem(name: "q", value: query),
-            URLQueryItem(name: "type", value: searchType)
+            URLQueryItem(name: "type", value: searchType.rawValue),
         ]
 
-        if searchType.isEmpty {
-            // Only include these parameters if searchType is empty (post search)
+        if searchType == .post {
+            // Only include these parameters if searchType is post search
             queryItems.append(URLQueryItem(name: "sort", value: sortBy.rawValue))
             queryItems.append(URLQueryItem(name: "t", value: topSortBy.rawValue))
         }
-        
+
         // Add include_over_18=on if over18 is true
         if over18 == true {
             queryItems.append(URLQueryItem(name: "include_over_18", value: "on"))
         }
-        
+
         urlComponents?.queryItems = queryItems
 
         guard let searchURL = urlComponents?.url else {
@@ -41,7 +42,7 @@ extension RedditScraper {
         var request = URLRequest(url: searchURL)
         request.setValue("text/html", forHTTPHeaderField: "Accept")
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -55,13 +56,13 @@ extension RedditScraper {
             do {
                 let htmlString = String(data: data, encoding: .utf8)!
                 let doc = try SwiftSoup.parse(htmlString)
-                
+
                 var mixedMediaResults: [MixedMedia] = []
 
-                if searchType == "sr" { // subreddit search
+                if searchType == .sub { // subreddit search
                     let subreddits = scrapeSubredditResults(data: doc)
                     mixedMediaResults.append(contentsOf: subreddits.map { MixedMedia.subreddit($0) })
-                } else if searchType.isEmpty { // no filter is a post search
+                } else if searchType == .post { // no filter is a post search
                     let posts = scrapePostResults(data: doc, trackingParamRemover: trackingParamRemover)
                     mixedMediaResults.append(contentsOf: posts.map { MixedMedia.post($0, date: nil) })
                 }
@@ -72,15 +73,15 @@ extension RedditScraper {
             }
         }.resume()
     }
-    
+
     private static func scrapeSubredditResults(data: Document) -> [Subreddit] {
         do {
             // Select all elements with class "search-result-subreddit"
             let subredditElements = try data.select("div.search-result-subreddit")
-            
+
             // Create an array to store the results
             var subreddits: [Subreddit] = []
-            
+
             // Iterate over each subreddit element
             for subredditElement in subredditElements {
                 // Extract the subreddit name from the "search-title" class
@@ -89,13 +90,13 @@ extension RedditScraper {
                 let subreddit = Subreddit(subreddit: subredditName)
                 subreddits.append(subreddit)
             }
-            
+
             return subreddits
         } catch {
             return []
         }
     }
-    
+
     private static func scrapePostResults(data: Document, trackingParamRemover: TrackingParamRemover?) -> [Post] {
         let postElements = try? data.select("div.search-result-link")
 
@@ -103,25 +104,25 @@ extension RedditScraper {
             do {
                 let id = try postElement.attr("data-fullname")
                 let title = try postElement.select("a.search-title.may-blank").text()
-                
+
                 let subreddit = try postElement.select("a.search-subreddit-link.may-blank").text()
                 let cleanedSubredditLink = subreddit.replacingOccurrences(of: "^(r/|/r/)", with: "", options: .regularExpression)
-                
+
                 let tagElement = try postElement.select("span.linkflairlabel").first()
                 let tag = try tagElement?.text() ?? ""
                 let author = try postElement.select("span.search-author a").text()
                 let votes = try postElement.select("span.search-score").text()
                 let time = try postElement.select("span.search-time time").attr("datetime")
-                
+
                 let commentsURL = try postElement.select("a.search-comments.may-blank").attr("href")
                 let commentsCount = try postElement.select("a.search-comments.may-blank").text().split(separator: " ").first.map(String.init) ?? ""
-                
+
                 let footerElement = try postElement.select("div.search-result-footer").first()
                 let mediaURL = try footerElement?.select("a.search-link.may-blank").attr("href") ?? commentsURL // bail to comments link (text post for example - which does not have a media url)
-                
+
                 let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
 
-                var thumbnailURL: String? = nil
+                var thumbnailURL: String?
 
                 if type == "video" || type == "gallery" || type == "article", let thumbnailElement = try? postElement.select("a.thumbnail img").first() {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
@@ -135,5 +136,4 @@ extension RedditScraper {
             }
         } ?? []
     }
-
 }
