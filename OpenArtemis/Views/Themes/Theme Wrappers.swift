@@ -38,7 +38,6 @@ struct ThemedList<Content: View>: View {
                 .listSectionSpacing(2)
             }
         }
-        .listStyle(.plain)
         .scrollIndicators(.hidden)
         .themedBackground(isDarker: true, appTheme: appTheme)
     }

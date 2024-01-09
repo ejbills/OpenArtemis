@@ -66,23 +66,27 @@ struct SubredditDrawerView: View {
                             )
                     }
                     
-                    Section(header: Text("Pinned")) {
-                        ForEach(localFavorites
-                            .filter { $0.pinned }
-                            .sorted { $0.name ?? "" < $1.name ?? "" }
-                        ) { subreddit in
-                            if let subredditName = subreddit.name {
-                                SubredditRowView(
-                                    subredditName: subredditName,
-                                    pinned: subreddit.pinned,
-                                    editMode: editMode,
-                                    removeFromSubredditFavorites: {
-                                        removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                    },
-                                    togglePinned: {
-                                        togglePinned(subredditName: subreddit.name ?? "")
+                    Group {
+                        let pinnedFavs = localFavorites.filter { $0.pinned }
+                        if !pinnedFavs.isEmpty {
+                            Section(header: Text("Pinned")) {
+                                ForEach(pinnedFavs
+                                    .sorted { $0.name ?? "" < $1.name ?? "" }
+                                ) { subreddit in
+                                    if let subredditName = subreddit.name {
+                                        SubredditRowView(
+                                            subredditName: subredditName,
+                                            pinned: subreddit.pinned,
+                                            editMode: editMode,
+                                            removeFromSubredditFavorites: {
+                                                removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            },
+                                            togglePinned: {
+                                                togglePinned(subredditName: subreddit.name ?? "")
+                                            }
+                                        )
                                     }
-                                )
+                                }
                             }
                         }
                     }
