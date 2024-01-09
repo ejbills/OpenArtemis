@@ -10,7 +10,9 @@ import SwiftSoup
 import SwiftHTMLtoMarkdown
 
 extension RedditScraper {
-    static func scrapeProfile(username: String, lastPostAfter: String?, filterType: String?, trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
+    static func scrapeProfile(username: String, lastPostAfter: String?, filterType: String?,
+                              trackingParamRemover: TrackingParamRemover?, over18: Bool? = false,
+                              completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
         // Construct the base URL for the Reddit user's profile
         var urlString = "\(baseRedditURL)/user/\(username)"
 
@@ -43,13 +45,13 @@ extension RedditScraper {
 
             do {
                 // Check if the URL has been redirected to an over18 page
-                if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest=") {
+                if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest="), over18 ?? false {
                     // If redirected, send a POST request to the over18 endpoint
                     sendOver18Request(url: redirectURL, completion: { result in
                         switch result {
                         case .success:
                             // If the POST request is successful, reload the original URL
-                            scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, completion: completion)
+                            scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, over18: over18, completion: completion)
                         case .failure(let error):
                             completion(.failure(error))
                         }

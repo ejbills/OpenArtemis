@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftSoup
+import OpenGraph
 
 enum MediaUtils {
     static func galleryMediaExtractor(galleryURL: URL, completion: @escaping ([String]?) -> Void) {
@@ -69,5 +70,32 @@ enum MediaUtils {
         }
 
         task.resume()
+    }
+    
+    static func fetchImageURL(urlString: String, completion: @escaping (String?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+        
+        Task(priority: .background) {
+            var headers = [String: String]()
+            headers["User-Agent"] = "facebookexternalhit/1.1"
+            headers["charset"] = "UTF-8"
+            
+            OpenGraph.fetch(url: url, headers: headers) { result in
+                switch result {
+                case .success(let og):
+                    if let imageURL = og[.image] {
+                        completion(imageURL)
+                    } else {
+                        completion(nil)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(nil)
+                }
+            }
+        }
     }
 }

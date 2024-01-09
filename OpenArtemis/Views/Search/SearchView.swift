@@ -23,11 +23,24 @@ struct SearchView: View {
     
     @State private var searchType: String = "sr"
     @State private var searchResults: [MixedMedia] = []
+    @State private var mixedMediaIDs = LimitedSet<String>(maxLength: 300)
     @State private var isLoading: Bool = false
-
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
-
+    
+    @State private var selectedSortOption: PostSortOption = .relevance
+    @State private var selectedTopOption: TopPostListingSortOption = .all
+    
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+    
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
+    
+    let appTheme: AppThemeSettings
+    
     var body: some View {
         VStack{
             List {
@@ -161,6 +174,8 @@ struct SearchView: View {
                         // Move to the next word
                         currentIndex = getIndexAfter(taggedText, taggedText[index])
                     }
+                } else {
+                    LoadingView(loadingText: "Loading search...", isLoading: true)
                 }
             }
 
@@ -227,14 +242,13 @@ struct SearchView: View {
         }
         return false
     }
-
+    
     private func performSearch() {
+        clearFeed()
         isLoading = true
-
-        RedditScraper.search(query: searchText, searchType: searchType,
-                             trackingParamRemover: trackingParamRemover,
-                             over18: over18)
-        { result in
+        
+        RedditScraper.search(query: inputText, searchType: searchType, sortBy: selectedSortOption, topSortBy: selectedTopOption,
+                             trackingParamRemover: trackingParamRemover, over18: over18) { result in
             defer {
                 isLoading = false
             }
@@ -251,7 +265,59 @@ struct SearchView: View {
     }
 
     private func clearFeed() {
-        searchResults.removeAll()
-        isLoading = false
+        withAnimation(.smooth) {
+            searchResults.removeAll()
+            mixedMediaIDs.removeAll()
+            isLoading = false
+        }
+    }
+    
+    // MARK: Determining what should be visible - helper methods
+    private func shouldApplyStripStyling(_ subredditSearch: Bool) -> Bool {
+        return ((!subredditSearch && !searchResults.isEmpty) || (!inputText.isEmpty && !subredditSearch)) && !isLoading
+    }
+
+    private func shouldShowFilterView(_ subredditSearch: Bool) -> Bool {
+        return !subredditSearch && (!inputText.isEmpty || !searchResults.isEmpty)
+    }
+
+    private func shouldShowSortingHints(_ subredditSearch: Bool) -> Bool {
+        return searchResults.isEmpty && (inputText.isEmpty || subredditSearch)
+    }
+}
+
+struct FilterView: View {
+    @Binding var selectedSortOption: PostSortOption
+    @Binding var selectedTopOption: TopPostListingSortOption
+    var performSearch: () -> Void
+    
+    var body: some View {
+        HStack {
+            Picker("Sort By", selection: $selectedSortOption) {
+                ForEach(PostSortOption.allCases) { option in
+                    Text(option.rawValue.capitalized)
+                        .tag(option)
+                }
+            }
+            .padding(.horizontal, 4)
+            .onChange(of: selectedSortOption) { _, _ in
+                performSearch()
+            }
+            
+            Picker("Time", selection: $selectedTopOption) {
+                ForEach(TopPostListingSortOption.allCases) { option in
+                    Text(option.rawValue.capitalized)
+                        .tag(option)
+                }
+            }
+            .padding(.horizontal, 4)
+            .onChange(of: selectedTopOption) { _, _ in
+                performSearch()
+            }
+            
+            Spacer()
+        }
+        
+        Divider()
     }
 }

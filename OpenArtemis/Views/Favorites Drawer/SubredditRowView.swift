@@ -10,8 +10,11 @@ import CoreData
 
 struct SubredditRowView: View {
     var subredditName: String
+    var pinned: Bool = false
     var editMode: Bool = false
     var removeFromSubredditFavorites: (() -> Void)? = nil
+    var togglePinned: (() -> Void)? = nil
+    var skipSaved: Bool = false
     
     var body: some View {
         HStack {
@@ -32,13 +35,34 @@ struct SubredditRowView: View {
             VStack(alignment: .leading) {
                 Text(subredditName)
             }
+            
+            if !skipSaved {
+                Spacer()
+                Group {
+                    if pinned {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(Color.artemisAccent)
+                            .font(.system(size: 20))
+                    } else {
+                        Image(systemName: "star")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 20))
+                    }
+                }
+                .onTapGesture {
+                    if let togglePinned {
+                        togglePinned()
+                        HapticManager.shared.confirmationInfo()
+                    }
+                }
+            }
         }
         .background(
             NavigationLink(value: SubredditFeedResponse(subredditName: subredditName)) {
                 EmptyView()
             }
-            .opacity(0)
-            .disabled(editMode)
+                .opacity(0)
+                .disabled(editMode)
         )
         .contextMenu {
             if let removeFromFavorites = removeFromSubredditFavorites {

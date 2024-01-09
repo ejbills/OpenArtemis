@@ -19,9 +19,11 @@ class SubredditUtils: ObservableObject {
     private init() {}
 
     func saveToSubredditFavorites(managedObjectContext: NSManagedObjectContext, name: String) {
-        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "^r/", with: "", options: .regularExpression)
+        let cleanedName = cleanName(name)
+
+        guard !subredditAlreadySaved(managedObjectContext: managedObjectContext, subredditName: cleanedName) else {
+            return
+        }
 
         let tempSubreddit = LocalSubreddit(context: managedObjectContext)
         tempSubreddit.name = cleanedName
@@ -31,12 +33,20 @@ class SubredditUtils: ObservableObject {
         }
     }
 
+    func togglePinned(managedObjectContext: NSManagedObjectContext, subredditName: String) {
+        let matchingSubreddits = localFavorites(managedObjectContext: managedObjectContext).filter { $0.name == subredditName }
+
+        matchingSubreddits.forEach { $0.pinned.toggle() }
+
+        withAnimation(.smooth) {
+            PersistenceController.shared.save()
+        }
+    }
+
     func removeFromSubredditFavorites(managedObjectContext: NSManagedObjectContext, subredditName: String) {
         let matchingSubreddits = localFavorites(managedObjectContext: managedObjectContext).filter { $0.name == subredditName }
 
-        for subreddit in matchingSubreddits {
-            managedObjectContext.delete(subreddit)
-        }
+        matchingSubreddits.forEach { managedObjectContext.delete($0) }
 
         withAnimation(.smooth) {
             PersistenceController.shared.save()
@@ -50,6 +60,17 @@ class SubredditUtils: ObservableObject {
             return []
         }
     }
+
+    private func subredditAlreadySaved(managedObjectContext: NSManagedObjectContext, subredditName: String) -> Bool {
+        let existingSubreddits = localFavorites(managedObjectContext: managedObjectContext)
+        return existingSubreddits.contains { $0.name == subredditName }
+    }
+
+    private func cleanName(_ name: String) -> String {
+        return name.trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "^r/", with: "", options: .regularExpression)
+    }
 }
 
 struct SubListingSort: Codable, Identifiable {
@@ -60,7 +81,7 @@ struct SubListingSort: Codable, Identifiable {
     }
 }
 
-enum SubListingSortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
+enum SortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
     var id: String {
         self.rawVal.id
     }
@@ -107,8 +128,8 @@ enum SubListingSortOption: Codable, Identifiable, Defaults.Serializable, Hashabl
     }
 }
 
-extension SubListingSortOption: CaseIterable {
-    static var allCases: [SubListingSortOption] {
+extension SortOption: CaseIterable {
+    static var allCases: [SortOption] {
         return [.best, .hot, .new, .controversial, .top(.all)]
     }
 }

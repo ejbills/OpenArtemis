@@ -12,23 +12,23 @@ import CachedImage
 
 struct EmbeddedMultiMediaView: View {
     @EnvironmentObject var coordinator: NavCoordinator
-    @Default(.showOriginalURL) private var showOriginalURL
     
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
     let appTheme: AppThemeSettings
+    
     @State private var isLoading: Bool = false
-
+    
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
             let mediaHeight = appTheme.compactMode ? roughCompactHeight : 50
             let mediaWidth = appTheme.compactMode ? roughCompactWidth : 50
-            let mediaIcon = determinedType == "video" ? "play.square.fill" : (determinedType == "gallery" ? "photo.on.rectangle" : "safari")
-            
-            if let thumbnailURL = thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
+            let mediaIcon = getMediaIcon(type: determinedType)
+
+            if let thumbnailURL, let formattedThumbnailURL = URL(string: thumbnailURL) {
                 CachedImage(
                     url: formattedThumbnailURL,
                     content: { image in
@@ -50,17 +50,20 @@ struct EmbeddedMultiMediaView: View {
                     Image(systemName: mediaIcon)
                         .resizable()
                         .frame(width: 30, height: 30)
-                        .foregroundColor(Color.white.opacity(0.75))
-                        .padding(4)
+                        .foregroundStyle(Color.white.opacity(0.75))
                 }
             } else {
-                Image(systemName: "link")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: mediaWidth, height: mediaHeight)
-                    .foregroundColor(.blue)
+                RoundedRectangle(cornerRadius: 6)
+                   .foregroundColor(.clear)
+                   .frame(width: mediaWidth, height: mediaHeight)
+                   .overlay(
+                       Image(systemName: mediaIcon)
+                           .resizable()
+                           .frame(width: 30, height: 30)
+                           .foregroundStyle(Color.white.opacity(0.75))
+                   )
             }
-
+            
             if !appTheme.compactMode {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Open \(determinedType) media")
@@ -69,7 +72,7 @@ struct EmbeddedMultiMediaView: View {
                         .lineLimit(1)
                         .foregroundColor(.primary)
                     
-                    Text(showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
+                    Text(appTheme.showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
                         .font(.callout)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
@@ -119,4 +122,18 @@ struct EmbeddedMultiMediaView: View {
         }
         .loadingOverlay(isLoading: isLoading)
     }
+    
+    private func getMediaIcon(type: String) -> String {
+        switch type {
+        case "gallery":
+            return "photo.on.rectangle"
+        case "video", "gif":
+            return "play.square.fill"
+        case "article":
+            return "safari"
+        default:
+            return "link"
+        }
+    }
+
 }

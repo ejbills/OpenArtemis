@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "opengraph",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/satoshi-takano/OpenGraph",
+      "state" : {
+        "revision" : "3ef2b8b9b4972b57e9e78c91c26be770c0110057",
+        "version" : "1.5.0"
+      }
+    },
+    {
       "identity" : "skphotobrowser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/suzuki-0000/SKPhotoBrowser",

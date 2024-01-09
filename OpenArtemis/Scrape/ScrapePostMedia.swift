@@ -29,11 +29,31 @@ extension RedditScraper {
         return body
     }
 
-    static func scrapeComments(commentURL: String,trackingParamRemover: TrackingParamRemover, completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
-        let url = URL(string: commentURL)!
+    static func scrapeComments(commentURL: String, sort: SortOption? = nil, trackingParamRemover: TrackingParamRemover,
+                               completion: @escaping (Result<(comments: [Comment], postBody: String?), Error>) -> Void) {
+        var urlComponents = URLComponents(string: commentURL)
+        var queryItems = [URLQueryItem]()
+
+        if let sort = sort {
+            queryItems.append(URLQueryItem(name: "sort", value: sort.rawVal.value))
+        }
+
+        // Append the existing query items
+        if let existingQueryItems = urlComponents?.queryItems {
+            queryItems.append(contentsOf: existingQueryItems)
+        }
+
+        // Set the updated query items to the URL components
+        urlComponents?.queryItems = queryItems
+
+        guard let url = urlComponents?.url else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
         var request = URLRequest(url: url)
         request.setValue("text/html", forHTTPHeaderField: "Accept")
-
+        
         let group = DispatchGroup()
         var commentsResult: Result<[Comment], Error>?
         var postBodyResult: Result<String?, Error>?
@@ -189,7 +209,7 @@ func redditLinksToInternalLinks(_ element: Element) throws -> String {
                 try link.attr("href", "openartemis://\(originalHref)")
             } else {
                 let trimmedHref = originalHref.privacyURL().privateURL.replacingOccurrences(of: "^(https?://)", with: "", options: .regularExpression)
-                if !Defaults[.showOriginalURL] {
+                if !Defaults[.appTheme].showOriginalURL {
                     try link.text(originalHref.replacingOccurrences(of: "https:\\/\\/[a-zA-Z-0-9.\\/?=_\\-\\:]*", with: originalHref.privacyURL().privateURL, options: .regularExpression))
                 }
                 try link.attr("href", "openartemis://\(trimmedHref)")

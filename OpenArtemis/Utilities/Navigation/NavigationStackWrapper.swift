@@ -45,6 +45,36 @@ struct NavigationStackWrapper<Content: View>: View {
     }
 }
 
+struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
+    @StateObject private var tabCoordinator: NavCoordinator
+    var sidebar: () -> Sidebar
+    var detail: () -> Content
+    
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    
+    init(tabCoordinator: NavCoordinator, @ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Content) {
+        self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
+        self.sidebar = sidebar
+        self.detail = detail
+    }
+    
+    var body: some View {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            sidebar()
+                .handleDeepLinkViews()
+            
+        } content: {
+            detail()
+        } detail: {
+            NavigationStack(path: $tabCoordinator.path) {
+                detail()
+                    .handleDeepLinkViews()
+            }
+        }
+        .handleDeepLinkResolution()
+        .environmentObject(tabCoordinator)
+    }
+}
 
 fileprivate struct PopNotificationID: EnvironmentKey {
     static var defaultValue: String?

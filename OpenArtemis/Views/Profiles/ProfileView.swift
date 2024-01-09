@@ -6,18 +6,32 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct ProfileView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
+    @Default(.over18) var over18
     
     let username: String
     let appTheme: AppThemeSettings
     
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
-    @FetchRequest(sortDescriptors: []) var savedComments: FetchedResults<SavedComment>
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+    
+    @FetchRequest(
+        entity: SavedComment.entity(),
+        sortDescriptors: []
+    ) var savedComments: FetchedResults<SavedComment>
+    
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
 
     @State private var mixedMedia: [MixedMedia] = []
-    @State private var mediaIDs: Set<String> = Set()
+    @State private var mediaIDs = LimitedSet<String>(maxLength: 300)
     @State private var isLoading: Bool = true
     
     @State private var lastPostAfter: String = ""
@@ -26,13 +40,20 @@ struct ProfileView: View {
     var body: some View {
         ThemedList(appTheme: appTheme, stripStyling: true) {
             if !mixedMedia.isEmpty {
-                ForEach(mixedMedia, id: \.self) { media in
-                    MixedContentView(content: media, savedPosts: savedPosts, savedComments: savedComments, appTheme: appTheme, bypassFetchSavedStatus: true)
-                        .onAppear {
-                            handleMediaAppearance(extractMediaId(from: media))
-                        }
-                    DividerView(frameHeight: 10, appTheme: appTheme)
-                }
+                ContentListView(
+                    content: $mixedMedia,
+                    readPosts: readPosts,
+                    savedPosts: savedPosts,
+                    savedComments: savedComments,
+                    appTheme: appTheme
+                )
+                
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 1)
+                    .onAppear {
+                        scrapeProfile(lastPostAfter, sort: filterType)
+                    }
                 
                 if isLoading { // show spinner at the bottom of the feed
                     HStack {
@@ -72,12 +93,12 @@ struct ProfileView: View {
     private func scrapeProfile(_ lastPostAfter: String? = nil, sort: String? = nil) {
         isLoading = true
         
-        RedditScraper.scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover) { result in
+        RedditScraper.scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, over18: over18) { result in
             switch result {
             case .success(let media):
                 // Filter out duplicates based on media ID
                 let uniqueMedia = media.filter { mediaID in
-                    let id = extractMediaId(from: mediaID)
+                    let id = MiscUtils.extractMediaId(from: mediaID)
                     if !mediaIDs.contains(id) {
                         mediaIDs.insert(id)
                         return true
@@ -88,7 +109,7 @@ struct ProfileView: View {
                 mixedMedia.append(contentsOf: uniqueMedia)
                 
                 if let lastLink = uniqueMedia.last {
-                    self.lastPostAfter = extractMediaId(from: lastLink)
+                    self.lastPostAfter = MiscUtils.extractMediaId(from: lastLink)
                 }
             case .failure(let err):
                 print("Error: \(err)")
@@ -100,39 +121,11 @@ struct ProfileView: View {
     private func clearFeedAndReload() {
         withAnimation(.smooth) {
             mixedMedia.removeAll()
-//            postIDs.removeAll()
+            mediaIDs.removeAll()
             lastPostAfter = ""
             isLoading = false
         }
         
         scrapeProfile()
-    }
-    
-    private func handleMediaAppearance(_ mediaId: String) {
-        guard mixedMedia.count > 0 else {
-            return
-        }
-
-        let index = Int(Double(mixedMedia.count) * 0.85)
-        guard index < mixedMedia.count else {
-            return
-        }
-
-        let tempMediaId = extractMediaId(from: mixedMedia[index])
-
-        if mediaId == tempMediaId {
-            scrapeProfile(lastPostAfter, sort: filterType)
-        }
-    }
-                        
-    private func extractMediaId(from media: MixedMedia) -> String {
-        switch media {
-        case .post(let post, _):
-            return post.id
-        case .comment(let comment, _):
-            return comment.id
-        default:
-            return ""
-        }
     }
 }

@@ -9,14 +9,21 @@ import Foundation
 import SwiftSoup
 
 extension RedditScraper {
-    static func search(query: String, searchType: String, trackingParamRemover: TrackingParamRemover?,
-                       over18: Bool? = false, completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
+    static func search(query: String, searchType: String, sortBy: PostSortOption, topSortBy: TopPostListingSortOption,
+                       trackingParamRemover: TrackingParamRemover?, over18: Bool? = false,
+                       completion: @escaping (Result<[MixedMedia], Error>) -> Void) {
         // Construct the URL for the Reddit search based on the query
         var urlComponents = URLComponents(string: "\(baseRedditURL)/search")
         var queryItems = [
             URLQueryItem(name: "q", value: query),
-            URLQueryItem(name: "type", value: searchType),
+            URLQueryItem(name: "type", value: searchType)
         ]
+
+        if searchType.isEmpty {
+            // Only include these parameters if searchType is empty (post search)
+            queryItems.append(URLQueryItem(name: "sort", value: sortBy.rawValue))
+            queryItems.append(URLQueryItem(name: "t", value: topSortBy.rawValue))
+        }
         
         // Add include_over_18=on if over18 is true
         if over18 == true {
@@ -96,7 +103,10 @@ extension RedditScraper {
             do {
                 let id = try postElement.attr("data-fullname")
                 let title = try postElement.select("a.search-title.may-blank").text()
+                
                 let subreddit = try postElement.select("a.search-subreddit-link.may-blank").text()
+                let cleanedSubredditLink = subreddit.replacingOccurrences(of: "^(r/|/r/)", with: "", options: .regularExpression)
+                
                 let tagElement = try postElement.select("span.linkflairlabel").first()
                 let tag = try tagElement?.text() ?? ""
                 let author = try postElement.select("span.search-author a").text()
@@ -117,7 +127,7 @@ extension RedditScraper {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
 
-                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
+                return Post(id: id, subreddit: cleanedSubredditLink, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")

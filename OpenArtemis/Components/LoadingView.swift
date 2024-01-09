@@ -10,12 +10,11 @@ import SwiftUI
 struct LoadingView: View {
     let loadingText: String
     let isLoading: Bool
-    @State private var moveRightLeft = false
     var body: some View {
         HStack {
             Spacer()
             if isLoading {
-                ProgressView().id(UUID()).padding(.horizontal, 2)
+                ProgressView().padding(.horizontal, 2)
                 Text(loadingText)
             } else {
                 Text("Nothing here...")
@@ -26,5 +25,6 @@ struct LoadingView: View {
         .font(.subheadline)
         .italic()
         .foregroundStyle(.secondary)
+        .id(UUID())
     }
 }

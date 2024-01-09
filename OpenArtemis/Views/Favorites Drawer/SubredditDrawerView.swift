@@ -38,7 +38,7 @@ struct SubredditDrawerView: View {
                                     .opacity(0)
                             )
                             .disabledView(disabled: localFavorites.isEmpty)
-                            
+                        
                         
                         DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
                             .background(
@@ -46,7 +46,7 @@ struct SubredditDrawerView: View {
                                 NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
                                     EmptyView()
                                 }
-                                .opacity(0)
+                                    .opacity(0)
                             )
                         
                         DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
@@ -54,7 +54,7 @@ struct SubredditDrawerView: View {
                                 NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
                                     EmptyView()
                                 }
-                                .opacity(0)
+                                    .opacity(0)
                             )
                         
                         DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
@@ -62,8 +62,33 @@ struct SubredditDrawerView: View {
                                 NavigationLink(value: SubredditFeedResponse(subredditName: "Saved")) {
                                     EmptyView()
                                 }
-                                .opacity(0)
+                                    .opacity(0)
                             )
+                    }
+                    
+                    Group {
+                        let pinnedFavs = localFavorites.filter { $0.pinned }
+                        if !pinnedFavs.isEmpty {
+                            Section(header: Text("Pinned")) {
+                                ForEach(pinnedFavs
+                                    .sorted { $0.name ?? "" < $1.name ?? "" }
+                                ) { subreddit in
+                                    if let subredditName = subreddit.name {
+                                        SubredditRowView(
+                                            subredditName: subredditName,
+                                            pinned: subreddit.pinned,
+                                            editMode: editMode,
+                                            removeFromSubredditFavorites: {
+                                                removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            },
+                                            togglePinned: {
+                                                togglePinned(subredditName: subreddit.name ?? "")
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                     
                     ForEach(availableIndexArr, id: \.self) { letter in
@@ -73,7 +98,7 @@ struct SubredditDrawerView: View {
                                     if let subName = subreddit.name {
                                         let firstCharacter = subName.first
                                         let startsWithNumber = firstCharacter?.isNumber ?? false
-                                        return (startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)
+                                        return ((startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)) && !subreddit.pinned
                                     }
                                     
                                     return false
@@ -82,10 +107,13 @@ struct SubredditDrawerView: View {
                                 if let subredditName = subreddit.name {
                                     SubredditRowView(
                                         subredditName: subredditName,
+                                        pinned: subreddit.pinned,
                                         editMode: editMode,
                                         removeFromSubredditFavorites: {
                                             removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                            visibleSubredditSections()
+                                        },
+                                        togglePinned: {
+                                            togglePinned(subredditName: subreddit.name ?? "")
                                         }
                                     )
                                 }
@@ -156,20 +184,20 @@ struct SubredditDrawerView: View {
     }
     
     private func visibleSubredditSections() {
-        let localFavorites = localFavorites.compactMap { $0.name }
-        let lowercaseLocalFavorites = localFavorites.map { $0.lowercased() }
-                
+        let unpinnedFavorites = localFavorites.filter { !$0.pinned }
+        let unpinnedNames = unpinnedFavorites.compactMap { $0.name }
+        let lowercaseUnpinnedNames = unpinnedNames.map { $0.lowercased() }
+        
         availableIndexArr = drawerChars.filter { letter in
             if letter == "#" {
-                return lowercaseLocalFavorites.contains { name in
+                return lowercaseUnpinnedNames.contains { name in
                     if let firstCharacter = name.first {
                         return firstCharacter.isNumber
                     }
-                    
                     return false
                 }
             } else {
-                return lowercaseLocalFavorites.contains { name in
+                return lowercaseUnpinnedNames.contains { name in
                     let firstLetter = name.prefix(1)
                     return firstLetter.lowercased() == letter.lowercased()
                 }
@@ -181,6 +209,14 @@ struct SubredditDrawerView: View {
     private func removeFromSubredditFavorites(subredditName: String) {
         withAnimation {
             SubredditUtils.shared.removeFromSubredditFavorites(managedObjectContext: managedObjectContext, subredditName: subredditName)
+        }
+        
+        visibleSubredditSections()
+    }
+    
+    private func togglePinned(subredditName: String) {
+        withAnimation {
+            SubredditUtils.shared.togglePinned(managedObjectContext: managedObjectContext, subredditName: subredditName)
         }
         
         visibleSubredditSections()

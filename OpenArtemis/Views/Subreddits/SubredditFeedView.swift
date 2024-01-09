@@ -10,6 +10,7 @@ import Defaults
 
 struct SubredditFeedView: View {
     // MARK: - Properties
+    @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
@@ -19,32 +20,62 @@ struct SubredditFeedView: View {
     let appTheme: AppThemeSettings
     
     @State private var posts: [Post] = []
-    @State private var postIDs: Set<String> = Set()
+    @State private var postIDs = LimitedSet<String>(maxLength: 300)
     @State private var lastPostAfter: String = ""
-    @State private var sortOption: SubListingSortOption = .best
+    @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
-    @FetchRequest(sortDescriptors: []) var savedPosts: FetchedResults<SavedPost>
+    @State private var searchTerm: String = ""
+    @State private var searchResults: [MixedMedia] = []
+    @State private var mixedMediaIDs = LimitedSet<String>(maxLength: 300)
+    @State private var selectedSearchSortOption: PostSortOption = .relevance
+    @State private var selectedSearchTopOption: TopPostListingSortOption = .all
+    
+    @FetchRequest(
+        entity: SavedPost.entity(),
+        sortDescriptors: []
+    ) var savedPosts: FetchedResults<SavedPost>
+    
+    @FetchRequest(
+        entity: ReadPost.entity(),
+        sortDescriptors: []
+    ) var readPosts: FetchedResults<ReadPost>
+    
     
     // MARK: - Body
     var body: some View {
         Group {
             ThemedList(appTheme: appTheme, stripStyling: true) {
-                if !posts.isEmpty {
+                if !posts.isEmpty && searchTerm.isEmpty {
                     ForEach(posts, id: \.id) { post in
-                        PostFeedView(post: post, appTheme: appTheme)
-                            .id(post.id)
+                        var isRead: Bool {
+                            readPosts.contains(where: { $0.readPostId == post.id })
+                        }
+                        var isSaved: Bool {
+                            savedPosts.contains { $0.id == post.id }
+                        }
+                        
+                        PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+                            .savedIndicator(isSaved)
                             .contentShape(Rectangle())
-                            .onAppear {
-                                handlePostAppearance(post.id)
-                            }
                             .onTapGesture {
                                 coordinator.path.append(PostResponse(post: post))
+                                
+                                if !isRead {
+                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                }
                             }
                         
                         DividerView(frameHeight: 10, appTheme: appTheme)
                     }
-                        
+                    
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 1)
+                        .onAppear {
+                            scrapeSubreddit(lastPostAfter)
+                        }
+                    
                     if isLoading { // show spinner at the bottom of the feed
                         HStack {
                             Spacer()
@@ -54,12 +85,16 @@ struct SubredditFeedView: View {
                             Spacer()
                         }
                     }
+                } else if (!searchResults.isEmpty || !searchTerm.isEmpty) && !isLoading {
+                    FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
+                        clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
+                    }
+                    ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme)
                 } else {
                     LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
                 }
             }
         }
-        .id("\(subredditName)-feed-view")
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -73,6 +108,15 @@ struct SubredditFeedView: View {
         .refreshable {
             clearFeedAndReload()
         }
+        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui 
+                                               // reuses the initial view from the sidebar selection.
+            clearFeedAndReload()
+        }
+        .searchable(text: $searchTerm, prompt: "Search r/\((titleOverride != nil) ? titleOverride! : subredditName)")
+        .onSubmit(of: .search) {
+            clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
+        }
+        .onChange(of: searchTerm) { val, _ in if searchTerm.isEmpty { clearFeedAndReload() }}
     }
     
     // MARK: - Private Methods
@@ -84,13 +128,13 @@ struct SubredditFeedView: View {
             }
         }
     }
-
+    
     private func buildSortingMenu() -> some View {
         Menu(content: {
-            ForEach(SubListingSortOption.allCases) { opt in
+            ForEach(SortOption.allCases) { opt in
                 if case .top(_) = opt {
                     Menu {
-                        ForEach(SubListingSortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
+                        ForEach(SortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
                             Button {
                                 sortOption = .top(topOpt)
                                 clearFeedAndReload()
@@ -129,44 +173,66 @@ struct SubredditFeedView: View {
                 .foregroundColor(Color.artemisAccent)
         })
     }
-
-    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SubListingSortOption? = nil) {
-        self.isLoading = true
-
-        RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
-                                      trackingParamRemover: trackingParamRemover, over18: over18) { result in
-            handleScrapeResult(result)
-        }
-    }
     
-    private func handleScrapeResult(_ result: Result<[Post], Error>) {
-        switch result {
-        case .success(let newPosts):
-            for post in newPosts {
-                if !postIDs.contains(post.id) {
-                    posts.append(post)
-                    postIDs.insert(post.id)
+    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
+        self.isLoading = true
+        
+        if searchTerm.isEmpty {
+            RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
+                                          trackingParamRemover: trackingParamRemover, over18: over18) { result in
+                defer {
+                    isLoading = false
+                }
+                
+                switch result {
+                case .success(let newPosts):
+                    for post in newPosts {
+                        if !postIDs.contains(post.id) {
+                            posts.append(post)
+                            postIDs.insert(post.id)
+                        }
+                    }
+                    
+                    if let lastPost = newPosts.last {
+                        self.lastPostAfter = lastPost.id
+                    }
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
                 }
             }
-
-            if let lastPost = newPosts.last {
-                lastPostAfter = lastPost.id
+        } else {
+            RedditScraper.search(query: searchTerm, searchType: "", sortBy: selectedSearchSortOption, topSortBy: selectedSearchTopOption,
+                                 trackingParamRemover: trackingParamRemover, over18: over18) { result in
+                defer {
+                    isLoading = false
+                }
+                
+                switch result {
+                case .success(let newMedia):
+                    for media in newMedia {
+                        let mediaID = MiscUtils.extractMediaId(from: media)
+                        if !mixedMediaIDs.contains(mediaID) {
+                            searchResults.append(media)
+                            mixedMediaIDs.insert(mediaID)
+                        }
+                    }
+                case .failure(let error):
+                    print("Search error: \(error)")
+                }
             }
-        case .failure(let error):
-            print("Error: \(error.localizedDescription)")
         }
-
-        isLoading = false
     }
     
-    private func clearFeedAndReload() {
+    private func clearFeedAndReload(withSearchTerm: String = "") {
         withAnimation(.smooth) {
             posts.removeAll()
             postIDs.removeAll()
+            searchResults.removeAll()
+            mixedMediaIDs.removeAll()
             lastPostAfter = ""
             isLoading = false
         }
         
-        scrapeSubreddit(sort: sortOption)
+        scrapeSubreddit(sort: sortOption, searchTerm: withSearchTerm)
     }
 }

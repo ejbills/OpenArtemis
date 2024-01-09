@@ -64,13 +64,10 @@ struct MediaView: View {
                 
             case "text":
                 if appTheme.compactMode {
-                    RoundedRectangle(cornerRadius: 6)
-                        .overlay(
-                            Image(systemName: "line.horizontal.3")
-                                .padding()
-                                .font(.largeTitle)
-                        )
-                        .foregroundColor(tagBgColor)
+                    Image(systemName: "line.horizontal.3")
+                        .padding()
+                        .font(.largeTitle)
+                        .foregroundStyle(Color.white.opacity(0.75))
                 }
                 // else, literally do nothing so it takes up no space :D
             default:

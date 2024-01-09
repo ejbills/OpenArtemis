@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 class RedditScraper {
-    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SubListingSortOption? = nil,
+    static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SortOption? = nil,
                                 trackingParamRemover: TrackingParamRemover?,
                                 over18: Bool? = false,
                                 completion: @escaping (Result<[Post], Error>) -> Void) {
@@ -17,7 +17,7 @@ class RedditScraper {
         // Construct the URL for the Reddit website based on the subreddit
         var urlComponents = URLComponents(string: "\(baseRedditURL)/r/\(subreddit)")
         var queryItems = [URLQueryItem]()
-
+        
         // Add sort path component
         if let sort = sort {
             switch sort {
@@ -28,32 +28,32 @@ class RedditScraper {
                 queryItems.append(URLQueryItem(name: "t", value: topOption.rawValue))
             }
         }
-
+        
         // Add remaining parameters to the URL
         queryItems.append(URLQueryItem(name: "count", value: basePostCount))
         if let lastPostAfter = lastPostAfter {
             queryItems.append(URLQueryItem(name: "after", value: lastPostAfter))
         }
-
+        
         urlComponents?.queryItems = queryItems
-
+        
         guard let redditURL = urlComponents?.url else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-
+        
         // Create a URLSession and make a data task to fetch the HTML content
         URLSession.shared.dataTask(with: redditURL) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
+            
             guard let data = data else {
                 completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
                 return
             }
-
+            
             do {
                 // Check if the URL has been redirected to an over18 page
                 if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest="), over18 ?? false {
@@ -77,12 +77,12 @@ class RedditScraper {
             }
         }.resume()
     }
-
+    
     static func sendOver18Request(url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = "over18=yes".data(using: .utf8)
-
+        
         URLSession.shared.dataTask(with: request) { _, _, error in
             if let error = error {
                 completion(.failure(error))
@@ -91,7 +91,7 @@ class RedditScraper {
             }
         }.resume()
     }
-
+    
     
     static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let htmlString = String(data: data, encoding: .utf8)!

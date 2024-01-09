@@ -23,40 +23,12 @@ struct OpenArtemisApp: App {
     @Default(.showingOOBE) var showingOOBE
     var body: some Scene {
         WindowGroup {
-            TabView {
-                NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SubredditDrawerView(appTheme: appTheme)                        
+            ContentView(appTheme: appTheme)
+                .accentColor(Color.artemisAccent)
+                .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
+                .sheet(isPresented: $showingOOBE){
+                    OnboardingView(appTheme: appTheme)
                 }
-                .tabItem {
-                    Label("Feed", systemImage: "doc.richtext")
-                }
-                
-                NavigationStackWrapper(tabCoordinator: NavCoordinator()) {
-                    SearchView()
-                }
-                .tabItem {
-                    Label("Search", systemImage: "text.magnifyingglass")
-                }
-                
-                NavigationStackWrapper(tabCoordinator: NavCoordinator()){
-                    PrivacyTab(appTheme: appTheme)
-                }
-                .tabItem {
-                    Label("Privacy", systemImage: "shield.lefthalf.filled")
-                }
-                
-                NavigationStackWrapper(tabCoordinator: NavCoordinator(), content: {
-                    SettingsView()
-                })
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-            }
-            .accentColor(Color.artemisAccent)
-            .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
-            .sheet(isPresented: $showingOOBE){
-                OnboardingView(appTheme: appTheme)
-            }
         }
         .environment(\.managedObjectContext, persistenceController.container.viewContext)
         .environment(trackingParamRemover)
@@ -65,4 +37,58 @@ struct OpenArtemisApp: App {
             persistenceController.save()
         }
     }
+}
+
+struct ContentView: View {
+    var appTheme = AppThemeSettings()
+    
+    var body: some View {
+        TabView {
+            // Feed Tab
+            getNavigationView {
+                SubredditDrawerView(appTheme: appTheme)
+            }
+            .tabItem {
+                Label("Feed", systemImage: "doc.richtext")
+            }
+            
+            // Search Tab
+            getNavigationView {
+                SearchView(appTheme: appTheme)
+            }
+            .tabItem {
+                Label("Search", systemImage: "text.magnifyingglass")
+            }
+            
+            // Privacy Tab
+            getNavigationView(forceNonSplitStack: true) {
+                PrivacyTab(appTheme: appTheme)
+            }
+            .tabItem {
+                Label("Privacy", systemImage: "shield.lefthalf.filled")
+            }
+            
+            // Settings Tab
+            getNavigationView(forceNonSplitStack: true) {
+                SettingsView()
+            }
+            .tabItem {
+                Label("Settings", systemImage: "gear")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func getNavigationView<Content: View>(forceNonSplitStack: Bool = false, @ViewBuilder content: @escaping () -> Content) -> some View {
+        let nav = NavCoordinator()
+        
+        if UIDevice.current.userInterfaceIdiom == .phone || forceNonSplitStack {
+            NavigationStackWrapper(tabCoordinator: nav, content: content)
+        } else {
+            NavigationSplitViewWrapper(tabCoordinator: nav, sidebar: content) {
+                NothingHereView()
+            }
+        }
+    }
+    
 }

@@ -20,10 +20,10 @@ extension Defaults.Keys {
     static let showOriginalURL = Key<Bool>("showOriginalURl", default: false)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
     static let over18 = Key<Bool>("over18", default: false)
-    static let nlpSearch = Key<Bool>("nlpSearch", default: true)
-    
     static let swipeAnywhere = Key<Bool>("swipeAnywhere", default: false)
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
+    static let doLiveText = Key<Bool>("doLiveText", default: true)
+    
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     
     // MARK: - Website Redirects
@@ -68,7 +68,9 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
     var thinDivider: Bool = false
     var tagBackground: Bool = true
     var highlightSubreddit: Bool = true
+    var highlightAuthor: Bool = false
     var showAuthor: Bool = true
+    var showOriginalURL: Bool = false
 
     var lightBackground: Color = .white
     var darkBackground: Color = Color(hex: "111112")
