@@ -70,7 +70,7 @@ struct SearchView: View {
                             readPosts: readPosts,
                             savedPosts: savedPosts,
                             appTheme: appTheme,
-                            preventDivider: true
+                            preventDivider: isSubredditSearch
                         )
                     }
                 } else {

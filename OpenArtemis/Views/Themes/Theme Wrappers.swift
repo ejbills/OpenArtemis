@@ -28,6 +28,7 @@ struct ThemedList<Content: View>: View {
                         .listRowSeparator(.hidden)
                 }
                 .scrollContentBackground(.hidden)
+                .listStyle(.plain)
                 .environment(\.defaultMinListRowHeight, 0)
             } else {
                 List {

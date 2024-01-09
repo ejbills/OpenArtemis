@@ -108,7 +108,8 @@ struct SubredditFeedView: View {
         .refreshable {
             clearFeedAndReload()
         }
-        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui reuses the initial view from the sidebar selection.
+        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui 
+                                               // reuses the initial view from the sidebar selection.
             clearFeedAndReload()
         }
         .searchable(text: $searchTerm, prompt: "Search r/\((titleOverride != nil) ? titleOverride! : subredditName)")
