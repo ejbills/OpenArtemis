@@ -143,7 +143,7 @@ struct MixedContentView: View {
                     }
                 }
         case .subreddit(let subreddit):
-            SubredditRowView(subredditName: subreddit.subreddit)
+            SubredditRowView(subredditName: subreddit.subreddit, skipSaved: true)
         }
     }
 }

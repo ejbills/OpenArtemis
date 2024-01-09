@@ -37,13 +37,13 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 0) {
             let isSubredditSearch = searchType == "sr"
-            ThemedList(appTheme: appTheme, stripStyling: !isSubredditSearch && !searchResults.isEmpty) {
+            ThemedList(appTheme: appTheme, stripStyling: shouldApplyStripStyling(isSubredditSearch)) {
                 if !isLoading {
-                    if !isSubredditSearch && !inputText.isEmpty {
+                    if shouldShowFilterView(isSubredditSearch) {
                         FilterView(selectedSortOption: $selectedSortOption, selectedTopOption: $selectedTopOption, performSearch: performSearch)
                     }
                     
-                    if searchResults.isEmpty {
+                    if shouldShowSortingHints(isSubredditSearch) {
                         // sorting hints!
                         Text("""
                             Use the following search parameters to narrow your results:
@@ -70,7 +70,7 @@ struct SearchView: View {
                             readPosts: readPosts,
                             savedPosts: savedPosts,
                             appTheme: appTheme,
-                            preventDivider: true
+                            preventDivider: isSubredditSearch
                         )
                     }
                 } else {
@@ -99,6 +99,7 @@ struct SearchView: View {
     }
     
     private func performSearch() {
+        clearFeed()
         isLoading = true
         
         RedditScraper.search(query: inputText, searchType: searchType, sortBy: selectedSortOption, topSortBy: selectedTopOption,
@@ -129,13 +130,26 @@ struct SearchView: View {
             isLoading = false
         }
     }
+    
+    // MARK: Determining what should be visible - helper methods
+    private func shouldApplyStripStyling(_ subredditSearch: Bool) -> Bool {
+        return ((!subredditSearch && !searchResults.isEmpty) || (!inputText.isEmpty && !subredditSearch)) && !isLoading
+    }
+
+    private func shouldShowFilterView(_ subredditSearch: Bool) -> Bool {
+        return !subredditSearch && (!inputText.isEmpty || !searchResults.isEmpty)
+    }
+
+    private func shouldShowSortingHints(_ subredditSearch: Bool) -> Bool {
+        return searchResults.isEmpty && (inputText.isEmpty || subredditSearch)
+    }
 }
 
 struct FilterView: View {
     @Binding var selectedSortOption: PostSortOption
     @Binding var selectedTopOption: TopPostListingSortOption
     var performSearch: () -> Void
-
+    
     var body: some View {
         HStack {
             Picker("Sort By", selection: $selectedSortOption) {
@@ -148,7 +162,7 @@ struct FilterView: View {
             .onChange(of: selectedSortOption) { _, _ in
                 performSearch()
             }
-
+            
             Picker("Time", selection: $selectedTopOption) {
                 ForEach(TopPostListingSortOption.allCases) { option in
                     Text(option.rawValue.capitalized)

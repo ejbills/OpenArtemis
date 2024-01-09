@@ -45,11 +45,15 @@ struct ProfileView: View {
                     readPosts: readPosts,
                     savedPosts: savedPosts,
                     savedComments: savedComments,
-                    appTheme: appTheme,
-                    onListElementAppearance: { media in
-                        handleMediaAppearance(MiscUtils.extractMediaId(from: media))
-                    }
+                    appTheme: appTheme
                 )
+                
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 1)
+                    .onAppear {
+                        scrapeProfile(lastPostAfter, sort: filterType)
+                    }
                 
                 if isLoading { // show spinner at the bottom of the feed
                     HStack {
@@ -123,22 +127,5 @@ struct ProfileView: View {
         }
         
         scrapeProfile()
-    }
-    
-    private func handleMediaAppearance(_ mediaId: String) {
-        guard mixedMedia.count > 0 else {
-            return
-        }
-
-        let index = Int(Double(mixedMedia.count) * 0.85)
-        guard index < mixedMedia.count else {
-            return
-        }
-
-        let tempMediaId = MiscUtils.extractMediaId(from: mixedMedia[index])
-
-        if mediaId == tempMediaId {
-            scrapeProfile(lastPostAfter, sort: filterType)
-        }
     }
 }

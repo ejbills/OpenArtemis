@@ -7,18 +7,21 @@
 
 import SwiftUI
 import Defaults
+import VisionKit
 
 struct SettingsView: View {
-//    @Default(.preferredThemeMode) var preferredThemeMode
+    //    @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
     @Default(.appTheme) var appTheme
-        
+    
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
     @Default(.swipeAnywhere) var swipeAnywhere
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
+    
+    @Default(.doLiveText) var doLiveText
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
@@ -38,6 +41,7 @@ struct SettingsView: View {
     @State var showToast: Bool = false
     @State var toastTitle: String = "Success!"
     @State var toastIcon: String = "checkmark.circle.fill"
+    @State private var imageAnalyzerSupport: Bool = true
     var body: some View {
         ThemedList(appTheme: appTheme) {
             Section("General") {
@@ -48,6 +52,26 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                         .padding(.top, 4)
                 }
+                
+                VStack{
+                    Toggle("Live Text Analyzer", isOn: $doLiveText)
+                        .disabled(!imageAnalyzerSupport)
+                        .onAppear{
+                            imageAnalyzerSupport = ImageAnalyzer.isSupported
+                            if !ImageAnalyzer.isSupported {
+                                doLiveText = false
+                            }
+                        }
+                    
+                    if !imageAnalyzerSupport{
+                        HStack{
+                            Text("Your iPhone does not support Live Text :(")
+                                .opacity(0.5)
+                            Spacer()
+                        }
+                    }
+                }
+                
             }
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
@@ -55,7 +79,7 @@ struct SettingsView: View {
                 }, set: { val, _ in
                     appTheme.preferredThemeMode = val
                 })){
-                    Text("Automatic").tag(PreferredThemeMode.automatic) 
+                    Text("Automatic").tag(PreferredThemeMode.automatic)
                     Text("Light").tag(PreferredThemeMode.light)
                     Text("Dark").tag(PreferredThemeMode.dark)
                 }

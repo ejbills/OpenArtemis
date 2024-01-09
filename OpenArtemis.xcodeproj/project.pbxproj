@@ -14,6 +14,7 @@
 		653245C32B2AF5D500227019 /* StarsBlinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BE2B2AF5D500227019 /* StarsBlinkingView.swift */; };
 		653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */; };
 		653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245C02B2AF5D500227019 /* OnboardingView.swift */; };
+		6535AC032B4563AC00E6A2DD /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6535AC022B4563AC00E6A2DD /* LiveTextInteraction.swift */; };
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
 		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
@@ -114,6 +115,7 @@
 		653245BE2B2AF5D500227019 /* StarsBlinkingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarsBlinkingView.swift; sourceTree = "<group>"; };
 		653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_WelcomeView.swift; sourceTree = "<group>"; };
 		653245C02B2AF5D500227019 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		6535AC022B4563AC00E6A2DD /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
@@ -238,6 +240,14 @@
 			path = OnboardingViews;
 			sourceTree = "<group>";
 		};
+		6535AC012B4563A100E6A2DD /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				6535AC022B4563AC00E6A2DD /* LiveTextInteraction.swift */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		65A3329D2B1DED5500421162 /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +266,6 @@
 				652E2AA82B25B1F10075911F /* HeroBox.swift */,
 				BB853E6F2B35E3210041150C /* CodableColor.swift */,
 				BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */,
-				BBA6FD692B45303C0096242E /* LimitedSet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -307,6 +316,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6535AC012B4563A100E6A2DD /* Images */,
 				BB0556912B3BAF0F00BB71F1 /* Profiles */,
 				BBEB46E12B34981300C33D33 /* Search */,
 				BB3387012B2C171200EF4D5C /* Themes */,
@@ -375,6 +385,7 @@
 		BB391FB82B1ADE3D0014FB18 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				BBA6FD692B45303C0096242E /* LimitedSet.swift */,
 				BB502DCF2B23AABA003C22DB /* Subreddit Utils */,
 				BBE434672B1BD4D900886CAB /* App Storage */,
 				65D3DBC92B1B3DA000BCCD38 /* Privacy */,
@@ -684,6 +695,7 @@
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
 				BB391FBC2B1ADE4E0014FB18 /* PresentSafari.swift in Sources */,
 				BB391FC32B1ADE700014FB18 /* SizeModifier.swift in Sources */,
+				6535AC032B4563AC00E6A2DD /* LiveTextInteraction.swift in Sources */,
 				653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */,
 				65D3DBBC2B1B212800BCCD38 /* Defaults.swift in Sources */,
 				BBF5A0AE2B429279000B3E75 /* NothingHereView.swift in Sources */,
