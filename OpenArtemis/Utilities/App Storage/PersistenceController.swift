@@ -22,15 +22,18 @@ struct PersistenceController {
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
-        
+
         guard container.persistentStoreDescriptions.first != nil else {
             fatalError("Failed to init persistent container")
         }
-        
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                fatalError("Error: \(error.localizedDescription)")
-            }
+
+        // Enable lightweight migration options
+        let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
+
+        do {
+            try container.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: container.persistentStoreDescriptions.first!.url, options: options)
+        } catch {
+            fatalError("Error adding persistent store: \(error)")
         }
     }
     

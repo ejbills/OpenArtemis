@@ -10,6 +10,7 @@ import SwiftUI
 
 // Reddit backend
 let baseRedditURL = "https://old.reddit.com"
+let newBaseRedditURL = "https://reddit.com"
 let basePostCount = "25"
 
 // Screen defaults

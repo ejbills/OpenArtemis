@@ -28,7 +28,6 @@ struct ThemedList<Content: View>: View {
                         .listRowSeparator(.hidden)
                 }
                 .scrollContentBackground(.hidden)
-                .listStyle(.plain)
                 .environment(\.defaultMinListRowHeight, 0)
             } else {
                 List {
@@ -36,8 +35,10 @@ struct ThemedList<Content: View>: View {
                         .themedBackground(isListRow: true, appTheme: appTheme)
                 }
                 .scrollContentBackground(.hidden)
+                .listSectionSpacing(2)
             }
         }
+        .listStyle(.plain)
         .scrollIndicators(.hidden)
         .themedBackground(isDarker: true, appTheme: appTheme)
     }
