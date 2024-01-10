@@ -88,6 +88,7 @@ struct SearchView: View {
                         Label("Posts with \"\(inputText)\"", systemImage: "square.text.square")
                     }
 
+                    // TODO: Implement user search
                     NavigationLink(destination: {
                         ThemedList(appTheme: appTheme) {
                             if !isLoading {
@@ -108,8 +109,8 @@ struct SearchView: View {
                     }) {
                         Label("Go to user \"\(inputText)\"", systemImage: "person")
                     }
-                    .disabled(true)
-                } else {
+
+                } else if inputText != "" {
                     LoadingView(loadingText: "Searching...", isLoading: isLoading)
                 }
 
@@ -125,23 +126,7 @@ struct SearchView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $inputText)
             .onSubmit(of: .search) {
-                // TODO: Fix this
-                ThemedList(appTheme: appTheme) {
-                    if !isLoading {
-                        ContentListView(
-                            content: $searchResults,
-                            readPosts: readPosts,
-                            savedPosts: savedPosts,
-                            appTheme: appTheme,
-                            preventDivider: false
-                        )
-                    } else {
-                        LoadingView(loadingText: "Searching for Subreddits...", isLoading: isLoading)
-                    }
-                }
-                .onAppear {
-                    performSearch(searchType: .post)
-                }
+                // append post search to navigation stack
             }
             .onChange(of: inputText) { text in
                 if nlpSearch && checkIfEnglish(text) {
@@ -299,21 +284,24 @@ struct SearchView: View {
         clearFeed()
         isLoading = true
 
-        RedditScraper.search(query: searchText, searchType: searchType, sortBy: selectedSortOption, topSortBy: selectedTopOption,
-                             trackingParamRemover: trackingParamRemover, over18: over18)
-        { result in
-            defer {
-                isLoading = false
-            }
+        RedditScraper.search(query: searchText,
+                             searchType: searchType,
+                             sortBy: selectedSortOption,
+                             topSortBy: selectedTopOption,
+                             trackingParamRemover: trackingParamRemover,
+                             over18: over18)
+        { result in defer {
+            isLoading = false
+        }
 
-            switch result {
-            case let .success(results):
-                DispatchQueue.main.async {
-                    searchResults = results
-                }
-            case let .failure(error):
-                print("Search error: \(error)")
+        switch result {
+        case let .success(results):
+            DispatchQueue.main.async {
+                searchResults = results
             }
+        case let .failure(error):
+            print("Search error: \(error)")
+        }
         }
     }
 
