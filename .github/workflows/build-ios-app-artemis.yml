@@ -30,6 +30,7 @@ jobs:
       - name: build archive
         run: |
           xcodebuild -scheme "OpenArtemis" \
+          -allowProvisioningUpdates \
           -archivePath $RUNNER_TEMP/OpenArtemis.xcarchive
 
       - name: export ipa
