@@ -102,8 +102,8 @@ class MiscUtils {
             return post.id
         case .comment(let comment, _):
             return comment.id
-        default:
-            return ""
+        case .subreddit(let subreddit):
+            return subreddit.subreddit
         }
     }
 }
