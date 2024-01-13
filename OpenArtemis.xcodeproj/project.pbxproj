@@ -46,6 +46,7 @@
 		BB0556932B3BAF1E00BB71F1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556922B3BAF1E00BB71F1 /* ProfileView.swift */; };
 		BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */; };
 		BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */; };
+		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
 		BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */; };
 		BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391F9E2B1ADCDB0014FB18 /* SubredditFeedView.swift */; };
 		BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FA22B1ADD140014FB18 /* SearchView.swift */; };
@@ -81,7 +82,6 @@
 		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
 		BBB693302B420C550094DFEE /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = BBB6932F2B420C550094DFEE /* OpenGraph */; };
-		BBD6E9D52B50769500901C1C /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD6E9D42B50769500901C1C /* Text.swift */; };
 		BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */; };
 		BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */; };
 		BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434712B1BD6A400886CAB /* String Hex.swift */; };
@@ -180,7 +180,6 @@
 		BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisApp.swift; sourceTree = "<group>"; };
-		BBD6E9D42B50769500901C1C /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditDrawerView.swift; sourceTree = "<group>"; };
 		BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitlesView.swift; sourceTree = "<group>"; };
 		BBE434712B1BD6A400886CAB /* String Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String Hex.swift"; sourceTree = "<group>"; };
@@ -212,6 +211,7 @@
 				BBB693302B420C550094DFEE /* OpenGraph in Frameworks */,
 				BB322CB72B26BF5000FC5849 /* SwiftHTMLtoMarkdown in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
+				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
 			);
@@ -400,7 +400,6 @@
 				65F5959D2B1F3A54005BE493 /* HapticManager.swift */,
 				65F5959F2B1F3A69005BE493 /* GestureActions.swift */,
 				BB93194A2B3CDA2C00863302 /* DateSorting.swift */,
-				BBD6E9D42B50769500901C1C /* Text.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -584,6 +583,7 @@
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
 				BB322CB62B26BF5000FC5849 /* SwiftHTMLtoMarkdown */,
+				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
 				BBB6932F2B420C550094DFEE /* OpenGraph */,
 			);
 			productName = OpenArtemis;
@@ -705,7 +705,6 @@
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */,
-				BBD6E9D52B50769500901C1C /* Text.swift in Sources */,
 				653245C22B2AF5D500227019 /* OOBE_SubsImporter.swift in Sources */,
 				BB391F9F2B1ADCDB0014FB18 /* SubredditFeedView.swift in Sources */,
 				BB05568F2B367B2C00BB71F1 /* NavigationStackWrapper.swift in Sources */,
@@ -1112,6 +1111,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */;
 			productName = SwiftHTMLtoMarkdown;
+		};
+		BB322CB92B26C0A300FC5849 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;
