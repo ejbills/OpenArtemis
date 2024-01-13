@@ -43,7 +43,7 @@ struct CommentView: View {
                 
                 VStack(alignment: .leading) {
                     HStack(spacing: 4) {
-                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "*[deleted]*" : comment.author, appTheme: appTheme)
+                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme)
                             .onTapGesture {
                                 coordinator.path.append(ProfileResponse(username: comment.author))
                             }
@@ -63,7 +63,8 @@ struct CommentView: View {
                     .foregroundStyle(appTheme.tagBackground ? .primary : .secondary)
                     
                     if !comment.isRootCollapsed {
-                        Markdown(comment.body.isEmpty ? "*[deleted]*" : comment.body)
+                        Markdown(comment.body.isEmpty ? "[deleted]" : comment.body)
+                            .markdownTheme(.artemisMarkdown(fontSize: 16))
                     }
                 }
             }            

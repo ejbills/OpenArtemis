@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftSoup
-import SwiftHTMLtoMarkdown
 import Defaults
 
 private let invalidURLError = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
@@ -131,7 +130,7 @@ extension RedditScraper {
             if let bodyElement = bodyElement {
                 let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
                 
-                var document = BasicHTML(rawHTML: modifiedHtmlBody)
+                var document = ArtemisHTML(rawHTML: modifiedHtmlBody)
                 try document.parse()
                 body = try document.asMarkdown()
             }

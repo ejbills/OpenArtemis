@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftSoup
-import SwiftHTMLtoMarkdown
 
 extension RedditScraper {
     static func scrapeProfile(username: String, lastPostAfter: String?, filterType: String?,
@@ -120,7 +119,7 @@ extension RedditScraper {
         if let bodyElement = bodyElement {
             let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
 
-            var document = BasicHTML(rawHTML: modifiedHtmlBody)
+            var document = ArtemisHTML(rawHTML: modifiedHtmlBody)
             try document.parse()
             body = try document.asMarkdown()
         }

@@ -61,6 +61,7 @@ struct PostPageView: View {
                             }
                             
                             Markdown(postBody)
+                                .markdownTheme(.artemisMarkdown(fontSize: 16))
                         }
                         .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .background(tagBgColor)
