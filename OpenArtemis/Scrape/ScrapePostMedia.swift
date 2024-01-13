@@ -20,7 +20,7 @@ extension RedditScraper {
         if let bodyElement = postBody, !(try bodyElement.text().isEmpty) {
             let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
             
-            var document = BasicHTML(rawHTML: modifiedHtmlBody)
+            var document = ArtemisHTML(rawHTML: modifiedHtmlBody)
             try document.parse()
             body = try document.asMarkdown()
         }
