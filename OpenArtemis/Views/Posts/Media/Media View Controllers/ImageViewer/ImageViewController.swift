@@ -102,6 +102,9 @@ struct VanillaPageControl: UIViewRepresentable {
         pageControl.numberOfPages = numberOfPages
         pageControl.currentPage = currentPage
         pageControl.addTarget(context.coordinator, action: #selector(Coordinator.updateCurrentPage(sender:)), for: .valueChanged)
+
+        pageControl.pageIndicatorTintColor = UIColor.gray
+
         return pageControl
     }
 
@@ -125,3 +128,4 @@ struct VanillaPageControl: UIViewRepresentable {
         }
     }
 }
+
