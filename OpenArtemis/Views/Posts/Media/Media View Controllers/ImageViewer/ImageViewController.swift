@@ -4,6 +4,7 @@
 //
 //  Created by daniel on 04/12/23.
 //
+
 import SwiftUI
 import VisionKit
 import CachedImage
@@ -64,6 +65,25 @@ private struct ImageView: View {
                     content: { image in
                         LiveTextInteraction(image: image)
                             .scaledToFit()
+                            .overlay(alignment: .bottomLeading) {
+                                HStack {
+                                    ShareLink(item: image,
+                                              preview: SharePreview(
+                                                "",
+                                                image: image
+                                              ),
+                                              label: {
+                                        Image(systemName: "square.and.arrow.up")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .foregroundColor(Color.artemisAccent)
+                                            .frame(width: 30, height: 30)
+                                            .padding()
+                                    }
+                                    )
+                                    .padding()
+                                }
+                            }
                     },
                     placeholder: {
                         ProgressView()
