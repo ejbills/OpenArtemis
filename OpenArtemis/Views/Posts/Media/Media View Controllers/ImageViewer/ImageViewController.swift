@@ -66,23 +66,21 @@ private struct ImageView: View {
                         LiveTextInteraction(image: image)
                             .scaledToFit()
                             .overlay(alignment: .bottomLeading) {
-                                HStack {
-                                    ShareLink(item: image,
-                                              preview: SharePreview(
-                                                "",
-                                                image: image
-                                              ),
-                                              label: {
-                                        Image(systemName: "square.and.arrow.up")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .foregroundColor(Color.artemisAccent)
-                                            .frame(width: 30, height: 30)
-                                            .padding()
-                                    }
-                                    )
-                                    .padding()
+                                ShareLink(item: image,
+                                          preview: SharePreview(
+                                            "",
+                                            image: image
+                                          ),
+                                          label: {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(Color.artemisAccent)
+                                        .frame(width: 30, height: 30)
+                                        .padding()
                                 }
+                                )
+                                .padding()
                             }
                     },
                     placeholder: {
