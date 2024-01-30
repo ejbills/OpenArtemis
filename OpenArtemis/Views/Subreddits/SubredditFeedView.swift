@@ -73,7 +73,7 @@ struct SubredditFeedView: View {
                         .fill(Color.clear)
                         .frame(height: 1)
                         .onAppear {
-                            scrapeSubreddit(lastPostAfter)
+                            scrapeSubreddit(lastPostAfter, sort: sortOption)
                         }
                     
                     if isLoading { // show spinner at the bottom of the feed

@@ -40,6 +40,10 @@ extension RedditScraper {
         // Create a URLSession and make a data task to fetch the HTML content
         var request = URLRequest(url: searchURL)
         request.setValue("text/html", forHTTPHeaderField: "Accept")
+        
+        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
+
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

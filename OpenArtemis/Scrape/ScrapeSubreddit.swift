@@ -28,7 +28,7 @@ class RedditScraper {
                 queryItems.append(URLQueryItem(name: "t", value: topOption.rawValue))
             }
         }
-        
+                
         // Add remaining parameters to the URL
         queryItems.append(URLQueryItem(name: "count", value: basePostCount))
         if let lastPostAfter = lastPostAfter {
@@ -42,8 +42,13 @@ class RedditScraper {
             return
         }
         
+        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
+
+        var request = URLRequest(url: redditURL)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+
         // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: redditURL) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
