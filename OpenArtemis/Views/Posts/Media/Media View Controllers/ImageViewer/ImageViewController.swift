@@ -52,6 +52,7 @@ private struct ImageView: View {
     
     @State private var offset: CGSize = .zero
     @State private var index: Int = 0
+    @State private var currImg: Image? = nil
     
     var body: some View {
         ZStack {
@@ -65,22 +66,8 @@ private struct ImageView: View {
                     content: { image in
                         LiveTextInteraction(image: image)
                             .scaledToFit()
-                            .overlay(alignment: .bottomLeading) {
-                                ShareLink(item: image,
-                                          preview: SharePreview(
-                                            "",
-                                            image: image
-                                          ),
-                                          label: {
-                                    Image(systemName: "square.and.arrow.up")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundColor(Color.artemisAccent)
-                                        .frame(width: 30, height: 30)
-                                        .padding()
-                                }
-                                )
-                                .padding()
+                            .onAppear {
+                                currImg = image
                             }
                     },
                     placeholder: {
@@ -88,6 +75,15 @@ private struct ImageView: View {
                             .progressViewStyle(CircularProgressViewStyle())
                     }
                 )
+                .onChange(of: index) { _, newIndex in
+                    if let imageURL = URL(string: images[newIndex]) {
+                        loadImage(from: imageURL) { image in
+                            if let image = image {
+                                currImg = image
+                            }
+                        }
+                    }
+                }
             }
             .zoomable(min: 1, max: 5)
             .onDismiss {
@@ -101,6 +97,26 @@ private struct ImageView: View {
                     .allowsHitTesting(false) : nil,
                 alignment: .bottom
             )
+            .overlay(alignment: .bottomLeading) {
+                if let image = currImg {
+                    ShareLink(item: image,
+                              preview: SharePreview(
+                                "",
+                                image: image
+                              ),
+                              label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(Color.artemisAccent)
+                            .frame(width: 25, height: 25)
+                            .padding()
+                    }
+                    )
+                    .padding()
+                }
+            }
+
         }
         .ignoresSafeArea()
     }
@@ -113,6 +129,26 @@ private struct ImageView: View {
         withAnimation(.spring()) {
             offset = .zero
         }
+    }
+    
+    private func loadImage(from url: URL, completion: @escaping (Image?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error loading image from URL: \(error)")
+                    completion(nil)
+                    return
+                }
+
+                guard let data = data, let uiImage = UIImage(data: data) else {
+                    completion(nil)
+                    return
+                }
+
+                let image = Image(uiImage: uiImage)
+                completion(image)
+            }
+        }.resume()
     }
 }
 
