@@ -12,10 +12,10 @@ import VisionKit
 @MainActor
 struct LiveTextInteraction: UIViewRepresentable {
     var image: Image
+    var displayAnalyzer: Bool
     let imageView = LiveTextImageView()
     let analyzer = ImageAnalyzer()
     let interaction = ImageAnalysisInteraction()
-    
     
     func makeUIView(context: Context) -> some UIView {
         guard let image = ImageRenderer(content: image).uiImage else {
@@ -36,7 +36,7 @@ struct LiveTextInteraction: UIViewRepresentable {
                 let configsArray: ImageAnalyzer.AnalysisTypes = [.text, .machineReadableCode, .visualLookUp] //.visualLookup crashes iOS 16.X devices even if you check for it in an if
                 let configuration = ImageAnalyzer.Configuration(configsArray)
                 do {
-                    if let image = imageView.image{
+                    if displayAnalyzer, let image = imageView.image{
                         let analysis = try await analyzer.analyze(image, configuration: configuration)
                         interaction.preferredInteractionTypes = .automatic
                         interaction.isSupplementaryInterfaceHidden = false

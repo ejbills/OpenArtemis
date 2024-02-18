@@ -22,6 +22,7 @@ struct SubredditFeedView: View {
     @State private var posts: [Post] = []
     @State private var postIDs = LimitedSet<String>(maxLength: 300)
     @State private var lastPostAfter: String = ""
+    @State private var retryCount: Int = 0
     @State private var sortOption: SortOption = .best
     @State private var isLoading: Bool = false
     
@@ -73,7 +74,7 @@ struct SubredditFeedView: View {
                         .fill(Color.clear)
                         .frame(height: 1)
                         .onAppear {
-                            scrapeSubreddit(lastPostAfter, sort: sortOption)
+                            scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
                         }
                     
                     if isLoading { // show spinner at the bottom of the feed
@@ -124,7 +125,7 @@ struct SubredditFeedView: View {
     private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
             if postId == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(lastPostAfter, sort: sortOption)
+                scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
             }
         }
     }
@@ -174,7 +175,7 @@ struct SubredditFeedView: View {
         })
     }
     
-    private func scrapeSubreddit(_ lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
+    private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
         self.isLoading = true
         
         if searchTerm.isEmpty {
@@ -186,15 +187,21 @@ struct SubredditFeedView: View {
                 
                 switch result {
                 case .success(let newPosts):
-                    for post in newPosts {
-                        if !postIDs.contains(post.id) {
-                            posts.append(post)
-                            postIDs.insert(post.id)
+                    if newPosts.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 times
+                        self.retryCount +=  1
+                        self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm)
+                    } else {
+                        self.retryCount =  0
+                        for post in newPosts {
+                            if !postIDs.contains(post.id) {
+                                posts.append(post)
+                                postIDs.insert(post.id)
+                            }
                         }
-                    }
-                    
-                    if let lastPost = newPosts.last {
-                        self.lastPostAfter = lastPost.id
+                        
+                        if let newLastPost = newPosts.last {
+                            self.lastPostAfter = newLastPost.id
+                        }
                     }
                 case .failure(let error):
                     print("Error: \(error.localizedDescription)")

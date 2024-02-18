@@ -64,7 +64,7 @@ private struct ImageView: View {
                 CachedImage(
                     url: url,
                     content: { image in
-                        LiveTextInteraction(image: image)
+                        LiveTextInteraction(image: image, displayAnalyzer: false)
                             .scaledToFit()
                             .onAppear {
                                 currImg = image
