@@ -13,7 +13,15 @@ class SafariHelper {
         let presentingViewController = viewController ?? UIApplication.shared.windows.first?.rootViewController
         
         if let presentingViewController = presentingViewController {
-            presentingViewController.present(SFSafariViewController(url: url), animated: true, completion: nil)
+            // Create a Safari view controller configuration object
+            let configuration = SFSafariViewController.Configuration()
+            configuration.entersReaderIfAvailable = true
+            
+            // Create a Safari view controller with the configuration
+            let safariViewController = SFSafariViewController(url: url, configuration: configuration)
+            
+            // Present the Safari view controller
+            presentingViewController.present(safariViewController, animated: true, completion: nil)
         }
     }
 }
