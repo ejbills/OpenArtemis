@@ -29,7 +29,7 @@ class ImageViewerController: UIViewController {
             return
         }
         let hostingController = UIHostingController(rootView:
-                                                        ImageView(images: images, rootViewClosure: dismissMedia)
+                                                        ImageView(images: images, rootViewClosure: dismissMedia, title: imageTitle ?? nil)
         )
         hostingController.modalPresentationStyle = .fullScreen
         hostingController.modalTransitionStyle = .crossDissolve
@@ -49,10 +49,12 @@ class ImageViewerController: UIViewController {
 private struct ImageView: View {
     var images: [String]
     var rootViewClosure: (() -> ())?
+    var title: String?
     
     @State private var offset: CGSize = .zero
     @State private var index: Int = 0
     @State private var currImg: Image? = nil
+    @State private var hideOverlay: Bool = false
     
     var body: some View {
         ZStack {
@@ -64,7 +66,7 @@ private struct ImageView: View {
                 CachedImage(
                     url: url,
                     content: { image in
-                        LiveTextInteraction(image: image, displayAnalyzer: false)
+                        LiveTextInteraction(image: image)
                             .scaledToFit()
                             .onAppear {
                                 currImg = image
@@ -91,14 +93,23 @@ private struct ImageView: View {
             }
             .ignoresSafeArea()
             .overlay(
-                images.count > 1 ?
+                images.count > 1 && !hideOverlay ?
                 VanillaPageControl(numberOfPages: images.count, currentPage: $index)
                     .padding(.bottom, 20)
                     .allowsHitTesting(false) : nil,
                 alignment: .bottom
             )
+//            .overlay(alignment: .topLeading) {
+//                figure out how to properly display the title text
+//                GeometryReader { geometry in
+//                    if let title = title, !hideOverlay {
+//                        Text(title)
+//                            .padding(.top, geometry.safeAreaInsets.top +  16)
+//                    }
+//                }
+//            }
             .overlay(alignment: .bottomLeading) {
-                if let image = currImg {
+                if let image = currImg, !hideOverlay {
                     ShareLink(item: image,
                               preview: SharePreview(
                                 "",
@@ -116,7 +127,11 @@ private struct ImageView: View {
                     .padding()
                 }
             }
-
+        }
+        .onTapGesture {
+            withAnimation {
+                hideOverlay.toggle()
+            }
         }
         .ignoresSafeArea()
     }
