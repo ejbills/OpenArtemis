@@ -17,6 +17,7 @@ extension Defaults.Keys {
     
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
+    static let readerMode = Key<Bool>("readerMode", default: true)
     static let removeTrackingParams = Key<Bool>("removeTrackingParams", default: true)
     static let over18 = Key<Bool>("over18", default: false)
     static let swipeAnywhere = Key<Bool>("swipeAnywhere", default: false)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SafariServices
+import Defaults
 
 class SafariHelper {
     static func openSafariView(withURL url: URL, from viewController: UIViewController? = nil) {
@@ -15,7 +16,7 @@ class SafariHelper {
         if let presentingViewController = presentingViewController {
             // Create a Safari view controller configuration object
             let configuration = SFSafariViewController.Configuration()
-            configuration.entersReaderIfAvailable = true
+            configuration.entersReaderIfAvailable = Defaults[.readerMode]
             
             // Create a Safari view controller with the configuration
             let safariViewController = SFSafariViewController(url: url, configuration: configuration)

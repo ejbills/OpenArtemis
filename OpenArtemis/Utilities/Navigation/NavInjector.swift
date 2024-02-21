@@ -69,7 +69,9 @@ struct HandleDeepLinkResolution: ViewModifier {
                         switch result {
                         case .success(let post):
                             // Append the post payload into the coordinator
-                            coordinator.path.append(PostResponse(post: post))
+                            DispatchQueue.main.async { // run it on the main thread
+                                coordinator.path.append(PostResponse(post: post))
+                            }
                         case .failure(let error):
                             print("Failed to scrape Reddit post: \(error)")
                         }

@@ -15,6 +15,7 @@ struct SettingsView: View {
     @Default(.appTheme) var appTheme
     
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
+    @Default(.readerMode) var readerMode
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
     @Default(.swipeAnywhere) var swipeAnywhere
@@ -72,7 +73,9 @@ struct SettingsView: View {
                     }
                 }
                 
+                Toggle("Auto-enable reader mode in in-app browser", isOn: $readerMode)
             }
+            
             Section("Appearance"){
                 Picker("Preferred Theme", selection: Binding(get: {
                     appTheme.preferredThemeMode
