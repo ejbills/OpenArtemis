@@ -14,7 +14,7 @@ struct HandleDeepLinksDisplay: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-        // MARK: App routing
+            // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
                 if response.subredditName == "Saved" {
                     SavedView(appTheme: appTheme)
@@ -61,11 +61,26 @@ struct HandleDeepLinkResolution: ViewModifier {
                     coordinator.path.append(SubredditFeedResponse(subredditName: String(subreddit)))
                 }
             } else {
-                // handle regular link display in an in-app browser
-                let safariURL = URL(string: "https://" + urlStringWithoutScheme)
-                
-                if let safariURL = safariURL {
-                    SafariHelper.openSafariView(withURL: safariURL)
+                if urlStringWithoutScheme.contains("reddit.com") && urlStringWithoutScheme.contains("/comments/") {
+                    let convertedUrl = "https://" + MiscUtils.convertToOldRedditLink(normalLink: urlStringWithoutScheme)
+                    
+                    // It's a Reddit post URL, scrape the post
+                    RedditScraper.scrapePostFromURL(url: convertedUrl, trackingParamRemover: nil) { result in
+                        switch result {
+                        case .success(let post):
+                            // Append the post payload into the coordinator
+                            coordinator.path.append(PostResponse(post: post))
+                        case .failure(let error):
+                            print("Failed to scrape Reddit post: \(error)")
+                        }
+                    }
+                } else {
+                    // handle regular link display in an in-app browser
+                    let safariURL = URL(string: "https://" + urlStringWithoutScheme)
+                    
+                    if let safariURL = safariURL {
+                        SafariHelper.openSafariView(withURL: safariURL)
+                    }
                 }
             }
         } else {

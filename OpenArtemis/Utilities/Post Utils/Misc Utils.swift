@@ -106,4 +106,22 @@ class MiscUtils {
             return subreddit.subreddit
         }
     }
+    
+    static func convertToOldRedditLink(normalLink: String) -> String {
+        // If "old.reddit" is already present, return the normal link
+        if normalLink.contains("old.reddit") {
+            return normalLink
+        }
+        
+        // Replace the first occurrence of "www.reddit" or "reddit" with "old.reddit"
+        if let range = normalLink.range(of: "www.reddit") {
+            let oldRedditLink = normalLink.replacingCharacters(in: range, with: "old.reddit")
+            return oldRedditLink
+        } else if let range = normalLink.range(of: "reddit") {
+            let oldRedditLink = normalLink.replacingCharacters(in: range, with: "old.reddit")
+            return oldRedditLink
+        } else {
+            return normalLink // If "reddit" is not found, return the original link
+        }
+    }
 }

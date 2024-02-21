@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Defaults
 
 struct GestureAction {
     
@@ -274,17 +275,20 @@ struct GestureView: ViewModifier {
 extension View {
     @ViewBuilder
     func gestureActions(primaryLeadingAction: GestureAction?,
-                          secondaryLeadingAction: GestureAction?,
-                          primaryTrailingAction: GestureAction?,
-                          secondaryTrailingAction: GestureAction?
-    ) -> some View {
-        modifier(
-            GestureView(
-                primaryLeadingAction: primaryLeadingAction,
-                secondaryLeadingAction: secondaryLeadingAction,
-                primaryTrailingAction: primaryTrailingAction,
-                secondaryTrailingAction: secondaryTrailingAction
+                        secondaryLeadingAction: GestureAction?,
+                        primaryTrailingAction: GestureAction?,
+                        secondaryTrailingAction: GestureAction?) -> some View {
+        if Defaults[.swipeAnywhere] {
+            self
+        } else {
+            modifier(
+                GestureView(
+                    primaryLeadingAction: primaryLeadingAction,
+                    secondaryLeadingAction: secondaryLeadingAction,
+                    primaryTrailingAction: primaryTrailingAction,
+                    secondaryTrailingAction: secondaryTrailingAction
+                )
             )
-        )
+        }
     }
 }

@@ -164,13 +164,12 @@ extension RedditScraper {
         return comments
     }
     
-    static func scrapePostFromCommentsURL(url: String,trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<Post, Error>) -> Void) {
+    static func scrapePostFromURL(url: String, trackingParamRemover: TrackingParamRemover?, completion: @escaping (Result<Post, Error>) -> Void) {
         guard let url = URL(string: url) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-        
-        
+                
         // Create a URLSession and make a data task to fetch the HTML content
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -184,7 +183,6 @@ extension RedditScraper {
             }
             
             do {
-                // Parse the HTML data into an array of Post objects
                 // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
                 let post = try parsePostData(data: data, trackingParamRemover: trackingParamRemover).first
                 if let post = post {

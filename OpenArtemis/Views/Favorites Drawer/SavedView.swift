@@ -128,7 +128,7 @@ struct MixedContentView: View {
                         }
                         
                         let commentURL = comment.directURL
-                        RedditScraper.scrapePostFromCommentsURL(url: commentURL, trackingParamRemover: nil) { result in
+                        RedditScraper.scrapePostFromURL(url: commentURL, trackingParamRemover: nil) { result in
                             DispatchQueue.main.async {
                                 switch result {
                                 case .success(let post):
