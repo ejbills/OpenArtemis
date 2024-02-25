@@ -224,13 +224,15 @@ class PostUtils {
             return
         }
         
-        let newReadPost = ReadPost(context: context)
-        newReadPost.readPostId = postId
-        
-        do {
-            try context.save()
-        } catch {
-            print("Error saving ReadPost: \(error)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            let newReadPost = ReadPost(context: context)
+            newReadPost.readPostId = postId
+            
+            do {
+                try context.save()
+            } catch {
+                print("Error saving ReadPost: \(error)")
+            }
         }
     }
     
