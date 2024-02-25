@@ -19,6 +19,7 @@ struct SettingsView: View {
     @Default(.removeTrackingParams) var removeTrackingParams
     @Default(.over18) var over18
     @Default(.swipeAnywhere) var swipeAnywhere
+    @Default(.hideReadPosts) var hideReadPosts
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -120,6 +121,7 @@ struct SettingsView: View {
                     Label("Clear Read Posts", systemImage: "xmark.circle.fill")
                         .foregroundColor(.red)
                 })
+                Toggle("Hide Read Posts", isOn: $hideReadPosts)
             }
             Section("Comments"){
                 Toggle("Jump to Next Comment Button", isOn: $showJumpToNextCommentButton)

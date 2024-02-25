@@ -14,6 +14,7 @@ struct SubredditFeedView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
+    @Default(.hideReadPosts) var hideReadPosts
     
     let subredditName: String
     let titleOverride: String?
@@ -56,18 +57,20 @@ struct SubredditFeedView: View {
                             savedPosts.contains { $0.id == post.id }
                         }
                         
-                        PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
-                            .savedIndicator(isSaved)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                coordinator.path.append(PostResponse(post: post))
-                                
-                                if !isRead {
-                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                        if (hideReadPosts && !isRead) || (!hideReadPosts) {
+                            PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+                                .savedIndicator(isSaved)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    coordinator.path.append(PostResponse(post: post))
+                                    
+                                    if !isRead {
+                                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                    }
                                 }
-                            }
-                        
-                        DividerView(frameHeight: 10, appTheme: appTheme)
+                            
+                            DividerView(frameHeight: 10, appTheme: appTheme)
+                        }
                     }
                     
                     Rectangle()

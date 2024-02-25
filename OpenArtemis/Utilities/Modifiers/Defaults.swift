@@ -23,6 +23,7 @@ extension Defaults.Keys {
     static let swipeAnywhere = Key<Bool>("swipeAnywhere", default: false)
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
     static let doLiveText = Key<Bool>("doLiveText", default: true)
+    static let hideReadPosts = Key<Bool>("hideReadPosts", default: false)
     
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     
