@@ -57,20 +57,24 @@ struct SubredditFeedView: View {
                             savedPosts.contains { $0.id == post.id }
                         }
                         
-                        if (hideReadPosts && !isRead) || (!hideReadPosts) {
-                            PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
-                                .savedIndicator(isSaved)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
+                        if hideReadPosts {
+                            if (!isRead || isSaved) {
+                                PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
                                     coordinator.path.append(PostResponse(post: post))
-                                    
                                     if !isRead {
                                         PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
                                     }
                                 }
-                            
-                            DividerView(frameHeight: 10, appTheme: appTheme)
+                            }
+                        } else {
+                            PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
+                                coordinator.path.append(PostResponse(post: post))
+                                if !isRead {
+                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                }
+                            }
                         }
+
                     }
                     
                     Rectangle()
@@ -132,6 +136,27 @@ struct SubredditFeedView: View {
             }
         }
     }
+    
+    private struct PostFeedItemView: View {
+        let post: Post
+        let isRead: Bool
+        let isSaved: Bool
+        let appTheme: AppThemeSettings
+        let onTap: () -> Void
+        
+        var body: some View {
+            Group {
+                PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+                    .savedIndicator(isSaved)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        onTap()
+                    }
+                DividerView(frameHeight: 10, appTheme: appTheme)
+            }
+        }
+    }
+
     
     private func buildSortingMenu() -> some View {
         Menu(content: {

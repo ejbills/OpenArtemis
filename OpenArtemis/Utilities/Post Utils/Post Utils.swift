@@ -224,7 +224,7 @@ class PostUtils {
             return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             let newReadPost = ReadPost(context: context)
             newReadPost.readPostId = postId
             
