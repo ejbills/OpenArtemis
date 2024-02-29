@@ -60,21 +60,14 @@ struct SubredditFeedView: View {
                         if hideReadPosts {
                             if (!isRead || isSaved) {
                                 PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
-                                    coordinator.path.append(PostResponse(post: post))
-                                    if !isRead {
-                                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
-                                    }
+                                    handlePostTap(post, isRead: isRead)
                                 }
                             }
                         } else {
                             PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
-                                coordinator.path.append(PostResponse(post: post))
-                                if !isRead {
-                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
-                                }
+                                handlePostTap(post, isRead: isRead)
                             }
                         }
-
                     }
                     
                     Rectangle()
@@ -134,6 +127,13 @@ struct SubredditFeedView: View {
             if postId == posts[Int(Double(posts.count) * 0.85)].id {
                 scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
             }
+        }
+    }
+    
+    private func handlePostTap(_ post: Post, isRead: Bool) {
+        coordinator.path.append(PostResponse(post: post))
+        if !isRead {
+            PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
         }
     }
     
