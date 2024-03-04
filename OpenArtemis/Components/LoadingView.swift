@@ -10,6 +10,7 @@ import SwiftUI
 struct LoadingView: View {
     let loadingText: String
     let isLoading: Bool
+    let textSizePreference: TextSizePreference
     var body: some View {
         HStack {
             Spacer()
@@ -22,7 +23,7 @@ struct LoadingView: View {
             Spacer()
         }
         .padding(6)
-        .font(.subheadline)
+        .font(textSizePreference.subheadline)
         .italic()
         .foregroundStyle(.secondary)
         .id(UUID())

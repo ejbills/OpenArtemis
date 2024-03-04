@@ -18,6 +18,7 @@ struct PostDetailsView: View {
     let commentsCount: Int
     let forceAuthorToDisplay: Bool
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         HStack(spacing: 4) {

@@ -18,6 +18,7 @@ struct EmbeddedMultiMediaView: View {
     let thumbnailURL: String?
     let title: String
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     @State private var isLoading: Bool = false
     
@@ -67,13 +68,13 @@ struct EmbeddedMultiMediaView: View {
             if !appTheme.compactMode {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Open \(determinedType) media")
-                        .font(.headline)
+                        .font(textSizePreference.headline)
                         .fontWeight(.semibold)
                         .lineLimit(1)
                         .foregroundColor(.primary)
                     
                     Text(appTheme.showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
-                        .font(.callout)
+                        .font(textSizePreference.callout)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
                         .italic()

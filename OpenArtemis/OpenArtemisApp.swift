@@ -12,6 +12,7 @@ import Defaults
 struct OpenArtemisApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Default(.appTheme) var appTheme
+    @Default(.textSizePreference) var textSizePreference
     
     //TrackingParamRemover as Environment Object so it loads / downloads the tracking params list only once and doesnt unload / load them all the time
     @ObservedObject private var trackingParamRemover = TrackingParamRemover()
@@ -23,7 +24,7 @@ struct OpenArtemisApp: App {
     @Default(.showingOOBE) var showingOOBE
     var body: some Scene {
         WindowGroup {
-            ContentView(appTheme: appTheme)
+            ContentView(appTheme: appTheme, textSizePreference: textSizePreference)
                 .accentColor(Color.artemisAccent)
                 .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
                 .sheet(isPresented: $showingOOBE){
@@ -41,12 +42,13 @@ struct OpenArtemisApp: App {
 
 struct ContentView: View {
     var appTheme = AppThemeSettings()
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         TabView {
             // Feed Tab
             getNavigationView {
-                SubredditDrawerView(appTheme: appTheme)
+                SubredditDrawerView(appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .tabItem {
                 Label("Feed", systemImage: "doc.richtext")
@@ -54,7 +56,7 @@ struct ContentView: View {
             
             // Search Tab
             getNavigationView {
-                SearchView(appTheme: appTheme)
+                SearchView(appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .tabItem {
                 Label("Search", systemImage: "text.magnifyingglass")
@@ -62,7 +64,7 @@ struct ContentView: View {
             
             // Privacy Tab
             getNavigationView(forceNonSplitStack: true) {
-                PrivacyTab(appTheme: appTheme)
+                PrivacyTab(appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .tabItem {
                 Label("Privacy", systemImage: "shield.lefthalf.filled")
@@ -70,7 +72,7 @@ struct ContentView: View {
             
             // Settings Tab
             getNavigationView(forceNonSplitStack: true) {
-                SettingsView()
+                SettingsView(textSizePreference: textSizePreference)
             }
             .tabItem {
                 Label("Settings", systemImage: "gear")

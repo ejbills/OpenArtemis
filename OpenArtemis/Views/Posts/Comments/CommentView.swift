@@ -16,12 +16,14 @@ struct CommentView: View {
     let numberOfChildren: Int
     let postAuthor: String?
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
 
-    init(comment: Comment, numberOfChildren: Int, postAuthor: String? = nil, appTheme: AppThemeSettings) {
+    init(comment: Comment, numberOfChildren: Int, postAuthor: String? = nil, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
         self.comment = comment
         self.numberOfChildren = numberOfChildren
         self.postAuthor = postAuthor
         self.appTheme = appTheme
+        self.textSizePreference = textSizePreference
     }
     
     var body: some View {

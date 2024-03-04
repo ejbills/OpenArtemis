@@ -16,6 +16,7 @@ struct ImportURLSheet: View {
     @Binding var showingThisSheet: Bool
     
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         ZStack {
@@ -80,7 +81,7 @@ struct ImportURLSheet: View {
                             .labelStyle(.titleOnly)
                     }
                     .padding()
-                    .font(.system(size: 20, weight: .medium))
+                    .font(textSizePreference.sizeWithMult(fontSize: 20))
                     .buttonBorderShape(.roundedRectangle)
                     .buttonStyle(.borderedProminent)
                     .frame(width: UIScreen.screenWidth)

@@ -19,6 +19,7 @@ struct SubredditFeedView: View {
     let subredditName: String
     let titleOverride: String?
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     @State private var posts: [Post] = []
     @State private var postIDs = LimitedSet<String>(maxLength: 300)
@@ -92,7 +93,7 @@ struct SubredditFeedView: View {
                     }
                     ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme)
                 } else {
-                    LoadingView(loadingText: "Loading feed...", isLoading: isLoading)
+                    LoadingView(loadingText: "Loading feed...", isLoading: isLoading, textSizePreference: textSizePreference)
                 }
             }
         }
@@ -142,6 +143,7 @@ struct SubredditFeedView: View {
         let isRead: Bool
         let isSaved: Bool
         let appTheme: AppThemeSettings
+        let textSizePreference: TextSizePreference
         let onTap: () -> Void
         
         var body: some View {

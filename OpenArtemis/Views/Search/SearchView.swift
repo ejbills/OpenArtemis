@@ -33,6 +33,7 @@ struct SearchView: View {
     ) var readPosts: FetchedResults<ReadPost>
     
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         VStack(spacing: 0) {
@@ -74,7 +75,7 @@ struct SearchView: View {
                         )
                     }
                 } else {
-                    LoadingView(loadingText: "Loading search...", isLoading: true)
+                    LoadingView(loadingText: "Loading search...", isLoading: true, textSizePreference: textSizePreference)
                 }
             }
         }

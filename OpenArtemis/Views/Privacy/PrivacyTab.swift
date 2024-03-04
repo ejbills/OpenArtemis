@@ -16,6 +16,7 @@ struct PrivacyTab: View {
     @Default(.URLsRedirected) var URLsRedirected
     
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         ThemedList(appTheme: appTheme) {
@@ -137,7 +138,7 @@ struct RedirectElement: View {
                 Text(redirectName)
                 Spacer()
             }
-            .font(.caption)
+            .font(textSizePreference.caption)
             .opacity(0.5)
             TextField(text: $text, label: {
                 Text(redirectName)

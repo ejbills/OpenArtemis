@@ -10,6 +10,7 @@ import Defaults
 import VisionKit
 
 struct SettingsView: View {
+    let textSizePreference: TextSizePreference
     //    @Default(.preferredThemeMode) var preferredThemeMode
     @Default(.accentColor) var accentColor
     @Default(.appTheme) var appTheme
@@ -50,7 +51,7 @@ struct SettingsView: View {
                 Group {
                     Toggle("Swipe anywhere to go back", isOn: $swipeAnywhere)
                     Text("Note: This option will disable swipe gestures on posts and comments.")
-                        .font(.caption)
+                        .font(textSizePreference.caption)
                         .foregroundColor(.secondary)
                         .padding(.top, 4)
                 }
@@ -103,7 +104,11 @@ struct SettingsView: View {
                 Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
                 Toggle("Highlight author with accent color", isOn: $appTheme.highlightAuthor)
                 
-                NavigationLink(destination: ChangeAppIconView(appTheme: appTheme), label: {
+                NavigationLink(destination: TextSizeAdjustmentView()) {
+                    Text("Adjust Font Size")
+                }
+                
+                NavigationLink(destination: ChangeAppIconView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
                     HStack{
                         Image(uiImage: UIImage(named: currentAppIcon)!)
                             .resizable()

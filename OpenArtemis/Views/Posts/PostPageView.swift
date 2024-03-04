@@ -16,6 +16,7 @@ struct PostPageView: View {
     let post: Post
     var commentsURLOverride: String?
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     @FetchRequest(
         entity: SavedPost.entity(),
@@ -55,7 +56,7 @@ struct PostPageView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("Post Body")
-                                    .font(.caption)
+                                    .font(textSizePreference.caption)
                                     .foregroundStyle(.secondary)
                                 Spacer()
                             }
@@ -84,7 +85,7 @@ struct PostPageView: View {
                                 .contentShape(Rectangle())
                             }
                             .padding(8)
-                            .font(.caption)
+                            .font(textSizePreference.caption)
                             .italic()
                             .foregroundStyle(Color.artemisAccent)
                             .disabled(isLoadAllCommentsPressed)
@@ -169,7 +170,7 @@ struct PostPageView: View {
                             }
                         }
                     } else {
-                        LoadingView(loadingText: "Loading comments...", isLoading: isLoading)
+                        LoadingView(loadingText: "Loading comments...", isLoading: isLoading, textSizePreference: textSizePreference)
                     }
                 }
                 .commentSkipper(

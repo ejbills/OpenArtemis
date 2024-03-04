@@ -14,6 +14,7 @@ extension Defaults.Keys {
     static let preferredThemeMode = Key<PreferredThemeMode>("preferredThemeMode", default: .automatic)
     static let accentColor = Key<Color>("accentColor", default: Color.blue)
     static let appTheme = Key<AppThemeSettings>("appTheme", default: AppThemeSettings())
+    static let textSizePreference = Key<TextSizePreference>("textSizePreference", default: TextSizePreference())
     
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("accentColor", default: true)
@@ -75,4 +76,65 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
 
     var lightBackground: Color = .white
     var darkBackground: Color = Color(hex: "111112")
+}
+
+struct TextSizePreference: Codable, Defaults.Serializable {
+    var titleFontSize: CGFloat = 28
+    var title2FontSize: CGFloat = 22
+    var title3FontSize: CGFloat = 20
+    var headlineFontSize: CGFloat = 17
+    var subheadlineFontSize: CGFloat = 15
+    var bodyFontSize: CGFloat = 17
+    var calloutFontSize: CGFloat = 16
+    var captionFontSize: CGFloat = 12
+    var caption2FontSize: CGFloat = 11
+    var footnoteFontSize: CGFloat = 13
+    
+    var multiplier: CGFloat = 1
+    
+    // Computed properties to generate Font instances with default Apple font
+    var title: Font {
+        .system(size: titleFontSize)
+    }
+    
+    var title2: Font {
+        .system(size: title2FontSize)
+    }
+    
+    var title3: Font {
+        .system(size: title3FontSize)
+    }
+    
+    var headline: Font {
+        .system(size: headlineFontSize)
+    }
+    
+    var subheadline: Font {
+        .system(size: subheadlineFontSize)
+    }
+    
+    var body: Font {
+        .system(size: bodyFontSize)
+    }
+    
+    var callout: Font {
+        .system(size: calloutFontSize)
+    }
+    
+    var caption: Font {
+        .system(size: captionFontSize)
+    }
+    
+    var caption2: Font {
+        .system(size: caption2FontSize)
+    }
+    
+    var footnote: Font {
+        .system(size: footnoteFontSize)
+    }
+    
+    // Generate Font instance with size multiplied by the multiplier
+    func sizeWithMult(fontSize: CGFloat) -> Font {
+        return .system(size: fontSize * multiplier)
+    }
 }

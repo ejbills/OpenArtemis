@@ -14,6 +14,7 @@ struct ProfileView: View {
     
     let username: String
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     @FetchRequest(
         entity: SavedPost.entity(),
@@ -66,7 +67,7 @@ struct ProfileView: View {
                     }
                 }
             } else {
-                LoadingView(loadingText: "Loading profile...", isLoading: isLoading)
+                LoadingView(loadingText: "Loading profile...", isLoading: isLoading, textSizePreference: textSizePreference)
             }
         }
         .navigationTitle(username)

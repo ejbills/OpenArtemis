@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct NothingHereView: View {
+    let textSizePreference: TextSizePreference
     var body: some View {
         VStack {
             Spacer()
             Text("Nothing to see here! Please make a selection in the sidebar.")
-                .font(.headline)
+                .font(textSizePreference.headline)
                 .multilineTextAlignment(.center)
                 .padding()
             Spacer()

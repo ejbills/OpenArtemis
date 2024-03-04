@@ -17,6 +17,7 @@ struct MediaView: View {
     let thumbnailURL: String?
     let title: String
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     @Binding var mediaSize: CGSize
     
@@ -66,7 +67,7 @@ struct MediaView: View {
                 if appTheme.compactMode {
                     Image(systemName: "line.horizontal.3")
                         .padding()
-                        .font(.largeTitle)
+                        .font(textSizePreference.largeTitle)
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
                 // else, literally do nothing so it takes up no space :D

@@ -24,6 +24,7 @@ struct SubredditDrawerView: View {
     @State private var editMode = false
     
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         VStack {

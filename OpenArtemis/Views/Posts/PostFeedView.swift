@@ -16,6 +16,7 @@ struct PostFeedView: View {
     let forceAuthorToDisplay: Bool
     let isRead: Bool
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     @State private var mediaSize: CGSize = .zero
     @State private var metadataThumbnailURL: String? = nil
     @State private var hasAppeared: Bool = false

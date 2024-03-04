@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Defaults
 
 // Reddit backend
 let baseRedditURL = "https://old.reddit.com"

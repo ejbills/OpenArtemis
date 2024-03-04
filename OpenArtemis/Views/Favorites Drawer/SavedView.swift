@@ -24,6 +24,7 @@ struct SavedView: View {
     @State var mixedMediaLinks: [MixedMedia] = []
     
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         if mixedMediaLinks.isEmpty {
@@ -95,6 +96,7 @@ struct MixedContentView: View {
     let content: MixedMedia
     let isRead: Bool
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
         
     @State var isLoadingCommentPost: Bool = false
     

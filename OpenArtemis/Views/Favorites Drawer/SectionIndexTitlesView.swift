@@ -10,6 +10,7 @@ import SwiftUI
 struct SectionIndexTitlesView: View {
     let proxy: ScrollViewProxy
     let availChars: [String]
+    let textSizePreference: TextSizePreference
 
     @GestureState private var dragLocation: CGPoint = .zero
     @State private var lastSelectedLabel: String = ""
@@ -19,7 +20,7 @@ struct SectionIndexTitlesView: View {
             ForEach(availChars, id: \.self) { letter in
                 Text(letter)
                     .foregroundStyle(Color.artemisAccent)
-                    .font(.footnote)
+                    .font(textSizePreference.footnote)
                     .offset(
                         x: letter == lastSelectedLabel ? -50 : 0
                     )
