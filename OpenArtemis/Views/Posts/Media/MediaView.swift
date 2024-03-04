@@ -16,6 +16,7 @@ struct MediaView: View {
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
     let title: String
+    let forceCompactMode: Bool
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
@@ -45,8 +46,8 @@ struct MediaView: View {
                     },
                     placeholder: {
                         HStack {
-                            let width: CGFloat = appTheme.compactMode ? roughCompactWidth : mediaSize.width != 0 ? mediaSize.width : roughWidth
-                            let height: CGFloat = appTheme.compactMode ? roughCompactHeight : mediaSize.height != 0 ? mediaSize.height : roughHeight
+                            let width: CGFloat = appTheme.compactMode || forceCompactMode ? roughCompactWidth : mediaSize.width != 0 ? mediaSize.width : roughWidth
+                            let height: CGFloat = appTheme.compactMode || forceCompactMode ? roughCompactHeight : mediaSize.height != 0 ? mediaSize.height : roughHeight
 
                             Spacer()
                             ProgressView()
@@ -64,21 +65,21 @@ struct MediaView: View {
                 .cornerRadius(6)
                 
             case "text":
-                if appTheme.compactMode {
+                if appTheme.compactMode || forceCompactMode {
                     Image(systemName: "line.horizontal.3")
                         .padding()
-                        .font(textSizePreference.sizeWithMult(fontSize: 20))
+                        .font(.largeTitle)
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
                 // else, literally do nothing so it takes up no space :D
             default:
-                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, appTheme: appTheme, textSizePreference: textSizePreference)
+                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
             }
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(tagBgColor)
-                .opacity(appTheme.compactMode ? 1 : 0) // only display gray bg in compact mode
+                .opacity(appTheme.compactMode || forceCompactMode ? 1 : 0) // only display gray bg in compact mode
                 .frame(width: roughCompactWidth, height: roughCompactWidth)
         )
     }

@@ -21,6 +21,8 @@ struct SubredditFeedView: View {
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
+    @State private var forceCompactMode: Bool = false
+    
     @State private var posts: [Post] = []
     @State private var postIDs = LimitedSet<String>(maxLength: 300)
     @State private var lastPostAfter: String = ""
@@ -60,12 +62,12 @@ struct SubredditFeedView: View {
                         
                         if hideReadPosts {
                             if (!isRead || isSaved) {
-                                PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                                PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
                                     handlePostTap(post, isRead: isRead)
                                 }
                             }
                         } else {
-                            PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
                                 handlePostTap(post, isRead: isRead)
                             }
                         }
@@ -100,6 +102,11 @@ struct SubredditFeedView: View {
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            Button(action: { forceCompactMode.toggle() }, label: {
+                Image(systemName: appTheme.compactMode ? "rectangle.expand.vertical" : (forceCompactMode ? "rectangle.compress.vertical" : "rectangle.expand.vertical"))
+            })
+            .disabled(appTheme.compactMode)
+            
             buildSortingMenu()
         }
         .onAppear {
@@ -141,6 +148,7 @@ struct SubredditFeedView: View {
     private struct PostFeedItemView: View {
         let post: Post
         let isRead: Bool
+        let forceCompactMode: Bool
         let isSaved: Bool
         let appTheme: AppThemeSettings
         let textSizePreference: TextSizePreference
@@ -148,7 +156,7 @@ struct SubredditFeedView: View {
         
         var body: some View {
             Group {
-                PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
+                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
                     .savedIndicator(isSaved)
                     .contentShape(Rectangle())
                     .onTapGesture {

@@ -14,6 +14,7 @@ struct PostFeedView: View {
     
     let post: Post
     let forceAuthorToDisplay: Bool
+    let forceCompactMode: Bool
     let isRead: Bool
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
@@ -21,9 +22,10 @@ struct PostFeedView: View {
     @State private var metadataThumbnailURL: String? = nil
     @State private var hasAppeared: Bool = false
     
-    init(post: Post, forceAuthorToDisplay: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
+    init(post: Post, forceAuthorToDisplay: Bool = false, forceCompactMode: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
         self.post = post
         self.forceAuthorToDisplay = forceAuthorToDisplay
+        self.forceCompactMode = forceCompactMode
         self.isRead = isRead
         self.appTheme = appTheme
         self.textSizePreference = textSizePreference
@@ -81,7 +83,7 @@ struct PostFeedView: View {
 
     @ViewBuilder
     private func renderContent() -> some View {
-        if !appTheme.compactMode {
+        if !appTheme.compactMode && !forceCompactMode {
             renderNormalContent()
         } else {
             renderCompactContent()
@@ -92,7 +94,7 @@ struct PostFeedView: View {
         VStack(alignment: .leading, spacing: 8) {
             TitleTagView(title: post.title, domain: "", tag: post.tag, textSizePreference: textSizePreference)
                         
-            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
             
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme, textSizePreference: textSizePreference)
         }
@@ -101,7 +103,7 @@ struct PostFeedView: View {
     private func renderCompactContent() -> some View {
         HStack(alignment: .top) {
             VStack {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
             }
             
