@@ -42,12 +42,13 @@ struct SavedView: View {
             }
             
         } else {
-            ThemedList(appTheme: appTheme, stripStyling: true) {
+            ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
                 ContentListView(
                     content: $mixedMediaLinks,
                     savedPosts: savedPosts,
                     savedComments: savedComments,
                     appTheme: appTheme,
+                    textSizePreference: textSizePreference,
                     preventRead: true
                 )
             }
@@ -100,16 +101,17 @@ struct MixedContentView: View {
         
     @State var isLoadingCommentPost: Bool = false
     
-    init(content: MixedMedia, isRead: Bool = false, appTheme: AppThemeSettings) {
+    init(content: MixedMedia, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
         self.content = content
         self.isRead = isRead
         self.appTheme = appTheme
+        self.textSizePreference = textSizePreference
     }
     
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+            PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
                 .onTapGesture {
                     coordinator.path.append(PostResponse(post: post))
                     
@@ -118,7 +120,7 @@ struct MixedContentView: View {
                     }
                 }
         case .comment(let comment, _):
-            CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme)
+            CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme, textSizePreference: textSizePreference)
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)
                 .gestureActions(primaryLeadingAction: GestureAction(symbol: .init(emptyName: "star", fillName: "star.fill"), color: .green, action: {
                     CommentUtils.shared.toggleSaved(context: managedObjectContext, comment: comment)

@@ -12,9 +12,11 @@ struct TitleTagView: View {
     let title: String
     let domain: String
     let tag: String
+    let textSizePreference: TextSizePreference
     
     var body: some View {
         Text(attributedString)
+            .font(textSizePreference.title)
     }
     
     private var attributedString: AttributedString {
@@ -31,9 +33,10 @@ struct TitleTagView: View {
         
         if let range = attributedString.range(of: domainAndTag, options: .backwards) {
             attributedString[range].foregroundColor = .secondary
-            attributedString[range].font = .footnote
+            attributedString[range].font = textSizePreference.tag
             
-            let middleOffset = (UIFont.preferredFont(forTextStyle: .body).capHeight - UIFont.preferredFont(forTextStyle: .footnote).capHeight) / 2
+            let middleOffset = (UIFont.systemFont(ofSize: textSizePreference.bodyFontSize).capHeight -
+                                UIFont.systemFont(ofSize: textSizePreference.tagFontSize).capHeight) / 2
             attributedString[range].baselineOffset = middleOffset
         }
 

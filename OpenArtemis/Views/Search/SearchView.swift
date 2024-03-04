@@ -38,7 +38,7 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 0) {
             let isSubredditSearch = searchType == "sr"
-            ThemedList(appTheme: appTheme, stripStyling: shouldApplyStripStyling(isSubredditSearch)) {
+            ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: shouldApplyStripStyling(isSubredditSearch)) {
                 if !isLoading {
                     if shouldShowFilterView(isSubredditSearch) {
                         FilterView(selectedSortOption: $selectedSortOption, selectedTopOption: $selectedTopOption, performSearch: performSearch)
@@ -71,6 +71,7 @@ struct SearchView: View {
                             readPosts: readPosts,
                             savedPosts: savedPosts,
                             appTheme: appTheme,
+                            textSizePreference: textSizePreference,
                             preventDivider: isSubredditSearch
                         )
                     }

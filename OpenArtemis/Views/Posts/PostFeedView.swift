@@ -21,11 +21,12 @@ struct PostFeedView: View {
     @State private var metadataThumbnailURL: String? = nil
     @State private var hasAppeared: Bool = false
     
-    init(post: Post, forceAuthorToDisplay: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings) {
+    init(post: Post, forceAuthorToDisplay: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
         self.post = post
         self.forceAuthorToDisplay = forceAuthorToDisplay
         self.isRead = isRead
         self.appTheme = appTheme
+        self.textSizePreference = textSizePreference
     }
     
     var body: some View {
@@ -89,24 +90,25 @@ struct PostFeedView: View {
 
     private func renderNormalContent() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            TitleTagView(title: post.title, domain: "", tag: post.tag)
+            TitleTagView(title: post.title, domain: "", tag: post.tag, textSizePreference: textSizePreference)
                         
-            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
+            MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
             
-            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme)
+            PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme, textSizePreference: textSizePreference)
         }
     }
 
     private func renderCompactContent() -> some View {
         HStack(alignment: .top) {
             VStack {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL, tag: post.tag)
-                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay,  appTheme: appTheme)
+                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL, 
+                             tag: post.tag, textSizePreference: textSizePreference)
+                PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay,  appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }

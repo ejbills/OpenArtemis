@@ -13,7 +13,7 @@ struct NothingHereView: View {
         VStack {
             Spacer()
             Text("Nothing to see here! Please make a selection in the sidebar.")
-                .font(textSizePreference.headline)
+                .font(textSizePreference.title)
                 .multilineTextAlignment(.center)
                 .padding()
             Spacer()

@@ -44,12 +44,12 @@ struct PostPageView: View {
     var body: some View {
         GeometryReader{ proxy in
             ScrollViewReader { reader in
-                ThemedList(appTheme: appTheme, stripStyling: true) {
+                ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
                     var isSaved: Bool {
                         savedPosts.contains(where: { $0.id == post.id })
                     }
                     
-                    PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme)
+                    PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme, textSizePreference: textSizePreference)
                         .savedIndicator(isSaved)
                     
                     if let postBody = postBody {
@@ -62,16 +62,13 @@ struct PostPageView: View {
                             }
                             
                             Markdown(postBody)
-                                .markdownTheme(.artemisMarkdown(fontSize: 16))
+                                .markdownTheme(.artemisMarkdown(fontSize: textSizePreference.bodyFontSize))
                         }
-                        .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
-                        .background(tagBgColor)
-                        .cornerRadius(6)
-                        .padding(.horizontal, 8)
-                        .padding(.bottom, 8)
+                        .padding(EdgeInsets(top: 0, leading: 8, bottom: 8, trailing: 8))
                     }
                     
-                    Divider()
+                    DividerView(frameHeight: 10, appTheme: appTheme)
+                        .padding(.bottom, 8)
                     
                     if !comments.isEmpty {
                         if commentsURLOverride != nil && !isLoadAllCommentsPressed {
@@ -105,7 +102,8 @@ struct PostPageView: View {
                                                 numberOfChildren: comment.isRootCollapsed ?
                                                 CommentUtils.shared.getNumberOfDescendants(for: comment, in: comments) : 0,
                                                 postAuthor: post.author,
-                                                appTheme: appTheme)
+                                                appTheme: appTheme,
+                                                textSizePreference: textSizePreference)
                                     .frame(maxWidth: .infinity)
                                     .padding(.leading, CGFloat(comment.depth) * 10)
                                 }

@@ -20,13 +20,14 @@ struct SectionIndexTitlesView: View {
             ForEach(availChars, id: \.self) { letter in
                 Text(letter)
                     .foregroundStyle(Color.artemisAccent)
-                    .font(textSizePreference.footnote)
+                    .font(textSizePreference.caption)
                     .offset(
                         x: letter == lastSelectedLabel ? -50 : 0
                     )
                     .background(dragObserver(label: letter))
                     .contentShape(Rectangle())
                     .frame(minWidth: 15, alignment: .center)
+                    .increaseHitboxBy(2)
             }
         }
         .background(

@@ -11,23 +11,24 @@ import Defaults
 
 struct HandleDeepLinksDisplay: ViewModifier {
     @Default(.appTheme) var appTheme
+    @Default(.textSizePreference) var textSizePreference
     
     func body(content: Content) -> some View {
         content
             // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
                 if response.subredditName == "Saved" {
-                    SavedView(appTheme: appTheme)
+                    SavedView(appTheme: appTheme, textSizePreference: textSizePreference)
                 } else {
-                    SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride, appTheme: appTheme)
+                    SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride, appTheme: appTheme, textSizePreference: textSizePreference)
                 }
                 
             }
             .navigationDestination(for: ProfileResponse.self) { response in
-                ProfileView(username: response.username, appTheme: appTheme)
+                ProfileView(username: response.username, appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .navigationDestination(for: PostResponse.self) { response in
-                PostPageView(post: response.post, commentsURLOverride: response.commentsURLOverride, appTheme: appTheme)
+                PostPageView(post: response.post, commentsURLOverride: response.commentsURLOverride, appTheme: appTheme, textSizePreference: textSizePreference)
             }
     }
 }

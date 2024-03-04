@@ -19,7 +19,7 @@ struct PrivacyTab: View {
     let textSizePreference: TextSizePreference
     
     var body: some View {
-        ThemedList(appTheme: appTheme) {
+        ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             
             if trackStats {
                 Section{
@@ -138,7 +138,7 @@ struct RedirectElement: View {
                 Text(redirectName)
                 Spacer()
             }
-            .font(textSizePreference.caption)
+            .font(.caption)
             .opacity(0.5)
             TextField(text: $text, label: {
                 Text(redirectName)

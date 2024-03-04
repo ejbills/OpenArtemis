@@ -40,14 +40,15 @@ struct ProfileView: View {
     @State private var retryCount: Int = 0
 
     var body: some View {
-        ThemedList(appTheme: appTheme, stripStyling: true) {
+        ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
             if !mixedMedia.isEmpty {
                 ContentListView(
                     content: $mixedMedia,
                     readPosts: readPosts,
                     savedPosts: savedPosts,
                     savedComments: savedComments,
-                    appTheme: appTheme
+                    appTheme: appTheme,
+                    textSizePreference: textSizePreference
                 )
                 
                 Rectangle()

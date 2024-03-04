@@ -28,7 +28,7 @@ struct OpenArtemisApp: App {
                 .accentColor(Color.artemisAccent)
                 .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
                 .sheet(isPresented: $showingOOBE){
-                    OnboardingView(appTheme: appTheme)
+                    OnboardingView(appTheme: appTheme, textSizePreference: textSizePreference)
                 }
         }
         .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -88,7 +88,7 @@ struct ContentView: View {
             NavigationStackWrapper(tabCoordinator: nav, content: content)
         } else {
             NavigationSplitViewWrapper(tabCoordinator: nav, sidebar: content) {
-                NothingHereView()
+                NothingHereView(textSizePreference: textSizePreference)
             }
         }
     }

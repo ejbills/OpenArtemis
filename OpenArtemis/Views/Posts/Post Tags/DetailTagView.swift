@@ -16,12 +16,13 @@ struct DetailTagView: View {
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
-    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings) {
+    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
         self.icon = icon
         self.data = data
         self.color = color
         self.paddingMultiplier = paddingMultiplier
         self.appTheme = appTheme
+        self.textSizePreference = textSizePreference
     }
     
     var body: some View {
@@ -34,7 +35,7 @@ struct DetailTagView: View {
             }
             
             Text(data)
-                .font(textSizePreference.footnote)
+                .font(textSizePreference.tag)
                 .lineLimit(1)
         }
         .padding(.horizontal, 4 * (paddingMultiplier ?? 1))

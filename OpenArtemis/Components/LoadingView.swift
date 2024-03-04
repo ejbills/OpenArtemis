@@ -23,7 +23,7 @@ struct LoadingView: View {
             Spacer()
         }
         .padding(6)
-        .font(textSizePreference.subheadline)
+        .font(textSizePreference.body)
         .italic()
         .foregroundStyle(.secondary)
         .id(UUID())

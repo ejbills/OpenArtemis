@@ -13,7 +13,7 @@ struct ChangeAppIconView: View {
     let textSizePreference: TextSizePreference
     @State var currentAppicon: String = "Default"
     var body: some View {
-        ThemedList(appTheme: appTheme) {
+        ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             ForEach(appIconManager.getIcons().sorted(), id: \.self){ icon in
                 AppIconElement(icon: icon, textSizePreference: textSizePreference, currentAppIcon: $currentAppicon)
             }
@@ -37,7 +37,7 @@ struct AppIconElement: View {
                 .frame(width: 48, height: 48)
                 .mask(RoundedRectangle(cornerSize: CGSize(width: 15, height: 15)))
             Text(icon.localizedCapitalized)
-                .font(textSizePreference.headline)
+                .font(textSizePreference.title)
             Spacer()
             
             if currentAppIcon == icon {

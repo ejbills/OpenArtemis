@@ -46,7 +46,7 @@ struct SettingsView: View {
     @State var toastIcon: String = "checkmark.circle.fill"
     @State private var imageAnalyzerSupport: Bool = true
     var body: some View {
-        ThemedList(appTheme: appTheme) {
+        ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             Section("General") {
                 Group {
                     Toggle("Swipe anywhere to go back", isOn: $swipeAnywhere)
@@ -104,7 +104,7 @@ struct SettingsView: View {
                 Toggle("Highlight subreddit with accent color", isOn: $appTheme.highlightSubreddit)
                 Toggle("Highlight author with accent color", isOn: $appTheme.highlightAuthor)
                 
-                NavigationLink(destination: TextSizeAdjustmentView()) {
+                NavigationLink(destination: TextSizeAdjustmentView(appTheme: appTheme)) {
                     Text("Adjust Font Size")
                 }
                 
@@ -161,7 +161,7 @@ struct SettingsView: View {
                     }
                 })
                 .sheet(isPresented: $showingURLImportSheet, content: {
-                    ImportURLSheet(showingThisSheet: $showingURLImportSheet, appTheme: appTheme)
+                    ImportURLSheet(showingThisSheet: $showingURLImportSheet, appTheme: appTheme, textSizePreference: textSizePreference)
                     
                 })
                 .fileMover(isPresented: $presentingFileMover, file: URL(string: exportedURL ?? ""), onCompletion: { _ in })

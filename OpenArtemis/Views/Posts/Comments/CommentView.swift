@@ -45,7 +45,7 @@ struct CommentView: View {
                 
                 VStack(alignment: .leading) {
                     HStack(spacing: 4) {
-                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme)
+                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme, textSizePreference: textSizePreference)
                             .onTapGesture {
                                 coordinator.path.append(ProfileResponse(username: comment.author))
                             }
@@ -53,20 +53,20 @@ struct CommentView: View {
                                 commentAuthorColor // assign accent color if comment author is also post author
                             )
 
-                        DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time), appTheme: appTheme)
+                        DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time), appTheme: appTheme, textSizePreference: textSizePreference)
                         
                         Spacer()
-                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]", appTheme: appTheme)
+                        DetailTagView(icon: "arrow.up", data: Int(comment.score)?.roundedWithAbbreviations ?? "[score hidden]", appTheme: appTheme, textSizePreference: textSizePreference)
                         
                         if comment.isRootCollapsed {
-                            DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)", appTheme: appTheme)
+                            DetailTagView(icon: "chevron.down", data: "\(numberOfChildren)", appTheme: appTheme, textSizePreference: textSizePreference)
                         }
                     }
                     .foregroundStyle(appTheme.tagBackground ? .primary : .secondary)
                     
                     if !comment.isRootCollapsed {
                         Markdown(comment.body.isEmpty ? "[deleted]" : comment.body)
-                            .markdownTheme(.artemisMarkdown(fontSize: 16))
+                            .markdownTheme(.artemisMarkdown(fontSize: textSizePreference.bodyFontSize))
                     }
                 }
             }            

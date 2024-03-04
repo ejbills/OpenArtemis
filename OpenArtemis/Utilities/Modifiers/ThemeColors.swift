@@ -34,7 +34,6 @@ struct BackgroundModifier: ViewModifier {
     let isDarker: Bool
     let isListRow: Bool
     let appTheme: AppThemeSettings
-    let textSizePreference: TextSizePreference
 
     private func calculateBackgroundColor() -> Color {
         var backgroundColor: Color

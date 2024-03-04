@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ThemedList<Content: View>: View {
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     let content: () -> Content
     let stripStyling: Bool
 
-    init(appTheme: AppThemeSettings, stripStyling: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+    init(appTheme: AppThemeSettings, textSizePreference: TextSizePreference, stripStyling: Bool = false, @ViewBuilder content: @escaping () -> Content) {
         self.appTheme = appTheme
+        self.textSizePreference = textSizePreference
         self.stripStyling = stripStyling
         self.content = content
     }
@@ -26,6 +28,7 @@ struct ThemedList<Content: View>: View {
                         .themedBackground(isListRow: true, appTheme: appTheme)
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
+                        .font(textSizePreference.body)
                 }
                 .scrollContentBackground(.hidden)
                 .listStyle(.plain)
@@ -34,6 +37,7 @@ struct ThemedList<Content: View>: View {
                 List {
                     content()
                         .themedBackground(isListRow: true, appTheme: appTheme)
+                        .font(textSizePreference.body)
                 }
                 .scrollContentBackground(.hidden)
                 .listSectionSpacing(2)

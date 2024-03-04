@@ -68,13 +68,13 @@ struct EmbeddedMultiMediaView: View {
             if !appTheme.compactMode {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Open \(determinedType) media")
-                        .font(textSizePreference.headline)
+                        .font(textSizePreference.body)
                         .fontWeight(.semibold)
                         .lineLimit(1)
                         .foregroundColor(.primary)
                     
                     Text(appTheme.showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL)
-                        .font(textSizePreference.callout)
+                        .font(textSizePreference.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
                         .italic()

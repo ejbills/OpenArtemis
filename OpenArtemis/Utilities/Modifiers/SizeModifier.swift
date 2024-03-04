@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct HeightPreferenceKey : PreferenceKey {
     
@@ -70,3 +71,10 @@ extension View {
     
 }
 
+extension UIFont {
+    func capHeight(forFontSize fontSize: CGFloat) -> CGFloat? {
+        let descriptor = fontDescriptor.withSize(fontSize)
+        let font = UIFont(descriptor: descriptor, size: fontSize)
+        return font.capHeight
+    }
+}

@@ -30,6 +30,7 @@ struct CommentSkipper: ViewModifier {
                             Label("Jump to Next Comment", systemImage: "chevron.down")
                                 .labelStyle(.iconOnly)
                         }
+                        .increaseHitboxBy(2.5)
                         .padding()
                         .background {
                             Circle()

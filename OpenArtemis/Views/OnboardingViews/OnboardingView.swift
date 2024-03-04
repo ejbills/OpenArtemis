@@ -13,14 +13,15 @@ struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @Default(.showingOOBE) var showingOOBE
     let appTheme: AppThemeSettings
+    let textSizePreference: TextSizePreference
     var body: some View {
         ZStack{
             VStack {
                 switch currentPage {
                 case 0: OOBE_WelcomeView()
-                case 1: OOBE_PrivacySelector(appTheme: appTheme)
+                case 1: OOBE_PrivacySelector(appTheme: appTheme, textSizePreference: textSizePreference)
                 case 2: OOBE_SubsImporter()
-                case 3: ImportURLSheet(showingThisSheet: $done, appTheme: appTheme)
+                case 3: ImportURLSheet(showingThisSheet: $done, appTheme: appTheme, textSizePreference: textSizePreference)
                 default: OOBE_WelcomeView()
                 }
                 

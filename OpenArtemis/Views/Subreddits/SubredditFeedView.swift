@@ -48,7 +48,7 @@ struct SubredditFeedView: View {
     // MARK: - Body
     var body: some View {
         Group {
-            ThemedList(appTheme: appTheme, stripStyling: true) {
+            ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
                 if !posts.isEmpty && searchTerm.isEmpty {
                     ForEach(posts, id: \.id) { post in
                         var isRead: Bool {
@@ -60,12 +60,12 @@ struct SubredditFeedView: View {
                         
                         if hideReadPosts {
                             if (!isRead || isSaved) {
-                                PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
+                                PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
                                     handlePostTap(post, isRead: isRead)
                                 }
                             }
                         } else {
-                            PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme) {
+                            PostFeedItemView(post: post, isRead: isRead, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
                                 handlePostTap(post, isRead: isRead)
                             }
                         }
@@ -91,7 +91,7 @@ struct SubredditFeedView: View {
                     FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
                         clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
                     }
-                    ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme)
+                    ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme, textSizePreference: textSizePreference)
                 } else {
                     LoadingView(loadingText: "Loading feed...", isLoading: isLoading, textSizePreference: textSizePreference)
                 }
@@ -148,7 +148,7 @@ struct SubredditFeedView: View {
         
         var body: some View {
             Group {
-                PostFeedView(post: post, isRead: isRead, appTheme: appTheme)
+                PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
                     .savedIndicator(isSaved)
                     .contentShape(Rectangle())
                     .onTapGesture {

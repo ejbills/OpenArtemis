@@ -67,12 +67,12 @@ struct MediaView: View {
                 if appTheme.compactMode {
                     Image(systemName: "line.horizontal.3")
                         .padding()
-                        .font(textSizePreference.largeTitle)
+                        .font(textSizePreference.sizeWithMult(fontSize: 20))
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
                 // else, literally do nothing so it takes up no space :D
             default:
-                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, appTheme: appTheme)
+                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, appTheme: appTheme, textSizePreference: textSizePreference)
             }
         }
         .background(

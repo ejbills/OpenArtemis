@@ -21,7 +21,7 @@ struct ImportURLSheet: View {
     var body: some View {
         ZStack {
             if displayImport {
-                ThemedList(appTheme: appTheme) {
+                ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
                     Spacer()
                         .frame(height: 50)
                     

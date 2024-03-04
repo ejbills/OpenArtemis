@@ -29,7 +29,7 @@ struct SubredditDrawerView: View {
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                ThemedList(appTheme: appTheme) {
+                ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
                     Section(header: Text("Defaults")) {
                         DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
                             .background(
@@ -131,7 +131,7 @@ struct SubredditDrawerView: View {
                 .overlay(
                     HStack {
                         Spacer()
-                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr)
+                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr, textSizePreference: textSizePreference)
                             .padding(.trailing, 4)
                     }
                 )

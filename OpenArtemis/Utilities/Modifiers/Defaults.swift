@@ -79,16 +79,10 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
 }
 
 struct TextSizePreference: Codable, Defaults.Serializable {
-    var titleFontSize: CGFloat = 28
-    var title2FontSize: CGFloat = 22
-    var title3FontSize: CGFloat = 20
-    var headlineFontSize: CGFloat = 17
-    var subheadlineFontSize: CGFloat = 15
-    var bodyFontSize: CGFloat = 17
-    var calloutFontSize: CGFloat = 16
+    var titleFontSize: CGFloat = 16
+    var bodyFontSize: CGFloat = 14
     var captionFontSize: CGFloat = 12
-    var caption2FontSize: CGFloat = 11
-    var footnoteFontSize: CGFloat = 13
+    var tagFontSize: CGFloat = 12
     
     var multiplier: CGFloat = 1
     
@@ -97,40 +91,16 @@ struct TextSizePreference: Codable, Defaults.Serializable {
         .system(size: titleFontSize)
     }
     
-    var title2: Font {
-        .system(size: title2FontSize)
-    }
-    
-    var title3: Font {
-        .system(size: title3FontSize)
-    }
-    
-    var headline: Font {
-        .system(size: headlineFontSize)
-    }
-    
-    var subheadline: Font {
-        .system(size: subheadlineFontSize)
-    }
-    
     var body: Font {
         .system(size: bodyFontSize)
-    }
-    
-    var callout: Font {
-        .system(size: calloutFontSize)
     }
     
     var caption: Font {
         .system(size: captionFontSize)
     }
     
-    var caption2: Font {
-        .system(size: caption2FontSize)
-    }
-    
-    var footnote: Font {
-        .system(size: footnoteFontSize)
+    var tag: Font {
+        .system(size: tagFontSize)
     }
     
     // Generate Font instance with size multiplied by the multiplier

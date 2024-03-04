@@ -13,6 +13,7 @@ struct ContentListView: View {
     var savedPosts: FetchedResults<SavedPost>?
     var savedComments: FetchedResults<SavedComment>?
     var appTheme: AppThemeSettings
+    var textSizePreference: TextSizePreference
     var onListElementAppearance: ((MixedMedia) -> Void)?
     var preventRead: Bool = false
     var preventDivider: Bool = false
@@ -43,7 +44,7 @@ struct ContentListView: View {
                 }
             }
 
-            MixedContentView(content: result, isRead: isRead, appTheme: appTheme)
+            MixedContentView(content: result, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
                 .savedIndicator(isSaved)
                 .onAppear {
                     onListElementAppearance?(result)
