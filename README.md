@@ -13,7 +13,7 @@ OpenArtemis is a privacy-focused, read-only web scraping Reddit client built wit
 
 ## Discord
 
-Chat with us on your [discord server](https://discord.gg/4b9H8BtF2C).
+Chat with us on your [discord server](https://discord.gg/lo-cafe).
 
 ## How do I open a feature request or a bug report?
 *Please note, we use github issues to track both bug reports and feature requests! To do so, simply navigate to the Issues tab on the GitHub repository, click on the "New Issue" button, and use the provided template to fill in the details.*
