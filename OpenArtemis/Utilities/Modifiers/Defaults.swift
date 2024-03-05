@@ -79,7 +79,7 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
 
 struct TextSizePreference: Codable, Defaults.Serializable {
     var titleFontSize: CGFloat = 16
-    var bodyFontSize: CGFloat = 14
+    var bodyFontSize: CGFloat = 16
     var captionFontSize: CGFloat = 12
     var tagFontSize: CGFloat = 12
     
