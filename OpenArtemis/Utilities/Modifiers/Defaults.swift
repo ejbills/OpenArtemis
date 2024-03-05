@@ -30,7 +30,6 @@ extension Defaults.Keys {
     
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
-    static let twitterRedirect = Key<String>("twitterRedirect", default: "nitter.net")
     static let mediumRedirect = Key<String>("mediumRedirect", default: "scribe.rip")
     static let imgurRedirect = Key<String>("imgurRedirect", default: "rimgo.hostux.net")
     

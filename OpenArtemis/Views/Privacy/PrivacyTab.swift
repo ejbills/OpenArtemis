@@ -53,7 +53,6 @@ struct RedirectWebsitesView: View {
     // Redirects
     
     @Default(.youtubeRedirect) var youtubeRedirect
-    @Default(.twitterRedirect) var twitterRedirect
     @Default(.mediumRedirect) var mediumRedirect
     @Default(.imgurRedirect) var imgurRedirect
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
@@ -73,7 +72,6 @@ struct RedirectWebsitesView: View {
             
             if redirectToPrivateSites {
                 RedirectElement(text: $youtubeRedirect, originalName: "Youtube", redirectName: "Invidious")
-                RedirectElement(text: $twitterRedirect, originalName: "Twitter / X", redirectName: "Nitter")
                 RedirectElement(text: $mediumRedirect, originalName: "Medium", redirectName: "Scribe")
                 RedirectElement(text: $imgurRedirect, originalName: "Imgur", redirectName: "Rimgo")
             }

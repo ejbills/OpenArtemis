@@ -12,7 +12,6 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
     @Default(.redirectToPrivateSites) var redirectToPrivateSites
     
     @Default(.youtubeRedirect) var youtubeRedirect
-    @Default(.twitterRedirect) var twitterRedirect
     @Default(.mediumRedirect) var mediumRedirect
     @Default(.imgurRedirect) var imgurRedirect
     
@@ -22,15 +21,6 @@ private func transformedURL(_ url: String, trackingParamRemover: TrackingParamRe
     if redirectToPrivateSites {
         switch url {
             
-            //TwitterA
-        //TODO: Use the regex (\.|\/)twitter\.com instead of just finding any x.com link
-        case let str where str.contains(try! Regex("(.|/)twitter.com")):
-            privateURL = str.replacingOccurrences(of: "twitter.com", with: twitterRedirect == "" ? "twitter.com" : twitterRedirect) //Instance located in the Netherlands
-            conditionalIncreaseStats()
-        //TODO: Use the regex (\.|\/)x\.com instead of just finding any x.com link
-        case let str where str.contains(try! Regex("(.|/)x.com")):
-            privateURL = str.replacingOccurrences(of: "x.com", with: twitterRedirect == "" ? "x.com" : twitterRedirect)
-            conditionalIncreaseStats()
             //Youtube
         //TODO: Use the regex (\.|\/)youtube\.com instead of just finding any x.com link
         case let str where str.contains(try! Regex("(.|/)youtube.com")):

@@ -14,8 +14,6 @@ final class PrivacyTests: XCTestCase {
     
     func testURLRewrite() throws {
         let urls = [
-            "twitter.com",
-            "x.com",
             "youtu.be/1234",
             "www.youtube.com",
             "youtube.com",
@@ -24,8 +22,6 @@ final class PrivacyTests: XCTestCase {
         ]
         
         let results = [
-            "nitter.net",
-            "nitter.net",
             "yewtu.be/watch?v=1234",
             "yewtu.be",
             "yewtu.be",
