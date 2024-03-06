@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct ReadModifier: ViewModifier {
-    let isRead: Bool
-    func body(content: Content) -> some View {
-        content
-            .opacity(isRead ? 0.55 : 1)
-    }
+  let isRead: Bool
+  func body(content: Content) -> some View {
+    content
+      .compositingGroup()
+      .opacity(isRead ? 0.55 : 1)
+  }
 }
 
 extension View {
-    func markRead(isRead: Bool) -> some View {
-        self.modifier(ReadModifier(isRead: isRead))
-    }
+  func markRead(isRead: Bool) -> some View {
+    self.modifier(ReadModifier(isRead: isRead))
+  }
 }

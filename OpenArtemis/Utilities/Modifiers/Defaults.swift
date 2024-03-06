@@ -78,16 +78,16 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
 }
 
 struct TextSizePreference: Codable, Defaults.Serializable {
-    var titleFontSize: CGFloat = 16
+    var titleFontSize: CGFloat = 18
     var bodyFontSize: CGFloat = 16
-    var captionFontSize: CGFloat = 12
-    var tagFontSize: CGFloat = 12
+    var captionFontSize: CGFloat = 13
+    var tagFontSize: CGFloat = 16
     
     var multiplier: CGFloat = 1
     
     // Computed properties to generate Font instances with default Apple font
     var title: Font {
-        .system(size: titleFontSize)
+      .system(size: titleFontSize, weight: .medium)
     }
     
     var body: Font {
@@ -99,7 +99,7 @@ struct TextSizePreference: Codable, Defaults.Serializable {
     }
     
     var tag: Font {
-        .system(size: tagFontSize)
+      .system(size: tagFontSize, weight: .semibold)
     }
     
     // Generate Font instance with size multiplied by the multiplier

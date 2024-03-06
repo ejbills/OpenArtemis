@@ -17,6 +17,7 @@ struct TitleTagView: View {
     var body: some View {
         Text(attributedString)
             .font(textSizePreference.title)
+            .fontWeight(.medium)
     }
     
     private var attributedString: AttributedString {

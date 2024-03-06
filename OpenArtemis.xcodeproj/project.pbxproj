@@ -98,6 +98,8 @@
 		BBECC0E12B44E30D002FD4B9 /* ContentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBECC0E02B44E30D002FD4B9 /* ContentListView.swift */; };
 		BBF5A0AE2B429279000B3E75 /* NothingHereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */; };
 		BBF5A0B02B43C1E7000B3E75 /* ReadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */; };
+		EC8E17C32B992534008DA49D /* fontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8E17C22B992534008DA49D /* fontSize.swift */; };
+		EC8E17C52B9925CE008DA49D /* PostTagsPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8E17C42B9925CE008DA49D /* PostTagsPill.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -200,6 +202,8 @@
 		BBECC0E02B44E30D002FD4B9 /* ContentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentListView.swift; sourceTree = "<group>"; };
 		BBF5A0AD2B429279000B3E75 /* NothingHereView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NothingHereView.swift; sourceTree = "<group>"; };
 		BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadModifier.swift; sourceTree = "<group>"; };
+		EC8E17C22B992534008DA49D /* fontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fontSize.swift; sourceTree = "<group>"; };
+		EC8E17C42B9925CE008DA49D /* PostTagsPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagsPill.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,6 +431,7 @@
 				65D7E8552B23755A003FF5B5 /* SavedModifier.swift */,
 				BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */,
 				BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */,
+				EC8E17C22B992534008DA49D /* fontSize.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				BB391FA52B1ADD540014FB18 /* DetailTagView.swift */,
 				BBB101CF2B20154600691B2F /* PostDetailsView.swift */,
 				BBACCB3F2B3231E100A9F550 /* TitleTagView.swift */,
+				EC8E17C42B9925CE008DA49D /* PostTagsPill.swift */,
 			);
 			path = "Post Tags";
 			sourceTree = "<group>";
@@ -694,6 +700,7 @@
 				65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */,
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
 				BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */,
+				EC8E17C52B9925CE008DA49D /* PostTagsPill.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
 				653245C32B2AF5D500227019 /* StarsBlinkingView.swift in Sources */,
@@ -721,6 +728,7 @@
 				653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */,
 				65F5959E2B1F3A54005BE493 /* HapticManager.swift in Sources */,
 				65D3DBC82B1B296E00BCCD38 /* AppIconManager.swift in Sources */,
+				EC8E17C32B992534008DA49D /* fontSize.swift in Sources */,
 				BB391FB42B1ADDE70014FB18 /* PostFeedView.swift in Sources */,
 				BB391FAD2B1ADDA00014FB18 /* MediaView.swift in Sources */,
 				65D3DBBE2B1B228300BCCD38 /* ThemeColors.swift in Sources */,
@@ -949,12 +957,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = Z2NNLU4F7U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenArtemis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save photos to your device";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -966,7 +975,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = lo.cafe.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -989,12 +998,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = Z2NNLU4F7U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenArtemis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save photos to your device";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1006,7 +1016,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
+				PRODUCT_BUNDLE_IDENTIFIER = lo.cafe.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

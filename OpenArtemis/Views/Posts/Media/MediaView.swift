@@ -62,7 +62,7 @@ struct MediaView: View {
                 .onTapGesture {
                     ImageViewerController(images: [mediaURL.privateURL], imageTitle: title).present()
                 }
-                .cornerRadius(6)
+//                .cornerRadius(6)
                 
             case "text":
                 if appTheme.compactMode || forceCompactMode {

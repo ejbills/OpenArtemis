@@ -36,7 +36,6 @@ struct PostFeedView: View {
             renderContent()
                 .markRead(isRead: isRead)
         }
-        .padding(8)
         .themedBackground(appTheme: appTheme)
         .onAppear {
             if !hasAppeared {
@@ -91,13 +90,17 @@ struct PostFeedView: View {
     }
 
     private func renderNormalContent() -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
             TitleTagView(title: post.title, domain: "", tag: post.tag, textSizePreference: textSizePreference)
+            .padding(.horizontal, 12)
                         
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+            .frame(maxWidth: .infinity)
             
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, appTheme: appTheme, textSizePreference: textSizePreference)
+            .padding(.horizontal, 12)
         }
+        .padding(.vertical, 16)
     }
 
     private func renderCompactContent() -> some View {

@@ -11,35 +11,24 @@ import Defaults
 struct DetailTagView: View {
     let icon: String?
     let data: String
-    let color: Color?
-    let paddingMultiplier: CGFloat?
+//    let color: Color?
+//    let paddingMultiplier: CGFloat?
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
-    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
-        self.icon = icon
-        self.data = data
-        self.color = color
-        self.paddingMultiplier = paddingMultiplier
-        self.appTheme = appTheme
-        self.textSizePreference = textSizePreference
-    }
-    
     var body: some View {
-        HStack(spacing: 6 * (paddingMultiplier ?? 1)) {
+        HStack(spacing: 4) {
             if let iconString = icon {
                 Image(systemName: iconString)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 10, height: 10)
             }
             
             Text(data)
-                .font(textSizePreference.tag)
                 .lineLimit(1)
         }
-        .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
-        .padding(.vertical, 4 * (paddingMultiplier ?? 1))
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
+        .font(textSizePreference.tag)
+        .foregroundStyle(.blue)
+//        .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
+//        .padding(.vertical, 4 * (paddingMultiplier ?? 1))
+//        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
     }
 }

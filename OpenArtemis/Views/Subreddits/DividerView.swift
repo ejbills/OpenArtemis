@@ -14,10 +14,16 @@ struct DividerView: View {
     
     var body: some View {
         if !appTheme.thinDivider {
-            Rectangle()
-                .fill(Color.gray.opacity(0.15))
-                .frame(height: frameHeight)
-                .edgesIgnoringSafeArea(.all)
+          VStack {
+            Color.primary.opacity(0.05).frame(maxWidth: .infinity, maxHeight: 1)
+            
+            Spacer()
+            
+            Color.primary.opacity(0.05).frame(maxWidth: .infinity, maxHeight: 1)
+          }
+          .frame(height: frameHeight)
+          .background(Rectangle().fill(Color.gray.opacity(0.15)))
+          .edgesIgnoringSafeArea(.all)
         } else {
             Divider()
         }
