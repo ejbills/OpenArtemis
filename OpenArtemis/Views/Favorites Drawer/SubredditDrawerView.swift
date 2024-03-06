@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import CachedImage
 
 struct SubredditDrawerView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -16,8 +17,16 @@ struct SubredditDrawerView: View {
         SortDescriptor(\.name)
     ]) var localFavorites: FetchedResults<LocalSubreddit>
     
+    @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.multiName)
+    ]) var localMultis: FetchedResults<LocalMulti>
+    
     @State private var subredditName = ""
-    @State private var showSaveDialog = false
+    @State private var showSaveSubredditDialog = false
+    
+    @State private var multiName = ""
+    @State private var multiImageURL = ""
+    @State private var showSaveMultiDialog = false
     
     @State private var availableIndexArr: [String] = []
     
@@ -31,40 +40,30 @@ struct SubredditDrawerView: View {
             ScrollViewReader { proxy in
                 ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
                     Section(header: Text("Defaults")) {
-                        DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
-                                    EmptyView()
+                        DefaultFavoritesView(localFavorites: localFavorites)
+                    }
+                    
+                    if !localMultis.isEmpty {
+                        Section(header: Text("Multis")) {
+                            ForEach(localMultis) { multi in
+                                if let navMultiName = multi.multiName {
+                                    let computedName = concatenateFavsForMulti(multiName: navMultiName)
+                                    
+                                    DefaultSubredditRowView(title: navMultiName, iconURL: multi.imageURL,
+                                                            iconColor: getColorFromInputString(computedName), editMode: editMode,
+                                                            removeMulti: {
+                                        SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
+                                    })
+                                    .background(
+                                        NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
+                                            EmptyView()
+                                        }
+                                            .disabled(editMode || computedName.isEmpty)
+                                            .opacity(0)
+                                    )
                                 }
-                                    .opacity(0)
-                            )
-                            .disabledView(disabled: localFavorites.isEmpty)
-                        
-                        
-                        DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: colorPalette[0])
-                            .background(
-                                // highlights button on tap (cant be modifier or inside child view)
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
-                                    EmptyView()
-                                }
-                                    .opacity(0)
-                            )
-                        
-                        DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: colorPalette[2])
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
-                                    EmptyView()
-                                }
-                                    .opacity(0)
-                            )
-                        
-                        DefaultSubredditRowView(title: "Saved", iconSystemName: "bookmark.fill", iconColor: colorPalette[4])
-                            .background(
-                                NavigationLink(value: SubredditFeedResponse(subredditName: "Saved")) {
-                                    EmptyView()
-                                }
-                                    .opacity(0)
-                            )
+                            }
+                        }
                     }
                     
                     Group {
@@ -81,10 +80,10 @@ struct SubredditDrawerView: View {
                                             editMode: editMode,
                                             removeFromSubredditFavorites: {
                                                 removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                            },
-                                            togglePinned: {
+                                            }, togglePinned: {
                                                 togglePinned(subredditName: subreddit.name ?? "")
-                                            }
+                                            }, managedObjectContext: managedObjectContext,
+                                            localMultis: localMultis
                                         )
                                     }
                                 }
@@ -112,10 +111,10 @@ struct SubredditDrawerView: View {
                                         editMode: editMode,
                                         removeFromSubredditFavorites: {
                                             removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                        },
-                                        togglePinned: {
+                                        }, togglePinned: {
                                             togglePinned(subredditName: subreddit.name ?? "")
-                                        }
+                                        }, managedObjectContext: managedObjectContext,
+                                        localMultis: localMultis
                                     )
                                 }
                             }
@@ -149,17 +148,31 @@ struct SubredditDrawerView: View {
                     Text( editMode ? "Done" : "Edit" )
                 }
             }
-            
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    subredditName = ""
-                    showSaveDialog = true
-                }) {
+        }
+        .navigationBarItems(
+            leading: HStack {
+                Menu {
+                    Button(action: {
+                        subredditName = ""
+                        showSaveSubredditDialog = true
+                    }) {
+                        Label("Add subreddit", systemImage: "plus")
+                    }
+                    
+                    Button(action: {
+                        multiName = ""
+                        multiImageURL = ""
+                        showSaveMultiDialog = true
+                    }) {
+                        Label("Add multireddit", systemImage: "square.grid.2x2")
+                    }
+                } label: {
                     Image(systemName: "plus")
                 }
             }
-        }
-        .alert("Add Subreddit", isPresented: $showSaveDialog) {
+        )
+
+        .alert("Add Subreddit", isPresented: $showSaveSubredditDialog) {
             TextField("Subreddit name", text: $subredditName)
             
             Button("Save") {
@@ -168,21 +181,33 @@ struct SubredditDrawerView: View {
                 }
                 
                 visibleSubredditSections()
-                showSaveDialog = false
+                showSaveSubredditDialog = false
             }
             
             Button("Cancel") {
-                showSaveDialog = false
+                showSaveSubredditDialog = false
             }
         } message: {
             Text("Enter the subreddit name you wish to add to your favorites.")
         }
+        .alert("Add Multireddit", isPresented: $showSaveMultiDialog) {
+            TextField("Name", text: $multiName)
+            TextField("Thumbnail image URL (optional)", text: $multiImageURL)
+            
+            Button("Save") {
+                SubredditUtils.shared.saveToMultis(managedObjectContext: managedObjectContext, name: multiName, imageURL: multiImageURL)
+                showSaveMultiDialog = false
+            }
+            
+            Button("Cancel") {
+                showSaveMultiDialog = false
+            }
+        } message: {
+            Text("Enter the multi name and thumbnail image URL (optional) you wish to add to your favorites.")
+        }
     }
     
-    private func concatenateFavoriteSubs() -> String {
-        let favoriteSubs = localFavorites.compactMap { $0.name }
-        return favoriteSubs.joined(separator: "+")
-    }
+    
     
     private func visibleSubredditSections() {
         let unpinnedFavorites = localFavorites.filter { !$0.pinned }
@@ -221,5 +246,15 @@ struct SubredditDrawerView: View {
         }
         
         visibleSubredditSections()
+    }
+    
+    // manage multis
+    private func concatenateFavsForMulti(multiName: String) -> String {
+        let multiSubs = SubredditUtils.shared.subsAssociatedWithMulti(managedObjectContext: managedObjectContext, multiName: multiName)
+        if !multiSubs.isEmpty {
+            return multiSubs.joined(separator: "+")
+        }
+        
+        return ""
     }
 }

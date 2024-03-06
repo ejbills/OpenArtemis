@@ -9,6 +9,8 @@ import SwiftUI
 import CoreData
 import Defaults
 
+// MARK: - Subreddit and SubredditUtils
+
 struct Subreddit: Encodable, Equatable, Hashable, Decodable {
     let subreddit: String
 }
@@ -18,9 +20,11 @@ class SubredditUtils: ObservableObject {
 
     private init() {}
 
+    // MARK: - Subreddit Favorites Operations
+
+    // Save subreddit to favorites
     func saveToSubredditFavorites(managedObjectContext: NSManagedObjectContext, name: String) {
         let cleanedName = cleanName(name)
-
         guard !subredditAlreadySaved(managedObjectContext: managedObjectContext, subredditName: cleanedName) else {
             return
         }
@@ -33,6 +37,7 @@ class SubredditUtils: ObservableObject {
         }
     }
 
+    // Toggle pinned status of subreddit
     func togglePinned(managedObjectContext: NSManagedObjectContext, subredditName: String) {
         let matchingSubreddits = localFavorites(managedObjectContext: managedObjectContext).filter { $0.name == subredditName }
 
@@ -43,6 +48,20 @@ class SubredditUtils: ObservableObject {
         }
     }
 
+    // Toggle multi association of subreddit
+    func toggleMulti(managedObjectContext: NSManagedObjectContext, multiName: String, subredditName: String) {
+        let matchingSubreddits = localFavorites(managedObjectContext: managedObjectContext).filter { $0.name == subredditName }
+
+        if let existingSubreddit = matchingSubreddits.first {
+            existingSubreddit.belongsToMulti = existingSubreddit.belongsToMulti == multiName ? "" : multiName
+
+            withAnimation(.smooth) {
+                PersistenceController.shared.save()
+            }
+        }
+    }
+
+    // Remove subreddit from favorites
     func removeFromSubredditFavorites(managedObjectContext: NSManagedObjectContext, subredditName: String) {
         let matchingSubreddits = localFavorites(managedObjectContext: managedObjectContext).filter { $0.name == subredditName }
 
@@ -53,6 +72,54 @@ class SubredditUtils: ObservableObject {
         }
     }
 
+    // MARK: - Multireddit Operations
+
+    // Save multireddit
+    func saveToMultis(managedObjectContext: NSManagedObjectContext, name: String, imageURL: String) {
+        guard !multiAlreadySaved(managedObjectContext: managedObjectContext, multiName: name) else {
+            return
+        }
+
+        if !name.isEmpty {
+            let tempMulti = LocalMulti(context: managedObjectContext)
+            tempMulti.multiName = name
+
+            if !imageURL.isEmpty {
+                tempMulti.imageURL = imageURL
+            }
+
+            withAnimation(.smooth) {
+                PersistenceController.shared.save()
+            }
+        }
+    }
+
+    // Remove multireddit
+    func removeFromMultis(managedObjectContext: NSManagedObjectContext, multiName: String) {
+        let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "belongsToMulti == %@", multiName)
+
+        do {
+            let matchingSubreddits = try managedObjectContext.fetch(fetchRequest)
+            matchingSubreddits.forEach { subreddit in
+                subreddit.belongsToMulti = nil
+            }
+
+            localMultis(managedObjectContext: managedObjectContext)
+                .filter { $0.multiName == multiName }
+                .forEach { managedObjectContext.delete($0) }
+
+            withAnimation(.smooth) {
+                PersistenceController.shared.save()
+            }
+        } catch {
+            print("Error removing multi: \(error.localizedDescription)")
+        }
+    }
+
+    // MARK: - Helper Functions
+
+    // Retrieve local favorites
     func localFavorites(managedObjectContext: NSManagedObjectContext) -> [LocalSubreddit] {
         do {
             return try managedObjectContext.fetch(LocalSubreddit.fetchRequest())
@@ -61,11 +128,56 @@ class SubredditUtils: ObservableObject {
         }
     }
 
+    // Retrieve local multireddits
+    func localMultis(managedObjectContext: NSManagedObjectContext) -> [LocalMulti] {
+        do {
+            return try managedObjectContext.fetch(LocalMulti.fetchRequest())
+        } catch {
+            return []
+        }
+    }
+
+    // Retrieve subreddits associated with a multi
+    func subsAssociatedWithMulti(managedObjectContext: NSManagedObjectContext, multiName: String) -> [String] {
+        let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "belongsToMulti == %@", multiName)
+
+        do {
+            let tempResults = try managedObjectContext.fetch(fetchRequest)
+            return tempResults.map { $0.name ?? "" }
+        } catch {
+            return []
+        }
+    }
+
+    // Retrieve multi associated with a subreddit
+    func getMultiFromSub(managedObjectContext: NSManagedObjectContext, subredditName: String) -> String? {
+        let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", subredditName)
+
+        do {
+            let tempResults = try managedObjectContext.fetch(fetchRequest)
+            return tempResults.first?.belongsToMulti
+        } catch {
+            return nil
+        }
+    }
+
+    // MARK: - Private Helpers
+
+    // Check if subreddit is already saved
     private func subredditAlreadySaved(managedObjectContext: NSManagedObjectContext, subredditName: String) -> Bool {
         let existingSubreddits = localFavorites(managedObjectContext: managedObjectContext)
         return existingSubreddits.contains { $0.name == subredditName }
     }
 
+    // Check if multireddit is already saved
+    private func multiAlreadySaved(managedObjectContext: NSManagedObjectContext, multiName: String) -> Bool {
+        let existingMultis = localMultis(managedObjectContext: managedObjectContext)
+        return existingMultis.contains { $0.multiName == multiName }
+    }
+
+    // Clean subreddit name
     private func cleanName(_ name: String) -> String {
         return name.trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: "^/r/", with: "", options: .regularExpression)
@@ -73,18 +185,17 @@ class SubredditUtils: ObservableObject {
     }
 }
 
+// MARK: - SubListingSort and SortOption
+
 struct SubListingSort: Codable, Identifiable {
     var icon: String
     var value: String
-    var id: String {
-        value
-    }
+
+    var id: String { value }
 }
 
 enum SortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
-    var id: String {
-        self.rawVal.id
-    }
+    var id: String { rawVal.id }
 
     case best
     case hot
@@ -126,9 +237,7 @@ enum SortOption: Codable, Identifiable, Defaults.Serializable, Hashable {
             }
         }
     }
-}
 
-extension SortOption: CaseIterable {
     static var allCases: [SortOption] {
         return [.best, .hot, .new, .controversial, .top(.all)]
     }
