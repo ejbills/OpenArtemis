@@ -47,29 +47,27 @@ struct DefaultSubredditRowView: View {
             .labelStyle(DefaultLabelStyle())
             .foregroundColor(.primary)
         }
-        .listRowBackground(
-            // fancy row bg
-            GeometryReader { geometry in
-                if let iconURL, let url = URL(string: iconURL) {
-                    CachedImage(
-                        url: url,
-                        content: { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: geometry.size.width, height: geometry.size.height)
-                                .opacity(0.3)
-                                .clipped()
-                        },
-                        placeholder: {
-                            Color.clear
-                        }
-                    )
-                } else {
-                    iconColor
-                        .opacity(0.3)
+        .if(iconURL != nil) { content in
+            content.listRowBackground(
+                GeometryReader { geometry in
+                    if let iconURL = iconURL, let url = URL(string: iconURL) {
+                        CachedImage(
+                            url: url,
+                            content: { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: geometry.size.height)
+                                    .opacity(0.3)
+                                    .clipped()
+                            },
+                            placeholder: {
+                                Color.clear
+                            }
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
