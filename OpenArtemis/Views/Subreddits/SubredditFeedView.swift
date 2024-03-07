@@ -162,7 +162,7 @@ struct SubredditFeedView: View {
                     .onTapGesture {
                         onTap()
                     }
-                DividerView(frameHeight: 8, appTheme: appTheme)
+                DividerView(frameHeight: 9, appTheme: appTheme)
             }
         }
     }

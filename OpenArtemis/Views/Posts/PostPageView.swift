@@ -67,7 +67,7 @@ struct PostPageView: View {
                         .padding(EdgeInsets(top: 0, leading: 8, bottom: 8, trailing: 8))
                     }
                     
-                    DividerView(frameHeight: 10, appTheme: appTheme)
+                    DividerView(frameHeight: 9, appTheme: appTheme)
                         .padding(.bottom, 8)
                     
                     if !comments.isEmpty {

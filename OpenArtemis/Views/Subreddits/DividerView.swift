@@ -15,11 +15,11 @@ struct DividerView: View {
     var body: some View {
         if !appTheme.thinDivider {
           VStack {
-            Color.primary.opacity(0.05).frame(maxWidth: .infinity, maxHeight: 1)
+            Color.primary.opacity(0.1).frame(maxWidth: .infinity, maxHeight: 1)
             
             Spacer()
             
-            Color.primary.opacity(0.05).frame(maxWidth: .infinity, maxHeight: 1)
+            Color.primary.opacity(0.1).frame(maxWidth: .infinity, maxHeight: 1)
           }
           .frame(height: frameHeight)
           .background(Rectangle().fill(Color.gray.opacity(0.15)))

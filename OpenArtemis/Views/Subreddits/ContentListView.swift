@@ -50,7 +50,7 @@ struct ContentListView: View {
                     onListElementAppearance?(result)
                 }
             if !preventDivider {
-                DividerView(frameHeight: 10, appTheme: appTheme)
+                DividerView(frameHeight: 9, appTheme: appTheme)
             }
         }
     }
