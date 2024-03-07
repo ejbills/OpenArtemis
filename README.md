@@ -8,12 +8,8 @@ OpenArtemis is a privacy-focused, read-only web scraping Reddit client built wit
 ## Features
 - **Privacy-Focused:** OpenArtemis prioritizes user privacy by implementing ethical web scraping practices, tracking blockers and leveraging other open-source privacy focused web replacements.
 - **SwiftUI:** The user interface is crafted with SwiftUI, providing a modern and intuitive experience for users.
-- **Read-Only:** OpenArtemis operates in a read-only mode, ensuring that users cannot log in. All data, including local subreddit favorites, comment and post favorites, and the home feed, is stored locally.
+- **Read-Only:** OpenArtemis operates in a read-only mode, ensuring that users cannot log in. All data, including local subreddit favorites, multis, comment and post favorites, and the home feed, are all stored locally.
 - **Open Source:** Contributions are welcome! Feel free to suggest improvements, report bugs, or add new features.
-
-## Discord
-
-Chat with us on your [discord server](https://discord.gg/lo-cafe).
 
 ## How do I open a feature request or a bug report?
 *Please note, we use github issues to track both bug reports and feature requests! To do so, simply navigate to the Issues tab on the GitHub repository, click on the "New Issue" button, and use the provided template to fill in the details.*
