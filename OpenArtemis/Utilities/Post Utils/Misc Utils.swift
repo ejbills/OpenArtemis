@@ -58,6 +58,8 @@ enum MixedMedia: Codable, Hashable {
 }
 
 class MiscUtils {
+    static let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    
     static func shareItem(item: String, sourceView: UIView? = nil) {
         guard let url = URL(string: item) else { return }
         
@@ -123,5 +125,9 @@ class MiscUtils {
         } else {
             return normalLink // If "reddit" is not found, return the original link
         }
+    }
+    
+    static func randomString(length: Int) -> String {
+        return String((0..<length).map { _ in letters.randomElement()! })
     }
 }

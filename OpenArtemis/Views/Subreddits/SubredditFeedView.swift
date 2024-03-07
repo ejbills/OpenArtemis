@@ -36,6 +36,8 @@ struct SubredditFeedView: View {
     @State private var selectedSearchSortOption: PostSortOption = .relevance
     @State private var selectedSearchTopOption: TopPostListingSortOption = .all
     
+    @State private var listIdentifier = ""
+    
     @FetchRequest(
         entity: SavedPost.entity(),
         sortDescriptors: []
@@ -98,6 +100,7 @@ struct SubredditFeedView: View {
                     LoadingView(loadingText: "Loading feed...", isLoading: isLoading, textSizePreference: textSizePreference)
                 }
             }
+            .id(listIdentifier)
         }
         .navigationTitle((titleOverride != nil) ? titleOverride! : subredditName)
         .navigationBarTitleDisplayMode(.inline)
@@ -215,6 +218,7 @@ struct SubredditFeedView: View {
     
     private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
         self.isLoading = true
+        self.listIdentifier = MiscUtils.randomString(length: 4)
         
         if searchTerm.isEmpty {
             RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,

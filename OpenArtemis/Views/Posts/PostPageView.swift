@@ -39,6 +39,8 @@ struct PostPageView: View {
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
     
+    @State private var listIdentifier = ""
+    
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
     var body: some View {
@@ -171,6 +173,7 @@ struct PostPageView: View {
                         LoadingView(loadingText: "Loading comments...", isLoading: isLoading, textSizePreference: textSizePreference)
                     }
                 }
+                .id(listIdentifier)
                 .commentSkipper(
                     showJumpToNextCommentButton: $showJumpToNextCommentButton,
                     topVisibleCommentId: $topVisibleCommentId,
@@ -206,6 +209,7 @@ struct PostPageView: View {
     
     private func scrapeComments(_ commentsURL: String, sort: SortOption? = nil, trackingParamRemover: TrackingParamRemover) {
         self.isLoading = true
+        self.listIdentifier = MiscUtils.randomString(length: 4)
         
         RedditScraper.scrapeComments(commentURL: commentsURL, sort: sort, trackingParamRemover: trackingParamRemover) { result in
             switch result {
