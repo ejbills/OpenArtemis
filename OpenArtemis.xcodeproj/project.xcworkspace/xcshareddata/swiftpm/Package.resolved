@@ -1,13 +1,12 @@
 {
-  "originHash" : "2564df4dbac591726ac7bf28e4a30cffc42790a6c51db96ba2851db95a9c6489",
   "pins" : [
     {
       "identity" : "cachedimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/leoz/CachedImage",
       "state" : {
-        "revision" : "d84d2577d65c2e662c163b2505c06ec38c68d410",
-        "version" : "0.0.5"
+        "revision" : "e41ded5c5f9a0ff442b228e83bf082b6ff5a8ba1",
+        "version" : "0.0.8"
       }
     },
     {
@@ -83,5 +82,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
