@@ -27,7 +27,7 @@ struct SubredditFeedView: View {
     @State private var postIDs = LimitedSet<String>(maxLength: 300)
     @State private var lastPostAfter: String = ""
     @State private var retryCount: Int = 0
-    @State private var sortOption: SortOption = .best
+    @State private var sortOption: SortOption = Defaults[.defaultSubSorting]
     @State private var isLoading: Bool = false
     
     @State private var searchTerm: String = ""
@@ -36,7 +36,7 @@ struct SubredditFeedView: View {
     @State private var selectedSearchSortOption: PostSortOption = .relevance
     @State private var selectedSearchTopOption: TopPostListingSortOption = .all
     
-    @State private var listIdentifier = ""
+    @State private var listIdentifier = "" // this handles generating a new identifier on load to prevent stale data
     
     @FetchRequest(
         entity: SavedPost.entity(),
@@ -79,7 +79,7 @@ struct SubredditFeedView: View {
                         .fill(Color.clear)
                         .frame(height: 1)
                         .onAppear {
-                            scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
+                            scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
                         }
                     
                     if isLoading { // show spinner at the bottom of the feed
@@ -110,11 +110,15 @@ struct SubredditFeedView: View {
             })
             .disabled(appTheme.compactMode)
             
-            buildSortingMenu()
+            let sortMenuView = SubredditUtils.shared.buildSortingMenu(selectedOption: self.sortOption) { option in
+                withAnimation { self.sortOption = option }
+                clearFeedAndReload()
+            }
+            sortMenuView
         }
         .onAppear {
             if posts.isEmpty {
-                scrapeSubreddit()
+                scrapeSubreddit(sort: sortOption)
             }
         }
         .refreshable {
@@ -169,56 +173,10 @@ struct SubredditFeedView: View {
             }
         }
     }
-
     
-    private func buildSortingMenu() -> some View {
-        Menu(content: {
-            ForEach(SortOption.allCases) { opt in
-                if case .top(_) = opt {
-                    Menu {
-                        ForEach(SortOption.TopListingSortOption.allCases, id: \.self) { topOpt in
-                            Button {
-                                sortOption = .top(topOpt)
-                                clearFeedAndReload()
-                            } label: {
-                                HStack {
-                                    Text(topOpt.rawValue.capitalized)
-                                    Spacer()
-                                    Image(systemName: topOpt.icon)
-                                        .foregroundColor(Color.artemisAccent)
-                                        .font(.system(size: 17, weight: .bold))
-                                }
-                            }
-                        }
-                    } label: {
-                        Label(opt.rawVal.value.capitalized, systemImage: opt.rawVal.icon)
-                            .foregroundColor(Color.artemisAccent)
-                            .font(.system(size: 17, weight: .bold))
-                    }
-                } else {
-                    Button {
-                        sortOption = opt
-                        clearFeedAndReload()
-                    } label: {
-                        HStack {
-                            Text(opt.rawVal.value.capitalized)
-                            Spacer()
-                            Image(systemName: opt.rawVal.icon)
-                                .foregroundColor(Color.artemisAccent)
-                                .font(.system(size: 17, weight: .bold))
-                        }
-                    }
-                }
-            }
-        }, label: {
-            Image(systemName: sortOption.rawVal.icon)
-                .foregroundColor(Color.artemisAccent)
-        })
-    }
-    
-    private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "") {
+    private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "", preventListIdRefresh: Bool = false) {
         self.isLoading = true
-        self.listIdentifier = MiscUtils.randomString(length: 4)
+        if !preventListIdRefresh { self.listIdentifier = MiscUtils.randomString(length: 4) }
         
         if searchTerm.isEmpty {
             RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,

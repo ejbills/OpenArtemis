@@ -27,7 +27,7 @@ struct SectionIndexTitlesView: View {
                     .background(dragObserver(label: letter))
                     .contentShape(Rectangle())
                     .frame(minWidth: 15, alignment: .center)
-                    .increaseHitboxBy(2)
+                    .increaseHitboxBy(8)
             }
         }
         .background(

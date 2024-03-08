@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import Defaults
+import SwiftUI
 
 struct Post: Equatable, Hashable, Codable {
     let id: String
@@ -271,8 +272,34 @@ class PostUtils {
             print("Error clearing read posts: \(error)")
         }
     }
+    
+    /// Builds the sorting menu for post sorting options.
+    ///
+    /// - Parameter action: A closure to be executed upon selecting a sorting option.
+    /// - Returns: The selected sorting option.
+    func buildSortingMenu(selectedOption: SortOption, action: @escaping (SortOption) -> Void) -> some View {
+        let sortMenuView = Menu(content: {
+            ForEach(SortOption.allCases) { opt in
+                Button {
+                    action(opt)
+                } label: {
+                    HStack {
+                        Text(opt.rawVal.value.capitalized)
+                        Spacer()
+                        Image(systemName: opt.rawVal.icon)
+                            .foregroundColor(Color.artemisAccent)
+                            .font(.system(size: 17, weight: .bold))
+                    }
+                }
+            }
+        }, label: {
+            Image(systemName: selectedOption.rawVal.icon)
+                .foregroundColor(Color.artemisAccent)
+        })
+        
+        return sortMenuView
+    }
 }
-
 
 // MARK: Post sorting options (within the search view)
 enum PostSortOption: String, CaseIterable, Identifiable, Hashable {

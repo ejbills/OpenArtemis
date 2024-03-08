@@ -33,13 +33,13 @@ struct PostPageView: View {
     @State private var postBody: String? = nil
     @State private var isLoading: Bool = false
     @State private var isLoadAllCommentsPressed = false
-    @State private var sortOption: SortOption = .best
+    @State private var sortOption: SortOption = Defaults[.defaultPostPageSorting]
     
     @State private var scrollID: Int? = nil
     @State var topVisibleCommentId: String? = nil
     @State var previousScrollTarget: String? = nil
     
-    @State private var listIdentifier = ""
+    @State private var listIdentifier = "" // this handles generating a new identifier on load to prevent stale data
     
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     
@@ -191,7 +191,11 @@ struct PostPageView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("\((Int(post.commentsCount) ?? 0).roundedWithAbbreviations) Comments")
         .toolbar {
-            buildSortingMenu()
+            let sortMenuView = PostUtils.shared.buildSortingMenu(selectedOption: self.sortOption) { option in
+                withAnimation { self.sortOption = option }
+                clearCommentsAndReload()
+            }
+            sortMenuView
         }
         .refreshable {
             clearCommentsAndReload()
@@ -199,9 +203,9 @@ struct PostPageView: View {
         .onAppear {
             if comments.isEmpty {
                 if let commentsURLOverride {
-                    scrapeComments(commentsURLOverride, trackingParamRemover: trackingParamRemover)
+                    scrapeComments(commentsURLOverride, sort: sortOption, trackingParamRemover: trackingParamRemover)
                 } else {
-                    scrapeComments(post.commentsURL, trackingParamRemover: trackingParamRemover)
+                    scrapeComments(post.commentsURL, sort: sortOption, trackingParamRemover: trackingParamRemover)
                 }
             }
         }

@@ -26,6 +26,9 @@ struct SettingsView: View {
     
     @Default(.doLiveText) var doLiveText
     
+    @Default(.defaultPostPageSorting) var defaultPostPageSorting
+    @Default(.defaultSubSorting) var defaultSubSorting
+    
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
     @FetchRequest(sortDescriptors: []) var readPosts: FetchedResults<ReadPost>
@@ -45,6 +48,7 @@ struct SettingsView: View {
     @State var toastTitle: String = "Success!"
     @State var toastIcon: String = "checkmark.circle.fill"
     @State private var imageAnalyzerSupport: Bool = true
+    
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             Section("General") {
@@ -118,6 +122,7 @@ struct SettingsView: View {
                     }
                 })
             }
+            
             Section("Posts"){
                 Button(action: {
                     PostUtils.shared.removeAllReadPosts(context: managedObjectContext)
@@ -128,13 +133,38 @@ struct SettingsView: View {
                 })
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
             }
+            
             Section("Comments"){
                 Toggle("Jump to Next Comment Button", isOn: $showJumpToNextCommentButton)
+                Group {
+                    let postPageSorting = PostUtils.shared.buildSortingMenu(selectedOption: defaultPostPageSorting, action: { option in
+                        withAnimation { defaultPostPageSorting = option }
+                    })
+                    
+                    HStack {
+                        Text("Default Comment Sorting")
+                        Spacer()
+                        postPageSorting.contentShape(Rectangle())
+                    }
+                }
             }
+            
             Section("Subreddits"){
                 Picker("Are you over 18 (Allow NSFW content)?", selection: $over18) {
                     Text("No").tag(false)
                     Text("Yes").tag(true)
+                }
+                
+                Group {
+                    let subSorting = SubredditUtils.shared.buildSortingMenu(selectedOption: defaultSubSorting, action: { option in
+                        withAnimation { defaultSubSorting = option }
+                    })
+                    
+                    HStack {
+                        Text("Default Feed Sorting")
+                        Spacer()
+                        subSorting.contentShape(Rectangle())
+                    }
                 }
                 
                 Button{
@@ -184,9 +214,6 @@ struct SettingsView: View {
                     
                 })
             }
-            
-            
-            
         }
         .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
         .navigationTitle("Settings")
