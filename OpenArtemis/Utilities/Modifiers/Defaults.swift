@@ -29,6 +29,8 @@ extension Defaults.Keys {
     static let defaultPostPageSorting = Key<SortOption>("defaultPostPageSorting", default: SortOption.best)
     static let defaultSubSorting = Key<SortOption>("defaultSubSorting", default: SortOption.best)
     
+    static let defaultLaunchFeed = Key<String>("defaultLaunchFeed", default: "favList")
+    
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     
     // MARK: - Website Redirects

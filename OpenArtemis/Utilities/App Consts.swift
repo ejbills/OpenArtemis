@@ -18,8 +18,11 @@ let basePostCount = "25"
 let roughWidth = UIScreen.main.bounds.width * 0.90
 let roughHeight = UIScreen.main.bounds.height * 0.45
 
+let device = UIDevice.current.userInterfaceIdiom
+let isPhone = device == .phone
+
 let portraitWidth = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-let compactMultiplier = UIDevice.current.userInterfaceIdiom == .phone ? 0.15 : 0.085
+let compactMultiplier = isPhone ? 0.15 : 0.085
 let roughCompactWidth = portraitWidth * compactMultiplier
 let roughCompactHeight = roughCompactWidth
 

@@ -38,6 +38,8 @@ struct ProfileView: View {
     @State private var lastPostAfter: String = ""
     @State private var filterType: String = ""
     @State private var retryCount: Int = 0
+    
+    @State private var listIdentifier = "" // this handles generating a new identifier on load to prevent stale data
 
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
@@ -55,7 +57,7 @@ struct ProfileView: View {
                     .fill(Color.clear)
                     .frame(height: 1)
                     .onAppear {
-                        scrapeProfile(lastPostAfter: lastPostAfter, sort: filterType)
+                        scrapeProfile(lastPostAfter: lastPostAfter, sort: filterType, preventListIdRefresh: true)
                     }
                 
                 if isLoading { // show spinner at the bottom of the feed
@@ -93,8 +95,9 @@ struct ProfileView: View {
         }
     }
 
-    private func scrapeProfile(lastPostAfter: String? = nil, sort: String? = nil) {
+    private func scrapeProfile(lastPostAfter: String? = nil, sort: String? = nil, preventListIdRefresh: Bool = false) {
         isLoading = true
+        if !preventListIdRefresh { self.listIdentifier = MiscUtils.randomString(length: 4) }
         
         RedditScraper.scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, over18: over18) { result in
             switch result {
@@ -117,7 +120,7 @@ struct ProfileView: View {
                 
                 if uniqueMedia.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 attempts
                     self.retryCount +=  1
-                    self.scrapeProfile(lastPostAfter: lastPostAfter, sort: sort)
+                    self.scrapeProfile(lastPostAfter: lastPostAfter, sort: sort, preventListIdRefresh: preventListIdRefresh)
                 } else {
                     self.retryCount =  0
                 }

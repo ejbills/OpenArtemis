@@ -28,6 +28,7 @@ struct SettingsView: View {
     
     @Default(.defaultPostPageSorting) var defaultPostPageSorting
     @Default(.defaultSubSorting) var defaultSubSorting
+    @Default(.defaultLaunchFeed) var defaultLaunchFeed
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [ SortDescriptor(\.name) ]) var localFavorites: FetchedResults<LocalSubreddit>
@@ -80,6 +81,25 @@ struct SettingsView: View {
                 }
                 
                 Toggle("Auto-enable reader mode in in-app browser", isOn: $readerMode)
+                
+                if isPhone {
+                    Picker("Default Launch Feed", selection: $defaultLaunchFeed) {
+                        Text("Home").tag("home")
+                        Text("Popular").tag("popular")
+                        Text("All").tag("all")
+                        Text("Favorites Drawer (default)").tag("favList")
+                        
+                        let localMultis = SubredditUtils.shared.localMultis(managedObjectContext: managedObjectContext)
+                        if !localMultis.isEmpty {
+                            Section("Multis") {
+                                ForEach(localMultis) { multi in
+                                    if let multiName = multi.multiName { Text(multiName.capitalized).tag(multiName) }
+                                }
+                            }
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                }
             }
             
             Section("Appearance"){

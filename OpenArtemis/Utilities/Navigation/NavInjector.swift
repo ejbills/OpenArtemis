@@ -22,7 +22,6 @@ struct HandleDeepLinksDisplay: ViewModifier {
                 } else {
                     SubredditFeedView(subredditName: response.subredditName, titleOverride: response.titleOverride, appTheme: appTheme, textSizePreference: textSizePreference)
                 }
-                
             }
             .navigationDestination(for: ProfileResponse.self) { response in
                 ProfileView(username: response.username, appTheme: appTheme, textSizePreference: textSizePreference)

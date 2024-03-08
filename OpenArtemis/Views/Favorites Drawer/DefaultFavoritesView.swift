@@ -9,10 +9,11 @@ import SwiftUI
 
 struct DefaultFavoritesView: View {
     var localFavorites: FetchedResults<LocalSubreddit>
+    var concatFavSubs: (() -> String)
     var body: some View {
         DefaultSubredditRowView(title: "Home", iconSystemName: "house.fill", iconColor: .artemisAccent)
             .background(
-                NavigationLink(value: SubredditFeedResponse(subredditName: concatenateFavoriteSubs(), titleOverride: "Home")){
+                NavigationLink(value: SubredditFeedResponse(subredditName: concatFavSubs(), titleOverride: "Home")){
                     EmptyView()
                 }
                     .opacity(0)
@@ -44,10 +45,5 @@ struct DefaultFavoritesView: View {
                 }
                     .opacity(0)
             )
-    }
-    
-    private func concatenateFavoriteSubs() -> String {
-        let favoriteSubs = localFavorites.compactMap { $0.name }
-        return favoriteSubs.joined(separator: "+")
     }
 }

@@ -8,93 +8,103 @@
 import SwiftUI
 import CoreData
 import CachedImage
+import Defaults
 
 struct SubredditDrawerView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var coordinator: NavCoordinator
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var coordinator: NavCoordinator
     
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.name)
-    ]) var localFavorites: FetchedResults<LocalSubreddit>
+    // Fetch requests to retrieve local favorites and multis from Core Data
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) private var localFavorites: FetchedResults<LocalSubreddit>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.multiName)]) private var localMultis: FetchedResults<LocalMulti>
     
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.multiName)
-    ]) var localMultis: FetchedResults<LocalMulti>
-    
+    // State variables
     @State private var subredditName = ""
     @State private var showSaveSubredditDialog = false
-    
     @State private var multiName = ""
     @State private var multiImageURL = ""
     @State private var showSaveMultiDialog = false
-    
     @State private var availableIndexArr: [String] = []
-    
     @State private var editMode = false
+    @State private var hasAppeared: Bool = false
+    @Default(.defaultLaunchFeed) private var defaultLaunchFeed
+    @State private var exitDefault: Bool = false
     
+    // External parameters
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
     var body: some View {
-        VStack {
-            ScrollViewReader { proxy in
-                ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
-                    Section(header: Text("Defaults")) {
-                        DefaultFavoritesView(localFavorites: localFavorites)
-                    }
-                    
-                    if !localMultis.isEmpty {
-                        Section(header: Text("Multis")) {
-                            ForEach(localMultis) { multi in
-                                if let navMultiName = multi.multiName {
-                                    let computedName = concatenateFavsForMulti(multiName: navMultiName)
-                                    
-                                    DefaultSubredditRowView(title: navMultiName, iconURL: multi.imageURL,
-                                                            iconColor: getColorFromInputString(computedName), editMode: editMode,
-                                                            removeMulti: {
-                                        SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
-                                    })
-                                    .background(
-                                        NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
-                                            EmptyView()
-                                        }
+        ZStack {
+            // Show the default subreddit feed based on the conditions
+            if defaultLaunchFeed != "favList" && !exitDefault {
+                getSubredditFeedView()
+                    .zIndex(1)
+            }
+            
+            VStack {
+                ScrollViewReader { proxy in
+                    ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
+                        Section(header: Text("Defaults")) {
+                            DefaultFavoritesView(localFavorites: localFavorites, concatFavSubs: concatenateFavoriteSubs)
+                        }
+                        
+                        // Show multis section if there are any
+                        if !localMultis.isEmpty {
+                            Section(header: Text("Multis")) {
+                                ForEach(localMultis) { multi in
+                                    if let navMultiName = multi.multiName {
+                                        let computedName = concatenateFavsForMulti(multiName: navMultiName)
+                                        
+                                        DefaultSubredditRowView(title: navMultiName,
+                                                                iconURL: multi.imageURL,
+                                                                iconColor: getColorFromInputString(computedName),
+                                                                editMode: editMode,
+                                                                removeMulti: {
+                                                                    SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
+                                                                })
+                                        .background(
+                                            NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
+                                                EmptyView()
+                                            }
                                             .disabled(editMode || computedName.isEmpty)
                                             .opacity(0)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    
-                    Group {
-                        let pinnedFavs = localFavorites.filter { $0.pinned }
-                        if !pinnedFavs.isEmpty {
-                            Section(header: Text("Pinned")) {
-                                ForEach(pinnedFavs
-                                    .sorted { $0.name ?? "" < $1.name ?? "" }
-                                ) { subreddit in
-                                    if let subredditName = subreddit.name {
-                                        SubredditRowView(
-                                            subredditName: subredditName,
-                                            pinned: subreddit.pinned,
-                                            editMode: editMode,
-                                            removeFromSubredditFavorites: {
-                                                removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                            }, togglePinned: {
-                                                togglePinned(subredditName: subreddit.name ?? "")
-                                            }, managedObjectContext: managedObjectContext,
-                                            localMultis: localMultis
                                         )
                                     }
                                 }
                             }
                         }
-                    }
-                    
-                    ForEach(availableIndexArr, id: \.self) { letter in
-                        Section(header: Text(letter).id(letter)) {
-                            ForEach(localFavorites
-                                .filter { subreddit in
+                        
+                        // Group pinned and unpinned favorites separately
+                        Group {
+                            let pinnedFavs = localFavorites.filter { $0.pinned }
+                            if !pinnedFavs.isEmpty {
+                                Section(header: Text("Pinned")) {
+                                    ForEach(pinnedFavs.sorted { $0.name ?? "" < $1.name ?? "" }) { subreddit in
+                                        if let subredditName = subreddit.name {
+                                            SubredditRowView(
+                                                subredditName: subredditName,
+                                                pinned: subreddit.pinned,
+                                                editMode: editMode,
+                                                removeFromSubredditFavorites: {
+                                                    removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                                },
+                                                togglePinned: {
+                                                    togglePinned(subredditName: subreddit.name ?? "")
+                                                },
+                                                managedObjectContext: managedObjectContext,
+                                                localMultis: localMultis
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Show unpinned favorites categorized by the first letter
+                        ForEach(availableIndexArr, id: \.self) { letter in
+                            Section(header: Text(letter).id(letter)) {
+                                ForEach(localFavorites.filter { subreddit in
                                     if let subName = subreddit.name {
                                         let firstCharacter = subName.first
                                         let startsWithNumber = firstCharacter?.isNumber ?? false
@@ -102,113 +112,139 @@ struct SubredditDrawerView: View {
                                     }
                                     
                                     return false
-                                }
-                            ) { subreddit in
-                                if let subredditName = subreddit.name {
-                                    SubredditRowView(
-                                        subredditName: subredditName,
-                                        pinned: subreddit.pinned,
-                                        editMode: editMode,
-                                        removeFromSubredditFavorites: {
-                                            removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                        }, togglePinned: {
-                                            togglePinned(subredditName: subreddit.name ?? "")
-                                        }, managedObjectContext: managedObjectContext,
-                                        localMultis: localMultis
-                                    )
+                                }) { subreddit in
+                                    if let subredditName = subreddit.name {
+                                        SubredditRowView(
+                                            subredditName: subredditName,
+                                            pinned: subreddit.pinned,
+                                            editMode: editMode,
+                                            removeFromSubredditFavorites: {
+                                                removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                            },
+                                            togglePinned: {
+                                                togglePinned(subredditName: subreddit.name ?? "")
+                                            },
+                                            managedObjectContext: managedObjectContext,
+                                            localMultis: localMultis
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                .refreshable{
-                    visibleSubredditSections()
-                }
-                .onAppear {
-                    visibleSubredditSections()
-                }
-                .overlay(
-                    HStack {
-                        Spacer()
-                        SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr, textSizePreference: textSizePreference)
-                            .padding(.trailing, 4)
+                    .refreshable {
+                        visibleSubredditSections()
                     }
-                )
-            }
-        }
-        .navigationTitle("Favorites")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .destructiveAction) {
-                Button(action: {
-                    withAnimation(.smooth) {
-                        editMode.toggle()
+                    .onAppear {
+                        visibleSubredditSections()
                     }
-                }) {
-                    Text( editMode ? "Done" : "Edit" )
+                    .overlay(
+                        HStack {
+                            Spacer()
+                            SectionIndexTitlesView(proxy: proxy, availChars: availableIndexArr, textSizePreference: textSizePreference)
+                                .padding(.trailing, 4)
+                        }
+                    )
                 }
             }
-        }
-        .navigationBarItems(
-            leading: HStack {
-                Menu {
-                    Button(action: {
-                        subredditName = ""
-                        showSaveSubredditDialog = true
-                    }) {
-                        Label("Add subreddit", systemImage: "plus")
+            
+            // Alerts for adding subreddit and multi
+            .alert("Add Subreddit", isPresented: $showSaveSubredditDialog) {
+                TextField("Subreddit name", text: $subredditName)
+                
+                Button("Save") {
+                    withAnimation {
+                        SubredditUtils.shared.saveToSubredditFavorites(managedObjectContext: managedObjectContext, name: subredditName)
                     }
                     
-                    Button(action: {
-                        multiName = ""
-                        multiImageURL = ""
-                        showSaveMultiDialog = true
-                    }) {
-                        Label("Add multireddit", systemImage: "square.grid.2x2")
-                    }
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-        )
-
-        .alert("Add Subreddit", isPresented: $showSaveSubredditDialog) {
-            TextField("Subreddit name", text: $subredditName)
-            
-            Button("Save") {
-                withAnimation {
-                    SubredditUtils.shared.saveToSubredditFavorites(managedObjectContext: managedObjectContext, name: subredditName)
+                    visibleSubredditSections()
+                    showSaveSubredditDialog = false
                 }
                 
-                visibleSubredditSections()
-                showSaveSubredditDialog = false
+                Button("Cancel") {
+                    showSaveSubredditDialog = false
+                }
+            } message: {
+                Text("Enter the subreddit name you wish to add to your favorites.")
             }
-            
-            Button("Cancel") {
-                showSaveSubredditDialog = false
+            .alert("Add Multireddit", isPresented: $showSaveMultiDialog) {
+                TextField("Name", text: $multiName)
+                TextField("Thumbnail image URL (optional)", text: $multiImageURL)
+                
+                Button("Save") {
+                    SubredditUtils.shared.saveToMultis(managedObjectContext: managedObjectContext, name: multiName, imageURL: multiImageURL)
+                    showSaveMultiDialog = false
+                }
+                
+                Button("Cancel") {
+                    showSaveMultiDialog = false
+                }
+            } message: {
+                Text("Enter the multi name and thumbnail image URL (optional) you wish to add to your favorites.")
             }
-        } message: {
-            Text("Enter the subreddit name you wish to add to your favorites.")
         }
-        .alert("Add Multireddit", isPresented: $showSaveMultiDialog) {
-            TextField("Name", text: $multiName)
-            TextField("Thumbnail image URL (optional)", text: $multiImageURL)
-            
-            Button("Save") {
-                SubredditUtils.shared.saveToMultis(managedObjectContext: managedObjectContext, name: multiName, imageURL: multiImageURL)
-                showSaveMultiDialog = false
+        
+        // Set the navigation title based on the condition
+        .if(!(defaultLaunchFeed != "favList" && !exitDefault)) { view in
+            view.navigationTitle("Favorites")
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            // Show different toolbar items based on the condition
+            if defaultLaunchFeed != "favList" && !exitDefault {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        withAnimation(.snappy) {
+                            exitDefault = true
+                        }
+                    }) {
+                        Text("Exit")
+                    }
+                }
+            } else {
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu {
+                        Button(action: {
+                            subredditName = ""
+                            showSaveSubredditDialog = true
+                        }) {
+                            Label("Add subreddit", systemImage: "plus")
+                        }
+                        
+                        Button(action: {
+                            multiName = ""
+                            multiImageURL = ""
+                            showSaveMultiDialog = true
+                        }) {
+                            Label("Add multireddit", systemImage: "square.grid.2x2")
+                        }
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        withAnimation(.smooth) {
+                            editMode.toggle()
+                        }
+                    }) {
+                        Text(editMode ? "Done" : "Edit")
+                    }
+                }
             }
-            
-            Button("Cancel") {
-                showSaveMultiDialog = false
-            }
-        } message: {
-            Text("Enter the multi name and thumbnail image URL (optional) you wish to add to your favorites.")
         }
     }
     
+    // MARK: - Helper Functions
     
+    /// Concatenates the names of all favorite subreddits into a single string separated by '+'.
+    private func concatenateFavoriteSubs() -> String {
+        let favoriteSubs = localFavorites.compactMap { $0.name }
+        return favoriteSubs.joined(separator: "+")
+    }
     
+    /// Determines the visible subreddit sections and updates the `availableIndexArr`.
     private func visibleSubredditSections() {
         let unpinnedFavorites = localFavorites.filter { !$0.pinned }
         let unpinnedNames = unpinnedFavorites.compactMap { $0.name }
@@ -231,7 +267,25 @@ struct SubredditDrawerView: View {
         }
     }
     
-    // manage favorites
+    /// Handles rendering the default launch feed
+    private func getSubredditFeedView() -> SubredditFeedView {
+        switch defaultLaunchFeed {
+        case "all":
+            return SubredditFeedView(subredditName: defaultLaunchFeed.capitalized, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
+        case "popular":
+            return SubredditFeedView(subredditName: defaultLaunchFeed.capitalized, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
+        case "home":
+            return SubredditFeedView(subredditName: concatenateFavoriteSubs(), titleOverride: defaultLaunchFeed.capitalized, appTheme: appTheme, textSizePreference: textSizePreference)
+        default:
+            let multiName = defaultLaunchFeed
+            let computedName = concatenateFavsForMulti(multiName: multiName)
+            return SubredditFeedView(subredditName: computedName, titleOverride: multiName, appTheme: appTheme, textSizePreference: textSizePreference)
+        }
+    }
+    
+    // MARK: - Favorite Management
+    
+    /// Removes the given subreddit name from the subreddit favorites.
     private func removeFromSubredditFavorites(subredditName: String) {
         withAnimation {
             SubredditUtils.shared.removeFromSubredditFavorites(managedObjectContext: managedObjectContext, subredditName: subredditName)
@@ -240,6 +294,7 @@ struct SubredditDrawerView: View {
         visibleSubredditSections()
     }
     
+    /// Toggles the pinned state of the given subreddit name.
     private func togglePinned(subredditName: String) {
         withAnimation {
             SubredditUtils.shared.togglePinned(managedObjectContext: managedObjectContext, subredditName: subredditName)
@@ -248,7 +303,9 @@ struct SubredditDrawerView: View {
         visibleSubredditSections()
     }
     
-    // manage multis
+    // MARK: - Multi Management
+    
+    /// Concatenates the subreddit names associated with the given multi name into a single string separated by '+'.
     private func concatenateFavsForMulti(multiName: String) -> String {
         let multiSubs = SubredditUtils.shared.subsAssociatedWithMulti(managedObjectContext: managedObjectContext, multiName: multiName)
         if !multiSubs.isEmpty {

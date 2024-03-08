@@ -127,7 +127,7 @@ extension RedditScraper {
 
             // Replace links in HTML with internal links, and convert body to markdown
             var body = ""
-            if let bodyElement = bodyElement {
+            if let bodyElement = bodyElement, !author.isEmpty {
                 let modifiedHtmlBody = try redditLinksToInternalLinks(bodyElement)
                 
                 var document = ArtemisHTML(rawHTML: modifiedHtmlBody)

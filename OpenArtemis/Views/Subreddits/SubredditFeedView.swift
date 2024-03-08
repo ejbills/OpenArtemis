@@ -121,17 +121,13 @@ struct SubredditFeedView: View {
                 scrapeSubreddit(sort: sortOption)
             }
         }
-        .refreshable {
-            clearFeedAndReload()
-        }
-        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui 
+        .refreshable { clearFeedAndReload() }
+        .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui
                                                // reuses the initial view from the sidebar selection.
             clearFeedAndReload()
         }
-        .searchable(text: $searchTerm, prompt: "Search r/\((titleOverride != nil) ? titleOverride! : subredditName)")
-        .onSubmit(of: .search) {
-            clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
-        }
+        .searchable(text: $searchTerm, prompt: "Search \((titleOverride != nil) ? "OpenArtemisFeed/\(titleOverride!)" : "r/\(subredditName)")")
+        .onSubmit(of: .search) { clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)") }
         .onChange(of: searchTerm) { val, _ in if searchTerm.isEmpty { clearFeedAndReload() }}
     }
     
@@ -189,7 +185,7 @@ struct SubredditFeedView: View {
                 case .success(let newPosts):
                     if newPosts.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 times
                         self.retryCount +=  1
-                        self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm)
+                        self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm, preventListIdRefresh: preventListIdRefresh)
                     } else {
                         self.retryCount =  0
                         for post in newPosts {
