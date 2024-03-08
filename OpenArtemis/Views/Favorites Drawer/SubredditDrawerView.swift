@@ -275,7 +275,11 @@ struct SubredditDrawerView: View {
         case "popular":
             return SubredditFeedView(subredditName: defaultLaunchFeed.capitalized, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
         case "home":
-            return SubredditFeedView(subredditName: concatenateFavoriteSubs(), titleOverride: defaultLaunchFeed.capitalized, appTheme: appTheme, textSizePreference: textSizePreference)
+            if !localFavorites.isEmpty {
+                return SubredditFeedView(subredditName: concatenateFavoriteSubs(), titleOverride: defaultLaunchFeed.capitalized, appTheme: appTheme, textSizePreference: textSizePreference)
+            } else {
+                return SubredditFeedView(subredditName: "OpenArtemisApp", titleOverride: "Empty home feed :(", appTheme: appTheme, textSizePreference: textSizePreference)
+            }
         default:
             let multiName = defaultLaunchFeed
             let computedName = concatenateFavsForMulti(multiName: multiName)
