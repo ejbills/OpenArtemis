@@ -93,6 +93,13 @@ class SubredditUtils: ObservableObject {
                     }
 
                 case .failure(let error):
+                    if !Defaults[.seenCaseSensitiveDisclaimer] {
+                        let message = "The fetch icon operation failed, possibly due to a case sensitivity mismatch between the subreddit name stored locally and its name on Reddit. Please ensure the subreddit name exactly matches its case on Reddit for the fetch to succeed."
+                        MiscUtils.showAlert(message: message)
+                        
+                        Defaults[.seenCaseSensitiveDisclaimer] = true
+                    }
+                    
                     print("Failed to fetch url for subreddit: \(error)")
                 }
             }

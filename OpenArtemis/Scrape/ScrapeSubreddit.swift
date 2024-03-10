@@ -116,9 +116,11 @@ class RedditScraper {
                     let src = try iconElement.attr("src")
                     completion(.success(src))
                 } else {
+                    GlobalLoadingManager.shared.toastFailure()
                     completion(.failure(NSError(domain: "Icon not found", code: 0, userInfo: nil)))
                 }
             } catch {
+                GlobalLoadingManager.shared.toastFailure()
                 completion(.failure(error))
             }
         }.resume()

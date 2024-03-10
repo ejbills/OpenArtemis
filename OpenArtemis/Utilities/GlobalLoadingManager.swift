@@ -11,10 +11,25 @@ import Observation
 @Observable class GlobalLoadingManager {
     static let shared = GlobalLoadingManager()
     var loading: Bool = false
+    var failed: Bool = false
     
     func setLoading(toState: Bool) {
-        withAnimation {
-            loading = toState
+        DispatchQueue.main.async {
+            withAnimation {
+                self.loading = toState
+            }
+        }
+    }
+    
+    func toastFailure() {
+        withAnimation(.snappy) {
+            self.failed = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation(.easeOut) {
+                self.failed = false
+            }
         }
     }
 }

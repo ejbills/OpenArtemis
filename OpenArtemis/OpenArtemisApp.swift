@@ -83,6 +83,10 @@ struct ContentView: View {
             if GlobalLoadingManager.shared.loading {
                 AlertToast(type: .loading)
             }
+            
+            if GlobalLoadingManager.shared.failed {
+                AlertToast(type: .error(.red))
+            }
         }
     }
     

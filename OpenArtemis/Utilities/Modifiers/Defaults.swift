@@ -32,6 +32,7 @@ extension Defaults.Keys {
     static let defaultLaunchFeed = Key<String>("defaultLaunchFeed", default: "favList")
     
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
+    static let seenCaseSensitiveDisclaimer = Key<Bool>("seenCaseSensitiveDisclaimer", default: false)
     
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
