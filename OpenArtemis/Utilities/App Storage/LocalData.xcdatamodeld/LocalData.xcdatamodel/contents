@@ -6,6 +6,7 @@
     </entity>
     <entity name="LocalSubreddit" representedClassName="LocalSubreddit" syncable="YES" codeGenerationType="class">
         <attribute name="belongsToMulti" optional="YES" attributeType="String"/>
+        <attribute name="iconURL" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="pinned" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>

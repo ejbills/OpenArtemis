@@ -84,6 +84,7 @@ struct SubredditDrawerView: View {
                                         if let subredditName = subreddit.name {
                                             SubredditRowView(
                                                 subredditName: subredditName,
+                                                iconURL: subreddit.iconURL,
                                                 pinned: subreddit.pinned,
                                                 editMode: editMode,
                                                 removeFromSubredditFavorites: {
@@ -91,6 +92,9 @@ struct SubredditDrawerView: View {
                                                 },
                                                 togglePinned: {
                                                     togglePinned(subredditName: subreddit.name ?? "")
+                                                },
+                                                fetchIcon: {
+                                                    fetchIcon(subredditName: subreddit.name ?? "")
                                                 },
                                                 managedObjectContext: managedObjectContext,
                                                 localMultis: localMultis
@@ -116,6 +120,7 @@ struct SubredditDrawerView: View {
                                     if let subredditName = subreddit.name {
                                         SubredditRowView(
                                             subredditName: subredditName,
+                                            iconURL: subreddit.iconURL,
                                             pinned: subreddit.pinned,
                                             editMode: editMode,
                                             removeFromSubredditFavorites: {
@@ -123,6 +128,9 @@ struct SubredditDrawerView: View {
                                             },
                                             togglePinned: {
                                                 togglePinned(subredditName: subreddit.name ?? "")
+                                            },
+                                            fetchIcon: {
+                                                fetchIcon(subredditName: subreddit.name ?? "")
                                             },
                                             managedObjectContext: managedObjectContext,
                                             localMultis: localMultis
@@ -305,6 +313,13 @@ struct SubredditDrawerView: View {
         }
         
         visibleSubredditSections()
+    }
+    
+    /// Parses subreddit icon and saves to coredata.
+    private func fetchIcon(subredditName: String) {
+        withAnimation {
+            SubredditUtils.shared.fetchIconURL(managedObjectContext: managedObjectContext, subredditName: subredditName)
+        }
     }
     
     // MARK: - Multi Management

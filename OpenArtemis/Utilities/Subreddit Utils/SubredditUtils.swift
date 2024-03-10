@@ -32,9 +32,7 @@ class SubredditUtils: ObservableObject {
         let tempSubreddit = LocalSubreddit(context: managedObjectContext)
         tempSubreddit.name = cleanedName
         
-        withAnimation(.smooth) {
-            PersistenceController.shared.save()
-        }
+        PersistenceController.shared.save()
     }
     
     // Toggle pinned status of subreddit
@@ -43,9 +41,7 @@ class SubredditUtils: ObservableObject {
         
         matchingSubreddits.forEach { $0.pinned.toggle() }
         
-        withAnimation(.smooth) {
-            PersistenceController.shared.save()
-        }
+        PersistenceController.shared.save()
     }
     
     // Toggle multi association of subreddit
@@ -55,9 +51,7 @@ class SubredditUtils: ObservableObject {
         if let existingSubreddit = matchingSubreddits.first {
             existingSubreddit.belongsToMulti = existingSubreddit.belongsToMulti == multiName ? "" : multiName
             
-            withAnimation(.smooth) {
-                PersistenceController.shared.save()
-            }
+            PersistenceController.shared.save()
         }
     }
     
@@ -67,11 +61,44 @@ class SubredditUtils: ObservableObject {
         
         matchingSubreddits.forEach { managedObjectContext.delete($0) }
         
-        withAnimation(.smooth) {
-            PersistenceController.shared.save()
-        }
+        PersistenceController.shared.save()
     }
     
+    // Append subreddit icon to LocalSubreddit
+    func fetchIconURL(managedObjectContext: NSManagedObjectContext, subredditName: String) {
+        RedditScraper.scrapeSubredditIcon(subreddit: subredditName, completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let iconURLString):
+                    // Assuming LocalSubreddit has a property called iconURL to store the icon URL string
+                    let cleanedName = self.cleanName(subredditName)
+                    // Fetch the LocalSubreddit object by name
+                    let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "name == %@", cleanedName)
+                    
+                    do {
+                        let fetchedSubreddits = try managedObjectContext.fetch(fetchRequest)
+                        guard let subredditToUpdate = fetchedSubreddits.first else {
+                            print("Subreddit not found")
+                            return
+                        }
+                        
+                        // Set the iconURL property
+                        subredditToUpdate.iconURL = iconURLString
+                        
+                        PersistenceController.shared.save()
+                        
+                    } catch {
+                        print("Error fetching subreddit data: \(error.localizedDescription)")
+                    }
+
+                case .failure(let error):
+                    print("Failed to fetch url for subreddit: \(error)")
+                }
+            }
+        })
+    }
+
     // MARK: - Multireddit Operations
     
     // Save multireddit
@@ -88,9 +115,7 @@ class SubredditUtils: ObservableObject {
                 tempMulti.imageURL = imageURL
             }
             
-            withAnimation(.smooth) {
-                PersistenceController.shared.save()
-            }
+            PersistenceController.shared.save()
         }
     }
     
@@ -109,9 +134,7 @@ class SubredditUtils: ObservableObject {
                 .filter { $0.multiName == multiName }
                 .forEach { managedObjectContext.delete($0) }
             
-            withAnimation(.smooth) {
-                PersistenceController.shared.save()
-            }
+            PersistenceController.shared.save()
         } catch {
             print("Error removing multi: \(error.localizedDescription)")
         }

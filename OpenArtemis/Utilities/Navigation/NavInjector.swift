@@ -62,6 +62,7 @@ struct HandleDeepLinkResolution: ViewModifier {
                 }
             } else {
                 if urlStringWithoutScheme.contains("reddit.com") && urlStringWithoutScheme.contains("/comments/") {
+                    GlobalLoadingManager.shared.loading = true
                     let convertedUrl = "https://" + MiscUtils.convertToOldRedditLink(normalLink: urlStringWithoutScheme)
                     
                     // It's a Reddit post URL, scrape the post

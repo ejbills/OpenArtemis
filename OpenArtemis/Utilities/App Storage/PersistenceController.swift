@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import SwiftUI
 
 struct PersistenceController {
     // A singleton for our entire app to use
@@ -42,9 +43,9 @@ struct PersistenceController {
 
         if context.hasChanges {
             do {
-                try context.save()
+                try withAnimation(.smooth) { try context.save() }
             } catch {
-                // Show some error here
+                print("Failed to save to persistent storage.")
             }
         }
     }

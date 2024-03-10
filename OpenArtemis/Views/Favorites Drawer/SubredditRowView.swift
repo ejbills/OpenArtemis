@@ -7,13 +7,16 @@
 
 import SwiftUI
 import CoreData
+import CachedImage
 
 struct SubredditRowView: View {
     var subredditName: String
+    var iconURL: String?
     var pinned: Bool = false
     var editMode: Bool = false
     var removeFromSubredditFavorites: (() -> Void)? = nil
     var togglePinned: (() -> Void)? = nil
+    var fetchIcon: (() -> Void)? = nil
     var skipSaved: Bool = false
     
     var managedObjectContext: NSManagedObjectContext? = nil
@@ -33,9 +36,25 @@ struct SubredditRowView: View {
                 }
             }
             
-            getColorFromInputString(subredditName)
-                .frame(width: 30, height: 30)
-                .clipShape(Circle())
+            Group {
+                if let iconURL, !iconURL.isEmpty, let formattedIconURL = URL(string: iconURL) {
+                    CachedImage(
+                        url: formattedIconURL,
+                        content: { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        },
+                        placeholder: {
+                            ProgressView()
+                        }
+                    )
+                } else {
+                    getColorFromInputString(subredditName)
+                }
+            }
+            .frame(width: 30, height: 30)
+            .clipShape(Circle())
             
             VStack(alignment: .leading) {
                 Text(subredditName)
@@ -70,9 +89,9 @@ struct SubredditRowView: View {
                 .disabled(editMode)
         )
         .contextMenu {
-            if let removeFromFavorites = removeFromSubredditFavorites {
+            if let removeFromSubredditFavorites {
                 Button(action: {
-                    removeFromFavorites()
+                    removeFromSubredditFavorites()
                 }) {
                     Label("Remove from Favorites", systemImage: "trash")
                         .foregroundColor(.red)
@@ -101,6 +120,14 @@ struct SubredditRowView: View {
                     } else {
                         Label("Add to a multi", systemImage: "plus.app")
                     }
+                }
+            }
+            
+            if let fetchIcon, iconURL == nil {
+                Button(action: {
+                    fetchIcon()
+                }) {
+                    Label("Fetch icon for \(subredditName)", systemImage: "photo")
                 }
             }
         }

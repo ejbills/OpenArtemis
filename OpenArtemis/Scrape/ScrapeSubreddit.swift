@@ -83,6 +83,41 @@ class RedditScraper {
         }.resume()
     }
     
+    static func scrapeSubredditIcon(subreddit: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let aboutURL = URL(string: "\(newBaseRedditURL)/r/\(subreddit)/about") else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        
+        var request = URLRequest(url: aboutURL)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let htmlString = String(data: data, encoding: .utf8)!
+                let doc = try SwiftSoup.parse(htmlString)
+                if let iconElement = try doc.select("faceplate-img[src*=redditmedia]").first() {
+                    let src = try iconElement.attr("src")
+                    completion(.success(src))
+                } else {
+                    completion(.failure(NSError(domain: "Icon not found", code: 0, userInfo: nil)))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
     static func sendOver18Request(url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
