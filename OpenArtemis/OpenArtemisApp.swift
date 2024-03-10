@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Defaults
+import AlertToast
 
 @main
 struct OpenArtemisApp: App {
@@ -78,9 +79,11 @@ struct ContentView: View {
                 Label("Settings", systemImage: "gear")
             }
         }
-//        .overlay {
-//            
-//        }
+        .overlay {
+            if GlobalLoadingManager.shared.loading {
+                AlertToast(type: .loading)
+            }
+        }
     }
     
     @ViewBuilder

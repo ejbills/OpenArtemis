@@ -67,6 +67,7 @@
 		BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCA2B1ADE850014FB18 /* Post Utils.swift */; };
 		BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCB2B1ADE850014FB18 /* Media Utils.swift */; };
 		BB4845172B9E22C90015376B /* GlobalLoadingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4845162B9E22C90015376B /* GlobalLoadingManager.swift */; };
+		BB48451A2B9E32980015376B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = BB4845192B9E32980015376B /* AlertToast */; };
 		BB502DD12B23AACC003C22DB /* SubredditUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD02B23AACC003C22DB /* SubredditUtils.swift */; };
 		BB502DD32B23FD4A003C22DB /* CommentSkipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */; };
 		BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD52B2403D6003C22DB /* Misc Utils.swift */; };
@@ -219,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
+				BB48451A2B9E32980015376B /* AlertToast in Frameworks */,
 				BBB693302B420C550094DFEE /* OpenGraph in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
@@ -459,6 +461,13 @@
 			path = "Post Utils";
 			sourceTree = "<group>";
 		};
+		BB48451B2B9E32B60015376B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BB502DCF2B23AABA003C22DB /* Subreddit Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,6 +509,7 @@
 				BBB2C0C02B1AD88E003C8ACC /* OpenArtemis */,
 				65D3DBD52B1B555200BCCD38 /* OpenArtemisTests */,
 				BBB2C0BF2B1AD88E003C8ACC /* Products */,
+				BB48451B2B9E32B60015376B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -608,6 +618,7 @@
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
 				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
 				BBB6932F2B420C550094DFEE /* OpenGraph */,
+				BB4845192B9E32980015376B /* AlertToast */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -650,6 +661,7 @@
 				BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */,
 				BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */,
+				BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -1091,6 +1103,14 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.9;
+			};
+		};
 		BBB2C0DD2B1AD939003C8ACC /* XCRemoteSwiftPackageReference "CachedImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
@@ -1140,6 +1160,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		BB4845192B9E32980015376B /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 		BBB2C0DE2B1AD939003C8ACC /* CachedImage */ = {
 			isa = XCSwiftPackageProductDependency;

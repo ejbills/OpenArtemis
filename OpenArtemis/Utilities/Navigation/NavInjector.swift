@@ -62,11 +62,16 @@ struct HandleDeepLinkResolution: ViewModifier {
                 }
             } else {
                 if urlStringWithoutScheme.contains("reddit.com") && urlStringWithoutScheme.contains("/comments/") {
-                    GlobalLoadingManager.shared.loading = true
+                    GlobalLoadingManager.shared.setLoading(toState: true)
+                    
                     let convertedUrl = "https://" + MiscUtils.convertToOldRedditLink(normalLink: urlStringWithoutScheme)
                     
                     // It's a Reddit post URL, scrape the post
                     RedditScraper.scrapePostFromURL(url: convertedUrl, trackingParamRemover: nil) { result in
+                        defer {
+                            GlobalLoadingManager.shared.setLoading(toState: false)
+                        }
+                        
                         switch result {
                         case .success(let post):
                             // Append the post payload into the coordinator

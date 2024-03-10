@@ -89,10 +89,16 @@ class RedditScraper {
             return
         }
         
+        GlobalLoadingManager.shared.setLoading(toState: true)
+        
         var request = URLRequest(url: aboutURL)
         request.cachePolicy = .reloadIgnoringLocalCacheData
         
         URLSession.shared.dataTask(with: request) { data, response, error in
+            defer {
+                GlobalLoadingManager.shared.setLoading(toState: false)
+            }
+            
             if let error = error {
                 completion(.failure(error))
                 return
