@@ -15,7 +15,7 @@ struct HandleDeepLinksDisplay: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            // MARK: App routing
+        // MARK: App routing
             .navigationDestination(for: SubredditFeedResponse.self) { response in
                 if response.subredditName == "Saved" {
                     SavedView(appTheme: appTheme, textSizePreference: textSizePreference)
@@ -39,14 +39,14 @@ struct HandleDeepLinkResolution: ViewModifier {
         content
             .environment(\.openURL, OpenURLAction(handler: handleIncomingURL))
     }
-
+    
     @MainActor
     func handleIncomingURL(_ url: URL) -> OpenURLAction.Result {
         guard URLComponents(url: url, resolvingAgainstBaseURL: true) != nil else {
             print("Invalid URL")
             return .discarded
         }
-
+        
         if url.absoluteString.starts(with: "openartemis://") {
             let urlStringWithoutScheme = url.absoluteString.replacingOccurrences(of: "openartemis://", with: "")
             
@@ -68,18 +68,15 @@ struct HandleDeepLinkResolution: ViewModifier {
                     
                     // It's a Reddit post URL, scrape the post
                     RedditScraper.scrapePostFromURL(url: convertedUrl, trackingParamRemover: nil) { result in
-                        defer {
-                            GlobalLoadingManager.shared.setLoading(toState: false)
-                        }
-                        
-                        switch result {
-                        case .success(let post):
-                            // Append the post payload into the coordinator
-                            DispatchQueue.main.async { // run it on the main thread
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .success(let post):
                                 coordinator.path.append(PostResponse(post: post))
+                                GlobalLoadingManager.shared.setLoading(toState: false)
+                            case .failure(let error):
+                                print("Failed to scrape Reddit post: \(error)")
+                                GlobalLoadingManager.shared.setLoading(toState: false)
                             }
-                        case .failure(let error):
-                            print("Failed to scrape Reddit post: \(error)")
                         }
                     }
                 } else {
@@ -95,7 +92,7 @@ struct HandleDeepLinkResolution: ViewModifier {
             // handle link normally if its not an internal (deep) link
             SafariHelper.openSafariView(withURL: url)
         }
-
+        
         return .handled
     }
 }
