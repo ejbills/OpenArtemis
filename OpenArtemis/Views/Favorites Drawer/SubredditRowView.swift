@@ -66,11 +66,12 @@ struct SubredditRowView: View {
                     if pinned {
                         Image(systemName: "star.fill")
                             .foregroundColor(Color.artemisAccent)
-                            .font(.system(size: 20))
+                            .font(.system(size: 15))
                     } else {
                         Image(systemName: "star")
                             .foregroundColor(.gray)
-                            .font(.system(size: 20))
+                            .font(.system(size: 15))
+                            .opacity(0.5)
                     }
                 }
                 .onTapGesture {

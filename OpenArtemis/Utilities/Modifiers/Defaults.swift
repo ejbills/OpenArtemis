@@ -30,6 +30,7 @@ extension Defaults.Keys {
     static let defaultSubSorting = Key<SortOption>("defaultSubSorting", default: SortOption.best)
     
     static let defaultLaunchFeed = Key<String>("defaultLaunchFeed", default: "favList")
+    static let hideFavorites = Key<Bool>("hideFavorites", default: false)
     
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     static let seenCaseSensitiveDisclaimer = Key<Bool>("seenCaseSensitiveDisclaimer", default: false)

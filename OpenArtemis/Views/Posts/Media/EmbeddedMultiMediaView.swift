@@ -93,7 +93,7 @@ struct EmbeddedMultiMediaView: View {
                 
                 if determinedType == "gallery" {
                     MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
-                        if let imageUrls = imageUrls {
+                        if let imageUrls, !imageUrls.isEmpty {
                             DispatchQueue.main.async {
                                 ImageViewerController(images: imageUrls, imageTitle: title).present()
                             }

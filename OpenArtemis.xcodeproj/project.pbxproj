@@ -73,6 +73,7 @@
 		BB502DD62B2403D6003C22DB /* Misc Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD52B2403D6003C22DB /* Misc Utils.swift */; };
 		BB57456A2B5321FA00A961C1 /* HTML to MD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5745692B5321FA00A961C1 /* HTML to MD.swift */; };
 		BB57456D2B5322CC00A961C1 /* Artemis MD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB57456C2B5322CC00A961C1 /* Artemis MD.swift */; };
+		BB8444AE2BA0E2DF00C8B512 /* CollapsibleSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8444AD2BA0E2DF00C8B512 /* CollapsibleSectionHeader.swift */; };
 		BB853E702B35E3210041150C /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB853E6F2B35E3210041150C /* CodableColor.swift */; };
 		BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE722B1E735F00CA13BB /* PostPageView.swift */; };
 		BB8CAE782B1E73B600CA13BB /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAE772B1E73B600CA13BB /* CommentView.swift */; };
@@ -179,6 +180,7 @@
 		BB502DD52B2403D6003C22DB /* Misc Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Misc Utils.swift"; sourceTree = "<group>"; };
 		BB5745692B5321FA00A961C1 /* HTML to MD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTML to MD.swift"; sourceTree = "<group>"; };
 		BB57456C2B5322CC00A961C1 /* Artemis MD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Artemis MD.swift"; sourceTree = "<group>"; };
+		BB8444AD2BA0E2DF00C8B512 /* CollapsibleSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSectionHeader.swift; sourceTree = "<group>"; };
 		BB853E6F2B35E3210041150C /* CodableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColor.swift; sourceTree = "<group>"; };
 		BB8CAE722B1E735F00CA13BB /* PostPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPageView.swift; sourceTree = "<group>"; };
 		BB8CAE772B1E73B600CA13BB /* CommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */,
 				65D7E84E2B234B4F003FF5B5 /* SavedView.swift */,
 				BB38FC5D2B991DCE002994F1 /* DefaultFavoritesView.swift */,
+				BB8444AD2BA0E2DF00C8B512 /* CollapsibleSectionHeader.swift */,
 			);
 			path = "Favorites Drawer";
 			sourceTree = "<group>";
@@ -779,6 +782,7 @@
 				BB2B1F2D2B96873F00653677 /* increaseHitboxBy.swift in Sources */,
 				BBE434752B1BE32300886CAB /* LocalData.xcdatamodeld in Sources */,
 				65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */,
+				BB8444AE2BA0E2DF00C8B512 /* CollapsibleSectionHeader.swift in Sources */,
 				BB8CAE782B1E73B600CA13BB /* CommentView.swift in Sources */,
 				652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */,
 				652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */,

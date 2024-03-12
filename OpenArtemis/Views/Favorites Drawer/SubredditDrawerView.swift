@@ -29,6 +29,7 @@ struct SubredditDrawerView: View {
     @State private var hasAppeared: Bool = false
     @Default(.defaultLaunchFeed) private var defaultLaunchFeed
     @State private var exitDefault: Bool = false
+    @Default(.hideFavorites) private var hideFavorites
     
     // External parameters
     let appTheme: AppThemeSettings
@@ -61,14 +62,14 @@ struct SubredditDrawerView: View {
                                                                 iconColor: getColorFromInputString(computedName),
                                                                 editMode: editMode,
                                                                 removeMulti: {
-                                                                    SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
-                                                                })
+                                            SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
+                                        })
                                         .background(
                                             NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
                                                 EmptyView()
                                             }
-                                            .disabled(editMode || computedName.isEmpty)
-                                            .opacity(0)
+                                                .disabled(editMode || computedName.isEmpty)
+                                                .opacity(0)
                                         )
                                     }
                                 }
@@ -105,38 +106,51 @@ struct SubredditDrawerView: View {
                             }
                         }
                         
-                        // Show unpinned favorites categorized by the first letter
-                        ForEach(availableIndexArr, id: \.self) { letter in
-                            Section(header: Text(letter).id(letter)) {
-                                ForEach(localFavorites.filter { subreddit in
-                                    if let subName = subreddit.name {
-                                        let firstCharacter = subName.first
-                                        let startsWithNumber = firstCharacter?.isNumber ?? false
-                                        return ((startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)) && !subreddit.pinned
-                                    }
-                                    
-                                    return false
-                                }) { subreddit in
-                                    if let subredditName = subreddit.name {
-                                        SubredditRowView(
-                                            subredditName: subredditName,
-                                            iconURL: subreddit.iconURL,
-                                            pinned: subreddit.pinned,
-                                            editMode: editMode,
-                                            removeFromSubredditFavorites: {
-                                                removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
-                                            },
-                                            togglePinned: {
-                                                togglePinned(subredditName: subreddit.name ?? "")
-                                            },
-                                            fetchIcon: {
-                                                fetchIcon(subredditName: subreddit.name ?? "")
-                                            },
-                                            managedObjectContext: managedObjectContext,
-                                            localMultis: localMultis
-                                        )
+                        if !localFavorites.isEmpty {
+                            // Show unpinned favorites categorized by the first letter
+                            if !hideFavorites {
+                                ForEach(availableIndexArr, id: \.self) { letter in
+                                    Section(header: Text(letter).id(letter)) {
+                                        ForEach(localFavorites.filter { subreddit in
+                                            if let subName = subreddit.name {
+                                                let firstCharacter = subName.first
+                                                let startsWithNumber = firstCharacter?.isNumber ?? false
+                                                return ((startsWithNumber && letter == "#") || (firstCharacter?.isLetter == true && subName.uppercased().prefix(1) == letter)) && !subreddit.pinned
+                                            }
+                                            
+                                            return false
+                                        }) { subreddit in
+                                            if let subredditName = subreddit.name {
+                                                SubredditRowView(
+                                                    subredditName: subredditName,
+                                                    iconURL: subreddit.iconURL,
+                                                    pinned: subreddit.pinned,
+                                                    editMode: editMode,
+                                                    removeFromSubredditFavorites: {
+                                                        removeFromSubredditFavorites(subredditName: subreddit.name ?? "")
+                                                    },
+                                                    togglePinned: {
+                                                        togglePinned(subredditName: subreddit.name ?? "")
+                                                    },
+                                                    fetchIcon: {
+                                                        fetchIcon(subredditName: subreddit.name ?? "")
+                                                    },
+                                                    managedObjectContext: managedObjectContext,
+                                                    localMultis: localMultis
+                                                )
+                                            }
+                                        }
                                     }
                                 }
+                            }
+                            
+                            Section("Options") {
+                                CollapsibleSectionHeader(
+                                    title: "Favorites",
+                                    isOn: $hideFavorites,
+                                    onLabel: "Hide",
+                                    offLabel: "Show",
+                                    textSizePreference: textSizePreference)
                             }
                         }
                     }
