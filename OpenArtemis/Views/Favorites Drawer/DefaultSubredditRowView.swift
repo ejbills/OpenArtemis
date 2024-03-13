@@ -16,6 +16,8 @@ struct DefaultSubredditRowView: View {
     var editMode: Bool?
     var removeMulti: (() -> Void)? = nil
     
+    @State var avgImageColor: UIColor? = nil
+    
     var body: some View {
         HStack {
             if let editMode, editMode, let removeMulti = removeMulti {
@@ -29,9 +31,12 @@ struct DefaultSubredditRowView: View {
             }
             
             Label(
-                title: { Text(title) },
+                title: { 
+                    Text(title)
+                        .foregroundStyle(avgImageColor != nil ? Color(uiColor: avgImageColor!).isDark ? .white : .black : .black)
+                },
                 icon: {
-                    Image(systemName: iconSystemName ?? "poweroutlet.type.m.fill")
+                    Image(systemName: iconSystemName ?? "square.3.layers.3d")
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(Color.white)
@@ -58,16 +63,22 @@ struct DefaultSubredditRowView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: geometry.size.width, height: geometry.size.height)
-                                    .opacity(0.3)
                                     .clipped()
+                                    .brightness(-0.2)
+                                    .opacity(0.8)
+                                    .onAppear{
+                                        avgImageColor = image.asUIImage().averageColor
+                                    }
                             },
                             placeholder: {
                                 Color.clear
                             }
                         )
+                        
                     }
                 }
             )
         }
     }
 }
+
