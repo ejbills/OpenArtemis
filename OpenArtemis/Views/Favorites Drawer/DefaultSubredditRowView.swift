@@ -15,7 +15,8 @@ struct DefaultSubredditRowView: View {
     var iconColor: Color
     var editMode: Bool?
     var removeMulti: (() -> Void)? = nil
-    
+    var editMulti: (() -> Void)? = nil
+
     @State var avgImageColor: UIColor? = nil
     
     var body: some View {
@@ -51,6 +52,23 @@ struct DefaultSubredditRowView: View {
             )
             .labelStyle(DefaultLabelStyle())
             .foregroundColor(.primary)
+        }
+        .contextMenu {
+            Button(action: {
+                if let editMulti = editMulti {
+                    editMulti()
+                }
+            }, label: {
+                Label("Edit \(title)", systemImage: "pencil")
+            })
+            
+            Button(role: .destructive,action: {
+                if let removeMulti = removeMulti {
+                    removeMulti()
+                }
+            }, label: {
+                Label("Delete \(title)", systemImage: "trash")
+            })
         }
         .if(iconURL != nil) { content in
             content.listRowBackground(

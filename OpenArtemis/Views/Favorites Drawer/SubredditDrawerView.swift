@@ -57,15 +57,19 @@ struct SubredditDrawerView: View {
                                     if let navMultiName = multi.multiName {
                                         let computedName = concatenateFavsForMulti(multiName: navMultiName)
                                         
-                                        let multireddit = DefaultSubredditRowView(title: navMultiName,
+                                        DefaultSubredditRowView(title: navMultiName,
                                                                 iconURL: multi.imageURL,
                                                                 iconColor: getColorFromInputString(computedName),
                                                                 editMode: editMode,
                                                                 removeMulti: {
                                             SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
-                                        })
-                                        
-                                        multireddit
+                                        },
+                                                                editMulti: {
+                                            multiName = navMultiName
+                                            multiImageURL = multi.imageURL ?? ""
+                                            multiToEdit = (navMultiName,true)
+                                            
+                                        } )
                                         .background(
                                             NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
                                                 EmptyView()
@@ -73,21 +77,6 @@ struct SubredditDrawerView: View {
                                                 .disabled(editMode || computedName.isEmpty)
                                                 .opacity(0)
                                         )
-                                        .contextMenu {
-                                            Button(action: {
-                                                multiName = multireddit.title
-                                                multiImageURL = multireddit.iconURL ?? ""
-                                                multiToEdit = (multireddit.title,true)
-                                            }, label: {
-                                                Label("Edit \(navMultiName)", systemImage: "pencil")
-                                            })
-                                            
-                                            Button(role: .destructive,action: {
-                                             SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)   
-                                            }, label: {
-                                                Label("Delete \(navMultiName)", systemImage: "trash")
-                                            })
-                                        }
                                     }
                                 }
                             }
