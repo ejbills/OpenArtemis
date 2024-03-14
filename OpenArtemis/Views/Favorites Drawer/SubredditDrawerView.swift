@@ -30,7 +30,7 @@ struct SubredditDrawerView: View {
     @Default(.defaultLaunchFeed) private var defaultLaunchFeed
     @State private var exitDefault: Bool = false
     @Default(.hideFavorites) private var hideFavorites
-    
+    @State private var multiToEdit: (String?, Bool) = (nil, false)
     // External parameters
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
@@ -63,7 +63,13 @@ struct SubredditDrawerView: View {
                                                                 editMode: editMode,
                                                                 removeMulti: {
                                             SubredditUtils.shared.removeFromMultis(managedObjectContext: managedObjectContext, multiName: navMultiName)
-                                        })
+                                        },
+                                                                editMulti: {
+                                            multiName = navMultiName
+                                            multiImageURL = multi.imageURL ?? ""
+                                            multiToEdit = (navMultiName,true)
+                                            
+                                        } )
                                         .background(
                                             NavigationLink(value: SubredditFeedResponse(subredditName: computedName, titleOverride: navMultiName)) {
                                                 EmptyView()
@@ -135,6 +141,9 @@ struct SubredditDrawerView: View {
                                                     fetchIcon: {
                                                         fetchIcon(subredditName: subreddit.name ?? "")
                                                     },
+                                                    deleteIcon: {
+                                                      deleteIcon(subredditName: subreddit.name ?? "")
+                                                    },
                                                     managedObjectContext: managedObjectContext,
                                                     localMultis: localMultis
                                                 )
@@ -203,6 +212,22 @@ struct SubredditDrawerView: View {
                 }
             } message: {
                 Text("Enter the multi name and thumbnail image URL (optional) you wish to add to your favorites.")
+            }
+            .alert("Edit Multireddit", isPresented: $multiToEdit.1) {
+                if let multi = multiToEdit.0 {
+                    TextField("Name", text: $multiName)
+                    TextField("Thumbnail image URL (optional)", text: $multiImageURL)
+                    
+                    Button("Save") {
+                        SubredditUtils.shared.editMulti(managedObjectContext: managedObjectContext, oldMultiName: multi, newMultiName: multiName, newImageURL: multiImageURL)
+                        multiToEdit = (nil, false)
+                    }
+                    Button("Cancel") {
+                        multiToEdit = (nil, false)
+                    }
+                }
+            } message: {
+                Text("Edit the multi name and thumbnail image URL (optional).")
             }
         }
         
@@ -335,6 +360,12 @@ struct SubredditDrawerView: View {
             SubredditUtils.shared.fetchIconURL(managedObjectContext: managedObjectContext, subredditName: subredditName)
         }
     }
+  
+  private func deleteIcon(subredditName: String) {
+    withAnimation{
+      SubredditUtils.shared.deleteIconURL(managedObjectContext: managedObjectContext, subredditName: subredditName)
+    }
+  }
     
     // MARK: - Multi Management
     

@@ -143,7 +143,7 @@ struct GestureView: ViewModifier {
                         }
                     } else if dragPosition < 0 {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
-                        dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / 50)
+                        dragBackground = primaryTrailingAction?.color.opacity(-(dragPosition / 50))
 
                         if prevDragPosition <= -1 * 50 {
                             // crossed from short swipe -> no swipe
