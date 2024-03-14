@@ -70,7 +70,28 @@ class SubredditUtils: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let iconURLString):
-                    self.setIconURL(subredditName: subredditName, managedObjectContext: managedObjectContext, iconURLString: iconURLString)
+                    // Assuming LocalSubreddit has a property called iconURL to store the icon URL string
+                    let cleanedName = self.cleanName(subredditName)
+                    // Fetch the LocalSubreddit object by name
+                    let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "name == %@", cleanedName)
+                    
+                    do {
+                        let fetchedSubreddits = try managedObjectContext.fetch(fetchRequest)
+                        guard let subredditToUpdate = fetchedSubreddits.first else {
+                            print("Subreddit not found")
+                            return
+                        }
+                        
+                        // Set the iconURL property
+                        subredditToUpdate.iconURL = iconURLString
+                        
+                        PersistenceController.shared.save()
+                        
+                    } catch {
+                        print("Error fetching subreddit data: \(error.localizedDescription)")
+                    }
+
                 case .failure(let error):
                     if !Defaults[.seenCaseSensitiveDisclaimer] {
                         let message = "The fetch icon operation failed, possibly due to a case sensitivity mismatch between the subreddit name stored locally and its name on Reddit. Please ensure the subreddit name exactly matches its case on Reddit for the fetch to succeed."
@@ -84,37 +105,7 @@ class SubredditUtils: ObservableObject {
             }
         })
     }
-    
-    // remove subreddit icon from LocalSubreddit
-    func deleteIconURL(managedObjectContext: NSManagedObjectContext, subredditName: String){
-        setIconURL(subredditName: subredditName, managedObjectContext: managedObjectContext, iconURLString: nil)
-    }
-    
-    // Extract this as a function to avoid code duplication
-    private func setIconURL(subredditName: String, managedObjectContext: NSManagedObjectContext, iconURLString: String?){
-        // Assuming LocalSubreddit has a property called iconURL to store the icon URL string
-        let cleanedName = self.cleanName(subredditName)
-        // Fetch the LocalSubreddit object by name
-        let fetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "name == %@", cleanedName)
-        
-        do {
-            let fetchedSubreddits = try managedObjectContext.fetch(fetchRequest)
-            guard let subredditToUpdate = fetchedSubreddits.first else {
-                print("Subreddit not found")
-                return
-            }
-            
-            // Set the iconURL property
-            subredditToUpdate.iconURL = iconURLString
-            
-            PersistenceController.shared.save()
-            
-        } catch {
-            print("Error fetching subreddit data: \(error.localizedDescription)")
-        }
-    }
-    
+
     // MARK: - Multireddit Operations
     
     // Save multireddit
@@ -155,39 +146,6 @@ class SubredditUtils: ObservableObject {
             print("Error removing multi: \(error.localizedDescription)")
         }
     }
-    
-    func editMulti(managedObjectContext: NSManagedObjectContext, oldMultiName: String, newMultiName: String, newImageURL: String) {
-        // Step 1: Fetch and update the LocalMulti object
-        let multiFetchRequest: NSFetchRequest<LocalMulti> = LocalMulti.fetchRequest()
-        multiFetchRequest.predicate = NSPredicate(format: "multiName == %@", oldMultiName)
-
-        do {
-            let fetchedMultis = try managedObjectContext.fetch(multiFetchRequest)
-            if let multiToUpdate = fetchedMultis.first {
-                multiToUpdate.multiName = newMultiName
-                multiToUpdate.imageURL = newImageURL
-            }
-        } catch {
-            print("Error fetching or updating multireddit: \(error.localizedDescription)")
-        }
-
-        // Step 2: Fetch and update associated LocalSubreddit objects
-        let subredditFetchRequest: NSFetchRequest<LocalSubreddit> = LocalSubreddit.fetchRequest()
-        subredditFetchRequest.predicate = NSPredicate(format: "belongsToMulti == %@", oldMultiName)
-
-        do {
-            let fetchedSubreddits = try managedObjectContext.fetch(subredditFetchRequest)
-            fetchedSubreddits.forEach { subreddit in
-                subreddit.belongsToMulti = newMultiName // Update the belongsToMulti to newMultiName
-            }
-        } catch {
-            print("Error fetching or updating associated subreddits: \(error.localizedDescription)")
-        }
-
-        // Save the changes
-        PersistenceController.shared.save()
-    }
-
     
     // MARK: - Helper Functions
     

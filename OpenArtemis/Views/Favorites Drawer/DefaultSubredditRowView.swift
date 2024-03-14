@@ -15,9 +15,6 @@ struct DefaultSubredditRowView: View {
     var iconColor: Color
     var editMode: Bool?
     var removeMulti: (() -> Void)? = nil
-    var editMulti: (() -> Void)? = nil
-
-    @State var avgImageColor: UIColor? = nil
     
     var body: some View {
         HStack {
@@ -32,12 +29,9 @@ struct DefaultSubredditRowView: View {
             }
             
             Label(
-                title: { 
-                    Text(title)
-                        .foregroundStyle(avgImageColor != nil ? Color(uiColor: avgImageColor!).isDark ? .white : .black : .black)
-                },
+                title: { Text(title) },
                 icon: {
-                    Image(systemName: iconSystemName ?? "square.3.layers.3d")
+                    Image(systemName: iconSystemName ?? "poweroutlet.type.m.fill")
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(Color.white)
@@ -53,23 +47,6 @@ struct DefaultSubredditRowView: View {
             .labelStyle(DefaultLabelStyle())
             .foregroundColor(.primary)
         }
-        .contextMenu {
-            Button(action: {
-                if let editMulti = editMulti {
-                    editMulti()
-                }
-            }, label: {
-                Label("Edit \(title)", systemImage: "pencil")
-            })
-            
-            Button(role: .destructive,action: {
-                if let removeMulti = removeMulti {
-                    removeMulti()
-                }
-            }, label: {
-                Label("Delete \(title)", systemImage: "trash")
-            })
-        }
         .if(iconURL != nil) { content in
             content.listRowBackground(
                 GeometryReader { geometry in
@@ -81,22 +58,16 @@ struct DefaultSubredditRowView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: geometry.size.width, height: geometry.size.height)
+                                    .opacity(0.3)
                                     .clipped()
-                                    .brightness(-0.2)
-                                    .opacity(0.8)
-                                    .onAppear{
-                                        avgImageColor = image.asUIImage().averageColor
-                                    }
                             },
                             placeholder: {
                                 Color.clear
                             }
                         )
-                        
                     }
                 }
             )
         }
     }
 }
-

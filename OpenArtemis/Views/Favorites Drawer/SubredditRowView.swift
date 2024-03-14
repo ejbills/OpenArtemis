@@ -8,7 +8,6 @@
 import SwiftUI
 import CoreData
 import CachedImage
-import AlertToast
 
 struct SubredditRowView: View {
     var subredditName: String
@@ -18,7 +17,6 @@ struct SubredditRowView: View {
     var removeFromSubredditFavorites: (() -> Void)? = nil
     var togglePinned: (() -> Void)? = nil
     var fetchIcon: (() -> Void)? = nil
-    var deleteIcon: (() -> Void)? = nil
     var skipSaved: Bool = false
     
     var managedObjectContext: NSManagedObjectContext? = nil
@@ -93,10 +91,11 @@ struct SubredditRowView: View {
         )
         .contextMenu {
             if let removeFromSubredditFavorites {
-                Button(role: .destructive,action: {
+                Button(action: {
                     removeFromSubredditFavorites()
                 }) {
                     Label("Remove from Favorites", systemImage: "trash")
+                        .foregroundColor(.red)
                 }
             }
             
@@ -106,8 +105,7 @@ struct SubredditRowView: View {
                                                                              subredditName: subredditName)
                 // 'multi association' is just what multi a subreddit is assigned to
                 
-                Button(role: multiAssociation != nil ? !multiAssociation!.isEmpty ? .destructive : .cancel : .cancel, //this is ugly but it works. It will highlight the context menu button red if youcan remove it from a multi, else its black
-                       action: {
+                Button(action: {
                     if let multiAssociation, !multiAssociation.isEmpty {
                         SubredditUtils.shared.toggleMulti(managedObjectContext: managedObjectContext,
                                                           multiName: multiAssociation,
@@ -130,14 +128,8 @@ struct SubredditRowView: View {
                 Button(action: {
                     fetchIcon()
                 }) {
-                    Label("Fetch icon for \(subredditName)", systemImage: "photo.badge.arrow.down.fill")
+                    Label("Fetch icon for \(subredditName)", systemImage: "photo")
                 }
-            } else if let deleteIcon {
-                Button(role: .destructive,action: {
-                deleteIcon()
-              }, label: {
-                Label("Delete icon for \(subredditName)", systemImage: "rectangle.badge.minus")
-              })
             }
         }
         .sheet(isPresented: $showMultiSelector) {
@@ -164,6 +156,5 @@ struct SubredditRowView: View {
                 }
             }
         }
-        
     }
 }

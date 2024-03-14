@@ -60,6 +60,38 @@
             endingLineNumber = "24"
             landmarkName = "body(content:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BE427C88-FD0B-4BCC-A5CB-BCDE950F98EF - 5dca8a5329166bad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OpenArtemis.ImageViewer.body(content: SwiftUI._ViewModifier_Content&lt;OpenArtemis.ImageViewer&gt;) -&gt; some"
+                  moduleName = "OpenArtemis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Components/ImageViewer/ImageViewer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "BE427C88-FD0B-4BCC-A5CB-BCDE950F98EF - 82407d4edc37b831"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.highPriorityGesture&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.Gesture&gt;(_: &#x3c4;_1_0, including: SwiftUI.GestureMask) -&gt; some&gt;&gt;.0 in OpenArtemis.ImageViewer.body(content: SwiftUI._ViewModifier_Content&lt;OpenArtemis.ImageViewer&gt;) -&gt; some"
+                  moduleName = "OpenArtemis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniel/Documents/Development/OpenArtemis/OpenArtemis/Components/ImageViewer/ImageViewer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "928">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

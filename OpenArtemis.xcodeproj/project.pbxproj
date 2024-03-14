@@ -15,9 +15,6 @@
 		653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BF2B2AF5D500227019 /* OOBE_WelcomeView.swift */; };
 		653245C52B2AF5D500227019 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245C02B2AF5D500227019 /* OnboardingView.swift */; };
 		6535AC032B4563AC00E6A2DD /* LiveTextInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6535AC022B4563AC00E6A2DD /* LiveTextInteraction.swift */; };
-		654AA0752BA1A9E700AA96DF /* ConvertUIImageToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654AA0742BA1A9E700AA96DF /* ConvertUIImageToImage.swift */; };
-		654AA0772BA1AA0500AA96DF /* GetAvgImageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654AA0762BA1AA0400AA96DF /* GetAvgImageColor.swift */; };
-		654AA0792BA1AA1800AA96DF /* colorIsDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654AA0782BA1AA1800AA96DF /* colorIsDark.swift */; };
 		65A332932B1DCDCD00421162 /* SubredditIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332922B1DCDCD00421162 /* SubredditIOManager.swift */; };
 		65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A332992B1DDD2F00421162 /* Toaster.swift */; };
 		65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */ = {isa = PBXBuildFile; productRef = 65AD50B02B1E2725008B39E9 /* LazyPager */; };
@@ -127,9 +124,6 @@
 		653245C02B2AF5D500227019 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		6535AC022B4563AC00E6A2DD /* LiveTextInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTextInteraction.swift; sourceTree = "<group>"; };
 		6539284B2B1C7A2700D5062F /* OpenArtemis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArtemis.entitlements; sourceTree = "<group>"; };
-		654AA0742BA1A9E700AA96DF /* ConvertUIImageToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertUIImageToImage.swift; sourceTree = "<group>"; };
-		654AA0762BA1AA0400AA96DF /* GetAvgImageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAvgImageColor.swift; sourceTree = "<group>"; };
-		654AA0782BA1AA1800AA96DF /* colorIsDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colorIsDark.swift; sourceTree = "<group>"; };
 		6573F9342B1B710A00859D2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65A332922B1DCDCD00421162 /* SubredditIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditIOManager.swift; sourceTree = "<group>"; };
 		65A332992B1DDD2F00421162 /* Toaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
@@ -442,9 +436,6 @@
 				65D7E8552B23755A003FF5B5 /* SavedModifier.swift */,
 				BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */,
 				BBF5A0AF2B43C1E7000B3E75 /* ReadModifier.swift */,
-				654AA0742BA1A9E700AA96DF /* ConvertUIImageToImage.swift */,
-				654AA0762BA1AA0400AA96DF /* GetAvgImageColor.swift */,
-				654AA0782BA1AA1800AA96DF /* colorIsDark.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -737,7 +728,6 @@
 				BBACCB402B3231E100A9F550 /* TitleTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
-				654AA0752BA1A9E700AA96DF /* ConvertUIImageToImage.swift in Sources */,
 				BB502DD32B23FD4A003C22DB /* CommentSkipper.swift in Sources */,
 				BB93194B2B3CDA2C00863302 /* DateSorting.swift in Sources */,
 				BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */,
@@ -773,7 +763,6 @@
 				65BE32272B1CE91E00DBC067 /* FormatBigNumbers.swift in Sources */,
 				65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
-				654AA0772BA1AA0500AA96DF /* GetAvgImageColor.swift in Sources */,
 				BBB101D02B20154600691B2F /* PostDetailsView.swift in Sources */,
 				BBECC0E12B44E30D002FD4B9 /* ContentListView.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
@@ -799,7 +788,6 @@
 				652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */,
-				654AA0792BA1AA1800AA96DF /* colorIsDark.swift in Sources */,
 				BBA6FD6A2B45303C0096242E /* LimitedSet.swift in Sources */,
 				653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
