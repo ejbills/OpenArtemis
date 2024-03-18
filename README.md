@@ -3,7 +3,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/ejbills/OpenArtemis.svg)](https://github.com/ejbills/OpenArtemis/network)
 [![GitHub issues](https://img.shields.io/github/issues/ejbills/OpenArtemis.svg)](https://github.com/ejbills/OpenArtemis/issues)
 
-TestFlight: https://testflight.apple.com/join/GfHEYIJU
+App Store: [https://testflight.apple.com/join/GfHEYIJU](https://apps.apple.com/us/app/openartemis/id6473462587)
 
 OpenArtemis is a privacy-focused, read-only web scraping Reddit client built with SwiftUI. It places a strong emphasis on transparency and open collaboration. This project is open-source, allowing developers to contribute, inspect, and improve the codebase together.
 
