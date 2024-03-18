@@ -52,6 +52,20 @@ struct SettingsView: View {
     
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
+            Section("About") {
+                Link("Contribute on GitHub", destination: URL(string: "https://github.com/ejbills/OpenArtemis")!)
+                Link("Join our Discord Community", destination: URL(string: "https://discord.com/invite/lo-cafe")!)
+                
+                Text("OpenArtemis is an open-source project, and we welcome contributions from the community. You can use the GitHub link to report bugs, request new features, or view the source code. Join our Discord channel to discuss the app with other users and developers.")
+                    .font(textSizePreference.caption)
+                    .foregroundColor(.secondary)
+                
+                Link("Support me with a coffee", destination: URL(string: "https://www.buymeacoffee.com/roguenasa1")!)
+                Text("Consider supporting us with a donation if you enjoy using OpenArtemis. Note that donating does not unlock any additional features; OpenArtemis is committed to remaining free forever.")
+                    .font(textSizePreference.caption)
+                    .foregroundColor(.secondary)
+            }
+
             Section("General") {
                 Group {
                     Toggle("Swipe anywhere to go back", isOn: $swipeAnywhere)
