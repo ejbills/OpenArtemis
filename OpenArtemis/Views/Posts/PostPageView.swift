@@ -70,7 +70,6 @@ struct PostPageView: View {
                     }
                     
                     DividerView(frameHeight: 10, appTheme: appTheme)
-                        .padding(.bottom, 8)
                     
                     if !comments.isEmpty {
                         if commentsURLOverride != nil && !isLoadAllCommentsPressed {

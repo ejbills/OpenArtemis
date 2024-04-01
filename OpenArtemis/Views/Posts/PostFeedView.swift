@@ -36,7 +36,8 @@ struct PostFeedView: View {
             renderContent()
                 .markRead(isRead: isRead)
         }
-        .padding(8)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 12)
         .themedBackground(appTheme: appTheme)
         .onAppear {
             if !hasAppeared {
@@ -91,7 +92,7 @@ struct PostFeedView: View {
     }
 
     private func renderNormalContent() -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 16) {
             TitleTagView(title: post.title, domain: "", tag: post.tag, textSizePreference: textSizePreference)
                         
             MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
