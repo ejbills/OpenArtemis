@@ -17,6 +17,7 @@ struct PostDetailsView: View {
     let votes: Int
     let commentsCount: Int
     let forceAuthorToDisplay: Bool
+    let forceCompactMode: Bool
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
@@ -36,7 +37,7 @@ struct PostDetailsView: View {
                     .foregroundColor(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             }
             
-            if !appTheme.compactMode { // upvotes get pushed all the way acrossed the view in compact mode, it looks weird. disabling it here
+            if !appTheme.compactMode && !forceCompactMode {
                 Spacer()
             }
             

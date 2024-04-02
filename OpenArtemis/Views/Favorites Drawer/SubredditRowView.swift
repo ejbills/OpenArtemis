@@ -124,7 +124,7 @@ struct SubredditRowView: View {
                 }
             }
             
-            if let fetchIcon, iconURL == nil {
+            if let fetchIcon {
                 Button(action: {
                     fetchIcon()
                 }) {

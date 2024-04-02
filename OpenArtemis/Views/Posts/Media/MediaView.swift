@@ -48,7 +48,7 @@ struct MediaView: View {
                         HStack {
                             let width: CGFloat = appTheme.compactMode || forceCompactMode ? roughCompactWidth : mediaSize.width != 0 ? mediaSize.width : roughWidth
                             let height: CGFloat = appTheme.compactMode || forceCompactMode ? roughCompactHeight : mediaSize.height != 0 ? mediaSize.height : roughHeight
-
+                            
                             Spacer()
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle())
@@ -71,7 +71,6 @@ struct MediaView: View {
                         .font(.largeTitle)
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
-                // else, literally do nothing so it takes up no space :D
             default:
                 EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
             }
