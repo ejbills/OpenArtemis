@@ -59,14 +59,13 @@ struct RedirectWebsitesView: View {
     @Default(.appTheme) var appTheme
     var body: some View {
         Section("Redirect Websites"){
-            Toggle("Redirect to Private Websites", isOn: Binding(get: {
-                redirectToPrivateSites
-            }, set: { val in
-                withAnimation{
-                    redirectToPrivateSites = val
-                    appTheme.showOriginalURL = false
-                }
-            }))
+            
+            Toggle("Redirect to Private Websites", isOn: $redirectToPrivateSites)
+                .onChange(of: redirectToPrivateSites, {
+                    if !redirectToPrivateSites {
+                        appTheme.showOriginalURL = false
+                    }
+                })
             Toggle("Display Original URL", isOn: $appTheme.showOriginalURL)
                 .disabled(!redirectToPrivateSites)
             
