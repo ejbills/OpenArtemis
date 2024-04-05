@@ -23,18 +23,16 @@ struct PostDetailsView: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            DetailTagView(icon: "location", data: subreddit, appTheme: appTheme, textSizePreference: textSizePreference)
-                .onTapGesture {
-                    coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
-                }
-                .foregroundColor(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
+            DetailTagView(icon: "location", data: subreddit, appTheme: appTheme, textSizePreference: textSizePreference) {
+                coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
+            }
+            .foregroundColor(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             
             if appTheme.showAuthor || forceAuthorToDisplay {
-                DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme, textSizePreference: textSizePreference)
-                    .onTapGesture {
-                        coordinator.path.append(ProfileResponse(username: postAuthor))
-                    }
-                    .foregroundColor(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
+                DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme, textSizePreference: textSizePreference) {
+                    coordinator.path.append(ProfileResponse(username: postAuthor))
+                }
+                .foregroundColor(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             }
             
             if !appTheme.compactMode && !forceCompactMode {
