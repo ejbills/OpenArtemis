@@ -43,15 +43,14 @@ struct CommentView: View {
                         .frame(width: 2)
                 }
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 4) {
-                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme, textSizePreference: textSizePreference)
-                            .onTapGesture {
-                                coordinator.path.append(ProfileResponse(username: comment.author))
-                            }
-                            .foregroundColor(
-                                commentAuthorColor // assign accent color if comment author is also post author
-                            )
+                        DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme, textSizePreference: textSizePreference) {
+                            coordinator.path.append(ProfileResponse(username: comment.author))
+                        }
+                        .foregroundColor(
+                            commentAuthorColor // assign accent color if comment author is also post author
+                        )
 
                         DetailTagView(icon: "timer", data: TimeFormatUtil().formatTimeAgo(fromUTCString: comment.time), appTheme: appTheme, textSizePreference: textSizePreference)
                         
@@ -69,9 +68,9 @@ struct CommentView: View {
                             .markdownTheme(.artemisMarkdown(fontSize: textSizePreference.bodyFontSize))
                     }
                 }
-            }            
+            }
             .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())

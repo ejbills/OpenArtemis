@@ -15,23 +15,38 @@ struct DetailTagView: View {
     let paddingMultiplier: CGFloat?
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
+    let onTap: (() -> Void)?
     
-    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
+    init(icon: String? = nil, data: String, color: Color? = tagBgColor, paddingMultiplier: CGFloat? = 1, appTheme: AppThemeSettings, textSizePreference: TextSizePreference, onTap: (() -> Void)? = nil) {
         self.icon = icon
         self.data = data
         self.color = color
         self.paddingMultiplier = paddingMultiplier
         self.appTheme = appTheme
         self.textSizePreference = textSizePreference
+        self.onTap = onTap
     }
     
     var body: some View {
+        if let onTap {
+            AnimatedButtonPress(content: {
+                groupContent()
+            }, onTap: {
+                onTap()
+            }, cornerRadius:  CGSize(width: 6.0, height: 6.0))
+        } else {
+            groupContent()
+        }
+    }
+    
+    @ViewBuilder
+    private func groupContent() -> some View {
         HStack(spacing: 6 * (paddingMultiplier ?? 1)) {
             if let iconString = icon {
                 Image(systemName: iconString)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 10, height: 10)
+                    .frame(width: 10 * (paddingMultiplier ?? 1), height: 10 * (paddingMultiplier ?? 1))
             }
             
             Text(data)
@@ -39,7 +54,7 @@ struct DetailTagView: View {
                 .lineLimit(1)
         }
         .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
-        .padding(.vertical, 4 * (paddingMultiplier ?? 1))
+        .padding(.vertical, 2 * (paddingMultiplier ?? 1))
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
     }
 }

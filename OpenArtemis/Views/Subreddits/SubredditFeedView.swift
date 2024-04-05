@@ -123,7 +123,7 @@ struct SubredditFeedView: View {
         }
         .refreshable { clearFeedAndReload() }
         .onChange(of: subredditName) { _, _ in // this handles a navsplitview edge case where swiftui
-                                               // reuses the initial view from the sidebar selection.
+            // reuses the initial view from the sidebar selection.
             clearFeedAndReload()
         }
         .searchable(text: $searchTerm, prompt: "Search \((titleOverride != nil) ? "OpenArtemisFeed/\(titleOverride!)" : "r/\(subredditName)")")
@@ -159,12 +159,12 @@ struct SubredditFeedView: View {
         
         var body: some View {
             Group {
-                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
-                    .savedIndicator(isSaved)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        onTap()
-                    }
+                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
+                    onTap()
+                }
+                .savedIndicator(isSaved)
+                .contentShape(Rectangle())
+                
                 DividerView(frameHeight: 10, appTheme: appTheme)
             }
         }
