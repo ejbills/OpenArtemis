@@ -68,10 +68,9 @@ struct CommentView: View {
                             .markdownTheme(.artemisMarkdown(fontSize: textSizePreference.bodyFontSize))
                     }
                 }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 12)
-            .frame(maxWidth: .infinity)
         }
         .contentShape(Rectangle())
         .themedBackground(appTheme: appTheme)
