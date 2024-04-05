@@ -11,7 +11,7 @@ import VisionKit
 
 struct SettingsView: View {
     let textSizePreference: TextSizePreference
-    //    @Default(.preferredThemeMode) var preferredThemeMode
+
     @Default(.accentColor) var accentColor
     @Default(.appTheme) var appTheme
     
@@ -145,6 +145,10 @@ struct SettingsView: View {
                 NavigationLink(destination: TextSizeAdjustmentView(appTheme: appTheme)) {
                     Text("Adjust Font Size")
                 }
+                
+                NavigationLink(destination: CommentThemeView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
+                    Text("Comment Indentation Theme")
+                })
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
                     HStack{

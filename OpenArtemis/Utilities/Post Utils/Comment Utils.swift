@@ -80,6 +80,7 @@ class CommentUtils {
 
     /// Determines the color for comment indentation based on depth.
     func commentIndentationColor(forDepth depth: Int) -> Color {
+        let colorPalette = Defaults[.commentColorPalette]
         let colorIndex = depth % colorPalette.count
         return colorPalette[colorIndex]
     }
