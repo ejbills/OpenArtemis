@@ -46,7 +46,8 @@ struct CommentView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 4) {
                         DetailTagView(icon: "person", data: comment.author.isEmpty ? "[deleted]" : comment.author, appTheme: appTheme, textSizePreference: textSizePreference) {
-                            coordinator.path.append(ProfileResponse(username: comment.author))
+                            
+                            coordinator.navToAndStore(forData: NavigationPayload.profile(ProfileResponse(username: comment.author)))
                         }
                         .foregroundColor(
                             commentAuthorColor // assign accent color if comment author is also post author

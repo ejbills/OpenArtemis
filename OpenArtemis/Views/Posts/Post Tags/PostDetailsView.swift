@@ -24,13 +24,13 @@ struct PostDetailsView: View {
     var body: some View {
         HStack(spacing: 4) {
             DetailTagView(icon: "location", data: subreddit, appTheme: appTheme, textSizePreference: textSizePreference) {
-                coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
+                coordinator.navToAndStore(forData: NavigationPayload.subredditFeed(SubredditFeedResponse(subredditName: subreddit)))
             }
             .foregroundColor(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             
             if appTheme.showAuthor || forceAuthorToDisplay {
                 DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme, textSizePreference: textSizePreference) {
-                    coordinator.path.append(ProfileResponse(username: postAuthor))
+                    coordinator.navToAndStore(forData: NavigationPayload.profile(ProfileResponse(username: postAuthor)))
                 }
                 .foregroundColor(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             }

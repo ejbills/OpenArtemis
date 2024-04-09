@@ -87,6 +87,30 @@ struct ContentView: View {
             if GlobalLoadingManager.shared.failed {
                 AlertToast(type: .error(.red))
             }
+            
+            if GlobalNavForwardManager.shared.toastButton {
+                HStack {
+                    Spacer()
+                    VStack {
+                        Button {
+                            HapticManager.shared.singleClick()
+                            withAnimation {
+                                GlobalNavForwardManager.shared.returnPrevNav()
+                            }
+                        } label: {
+                            Label("Go back to previous page", systemImage: "chevron.right")
+                                .labelStyle(.iconOnly)
+                        }
+                        .increaseHitboxBy(8)
+                        .padding()
+                        .background {
+                            Circle()
+                                .foregroundStyle(.thinMaterial)
+                        }
+                    }
+                    .padding()
+                }
+            }
         }
     }
     

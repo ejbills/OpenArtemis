@@ -41,7 +41,13 @@ struct NavigationStackWrapper<Content: View>: View {
                 swipeGesture.isEnabled = status
             }
         })
-        
+        .onChange(of: tabCoordinator.path, initial: true) { oldNavPath, newNavPath in
+            if newNavPath.count == 0 || newNavPath.count > oldNavPath.count {
+                GlobalNavForwardManager.shared.forceDismissBackButton()
+            } else if newNavPath.count < oldNavPath.count {
+                GlobalNavForwardManager.shared.toastBackButtonTemporarily()
+            }
+        }
     }
 }
 

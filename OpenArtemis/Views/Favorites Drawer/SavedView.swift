@@ -112,7 +112,7 @@ struct MixedContentView: View {
         switch content {
         case .post(let post, _):
             PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
-                coordinator.path.append(PostResponse(post: post))
+                coordinator.navToAndStore(forData: NavigationPayload.post(PostResponse(post: post)))
                 
                 if !isRead {
                     PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
@@ -135,7 +135,7 @@ struct MixedContentView: View {
                             DispatchQueue.main.async {
                                 switch result {
                                 case .success(let post):
-                                    coordinator.path.append(PostResponse(post: post, commentsURLOverride: commentURL))
+                                    coordinator.navToAndStore(forData: NavigationPayload.post(PostResponse(post: post, commentsURLOverride: commentURL)))
                                 case .failure(let failure):
                                     print("Error: \(failure)")
                                 }

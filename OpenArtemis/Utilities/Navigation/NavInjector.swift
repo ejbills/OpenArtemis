@@ -53,12 +53,12 @@ struct HandleDeepLinkResolution: ViewModifier {
             if urlStringWithoutScheme.hasPrefix("/u/") {
                 if let username = urlStringWithoutScheme.split(separator: "/u/").last {
                     // handle profile viewing...
-                    coordinator.path.append(ProfileResponse(username: String(username)))
+                    coordinator.navToAndStore(forData: NavigationPayload.profile(ProfileResponse(username: String(username))))
                 }
             } else if urlStringWithoutScheme.hasPrefix("/r/") {
                 if let subreddit = urlStringWithoutScheme.split(separator: "/r/").last {
                     // handle subreddit viewing...
-                    coordinator.path.append(SubredditFeedResponse(subredditName: String(subreddit)))
+                    coordinator.navToAndStore(forData: NavigationPayload.subredditFeed(SubredditFeedResponse(subredditName: String(subreddit))))
                 }
             } else {
                 if urlStringWithoutScheme.contains("reddit.com") && urlStringWithoutScheme.contains("/comments/") {
@@ -71,7 +71,7 @@ struct HandleDeepLinkResolution: ViewModifier {
                         DispatchQueue.main.async {
                             switch result {
                             case .success(let post):
-                                coordinator.path.append(PostResponse(post: post))
+                                coordinator.navToAndStore(forData: NavigationPayload.post(PostResponse(post: post)))
                                 GlobalLoadingManager.shared.setLoading(toState: false)
                             case .failure(let error):
                                 print("Failed to scrape Reddit post: \(error)")
@@ -83,7 +83,7 @@ struct HandleDeepLinkResolution: ViewModifier {
                     // handle regular link display in an in-app browser
                     let safariURL = URL(string: "https://" + urlStringWithoutScheme)
                     
-                    if let safariURL = safariURL {
+                    if let safariURL {
                         SafariHelper.openSafariView(withURL: safariURL)
                     }
                 }

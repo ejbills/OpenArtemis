@@ -142,7 +142,7 @@ struct SubredditFeedView: View {
     }
     
     private func handlePostTap(_ post: Post, isRead: Bool) {
-        coordinator.path.append(PostResponse(post: post))
+        coordinator.navToAndStore(forData: NavigationPayload.post(PostResponse(post: post)))
         if !isRead {
             PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
         }
