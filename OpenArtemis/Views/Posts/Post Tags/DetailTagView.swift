@@ -53,8 +53,8 @@ struct DetailTagView: View {
                 .font(textSizePreference.tag)
                 .lineLimit(1)
         }
-        .padding(.horizontal, 4 * (paddingMultiplier ?? 1))
-        .padding(.vertical, 2 * (paddingMultiplier ?? 1))
-        .background(RoundedRectangle(cornerRadius: 6).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
+        .padding(.horizontal, 9 * (paddingMultiplier ?? 1))
+        .padding(.vertical, 4 * (paddingMultiplier ?? 1))
+        .background(RoundedRectangle(cornerRadius: 12).foregroundColor(color).opacity(appTheme.tagBackground ? 1 : 0))
     }
 }
