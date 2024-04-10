@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="LocalMulti" representedClassName="LocalMulti" syncable="YES" codeGenerationType="class">
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="multiName" optional="YES" attributeType="String"/>
@@ -35,6 +35,7 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="mediaURL" optional="YES" attributeType="String"/>
         <attribute name="savedTimestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="stickied" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="subreddit" optional="YES" attributeType="String"/>
         <attribute name="tag" optional="YES" attributeType="String"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String"/>

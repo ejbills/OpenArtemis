@@ -31,18 +31,4 @@ import Observation
             navCoordinator.navToAndStore(forData: navData)
         }
     }
-    
-    // handle bool reset logic
-    func toastBackButtonTemporarily() {
-        withAnimation {
-            toastButton = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                self?.toastButton = false
-            }
-        }
-    }
-    
-    func forceDismissBackButton() {
-        withAnimation { toastButton = false }
-    }
 }

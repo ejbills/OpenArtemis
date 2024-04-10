@@ -15,6 +15,7 @@ struct PostDetailsView: View {
     let subreddit: String
     let time: String
     let votes: Int
+    let stickied: Bool
     let commentsCount: Int
     let forceAuthorToDisplay: Bool
     let forceCompactMode: Bool
@@ -26,13 +27,18 @@ struct PostDetailsView: View {
             DetailTagView(icon: "location", data: subreddit, appTheme: appTheme, textSizePreference: textSizePreference) {
                 coordinator.navToAndStore(forData: NavigationPayload.subredditFeed(SubredditFeedResponse(subredditName: subreddit)))
             }
-            .foregroundColor(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
+            .foregroundStyle(appTheme.highlightSubreddit ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
             
             if appTheme.showAuthor || forceAuthorToDisplay {
                 DetailTagView(icon: "person", data: postAuthor, appTheme: appTheme, textSizePreference: textSizePreference) {
                     coordinator.navToAndStore(forData: NavigationPayload.profile(ProfileResponse(username: postAuthor)))
                 }
-                .foregroundColor(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
+                .foregroundStyle(appTheme.highlightAuthor ? Color.artemisAccent : appTheme.tagBackground ? .primary : .secondary)
+            }
+            
+            if stickied {
+                DetailTagView(icon: "pin", data: "Pinned", appTheme: appTheme, textSizePreference: textSizePreference)
+                    .foregroundStyle(.green)
             }
             
             if !appTheme.compactMode && !forceCompactMode {

@@ -18,6 +18,7 @@ struct Post: Equatable, Hashable, Codable {
     let author: String
     let votes: String
     let time: String
+    let stickied: Bool
     let mediaURL: PrivateURL
     let commentsURL: String
     let commentsCount: String
@@ -32,7 +33,7 @@ struct Post: Equatable, Hashable, Codable {
     
     // Conform to Codable
     enum CodingKeys: String, CodingKey {
-        case id, subreddit, title, tag, author, votes, time, mediaURL, commentsURL, commentsCount, type, thumbnailURL
+        case id, subreddit, title, tag, author, votes, time, stickied, mediaURL, commentsURL, commentsCount, type, thumbnailURL
     }
     
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -48,6 +49,7 @@ struct Post: Equatable, Hashable, Codable {
         hasher.combine(author)
         hasher.combine(votes)
         hasher.combine(time)
+        hasher.combine(stickied)
         hasher.combine(commentsURL)
         hasher.combine(commentsCount)
         hasher.combine(mediaURL.originalURL)
@@ -108,6 +110,7 @@ class PostUtils {
                 author: post.author ?? "",
                 votes: post.votes ?? "",
                 time: post.time ?? "",
+                stickied: post.stickied,
                 mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
                 commentsURL: post.commentsURL ?? "",
                 commentsCount: post.commentsCount ?? "",
@@ -137,6 +140,7 @@ class PostUtils {
         tempPost.type = post.type
         tempPost.votes = post.votes
         tempPost.time = post.time
+        tempPost.stickied = post.stickied
         tempPost.savedTimestamp = Date()
         
         DispatchQueue.main.async {
