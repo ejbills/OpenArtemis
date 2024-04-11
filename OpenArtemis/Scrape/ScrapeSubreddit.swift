@@ -9,6 +9,8 @@ import Foundation
 import SwiftSoup
 
 class RedditScraper {
+    static let webViewManager = HeadlessWebManager()
+    
     static func scrapeSubreddit(subreddit: String, lastPostAfter: String? = nil, sort: SortOption? = nil,
                                 trackingParamRemover: TrackingParamRemover?,
                                 over18: Bool? = false,
@@ -28,7 +30,7 @@ class RedditScraper {
                 queryItems.append(URLQueryItem(name: "t", value: topOption.rawValue))
             }
         }
-                
+        
         // Add remaining parameters to the URL
         queryItems.append(URLQueryItem(name: "count", value: basePostCount))
         if let lastPostAfter = lastPostAfter {
@@ -42,45 +44,20 @@ class RedditScraper {
             return
         }
         
-        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
-
-        var request = URLRequest(url: redditURL)
-        request.cachePolicy = .reloadIgnoringLocalCacheData
-
-        // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
-                return
-            }
-            
-            do {
-                // Check if the URL has been redirected to an over18 page
-                if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest="), over18 ?? false {
-                    // If redirected, send a POST request to the over18 endpoint
-                    sendOver18Request(url: redirectURL, completion: { result in
-                        switch result {
-                        case .success:
-                            // If the POST request is successful, reload the original URL
-                            scrapeSubreddit(subreddit: subreddit, lastPostAfter: lastPostAfter, sort: sort, trackingParamRemover: trackingParamRemover, completion: completion)
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    })
-                } else {
-                    // If not redirected, parse the HTML data into an array of Post objects
-                    let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
+        webViewManager.loadURLAndGetHTML(url: redditURL, autoClickExpando: true, preventCacheClear: lastPostAfter != nil) { result in
+            switch result {
+            case .success(let htmlContent):
+                do {
+                    // Use SwiftSoup to parse the HTML content into Post objects.
+                    let posts = try parsePostData(html: htmlContent, trackingParamRemover: trackingParamRemover)
                     completion(.success(posts))
+                } catch {
+                    completion(.failure(error))
                 }
-            } catch {
+            case .failure(let error):
                 completion(.failure(error))
             }
-        }.resume()
+        }
     }
     
     static func scrapeSubredditIcon(subreddit: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -126,24 +103,8 @@ class RedditScraper {
         }.resume()
     }
     
-    static func sendOver18Request(url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = "over18=yes".data(using: .utf8)
-        
-        URLSession.shared.dataTask(with: request) { _, _, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }.resume()
-    }
-    
-    
-    static func parsePostData(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
-        let htmlString = String(data: data, encoding: .utf8)!
-        let doc = try SwiftSoup.parse(htmlString)
+    static func parsePostData(html: String, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
+        let doc = try SwiftSoup.parse(html)
         let postElements = try doc.select("div.link")
         
         let posts = postElements.compactMap { postElement -> Post? in
