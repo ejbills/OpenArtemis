@@ -50,38 +50,28 @@ extension RedditScraper {
             return
         }
 
-        var request = URLRequest(url: url)
-        request.setValue("text/html", forHTTPHeaderField: "Accept")
-        
         let group = DispatchGroup()
         var commentsResult: Result<[Comment], Error>?
         var postBodyResult: Result<String?, Error>?
 
         group.enter()
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+        webViewManager.loadURLAndGetHTML(url: url) { result in
+            switch result {
+            case .success(let htmlContent):
+                do {
+                    let doc = try SwiftSoup.parse(htmlContent)
 
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
-                return
-            }
+                    let comments = try parseCommentsData(data: doc, trackingParamRemover: trackingParamRemover)
+                    let postBody = try parseUserTextBody(data: doc, trackingParamRemover: trackingParamRemover)
 
-            do {
-                
-                let htmlString = String(data: data, encoding: .utf8)!
-                let doc = try SwiftSoup.parse(htmlString)
-
-                let comments = try parseCommentsData(data: doc, trackingParamRemover: trackingParamRemover)
-                let postBody = try parseUserTextBody(data: doc, trackingParamRemover: trackingParamRemover)
-
-                completion(.success((comments: comments, postBody: postBody)))
-            } catch {
+                    completion(.success((comments: comments, postBody: postBody)))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
                 completion(.failure(error))
             }
-        }.resume()
+        }
 
         group.notify(queue: .main) {
             let result: Result<(comments: [Comment], postBody: String?), Error>
@@ -169,29 +159,24 @@ extension RedditScraper {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-                
-        // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
-                return
-            }
-            
-            do {
-                // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
-                let post = try parsePostData(data: data, trackingParamRemover: trackingParamRemover).first
-                if let post = post {
-                    completion(.success(post))
+        
+        
+        webViewManager.loadURLAndGetHTML(url: url) { result in
+            switch result {
+            case .success(let htmlContent):
+                do {
+                    // trackingParamRemover goes on a bit of an adventure and needs to be passed all the way down to privacyURL(trackingParamRemover: trackingParamRemover). It can be set to nil.
+                    let post = try parsePostData(html: htmlContent, trackingParamRemover: trackingParamRemover).first
+                    if let post = post {
+                        completion(.success(post))
+                    }
+                } catch {
+                    completion(.failure(error))
                 }
-            } catch {
+            case .failure(let error):
                 completion(.failure(error))
             }
-        }.resume()
+        }
     }
 }
 

@@ -30,70 +30,45 @@ extension RedditScraper {
             return
         }
         
-        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
+        webViewManager.loadURLAndGetHTML(url: url, autoClickExpando: true) { result in
+            switch result {
+            case .success(let htmlContent):
+                do {
 
-        var request = URLRequest(url: url)
-        request.cachePolicy = .reloadIgnoringLocalCacheData
+                    let posts = try parsePostData(html: htmlContent, trackingParamRemover: trackingParamRemover)
+                        let comments = try parseProfileComments(html: htmlContent, trackingParamRemover: trackingParamRemover)
 
-        // Create a URLSession and make a data task to fetch the HTML content
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
 
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data received", code: 0, userInfo: nil)))
-                return
-            }
+                        // Combine posts and comments into an array of MixedMedia
+                        var mixedMediaLinks: [MixedMedia] = []
 
-            do {
-                // Check if the URL has been redirected to an over18 page
-                if let redirectURL = response?.url, redirectURL.absoluteString.hasPrefix("https://old.reddit.com/over18?dest="), over18 ?? false {
-                    // If redirected, send a POST request to the over18 endpoint
-                    sendOver18Request(url: redirectURL, completion: { result in
-                        switch result {
-                        case .success:
-                            // If the POST request is successful, reload the original URL
-                            scrapeProfile(username: username, lastPostAfter: lastPostAfter, filterType: filterType, trackingParamRemover: trackingParamRemover, over18: over18, completion: completion)
-                        case .failure(let error):
-                            completion(.failure(error))
+                        // Iterate over posts and add to mixedMediaLinks
+                        for post in posts {
+                            mixedMediaLinks.append(MixedMedia.post(post, date: dateFormatter.date(from: post.time)))
                         }
-                    })
-                } else {
-                    // If not redirected, parse the HTML data into an array of Post and Comment objects
-                    let posts = try parsePostData(data: data, trackingParamRemover: trackingParamRemover)
-                    let comments = try parseProfileComments(data: data, trackingParamRemover: trackingParamRemover)
 
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                        // Iterate over comments and add to mixedMediaLinks
+                        for comment in comments {
+                            mixedMediaLinks.append(MixedMedia.comment(comment, date: dateFormatter.date(from: comment.time)))
+                        }
 
-                    // Combine posts and comments into an array of MixedMedia
-                    var mixedMediaLinks: [MixedMedia] = []
+                        DateSortingUtils.sortMixedMediaByDateDescending(&mixedMediaLinks)
 
-                    // Iterate over posts and add to mixedMediaLinks
-                    for post in posts {
-                        mixedMediaLinks.append(MixedMedia.post(post, date: dateFormatter.date(from: post.time)))
+                        completion(.success(mixedMediaLinks))
+                    } catch {
+                        // Catches error from `parsePostData` or `parseProfileComments`.
+                        completion(.failure(error))
                     }
-
-                    // Iterate over comments and add to mixedMediaLinks
-                    for comment in comments {
-                        mixedMediaLinks.append(MixedMedia.comment(comment, date: dateFormatter.date(from: comment.time)))
-                    }
-
-                    DateSortingUtils.sortMixedMediaByDateDescending(&mixedMediaLinks)
-
-                    completion(.success(mixedMediaLinks))
-                }
-            } catch {
+            case .failure(let error):
                 completion(.failure(error))
             }
-        }.resume()
+        }
     }
 
-    static func parseProfileComments(data: Data, trackingParamRemover: TrackingParamRemover?) throws -> [Comment] {
-        let htmlString = String(data: data, encoding: .utf8)!
-        let doc = try SwiftSoup.parse(htmlString)
+    static func parseProfileComments(html: String, trackingParamRemover: TrackingParamRemover?) throws -> [Comment] {
+        let doc = try SwiftSoup.parse(html)
         let commentElements = try doc.select("div.thing.comment")
         
         let comments = commentElements.compactMap { commentElement -> Comment? in
