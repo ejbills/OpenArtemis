@@ -12,9 +12,7 @@ import Observation
     static let shared = GlobalNavForwardManager()
     var data: NavigationPayload? = nil
     var coordinator: NavCoordinator? = nil
-    
-    var toastButton: Bool = false
-    
+        
     // nav setter
     func storeNav(forData: NavigationPayload, withCoordinator: NavCoordinator) {
         self.data = forData
@@ -26,7 +24,6 @@ import Observation
         if let navData = self.data, let navCoordinator = self.coordinator {
             self.data = nil
             self.coordinator = nil
-            self.toastButton = false
             
             navCoordinator.navToAndStore(forData: navData)
         }

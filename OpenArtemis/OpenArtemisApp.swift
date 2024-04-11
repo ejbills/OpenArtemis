@@ -90,18 +90,7 @@ struct ContentView: View {
                 AlertToast(type: .error(.red))
             }
         }
-        
-        // MARK: nav back button rendering
-        .onChange(of: GlobalNavForwardManager.shared.toastButton) { _, state in
-            showNavBackButton = state
-        }
-        .toast(isPresenting: $showNavBackButton, duration: 3, tapToDismiss: true, alert: {
-            AlertToast(displayMode: .hud, type: .systemImage("arrow.uturn.right", .artemisAccent), title: "Go back")
-        }, onTap: {
-            GlobalNavForwardManager.shared.returnPrevNav()
-        }, completion: {
-            GlobalNavForwardManager.shared.toastButton = false
-        })
+        .toastyRoot()
     }
     
     @ViewBuilder
