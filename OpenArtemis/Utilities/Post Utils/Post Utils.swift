@@ -19,21 +19,23 @@ struct Post: Equatable, Hashable, Codable {
     let votes: String
     let time: String
     let stickied: Bool
-    let mediaURL: PrivateURL
+    let mediaURLs: [PrivateURL]
+    let roughHeight: Int
+    let roughWidth: Int
     let commentsURL: String
     let commentsCount: String
     let type: String
     // If post media has a thumbnail...
     let thumbnailURL: String?
     // Ensure that PrivateURL also conforms to Codable
-    struct PrivateURL: Codable {
+    struct PrivateURL: Codable, Hashable {
         let originalURL: String
         let privateURL: String
     }
     
     // Conform to Codable
     enum CodingKeys: String, CodingKey {
-        case id, subreddit, title, tag, author, votes, time, stickied, mediaURL, commentsURL, commentsCount, type, thumbnailURL
+        case id, subreddit, title, tag, author, votes, time, stickied, mediaURLs, roughHeight, roughWidth, commentsURL, commentsCount, type, thumbnailURL
     }
     
     static func == (lhs: Post, rhs: Post) -> Bool {
@@ -52,8 +54,9 @@ struct Post: Equatable, Hashable, Codable {
         hasher.combine(stickied)
         hasher.combine(commentsURL)
         hasher.combine(commentsCount)
-        hasher.combine(mediaURL.originalURL)
-        hasher.combine(mediaURL.privateURL)
+        hasher.combine(mediaURLs)
+        hasher.combine(roughHeight)
+        hasher.combine(roughWidth)
         hasher.combine(type)
         hasher.combine(thumbnailURL)
     }
@@ -100,6 +103,17 @@ class PostUtils {
     ///   - post: The `SavedPost` entity to convert.
     /// - Returns: A tuple containing the saved timestamp and the corresponding `Post`.
     func savedPostToPost(context: NSManagedObjectContext, post: SavedPost) -> (Date?, Post) {
+        let decoder = JSONDecoder()
+        var mediaURLs: [Post.PrivateURL] = []
+        
+        if let mediaURLsData = post.mediaURLs as? Data {
+            do {
+                mediaURLs = try decoder.decode([Post.PrivateURL].self, from: mediaURLsData)
+            } catch {
+                print("Error decoding mediaURLs: \(error)")
+            }
+        }
+        
         return (
             post.savedTimestamp,
             Post(
@@ -111,7 +125,9 @@ class PostUtils {
                 votes: post.votes ?? "",
                 time: post.time ?? "",
                 stickied: post.stickied,
-                mediaURL: Post.PrivateURL(originalURL: post.mediaURL ?? "", privateURL: post.mediaURL ?? ""),
+                mediaURLs: mediaURLs,
+                roughHeight: Int(post.roughHeight),
+                roughWidth: Int(post.roughWidth),
                 commentsURL: post.commentsURL ?? "",
                 commentsCount: post.commentsCount ?? "",
                 type: post.type ?? "",
@@ -133,7 +149,8 @@ class PostUtils {
         tempPost.commentsURL = post.commentsURL
         tempPost.commentsCount = post.commentsCount
         tempPost.id = post.id
-        tempPost.mediaURL = privULR ? post.mediaURL.privateURL : post.mediaURL.originalURL
+        tempPost.roughHeight = Int64(post.roughHeight)
+        tempPost.roughWidth = Int64(post.roughWidth)
         tempPost.thumbnailURL = post.thumbnailURL
         tempPost.title = post.title
         tempPost.tag = post.tag
@@ -143,11 +160,18 @@ class PostUtils {
         tempPost.stickied = post.stickied
         tempPost.savedTimestamp = Date()
         
+        do {
+            let mediaURLsData = try JSONEncoder().encode(post.mediaURLs)
+            tempPost.mediaURLs = mediaURLsData as NSObject
+        } catch {
+            print("Error serializing mediaURLs: \(error)")
+        }
+        
         DispatchQueue.main.async {
             do {
                 try context.save()
             } catch {
-                print("Error removing saved post: \(error)")
+                print("Error saving post: \(error)")
             }
         }
     }
@@ -324,4 +348,15 @@ enum TopPostListingSortOption: String, CaseIterable, Identifiable, Hashable {
     case all
 
     var id: String { rawValue }
+}
+
+// lets you convert an array of private urls into a string array on the fly
+extension Array where Element == Post.PrivateURL {
+    func originalURLs() -> [String] {
+        return self.map { $0.originalURL }
+    }
+    
+    func privateURLs() -> [String] {
+        return self.map { $0.privateURL }
+    }
 }

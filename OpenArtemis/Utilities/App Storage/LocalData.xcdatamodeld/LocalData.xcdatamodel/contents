@@ -33,7 +33,9 @@
         <attribute name="commentsCount" optional="YES" attributeType="String"/>
         <attribute name="commentsURL" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="mediaURL" optional="YES" attributeType="String"/>
+        <attribute name="mediaURLs" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <attribute name="roughHeight" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="roughWidth" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="savedTimestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="stickied" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="subreddit" optional="YES" attributeType="String"/>

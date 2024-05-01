@@ -45,6 +45,7 @@
 		BB05568F2B367B2C00BB71F1 /* NavigationStackWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05568E2B367B2C00BB71F1 /* NavigationStackWrapper.swift */; };
 		BB0556932B3BAF1E00BB71F1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556922B3BAF1E00BB71F1 /* ProfileView.swift */; };
 		BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */; };
+		BB14A0FE2BCC4A6E00B2D73F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB14A0FD2BCC4A6E00B2D73F /* SDWebImageSwiftUI */; };
 		BB1CE09B2BC58F1D00265F39 /* GlobalLoadingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1CE0982BC58F1D00265F39 /* GlobalLoadingManager.swift */; };
 		BB1CE09C2BC58F1D00265F39 /* GlobalNavForwardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1CE0992BC58F1D00265F39 /* GlobalNavForwardManager.swift */; };
 		BB2B1F282B96462000653677 /* TextSizeAdjustmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B1F272B96462000653677 /* TextSizeAdjustmentView.swift */; };
@@ -245,6 +246,7 @@
 				BB48451A2B9E32980015376B /* AlertToast in Frameworks */,
 				BBB693302B420C550094DFEE /* OpenGraph in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
+				BB14A0FE2BCC4A6E00B2D73F /* SDWebImageSwiftUI in Frameworks */,
 				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
@@ -676,6 +678,7 @@
 				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
 				BBB6932F2B420C550094DFEE /* OpenGraph */,
 				BB4845192B9E32980015376B /* AlertToast */,
+				BB14A0FD2BCC4A6E00B2D73F /* SDWebImageSwiftUI */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -719,6 +722,7 @@
 				BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */,
 				BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */,
+				BB14A0FC2BCC49DD00B2D73F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -1155,6 +1159,14 @@
 				kind = branch;
 			};
 		};
+		BB14A0FC2BCC49DD00B2D73F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.2;
+			};
+		};
 		BB322CB52B26BF5000FC5849 /* XCRemoteSwiftPackageReference "SwiftHTMLToMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ActuallyTaylor/SwiftHTMLToMarkdown";
@@ -1223,6 +1235,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		BB14A0FD2BCC4A6E00B2D73F /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB14A0FC2BCC49DD00B2D73F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 		BB322CB92B26C0A300FC5849 /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;

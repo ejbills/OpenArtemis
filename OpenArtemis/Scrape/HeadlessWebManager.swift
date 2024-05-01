@@ -22,10 +22,9 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
         self.webView.navigationDelegate = self
     }
     
-    // Adjusted to store the value of autoClickExpando
     func loadURLAndGetHTML(url: URL, autoClickExpando: Bool = false, preventCacheClear: Bool = false, completion: @escaping (Result<String, Error>) -> Void) {
         self.completion = completion
-        self.shouldAutoClickExpando = autoClickExpando  // Store the flag value
+        self.shouldAutoClickExpando = autoClickExpando
         
         let request = URLRequest(url: url)
         if !preventCacheClear {
@@ -38,7 +37,6 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
         }
     }
     
-    // New function to clear the cache
     private func clearWebCache(completion: @escaping () -> Void) {
         let websiteDataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
         let date = Date(timeIntervalSince1970: 0)
@@ -47,7 +45,7 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // If we're trying to access a page that has a known redirection pattern for age verification.
-        if let currentURL = webView.url, currentURL.absoluteString.contains("over18?dest="), over18{
+        if let currentURL = webView.url, currentURL.absoluteString.contains("over18?dest="), over18 {
             self.allowMatureContent()
         } else {
             self.handleExpandoClicksIfNeeded(in: webView)
@@ -55,7 +53,6 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
     }
 
     private func allowMatureContent() {
-        print("clicing that shit")
         let jsToClickOver18Confirmation = """
         document.querySelector('button.c-btn.c-btn-primary[type="submit"][name="over18"][value="yes"]').click();
         """
@@ -71,7 +68,15 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
         // If auto-click is enabled, click expandos; otherwise, fetch outerHTML directly
         if shouldAutoClickExpando {
             let jsClickExpandos = """
-            Array.from(document.querySelectorAll('div[class^="expando-button"]')).forEach(button => button.click());
+                Array.from(document.querySelectorAll('div[class^="expando-button"]')).forEach(button => button.click());
+                
+                document.querySelectorAll('*').forEach(function(element) {
+                  const computedStyle = window.getComputedStyle(element);
+                  const width = computedStyle.width;
+                  const height = computedStyle.height;
+                  element.style.width = width;
+                  element.style.height = height;
+                });
             """
             webView.evaluateJavaScript(jsClickExpandos) { [weak self] _, _ in
                 self?.fetchOuterHTML()

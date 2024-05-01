@@ -123,7 +123,10 @@ class RedditScraper {
                 let votes = try postElement.attr("data-score")
                 let time = try postElement.select("time").attr("datetime")
                 let stickied = try postElement.classNames().contains("stickied")
-                let mediaURL = try postElement.attr("data-url")
+                var mediaURL = try postElement.attr("data-url")
+                
+                var mediaHeight = 0
+                var mediaWidth = 0
                 
                 let commentsElement = try postElement.select("a.bylink.comments.may-blank")
                 let commentsURL = try commentsElement.attr("href")
@@ -131,13 +134,61 @@ class RedditScraper {
                 
                 let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
                 
+                var mediaURLs: [Post.PrivateURL] = []
+                    
+                if type == "video" || type == "gif" {
+                    if type == "video", let videoDiv = try postElement.select("div[id*=\"video\"]").first() {
+                        mediaURL = try videoDiv.attr("data-hls-url")
+                    }
+                    
+                    if let videoElement = try postElement.select("video").first() {
+                        let styleString = try videoElement.attr("style")
+                        
+                        let components = styleString.components(separatedBy: ";").map { $0.trimmingCharacters(in: .whitespaces) }
+                        var roughWidth = 0
+                        var roughHeight = 0
+                        
+                        for component in components {
+                            let splitComponents = component.components(separatedBy: ": ")
+                            if let key = splitComponents.first, let value = splitComponents.last {
+                                let numberString = value.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+                                if let number = Int(numberString) {
+                                    if key.hasPrefix("width") {
+                                        roughWidth = number
+                                    } else if key.hasPrefix("height") {
+                                        roughHeight = number
+                                    }
+                                }
+                            }
+                        }
+                        
+                        mediaWidth = roughWidth
+                        mediaHeight = roughHeight
+                    }
+                } else if type == "gallery" {
+                    let galleryLinks = try postElement.select("a.may-blank.gallery-item-thumbnail-link")
+                        
+                    // Iterate through each <a> tag to extract the href attribute
+                    for link in galleryLinks.array() {
+                        let href = try link.attr("href")
+                        mediaURLs.append(href.privacyURL(trackingParamRemover: trackingParamRemover))
+                    }                    
+                }
+                
                 var thumbnailURL: String? = nil
                 
                 if type == "video" || type == "gallery" || type == "article", let thumbnailElement = try? postElement.select("a.thumbnail img").first() {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
                 }
                 
-                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, stickied: stickied, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
+                if mediaURLs.isEmpty {
+                    mediaURLs.append(mediaURL.privacyURL(trackingParamRemover: trackingParamRemover))
+                }
+                
+                return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, 
+                            stickied: stickied, mediaURLs: mediaURLs,
+                            roughHeight: mediaHeight, roughWidth: mediaWidth, commentsURL: commentsURL, commentsCount: commentsCount, type: type,
+                            thumbnailURL: thumbnailURL)
             } catch {
                 // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")

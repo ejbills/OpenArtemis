@@ -47,8 +47,8 @@ struct PostFeedView: View {
                 if !hasAppeared {
                     // grab the thumbnail from article opengraph metadata
                     let type = post.type
-                    if (type == "video" || type == "gallery" || type == "article") && post.thumbnailURL == nil {
-                        MediaUtils.fetchImageURL(urlString: post.mediaURL.originalURL) { imageURL in
+                    if (type == "video" || type == "gallery" || type == "article") && post.thumbnailURL == nil, let mediaURL = post.mediaURLs.first {
+                        MediaUtils.fetchImageURL(urlString: mediaURL.originalURL) { imageURL in
                             if let imageURL, !imageURL.isEmpty {
                                 metadataThumbnailURL = imageURL
                             }
@@ -102,7 +102,7 @@ struct PostFeedView: View {
             
             // text posts do not have any metadata to display, so avoid rendering this entirely if it's a text post.
             if post.type != "text" {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURLs: post.mediaURLs, roughMediaHeight: post.roughHeight, roughMediaWidth: post.roughWidth, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
             }
             
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, stickied: post.stickied, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
@@ -112,13 +112,16 @@ struct PostFeedView: View {
     private func renderCompactContent() -> some View {
         HStack(alignment: .top) {
             VStack {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURLs: post.mediaURLs, roughMediaHeight: post.roughHeight, roughMediaWidth: post.roughWidth, thumbnailURL: getThumbnailURL(), title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL, 
-                             tag: post.tag, textSizePreference: textSizePreference)
+                if let mediaURL = post.mediaURLs.first {
+                    TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? mediaURL.originalURL : mediaURL.privateURL,
+                                 tag: post.tag, textSizePreference: textSizePreference)
+                }
+                
                 PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, stickied: post.stickied, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

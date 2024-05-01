@@ -86,40 +86,8 @@ struct EmbeddedMultiMediaView: View {
         .padding(appTheme.compactMode || forceCompactMode ? 0 : 6) // less spacing in compact ^.^
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor).opacity(appTheme.compactMode || forceCompactMode ? 0 : 1))
         .onTapGesture {
-            if !isLoading {
-                withAnimation {
-                    isLoading = true
-                }
-                
-                if determinedType == "gallery" {
-                    MediaUtils.galleryMediaExtractor(galleryURL: URL(string: mediaURL.privateURL)!) { imageUrls in
-                        if let imageUrls, !imageUrls.isEmpty {
-                            DispatchQueue.main.async {
-                                ImageViewerController(images: imageUrls, imageTitle: title).present()
-                            }
-                        } else {
-                            print("Failed to extract image URLs.")
-                        }
-                        
-                        isLoading = false
-                    }
-                } else if determinedType == "video" {
-                    MediaUtils.videoMediaExtractor(videoURL: URL(string: mediaURL.privateURL)!) { videoURL in
-                        if let videoURL = videoURL {
-                            DispatchQueue.main.async {
-                                VideoPlayerViewController(videoURL: videoURL).play()
-                                
-                            }
-                        } else {
-                            print("Failed to extract video URL.")
-                        }
-                        
-                        isLoading = false
-                    }
-                } else {
-                    SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
-                    isLoading = false
-                }
+            if determinedType == "article" {
+                SafariHelper.openSafariView(withURL: URL(string: mediaURL.privateURL)!)
             }
         }
         .loadingOverlay(isLoading: isLoading)
