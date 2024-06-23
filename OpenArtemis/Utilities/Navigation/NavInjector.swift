@@ -49,7 +49,6 @@ struct HandleDeepLinkResolution: ViewModifier {
     
     @MainActor
     func handleIncomingURL(_ url: URL) -> OpenURLAction.Result {
-        print(url)
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             print("Invalid URL")
             return .discarded
@@ -57,10 +56,27 @@ struct HandleDeepLinkResolution: ViewModifier {
         
         if url.scheme == "openartemis" {
             let urlStringWithoutScheme = url.absoluteString.replacingOccurrences(of: "openartemis://", with: "")
-            handleRedditURL(urlStringWithoutScheme)
-        } else {
-            // handle link normally if it's not an internal (deep) link
+            
+            if urlStringWithoutScheme.hasPrefix("/u/") {
+                if let username = urlStringWithoutScheme.split(separator: "/u/").last {
+                    // handle profile viewing...
+                    coordinator.path.append(ProfileResponse(username: String(username)))
+                }
+            } else if urlStringWithoutScheme.hasPrefix("/r/") {
+                if let subreddit = urlStringWithoutScheme.split(separator: "/r/").last {
+                    // handle subreddit viewing...
+                    coordinator.path.append(SubredditFeedResponse(subredditName: String(subreddit)))
+                }
+            } else {
+                handleRedditURL(urlStringWithoutScheme)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            // handle link normally if it's an external (web) link
             SafariHelper.openSafariView(withURL: url)
+        } else {
+            // Unsupported URL scheme
+            print("Unsupported URL scheme: \(url.scheme ?? "nil")")
+            return .discarded
         }
         
         return .handled
@@ -91,11 +107,17 @@ struct HandleDeepLinkResolution: ViewModifier {
                     }
                 default:
                     // handle regular link display in an in-app browser
-                    SafariHelper.openSafariView(withURL: url)
+                    let safariURL = URL(string: "https://" + urlStringWithoutScheme)
+                    if let safariURL = safariURL {
+                        SafariHelper.openSafariView(withURL: safariURL)
+                    }
                 }
             } else {
                 // handle regular link display in an in-app browser
-                SafariHelper.openSafariView(withURL: url)
+                let safariURL = URL(string: "https://" + urlStringWithoutScheme)
+                if let safariURL = safariURL {
+                    SafariHelper.openSafariView(withURL: safariURL)
+                }
             }
         }
     }
