@@ -48,9 +48,9 @@ struct ContentView: View {
     var body: some View {
         TabView {
             // Feed Tab
-            getNavigationView {
+            getNavigationView(content: {
                 SubredditDrawerView(appTheme: appTheme, textSizePreference: textSizePreference)
-            }
+            }, shouldRespondToGlobalLinking: true)
             .tabItem {
                 Label("Feed", systemImage: "doc.richtext")
             }
@@ -91,15 +91,15 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    private func getNavigationView<Content: View>(forceNonSplitStack: Bool = false, @ViewBuilder content: @escaping () -> Content) -> some View {
+    private func getNavigationView<Content: View>(forceNonSplitStack: Bool = false, @ViewBuilder content: @escaping () -> Content, shouldRespondToGlobalLinking: Bool = false) -> some View {
         let nav = NavCoordinator()
         
         if UIDevice.current.userInterfaceIdiom == .phone || forceNonSplitStack {
-            NavigationStackWrapper(tabCoordinator: nav, content: content)
+            NavigationStackWrapper(tabCoordinator: nav, content: content, shouldRespondToGlobalLinking: shouldRespondToGlobalLinking)
         } else {
-            NavigationSplitViewWrapper(tabCoordinator: nav, sidebar: content) {
+            NavigationSplitViewWrapper(tabCoordinator: nav, sidebar: content, detail: {
                 NothingHereView(textSizePreference: textSizePreference)
-            }
+            }, shouldRespondToGlobalLinking: shouldRespondToGlobalLinking)
         }
     }
     
