@@ -41,19 +41,13 @@ struct HandleDeepLinkResolution: ViewModifier {
             .environment(\.openURL, OpenURLAction(handler: handleIncomingURL))
             .onOpenURL { incomingURL in
                 if shouldRespondToGlobalLinking {
-                    print("App was opened via URL: \(incomingURL)")
-                    handleIncomingURL(incomingURL)
+                    _ = handleIncomingURL(incomingURL) // silences unused warning
                 }
             }
     }
     
     @MainActor
     func handleIncomingURL(_ url: URL) -> OpenURLAction.Result {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            print("Invalid URL")
-            return .discarded
-        }
-        
         if url.scheme == "openartemis" {
             let urlStringWithoutScheme = url.absoluteString.replacingOccurrences(of: "openartemis://", with: "")
             
