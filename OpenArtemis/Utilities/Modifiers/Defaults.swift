@@ -16,6 +16,8 @@ extension Defaults.Keys {
     static let appTheme = Key<AppThemeSettings>("appTheme", default: AppThemeSettings())
     static let textSizePreference = Key<TextSizePreference>("textSizePreference", default: TextSizePreference())
     
+    static let commentColorPalette = Key<[Color]>("commentColorPalette", default: ColorPalettes.defaultPalette)
+    
     // MARK: - General
     static let redirectToPrivateSites = Key<Bool>("redirectToPrivateSites", default: true)
     static let readerMode = Key<Bool>("readerMode", default: true)
@@ -82,6 +84,67 @@ struct AppThemeSettings: Equatable, Hashable, Codable, Defaults.Serializable {
 
     var lightBackground: Color = .white
     var darkBackground: Color = Color(hex: "111112")
+}
+
+struct ColorPalettes {
+    static let defaultPalette: [Color] = [
+        Color(hex: 0x648FFF), Color(hex: 0x785EF0),
+        Color(hex: 0xDC267F), Color(hex: 0xFE6100),
+        Color(hex: 0xFFB000)
+    ]
+
+    static let sunsetPalette: [Color] = [
+        Color(hex: 0xFFADAD),
+        Color(hex: 0xFFD6A5),
+        Color(hex: 0xFDFFB6),
+        Color(hex: 0xCAFFBF),
+        Color(hex: 0x9BF6FF)
+    ]
+
+    static let oceanPalette: [Color] = [
+        Color(hex: 0x2b699c),
+        Color(hex: 0x4087ca),
+        Color(hex: 0x519ebb),
+        Color(hex: 0x3f88d2),
+        Color(hex: 0x5a8db5)
+    ]
+
+    static let forestPalette: [Color] = [
+        Color(hex: 0x3d6145),
+        Color(hex: 0x6d8153),
+        Color(hex: 0x5e9c4a),
+        Color(hex: 0x8da772),
+        Color(hex: 0x9f9f4f)
+    ]
+
+    static let grayscalePalette: [Color] = [
+        Color(hex: 0x3c4049),
+        Color(hex: 0x454951),
+        Color(hex: 0x424247),
+        Color(hex: 0x55585e),
+        Color(hex: 0x666970)
+    ]
+
+    static let autumnPalette: [Color] = [
+        Color(hex: 0xB7410E),
+        Color(hex: 0xCC5500),
+        Color(hex: 0xDAA520),
+        Color(hex: 0x8B4513),
+        Color(hex: 0xCD853F)
+    ]
+
+    static let twilightPalette: [Color] = [
+        Color(hex: 0xb46654),
+        Color(hex: 0x65b80ad),
+        Color(hex: 0x8178ad),
+        Color(hex: 0xb79a60),
+        Color(hex: 0x558f68)
+    ]
+
+    static let allPalettes: [[Color]] = [
+        defaultPalette, sunsetPalette, oceanPalette,
+        forestPalette, grayscalePalette, autumnPalette, twilightPalette
+    ]
 }
 
 struct TextSizePreference: Codable, Defaults.Serializable {

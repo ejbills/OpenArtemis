@@ -17,7 +17,7 @@ struct LoadingOverlay: ViewModifier {
                 .allowsHitTesting(!isLoading)
             if isLoading {
                 ProgressView()
-                Color.gray.opacity(0.45)
+                Color.gray.opacity(0.15)
                     .cornerRadius(radius)
             }
         }

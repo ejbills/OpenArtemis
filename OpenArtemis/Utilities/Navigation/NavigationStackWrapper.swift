@@ -12,6 +12,7 @@ struct NavigationStackWrapper<Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
     @Default(.swipeAnywhere) var swipeAnywhere
     var content: () -> Content
+    let shouldRespondToGlobalLinking: Bool
     
     @State private var swipeGesture: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer()
@@ -19,9 +20,10 @@ struct NavigationStackWrapper<Content: View>: View {
         gesture.isEnabled = false
         return gesture
     }()
-    init(tabCoordinator: NavCoordinator, @ViewBuilder content: @escaping () -> Content) {
+    init(tabCoordinator: NavCoordinator, @ViewBuilder content: @escaping () -> Content, shouldRespondToGlobalLinking: Bool) {
         self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
         self.content = content
+        self.shouldRespondToGlobalLinking = shouldRespondToGlobalLinking
     }
     
     var body: some View {
@@ -33,7 +35,7 @@ struct NavigationStackWrapper<Content: View>: View {
                 }
         }
         .enabledFullSwipePop(swipeAnywhere)
-        .handleDeepLinkResolution()
+        .handleDeepLinkResolution(shouldRespondToGlobalLinking: shouldRespondToGlobalLinking)
         .environmentObject(tabCoordinator)
         .environment(\.popGestureID, swipeGesture.name)
         .onReceive(NotificationCenter.default.publisher(for: .init(swipeGesture.name ?? "")), perform: { info in
@@ -49,13 +51,15 @@ struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
     @StateObject private var tabCoordinator: NavCoordinator
     var sidebar: () -> Sidebar
     var detail: () -> Content
+    let shouldRespondToGlobalLinking: Bool
     
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
-    init(tabCoordinator: NavCoordinator, @ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Content) {
+    init(tabCoordinator: NavCoordinator, @ViewBuilder sidebar: @escaping () -> Sidebar, @ViewBuilder detail: @escaping () -> Content, shouldRespondToGlobalLinking: Bool) {
         self._tabCoordinator = StateObject(wrappedValue: tabCoordinator)
         self.sidebar = sidebar
         self.detail = detail
+        self.shouldRespondToGlobalLinking = shouldRespondToGlobalLinking
     }
     
     var body: some View {
@@ -71,7 +75,7 @@ struct NavigationSplitViewWrapper<Sidebar: View, Content: View>: View {
                     .handleDeepLinkViews()
             }
         }
-        .handleDeepLinkResolution()
+        .handleDeepLinkResolution(shouldRespondToGlobalLinking: shouldRespondToGlobalLinking)
         .environmentObject(tabCoordinator)
     }
 }

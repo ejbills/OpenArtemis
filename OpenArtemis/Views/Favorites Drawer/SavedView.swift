@@ -10,12 +10,12 @@ import CoreData
 
 struct SavedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-        
+    
     @FetchRequest(
         entity: SavedPost.entity(),
         sortDescriptors: []
     ) var savedPosts: FetchedResults<SavedPost>
-
+    
     @FetchRequest(
         entity: SavedComment.entity(),
         sortDescriptors: []
@@ -67,23 +67,23 @@ struct SavedView: View {
     /// mapping them into `MixedMediaTuple` elements, and sorting the array by date in descending order.
     func updateFeed() {
         mixedMediaLinks = []
-
+        
         // Map the saved posts from CoreData to the mixedMediaLinks array
         let posts = savedPosts.map { post in
             let postTuple = PostUtils.shared.savedPostToPost(context: managedObjectContext, post: post)
             return MixedMedia.post(postTuple.1, date: postTuple.0)
         }
-
+        
         // Map the saved comments from CoreData to the mixedMediaLinks array
         let comments = savedComments.map { savedComment in
             let commentTuple = CommentUtils.shared.savedCommentToComment(savedComment)
             return MixedMedia.comment(commentTuple.1, date: commentTuple.0)
         }
-
+        
         // Combine posts and comments into mixedMediaLinks array
         mixedMediaLinks += posts
         mixedMediaLinks += comments
-
+        
         DateSortingUtils.sortMixedMediaByDateDescending(&mixedMediaLinks)
     }
 }
@@ -98,7 +98,7 @@ struct MixedContentView: View {
     let isRead: Bool
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
-        
+    
     @State var isLoadingCommentPost: Bool = false
     
     init(content: MixedMedia, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference) {
@@ -111,14 +111,13 @@ struct MixedContentView: View {
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference)
-                .onTapGesture {
-                    coordinator.path.append(PostResponse(post: post))
-                    
-                    if !isRead {
-                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
-                    }
+            PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
+                coordinator.path.append(PostResponse(post: post))
+                
+                if !isRead {
+                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
                 }
+            }
         case .comment(let comment, _):
             CommentView(comment: comment, numberOfChildren: 0, appTheme: appTheme, textSizePreference: textSizePreference)
                 .loadingOverlay(isLoading: isLoadingCommentPost, radius: 0)

@@ -36,5 +36,4 @@ extension UIScreen {
 let drawerChars = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "#"]
 
 // Other
-let colorPalette: [Color] = [Color(hex: 0x648FFF), Color(hex: 0x785EF0), Color(hex: 0xDC267F), Color(hex: 0xFE6100), Color(hex: 0xFFB000)]
-let tagBgColor = Color.gray.opacity(0.2)
+let tagBgColor = Color.gray.opacity(0.125)
