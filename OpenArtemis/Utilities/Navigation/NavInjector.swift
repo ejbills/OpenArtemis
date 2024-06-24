@@ -41,7 +41,7 @@ struct HandleDeepLinkResolution: ViewModifier {
             .environment(\.openURL, OpenURLAction(handler: handleIncomingURL))
             .onOpenURL { incomingURL in
                 if shouldRespondToGlobalLinking {
-                    _ = handleIncomingURL(incomingURL) // silences unused warning
+                    _ = handleIncomingURL(incomingURL) // silence unused warning
                 }
             }
     }
@@ -52,12 +52,12 @@ struct HandleDeepLinkResolution: ViewModifier {
             let urlStringWithoutScheme = url.absoluteString.replacingOccurrences(of: "openartemis://", with: "")
             
             if urlStringWithoutScheme.hasPrefix("/u/") {
-                if let username = urlStringWithoutScheme.split(separator: "/u/").last {
+                if let username = urlStringWithoutScheme.split(separator: "/").last {
                     // handle profile viewing...
                     coordinator.path.append(ProfileResponse(username: String(username)))
                 }
             } else if urlStringWithoutScheme.hasPrefix("/r/") {
-                if let subreddit = urlStringWithoutScheme.split(separator: "/r/").last {
+                if let subreddit = urlStringWithoutScheme.split(separator: "/").last {
                     // handle subreddit viewing...
                     coordinator.path.append(SubredditFeedResponse(subredditName: String(subreddit)))
                 }
@@ -93,7 +93,7 @@ struct HandleDeepLinkResolution: ViewModifier {
                         let subreddit = pathComponents[2]
                         coordinator.path.append(SubredditFeedResponse(subredditName: subreddit))
                     }
-                case "user":
+                case "user", "u":
                     if pathComponents.count > 2 {
                         // handle profile viewing...
                         let username = pathComponents[2]
@@ -147,6 +147,7 @@ struct HandleDeepLinkResolution: ViewModifier {
         return correctedURLString
     }
 }
+
 
 extension View {
     func handleDeepLinkViews() -> some View {
