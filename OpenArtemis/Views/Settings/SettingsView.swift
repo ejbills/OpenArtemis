@@ -60,7 +60,7 @@ struct SettingsView: View {
                     .font(textSizePreference.caption)
                     .foregroundColor(.secondary)
                 
-                Link("Show support with a coffee", destination: URL(string: "https://www.buymeacoffee.com/roguenasa1")!)
+                Link("Show support with a coffee", destination: URL(string: "https://www.buymeacoffee.com/keplercafe")!)
                 Text("Consider supporting with a donation if you enjoy using OpenArtemis. Note that donating does not unlock any additional features; OpenArtemis is committed to remaining free forever.")
                     .font(textSizePreference.caption)
                     .foregroundColor(.secondary)
