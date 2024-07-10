@@ -47,7 +47,6 @@
 		BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0556942B3BAF8400BB71F1 /* ScrapeProfile.swift */; };
 		BB2B1F282B96462000653677 /* TextSizeAdjustmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B1F272B96462000653677 /* TextSizeAdjustmentView.swift */; };
 		BB2B1F2D2B96873F00653677 /* increaseHitboxBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B1F2C2B96873F00653677 /* increaseHitboxBy.swift */; };
-		BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BB322CB92B26C0A300FC5849 /* MarkdownUI */; };
 		BB3387032B2C171C00EF4D5C /* Theme Wrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3387022B2C171C00EF4D5C /* Theme Wrappers.swift */; };
 		BB34B3462BC0BCB700A49859 /* CommentThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB34B3452BC0BCB700A49859 /* CommentThemeView.swift */; };
 		BB38FC5E2B991DCE002994F1 /* DefaultFavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB38FC5D2B991DCE002994F1 /* DefaultFavoritesView.swift */; };
@@ -92,6 +91,7 @@
 		BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */; };
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
 		BBB693302B420C550094DFEE /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = BBB6932F2B420C550094DFEE /* OpenGraph */; };
+		BBCACEF22C3ECC6500D06796 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BBCACEF12C3ECC6500D06796 /* MarkdownUI */; };
 		BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */; };
 		BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */; };
 		BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434712B1BD6A400886CAB /* String Hex.swift */; };
@@ -230,10 +230,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D3DBAF2B1B1AFA00BCCD38 /* Defaults in Frameworks */,
+				BBCACEF22C3ECC6500D06796 /* MarkdownUI in Frameworks */,
 				BB48451A2B9E32980015376B /* AlertToast in Frameworks */,
 				BBB693302B420C550094DFEE /* OpenGraph in Frameworks */,
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
-				BB322CBA2B26C0A300FC5849 /* MarkdownUI in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
 			);
@@ -639,9 +639,9 @@
 				BBB2C0E62B1AD9A7003C8ACC /* SwiftSoup */,
 				65D3DBAE2B1B1AFA00BCCD38 /* Defaults */,
 				65AD50B02B1E2725008B39E9 /* LazyPager */,
-				BB322CB92B26C0A300FC5849 /* MarkdownUI */,
 				BBB6932F2B420C550094DFEE /* OpenGraph */,
 				BB4845192B9E32980015376B /* AlertToast */,
+				BBCACEF12C3ECC6500D06796 /* MarkdownUI */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -1014,7 +1014,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1055,7 +1055,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1105,7 +1105,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gh123man/LazyPager";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 1.0.5;
 			};
 		};
@@ -1121,7 +1121,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ActuallyTaylor/SwiftHTMLToMarkdown";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 1.1.1;
 			};
 		};
@@ -1129,15 +1129,15 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.3.0;
 			};
 		};
 		BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 1.3.9;
 			};
 		};
@@ -1145,7 +1145,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/leoz/CachedImage";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 0.0.5;
 			};
 		};
@@ -1153,7 +1153,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/suzuki-0000/SKPhotoBrowser";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 7.1.0;
 			};
 		};
@@ -1161,7 +1161,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 2.6.1;
 			};
 		};
@@ -1169,7 +1169,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/satoshi-takano/OpenGraph";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 1.5.0;
 			};
 		};
@@ -1185,11 +1185,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65D3DBAD2B1B1AFA00BCCD38 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
-		};
-		BB322CB92B26C0A300FC5849 /* MarkdownUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
-			productName = MarkdownUI;
 		};
 		BB4845192B9E32980015376B /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1210,6 +1205,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */;
 			productName = OpenGraph;
+		};
+		BBCACEF12C3ECC6500D06796 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
