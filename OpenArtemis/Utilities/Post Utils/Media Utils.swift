@@ -55,7 +55,7 @@ class MediaUtils {
                     let doc = try SwiftSoup.parse(htmlString!)
                     
                     // Extract video link
-                    if let videoElement = try doc.select("shreddit-player source").first(),
+                    if let videoElement = try doc.select("shreddit-player-2 source").first() ?? doc.select("shreddit-player source").first(),
                        let videoUrlString = try? videoElement.attr("src"),
                        let videoUrl = URL(string: videoUrlString) {
                         completion(videoUrl)
