@@ -14,7 +14,7 @@ private let noDataError = NSError(domain: "No data received", code: 0, userInfo:
 
 extension RedditScraper {
     private static func parseUserTextBody(data: Document, trackingParamRemover: TrackingParamRemover) throws -> String? {
-        let postBody = try data.select("div.expando").first()
+        let postBody = try data.select("div.expando .usertext-body").first()
         
         var body: String? = nil
         if let bodyElement = postBody, !(try bodyElement.text().isEmpty) {
