@@ -55,7 +55,7 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
     }
 
     private func allowMatureContent() {
-        print("clicing that shit")
+        print("clicking that shit")
         let jsToClickOver18Confirmation = """
         document.querySelector('button.c-btn.c-btn-primary[type="submit"][name="over18"][value="yes"]').click();
         """
