@@ -88,6 +88,9 @@ struct HandleDeepLinkResolution: ViewModifier {
                 case "r":
                     if pathComponents.count > 3 && pathComponents[3] == "comments" {
                         handlePostOrComment(url: url, pathComponents: pathComponents)
+                        // TODO: remember to set loading state if we try to be smart again
+                        GlobalLoadingManager.shared.setLoading(toState: false)
+
                         coordinator.path.append(
                             PostResponse(
                                 post: createMinimalPostFromCommentsUrl(
@@ -159,12 +162,12 @@ struct HandleDeepLinkResolution: ViewModifier {
     /// This should be improved to asynchronusly scrape the title and other details
     func createMinimalPostFromCommentsUrl(url: URL, trackingParamRemover: TrackingParamRemover?) -> Post {
         return Post(
-            id: "",
-            subreddit: "",
-            title: "",
+            id: url.pathComponents[4],
+            subreddit: url.pathComponents[2],
+            title: "THIS IS A FAKE TITLE",
             tag: "",
-            author: "",
-            votes: "",
+            author: "mike dg",
+            votes: "100",
             time: "",
             mediaURL: "NEEDSSOMETHINGORCRASH".privacyURL(trackingParamRemover: trackingParamRemover),
             commentsURL: "https://\(url.absoluteString)", // I don't understand why the urls don't have a scheme to begin with
