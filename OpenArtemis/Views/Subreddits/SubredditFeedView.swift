@@ -15,7 +15,8 @@ struct SubredditFeedView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
     @Default(.hideReadPosts) var hideReadPosts
-    
+    @Default(.markReadOnScroll) var markReadOnScroll
+
     let subredditName: String
     let titleOverride: String?
     let appTheme: AppThemeSettings
@@ -48,7 +49,10 @@ struct SubredditFeedView: View {
         sortDescriptors: []
     ) var readPosts: FetchedResults<ReadPost>
     
-    
+    // Tracks posts that were just read due to scrolling, so we don't remove them until we reload
+    // This helps prevent the list from jumping around
+    @State private var justReadDueToScrollingPostIds: Set<String> = [] // How do we clear these when we change subs
+
     // MARK: - Body
     var body: some View {
         Group {
@@ -58,20 +62,25 @@ struct SubredditFeedView: View {
                         var isRead: Bool {
                             readPosts.contains(where: { $0.readPostId == post.id })
                         }
+                        let justRead = justReadDueToScrollingPostIds.contains(post.id)
+                        
                         var isSaved: Bool {
                             savedPosts.contains { $0.id == post.id }
                         }
                         
-                        if hideReadPosts {
-                            if (!isRead || isSaved) {
+                        // i think this is good if !hideReadPosts || (!isRead || isSaved) {
+//                        if hideReadPosts {
+                        if !hideReadPosts || (!isRead || isSaved || (isRead && justRead)) {
+//                            if (!isRead || isSaved) {
                                 PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
                                     handlePostTap(post, isRead: isRead)
                                 }
-                            }
-                        } else {
-                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
-                                handlePostTap(post, isRead: isRead)
-                            }
+                                .onScrolledOffTopOfScreen {
+                                    if markReadOnScroll {
+                                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                        justReadDueToScrollingPostIds.insert(post.id)
+                                    }
+                                }
                         }
                     }
                     
@@ -232,6 +241,7 @@ struct SubredditFeedView: View {
             postIDs.removeAll()
             searchResults.removeAll()
             mixedMediaIDs.removeAll()
+            justReadDueToScrollingPostIds.removeAll()
             lastPostAfter = ""
             isLoading = false
         }

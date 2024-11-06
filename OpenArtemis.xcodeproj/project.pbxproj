@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A7739F32CDB350200C58FE8 /* OnScrolledOffTopOfScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
 		653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */; };
@@ -119,6 +120,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnScrolledOffTopOfScreen.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
 		653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_PrivacySelector.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 		BB391FBD2B1ADE560014FB18 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */,
 				BB2B1F2C2B96873F00653677 /* increaseHitboxBy.swift */,
 				65D3DBBB2B1B212800BCCD38 /* Defaults.swift */,
 				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
@@ -812,6 +815,7 @@
 				BB34B3462BC0BCB700A49859 /* CommentThemeView.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */,
+				1A7739F32CDB350200C58FE8 /* OnScrolledOffTopOfScreen.swift in Sources */,
 				BBA6FD6A2B45303C0096242E /* LimitedSet.swift in Sources */,
 				653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
