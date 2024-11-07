@@ -60,6 +60,15 @@ private struct ImageView: View {
         ZStack {
             Color.black
             
+            // A hidden button to allow using the escape button to hide this, works on iPads with keyboards and mac os
+            Button(action: {
+                dismissView()
+            }) {
+                // no view
+            }
+            .hidden()
+            .keyboardShortcut(.cancelAction)
+            
             LazyPager(data: images, page: $index) { url in
                 let url = URL(string: url)
                 
