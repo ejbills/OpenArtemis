@@ -180,12 +180,12 @@ struct SubredditDrawerView: View {
                     }
                     
                     visibleSubredditSections()
-                    showSaveSubredditDialog = false
                 }
+                .keyboardShortcut(.defaultAction)
+                .disabled(subredditName.isEmpty)
+                .buttonStyle(FixAlertForMacOSStyle())
                 
-                Button("Cancel") {
-                    showSaveSubredditDialog = false
-                }
+                Button("Cancel", role: .cancel){}
             } message: {
                 Text("Enter the subreddit name you wish to add to your favorites.")
             }
@@ -195,12 +195,12 @@ struct SubredditDrawerView: View {
                 
                 Button("Save") {
                     SubredditUtils.shared.saveToMultis(managedObjectContext: managedObjectContext, name: multiName, imageURL: multiImageURL)
-                    showSaveMultiDialog = false
                 }
+                .keyboardShortcut(.defaultAction)
+                .disabled(multiName.isEmpty)
+                .buttonStyle(FixAlertForMacOSStyle())
                 
-                Button("Cancel") {
-                    showSaveMultiDialog = false
-                }
+                Button("Cancel", role: .cancel){}
             } message: {
                 Text("Enter the multi name and thumbnail image URL (optional) you wish to add to your favorites.")
             }

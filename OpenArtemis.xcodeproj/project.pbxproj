@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AAF1ED42CDC0A35003E08EB /* FixAlertForMacOSStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
 		653245C12B2AF5D500227019 /* OOBE_PrivacySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */; };
@@ -119,6 +120,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixAlertForMacOSStyle.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
 		653245BC2B2AF5D500227019 /* OOBE_PrivacySelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOBE_PrivacySelector.swift; sourceTree = "<group>"; };
@@ -242,6 +244,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1AAF1ED22CDC0A2D003E08EB /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		6504FCA52B247A1400598EFF /* Privacy */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,6 +421,7 @@
 		BB391FB82B1ADE3D0014FB18 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1AAF1ED22CDC0A2D003E08EB /* Styles */,
 				BB57456B2B5322BE00A961C1 /* Markdown */,
 				BBA6FD692B45303C0096242E /* LimitedSet.swift */,
 				BB502DCF2B23AABA003C22DB /* Subreddit Utils */,
@@ -747,6 +758,7 @@
 				BB853E702B35E3210041150C /* CodableColor.swift in Sources */,
 				BB391FBA2B1ADE470014FB18 /* App Consts.swift in Sources */,
 				BB391FA62B1ADD540014FB18 /* DetailTagView.swift in Sources */,
+				1AAF1ED42CDC0A35003E08EB /* FixAlertForMacOSStyle.swift in Sources */,
 				BBACCB402B3231E100A9F550 /* TitleTagView.swift in Sources */,
 				BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */,
 				65A3329A2B1DDD2F00421162 /* Toaster.swift in Sources */,
