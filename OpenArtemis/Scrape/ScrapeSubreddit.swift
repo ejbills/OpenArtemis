@@ -24,9 +24,9 @@ class RedditScraper {
         if let sort = sort {
             switch sort {
             case .best, .hot, .new, .controversial:
-                urlComponents?.path += "/\(sort.rawVal.value)"
+                urlComponents?.path += "/\(sort.rawVal.value)/"
             case .top(let topOption):
-                urlComponents?.path += "/top"
+                urlComponents?.path += "/top/"
                 queryItems.append(URLQueryItem(name: "t", value: topOption.rawValue))
             }
         }
