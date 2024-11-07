@@ -12,29 +12,26 @@ extension View {
     }
 }
 
-struct DissappearUpModifier: ViewModifier {
-    @State var appear: Bool = false
-    
+///Tracks the first time that the view is scrolled up off the screen
+private struct DissappearUpModifier: ViewModifier {
+    @State var dissappeared: Bool = false
     let action: () -> Void
     
     func body(content: Content) -> some View {
         content
             .background(GeometryReader { geo -> Color in
                 let yPosition = geo.frame(in: .global).minY
-                DispatchQueue.main.async {
-                    //                print("MIKEDG Dissappeared off the top")
-                    
-                    if yPosition < -200 && appear { // When the view is about to scroll off the screen at the top
-                        appear = false
-                        print("MIKEDG Dissappeared off the top")
-                        //                    content.onDisappear() // was self
+                let height = geo.frame(in: .local).height // Help determine when entire view has been scrolled up
+                
+                // Does not take into account nav bar height
+                if yPosition < (0 - height) && !dissappeared { // When the view is about to scroll off the screen at the top
+                    dissappeared = true
+                    DispatchQueue.main.async {
                         action()
-                    } else if yPosition >= 0 && !appear { // When the view is inside the screen
-                        appear = true
                     }
                 }
-                // Kinda hacky?
-                return Color.clear // TODO: should this be a return?
+            
+                return Color.clear
             })
     }
 }

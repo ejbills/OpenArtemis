@@ -51,7 +51,7 @@ struct SubredditFeedView: View {
     
     // Tracks posts that were just read due to scrolling, so we don't remove them until we reload
     // This helps prevent the list from jumping around
-    @State private var justReadDueToScrollingPostIds: Set<String> = [] // How do we clear these when we change subs
+    @State private var justReadDueToScrollingPostIds: Set<String> = []
 
     // MARK: - Body
     var body: some View {
@@ -68,19 +68,16 @@ struct SubredditFeedView: View {
                             savedPosts.contains { $0.id == post.id }
                         }
                         
-                        // i think this is good if !hideReadPosts || (!isRead || isSaved) {
-//                        if hideReadPosts {
                         if !hideReadPosts || (!isRead || isSaved || (isRead && justRead)) {
-//                            if (!isRead || isSaved) {
-                                PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
-                                    handlePostTap(post, isRead: isRead)
+                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                                handlePostTap(post, isRead: isRead)
+                            }
+                            .if(markReadOnScroll, transform: { postFeedItem in
+                                postFeedItem.onScrolledOffTopOfScreen {
+                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                    justReadDueToScrollingPostIds.insert(post.id)
                                 }
-                                .onScrolledOffTopOfScreen {
-                                    if markReadOnScroll {
-                                        PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
-                                        justReadDueToScrollingPostIds.insert(post.id)
-                                    }
-                                }
+                            })
                         }
                     }
                     

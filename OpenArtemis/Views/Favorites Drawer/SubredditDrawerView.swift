@@ -293,9 +293,7 @@ struct SubredditDrawerView: View {
     private func getSubredditFeedView() -> SubredditFeedView {
         switch defaultLaunchFeed {
         case "all":
-            return SubredditFeedView(subredditName:
-                                        // something here?
-                                     defaultLaunchFeed, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
+            return SubredditFeedView(subredditName: defaultLaunchFeed, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
         case "popular":
             return SubredditFeedView(subredditName: defaultLaunchFeed.capitalized, titleOverride: nil, appTheme: appTheme, textSizePreference: textSizePreference)
         case "home":
