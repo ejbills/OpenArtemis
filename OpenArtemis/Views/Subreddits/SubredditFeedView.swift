@@ -159,7 +159,7 @@ struct SubredditFeedView: View {
         
         var body: some View {
             Group {
-                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
+                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: true) {
                     onTap()
                 }
                 .savedIndicator(isSaved)

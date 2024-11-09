@@ -75,8 +75,11 @@ private struct ImageView: View {
                 CachedImage(
                     url: url,
                     content: { image in
+//                        UIImageView()
+
                         LiveTextInteraction(image: image)
-                            .scaledToFit()
+//                            .scaledToFit() // not scaling correctly on maca
+//                            .scaledToFill()
                             .onAppear {
                                 currImg = image
                             }

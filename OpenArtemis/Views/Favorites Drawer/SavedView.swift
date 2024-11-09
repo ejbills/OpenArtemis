@@ -111,7 +111,8 @@ struct MixedContentView: View {
     var body: some View {
         switch content {
         case .post(let post, _):
-            PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
+            PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference,
+                         useLargeThumbnail: true) {
                 coordinator.path.append(PostResponse(post: post))
                 
                 if !isRead {
