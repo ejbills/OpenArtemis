@@ -87,17 +87,7 @@ struct HandleDeepLinkResolution: ViewModifier {
                 switch pathComponents[1] {
                 case "r":
                     if pathComponents.count > 3 && pathComponents[3] == "comments" {
-                        // TODO: remember to set loading state if we try to be smart again
-                        GlobalLoadingManager.shared.setLoading(toState: false)
-
-                        coordinator.path.append(
-                            PostResponse(
-                                post: createMinimalPostFromCommentsUrl(
-                                    url: url,
-                                    trackingParamRemover: nil
-                                )
-                            )
-                        )
+                        handlePostOrComment(url: url, pathComponents: pathComponents)
                     } else if pathComponents.count > 2 {
                         // handle subreddit viewing...
                         let subreddit = pathComponents[2]

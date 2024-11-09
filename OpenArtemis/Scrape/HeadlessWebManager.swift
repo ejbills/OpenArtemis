@@ -24,18 +24,46 @@ class HeadlessWebManager: NSObject, WKNavigationDelegate {
     
     // Adjusted to store the value of autoClickExpando
     func loadURLAndGetHTML(url: URL, autoClickExpando: Bool = false, preventCacheClear: Bool = false, completion: @escaping (Result<String, Error>) -> Void) {
-        self.completion = completion
-        self.shouldAutoClickExpando = autoClickExpando  // Store the flag value
+        let urlSchemeReplacementResult = addSchemeToUrl(url)
         
-        let request = URLRequest(url: url)
-        if !preventCacheClear {
-            clearWebCache { [weak self] in
-                guard let self = self else { return }
+        switch urlSchemeReplacementResult {
+        case .success(let url):
+            self.completion = completion
+            self.shouldAutoClickExpando = autoClickExpando  // Store the flag value
+            
+            let request = URLRequest(url: url)
+            if !preventCacheClear {
+                clearWebCache { [weak self] in
+                    guard let self = self else { return }
+                    self.webView.load(request)
+                }
+            } else {
                 self.webView.load(request)
             }
-        } else {
-            self.webView.load(request)
+        case .failure(let error):
+            completion(.failure(error))
         }
+    }
+    
+    // The webView.load fails to laod without a scheme
+    private func addSchemeToUrl(_ url: URL) -> Result<URL, Error> {
+        var url = url
+
+        // Check if the scheme is nil or empty, and if so, change it to "https"
+        if url.scheme == nil || url.scheme?.isEmpty == true {
+            if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                urlComponents.scheme = "https"
+                if let newURL = urlComponents.url {
+                    url = newURL
+                } else {
+                    return .failure(NSError(domain: "InvalidURL", code: 0, userInfo: [NSLocalizedDescriptionKey: "Unable to construct URL with https scheme"]))
+                }
+            } else {
+                return .failure(NSError(domain: "InvalidURLComponents", code: 0, userInfo: [NSLocalizedDescriptionKey: "Unable to parse URL components"]))
+            }
+        }
+        
+        return .success(url)
     }
     
     // New function to clear the cache
