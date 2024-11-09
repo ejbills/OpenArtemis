@@ -25,10 +25,8 @@ struct EmbeddedMultiMediaView: View {
     @State private var isLoading: Bool = false
     
     var body: some View {
-        // Change to vstack on large
-        // TODO should be HSTACK is not large
-//        Hstack  normal, vstack for close
-        let g = Group {
+        let layout = useLargeThumbnail ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
+        layout {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
             let mediaHeight = appTheme.compactMode || forceCompactMode ? roughCompactHeight : 50
             let mediaWidth = appTheme.compactMode || forceCompactMode ? roughCompactWidth : 50
@@ -139,16 +137,6 @@ struct EmbeddedMultiMediaView: View {
             }
         }
         .loadingOverlay(isLoading: isLoading)
-        
-        if useLargeThumbnail {
-            VStack(alignment: .center, spacing: 8) {
-                g
-            }
-        } else {
-            HStack(alignment: .top, spacing: 8) {
-                g
-            }
-        }
     }
     
     private func getMediaIcon(type: String) -> String {
