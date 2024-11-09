@@ -15,7 +15,8 @@ struct SubredditFeedView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
     @Default(.hideReadPosts) var hideReadPosts
-    
+    @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
+
     let subredditName: String
     let titleOverride: String?
     let appTheme: AppThemeSettings
@@ -64,12 +65,12 @@ struct SubredditFeedView: View {
                         
                         if hideReadPosts {
                             if (!isRead || isSaved) {
-                                PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                                PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
                                     handlePostTap(post, isRead: isRead)
                                 }
                             }
                         } else {
-                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
                                 handlePostTap(post, isRead: isRead)
                             }
                         }
@@ -155,11 +156,12 @@ struct SubredditFeedView: View {
         let isSaved: Bool
         let appTheme: AppThemeSettings
         let textSizePreference: TextSizePreference
+        let useLargeThumbnail: Bool
         let onTap: () -> Void
         
         var body: some View {
             Group {
-                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: true) {
+                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnail) {
                     onTap()
                 }
                 .savedIndicator(isSaved)

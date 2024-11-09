@@ -21,6 +21,7 @@ struct SettingsView: View {
     @Default(.over18) var over18
     @Default(.swipeAnywhere) var swipeAnywhere
     @Default(.hideReadPosts) var hideReadPosts
+    @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -170,6 +171,7 @@ struct SettingsView: View {
                         .foregroundColor(.red)
                 })
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
+                Toggle("Use Large Thumbnail For Media", isOn: $useLargeThumbnailForMediaPreview)
             }
             
             Section("Comments"){
