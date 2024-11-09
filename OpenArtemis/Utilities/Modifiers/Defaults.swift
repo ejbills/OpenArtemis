@@ -37,6 +37,11 @@ extension Defaults.Keys {
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     static let seenCaseSensitiveDisclaimer = Key<Bool>("seenCaseSensitiveDisclaimer", default: false)
     
+    // MARK: - Filters
+    static let subredditFilters = Key<[String]>("subredditFilters", default: [])
+    static let keywordFilters = Key<[String]>("keywordFilters", default: [])
+    static let userFilters = Key<[String]>("userFilters", default: [])
+    
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")
     static let mediumRedirect = Key<String>("mediumRedirect", default: "scribe.rip")

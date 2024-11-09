@@ -75,6 +75,11 @@ struct SettingsView: View {
                         .padding(.top, 4)
                 }
                 
+                NavigationLink(destination: FilterView(appTheme: appTheme, textSizePreference: textSizePreference)) {
+                                    Label("Content Filters", systemImage: "line.3.horizontal.decrease.circle")
+                                }
+
+                
                 VStack{
                     Toggle("Live Text Analyzer", isOn: $doLiveText)
                         .disabled(!imageAnalyzerSupport)
@@ -152,10 +157,12 @@ struct SettingsView: View {
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
                     HStack{
-                        Image(uiImage: UIImage(named: currentAppIcon)!)
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
+                        if let iconImage = UIImage(named: currentAppIcon) {
+                            Image(uiImage: iconImage)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
+                        }
                         Text("App Icon")
                     }
                 })
