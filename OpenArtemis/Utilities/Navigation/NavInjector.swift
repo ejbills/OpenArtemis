@@ -146,25 +146,6 @@ struct HandleDeepLinkResolution: ViewModifier {
         }
         return correctedURLString
     }
-    
-    /// This returns a Post that has the minimum necessary content to scrape contents.
-    /// This should be improved to asynchronusly scrape the title and other details
-    func createMinimalPostFromCommentsUrl(url: URL, trackingParamRemover: TrackingParamRemover?) -> Post {
-        return Post(
-            id: url.pathComponents[4],
-            subreddit: url.pathComponents[2],
-            title: "UNKNOWN TITLE",
-            tag: "",
-            author: "",
-            votes: "0",
-            time: "",
-            mediaURL: "NEEDSSOMETHINGORCRASH".privacyURL(trackingParamRemover: trackingParamRemover),
-            commentsURL: "https://\(url.absoluteString)", // I don't understand why the urls don't have a scheme to begin with
-            commentsCount: "",
-            type: "",
-            thumbnailURL: ""
-        )
-    }
 }
 
 
