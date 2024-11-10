@@ -184,7 +184,7 @@ struct SubredditFeedView: View {
                 switch result {
                 case .success(let newPosts):
                     if newPosts.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 times
-                        self.retryCount +=  1
+                        self.retryCount +=  1 // think this might fail if you read three things?
                         self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm, preventListIdRefresh: preventListIdRefresh)
                     } else {
                         self.retryCount =  0
