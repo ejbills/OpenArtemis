@@ -75,25 +75,13 @@ struct SubredditFeedView: View {
                             }
                         }
                     }
-                    
-//                    ScrollLoaderView {
-//                        scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
-//                    }
-                    Rectangle() // is this how it loads next? must expect to be hiddennext and show up again!
+
+                    Rectangle()
                         .fill(Color.clear)
                         .frame(height: 1)
-//                        .id(newId)
-                        .id(UUID()) // swift ui bug, needs a uuid to render multiple times. :|
-
+                        .id(UUID()) // adding this causes onAppear to be called multiple times even if the view didn't leave the screen
                         .onAppear {
-                            // TODO: make the onAppear take a function to call that takes something
-                            // maybe check if visible after completion?
-                            // regardless of how we solve this, we need to know when it's done to repeat!\
-                            print("small one")
-                            scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true) {
-                                // finished, so we need to see whats up? maybe change our id
-                                newId = newId + 1
-                            }
+                            scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
                         }
                     
                     if isLoading { // show spinner at the bottom of the feed
@@ -152,9 +140,7 @@ struct SubredditFeedView: View {
     private func handlePostAppearance(_ postId: String) {
         if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
             if postId == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption) {
-                    // make optional
-                }
+                scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
             }
         }
     }
@@ -188,7 +174,7 @@ struct SubredditFeedView: View {
         }
     }
     
-    private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "", preventListIdRefresh: Bool = false,  onCompleted: @escaping () -> Void) {
+    private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "", preventListIdRefresh: Bool = false) {
         self.isLoading = true
         if !preventListIdRefresh { self.listIdentifier = MiscUtils.randomString(length: 4) }
         
@@ -197,16 +183,13 @@ struct SubredditFeedView: View {
                                           trackingParamRemover: trackingParamRemover, over18: over18) { result in
                 defer { // what is this
                     isLoading = false
-                    onCompleted()
                 }
 
                 switch result {
                 case .success(let newPosts):
                     if newPosts.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 times
                         self.retryCount +=  1 // think this might fail if you read three things?
-                        self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm, preventListIdRefresh: preventListIdRefresh) {
-                            
-                        }
+                        self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm, preventListIdRefresh: preventListIdRefresh)
                     } else {
                         self.retryCount =  0
                         for post in newPosts {
@@ -257,8 +240,6 @@ struct SubredditFeedView: View {
             isLoading = false
         }
         
-        scrapeSubreddit(sort: sortOption, searchTerm: withSearchTerm) {
-            
-        }
+        scrapeSubreddit(sort: sortOption, searchTerm: withSearchTerm)
     }
 }
