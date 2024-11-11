@@ -143,11 +143,7 @@ class RedditScraper {
                 return nil
             }
         }
-        
-        if let post = posts.first {
-            return [post]
-        } else {
-            return []
-        }
+
+        return posts
     }
 }
