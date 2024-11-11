@@ -120,9 +120,7 @@ struct SubredditFeedView: View {
         }
         .onAppear {
             if posts.isEmpty {
-                scrapeSubreddit(sort: sortOption) {
-                    // here??
-                }
+                scrapeSubreddit(sort: sortOption)
             }
         }
         .refreshable { clearFeedAndReload() }
