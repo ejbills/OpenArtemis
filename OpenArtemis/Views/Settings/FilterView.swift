@@ -25,25 +25,6 @@ struct FilterView: View {
                     .foregroundColor(.secondary)
             }
             
-            Section("Filtered Subreddits") {
-                ForEach(subredditFilters, id: \.self) { subreddit in
-                    HStack {
-                        Text(subreddit)
-                        Spacer()
-                    }
-                }
-                .onDelete { indexSet in
-                    subredditFilters.remove(atOffsets: indexSet)
-                }
-                
-                Button(action: {
-                    showingAddSubredditAlert = true
-                }) {
-                    Label("Add Subreddit", systemImage: "plus.circle.fill")
-                        .foregroundStyle(Color.artemisAccent)
-                }
-            }
-            
             Section("Filtered Keywords") {
                 ForEach(keywordFilters, id: \.self) { keyword in
                     HStack {
@@ -59,6 +40,25 @@ struct FilterView: View {
                     showingAddKeywordAlert = true
                 }) {
                     Label("Add Keyword", systemImage: "plus.circle.fill")
+                        .foregroundStyle(Color.artemisAccent)
+                }
+            }
+            
+            Section("Filtered Subreddits") {
+                ForEach(subredditFilters, id: \.self) { subreddit in
+                    HStack {
+                        Text(subreddit)
+                        Spacer()
+                    }
+                }
+                .onDelete { indexSet in
+                    subredditFilters.remove(atOffsets: indexSet)
+                }
+                
+                Button(action: {
+                    showingAddSubredditAlert = true
+                }) {
+                    Label("Add Subreddit", systemImage: "plus.circle.fill")
                         .foregroundStyle(Color.artemisAccent)
                 }
             }
@@ -94,6 +94,7 @@ struct FilterView: View {
                             Text("Clear All Filters")
                             Spacer()
                         }
+                        .padding(16)
                     }
                 }
             }
