@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A412C772CE21C960089363B /* ScrollLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A412C762CE21C850089363B /* ScrollLoaderView.swift */; };
 		1AAF1ED42CDC0A35003E08EB /* FixAlertForMacOSStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
@@ -120,6 +121,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A412C762CE21C850089363B /* ScrollLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollLoaderView.swift; sourceTree = "<group>"; };
 		1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixAlertForMacOSStyle.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
@@ -244,6 +246,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A412C752CE21C690089363B /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				1A412C762CE21C850089363B /* ScrollLoaderView.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		1AAF1ED22CDC0A2D003E08EB /* Styles */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +361,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A412C752CE21C690089363B /* Utility */,
 				6535AC012B4563A100E6A2DD /* Images */,
 				BB0556912B3BAF0F00BB71F1 /* Profiles */,
 				BBEB46E12B34981300C33D33 /* Search */,
@@ -786,6 +797,7 @@
 				65EFE40B2B1CC37F00517EBE /* If.swift in Sources */,
 				BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */,
 				65AD50B32B1E38B9008B39E9 /* ImageViewController.swift in Sources */,
+				1A412C772CE21C960089363B /* ScrollLoaderView.swift in Sources */,
 				BB8CAE7A2B1E73CE00CA13BB /* Comment Utils.swift in Sources */,
 				65D3DBCB2B1B3DAC00BCCD38 /* PrivacyURL.swift in Sources */,
 				65D3DBC02B1B252300BCCD38 /* ChangeAppIconView.swift in Sources */,
@@ -1009,7 +1021,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = AWE72ZEPGS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
@@ -1050,7 +1062,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OpenArtemis/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q775S63Q3;
+				DEVELOPMENT_TEAM = AWE72ZEPGS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenArtemis/Info.plist;
