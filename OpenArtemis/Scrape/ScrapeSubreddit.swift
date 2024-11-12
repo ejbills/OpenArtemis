@@ -43,7 +43,7 @@ class RedditScraper {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-
+        
         webViewManager.loadURLAndGetHTML(url: redditURL, autoClickExpando: true, preventCacheClear: lastPostAfter != nil) { result in
             switch result {
             case .success(let htmlContent):
@@ -106,7 +106,7 @@ class RedditScraper {
     static func parsePostData(html: String, trackingParamRemover: TrackingParamRemover?) throws -> [Post] {
         let doc = try SwiftSoup.parse(html)
         let postElements = try doc.select("div.link")
-
+        
         let posts = postElements.compactMap { postElement -> Post? in
             do {
                 let isAd = try postElement.classNames().contains("promoted")
@@ -143,7 +143,7 @@ class RedditScraper {
                 return nil
             }
         }
-
+        
         return posts
     }
 }
