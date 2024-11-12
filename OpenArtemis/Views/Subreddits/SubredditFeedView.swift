@@ -38,7 +38,6 @@ struct SubredditFeedView: View {
     
     @State private var listIdentifier = "" // this handles generating a new identifier on load to prevent stale data
     
-    @State private var newId = 0
     @FetchRequest(
         entity: SavedPost.entity(),
         sortDescriptors: []
