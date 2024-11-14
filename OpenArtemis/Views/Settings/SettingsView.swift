@@ -87,6 +87,13 @@ struct SettingsView: View {
                         .padding(.top, 4)
                 }
                 
+                NavigationLink(destination: FilterView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
+                    HStack {
+                        Text("Content Filters")
+                    }
+                })
+
+                
                 VStack{
                     Toggle("Live Text Analyzer", isOn: $doLiveText)
                         .disabled(!imageAnalyzerSupport)

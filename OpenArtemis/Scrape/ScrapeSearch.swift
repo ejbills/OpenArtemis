@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftSoup
+import Defaults
 
 extension RedditScraper {
     static func search(query: String, searchType: String, sortBy: PostSortOption, topSortBy: TopPostListingSortOption,
@@ -102,18 +103,44 @@ extension RedditScraper {
     
     private static func scrapePostResults(data: Document, trackingParamRemover: TrackingParamRemover?) -> [Post] {
         let postElements = try? data.select("div.search-result-link")
+        
+        let keywordFilters = Defaults[.keywordFilters]
+        let userFilters = Defaults[.userFilters]
+        let subredditFilters = Defaults[.subredditFilters]
 
         return postElements?.compactMap { postElement -> Post? in
             do {
-                let id = try postElement.attr("data-fullname")
-                let title = try postElement.select("a.search-title.may-blank").text()
-                
+                // Get subreddit first for early filtering
                 let subreddit = try postElement.select("a.search-subreddit-link.may-blank").text()
                 let cleanedSubredditLink = subreddit.replacingOccurrences(of: "^(r/|/r/)", with: "", options: .regularExpression)
                 
+                // Filter out banned subreddits
+                guard !subredditFilters.contains(cleanedSubredditLink.lowercased()) else {
+                    return nil
+                }
+                
+                // Get author early for filtering
+                let author = try postElement.select("span.search-author a").text()
+                
+                // Filter out banned users
+                guard !userFilters.contains(author.lowercased()) else {
+                    return nil
+                }
+                
+                // Get title for keyword filtering
+                let title = try postElement.select("a.search-title.may-blank").text()
+                
+                // Filter out posts with banned keywords in title
+                let lowercasedTitle = title.lowercased()
+                guard !keywordFilters.contains(where: { keyword in
+                    lowercasedTitle.contains(keyword.lowercased())
+                }) else {
+                    return nil
+                }
+                
+                let id = try postElement.attr("data-fullname")
                 let tagElement = try postElement.select("span.linkflairlabel").first()
                 let tag = try tagElement?.text() ?? ""
-                let author = try postElement.select("span.search-author a").text()
                 let votes = try postElement.select("span.search-score").text()
                 let time = try postElement.select("span.search-time time").attr("datetime")
                 
@@ -121,7 +148,7 @@ extension RedditScraper {
                 let commentsCount = try postElement.select("a.search-comments.may-blank").text().split(separator: " ").first.map(String.init) ?? ""
                 
                 let footerElement = try postElement.select("div.search-result-footer").first()
-                let mediaURL = try footerElement?.select("a.search-link.may-blank").attr("href") ?? commentsURL // bail to comments link (text post for example - which does not have a media url)
+                let mediaURL = try footerElement?.select("a.search-link.may-blank").attr("href") ?? commentsURL
                 
                 let type = PostUtils.shared.determinePostType(mediaURL: mediaURL)
 
@@ -133,11 +160,9 @@ extension RedditScraper {
 
                 return Post(id: id, subreddit: cleanedSubredditLink, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
             } catch {
-                // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
                 return nil
             }
         } ?? []
     }
-
 }

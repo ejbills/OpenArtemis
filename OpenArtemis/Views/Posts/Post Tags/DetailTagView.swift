@@ -33,7 +33,7 @@ struct DetailTagView: View {
                 groupContent()
             }, onTap: {
                 onTap()
-            }, cornerRadius:  CGSize(width: 6.0, height: 6.0))
+            }, cornerRadius:  CGSize(width: 12.0, height: 12.0))
         } else {
             groupContent()
         }

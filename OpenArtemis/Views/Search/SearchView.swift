@@ -41,7 +41,7 @@ struct SearchView: View {
             ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: shouldApplyStripStyling(isSubredditSearch)) {
                 if !isLoading {
                     if shouldShowFilterView(isSubredditSearch) {
-                        FilterView(selectedSortOption: $selectedSortOption, selectedTopOption: $selectedTopOption, performSearch: performSearch)
+                        SortOptionView(selectedSortOption: $selectedSortOption, selectedTopOption: $selectedTopOption, performSearch: performSearch)
                     }
                     
                     if shouldShowSortingHints(isSubredditSearch) {
@@ -147,7 +147,7 @@ struct SearchView: View {
     }
 }
 
-struct FilterView: View {
+struct SortOptionView: View {
     @Binding var selectedSortOption: PostSortOption
     @Binding var selectedTopOption: TopPostListingSortOption
     var performSearch: () -> Void
