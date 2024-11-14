@@ -171,7 +171,7 @@ struct SettingsView: View {
                         .foregroundColor(.red)
                 })
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
-                Toggle("Mark posts read on scroll", isOn: $markReadOnScroll)
+                Toggle("Mark Posts Read on Scroll", isOn: $markReadOnScroll)
             }
             
             Section("Comments"){
