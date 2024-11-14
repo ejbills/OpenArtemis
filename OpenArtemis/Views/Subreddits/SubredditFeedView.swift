@@ -78,6 +78,7 @@ struct SubredditFeedView: View {
                     Rectangle()
                         .fill(Color.clear)
                         .frame(height: 1)
+                        .id(UUID()) // adding this causes onAppear to be called multiple times even if the view didn't leave the screen
                         .onAppear {
                             scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
                         }
