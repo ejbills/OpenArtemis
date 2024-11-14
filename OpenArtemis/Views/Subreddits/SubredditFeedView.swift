@@ -84,6 +84,7 @@ struct SubredditFeedView: View {
                     Rectangle()
                         .fill(Color.clear)
                         .frame(height: 1)
+                        .id(UUID()) // adding this causes onAppear to be called multiple times even if the view didn't leave the screen
                         .onAppear {
                             scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
                         }
@@ -98,7 +99,7 @@ struct SubredditFeedView: View {
                         }
                     }
                 } else if (!searchResults.isEmpty || !searchTerm.isEmpty) && !isLoading {
-                    FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
+                    SortOptionView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
                         clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
                     }
                     ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme, textSizePreference: textSizePreference)

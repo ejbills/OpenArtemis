@@ -28,7 +28,7 @@ struct DefaultFavoritesView: View {
         DefaultSubredditRowView(title: "All", iconSystemName: "star.fill", iconColor: commentColorPalette[0])
             .background(
                 // highlights button on tap (cant be modifier or inside child view)
-                NavigationLink(value: SubredditFeedResponse(subredditName: "All")) {
+                NavigationLink(value: SubredditFeedResponse(subredditName: "all")) {
                     EmptyView()
                 }
                     .opacity(0)
@@ -36,7 +36,7 @@ struct DefaultFavoritesView: View {
         
         DefaultSubredditRowView(title: "Popular", iconSystemName: "lightbulb.fill", iconColor: commentColorPalette[2])
             .background(
-                NavigationLink(value: SubredditFeedResponse(subredditName: "Popular")) {
+                NavigationLink(value: SubredditFeedResponse(subredditName: "popular")) {
                     EmptyView()
                 }
                     .opacity(0)

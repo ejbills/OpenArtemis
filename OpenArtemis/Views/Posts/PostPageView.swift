@@ -117,7 +117,7 @@ struct PostPageView: View {
                                     }
                                 }
                                 .gestureActions(
-                                    primaryLeadingAction: GestureAction(symbol: .init(emptyName: "chevron.up", fillName: "chevron.up"), color: .blue, action: {
+                                    primaryLeadingAction: GestureAction(symbol: .init(emptyName: comments[index].isRootCollapsed ? "chevron.up" : "chevron.down", fillName: comments[index].isRootCollapsed ? "chevron.down" : "chevron.up"), color: .blue, action: {
                                         withAnimation(.smooth(duration: 0.35)) {
                                             if comment.parentID == nil {
                                                 comments[index].isRootCollapsed.toggle()
