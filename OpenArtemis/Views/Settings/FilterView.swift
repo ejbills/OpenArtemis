@@ -16,6 +16,7 @@ struct FilterView: View {
     @State private var showingAddSubredditAlert = false
     @State private var showingAddKeywordAlert = false
     @State private var showingAddUserAlert = false
+    @State private var showingClearConfirmation = false
     
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
@@ -81,26 +82,21 @@ struct FilterView: View {
                         .foregroundStyle(Color.artemisAccent)
                 }
             }
-            
-            if !subredditFilters.isEmpty || !keywordFilters.isEmpty || !userFilters.isEmpty {
-                Section {
-                    Button(role: .destructive, action: {
-                        subredditFilters.removeAll()
-                        keywordFilters.removeAll()
-                        userFilters.removeAll()
+        }
+        .navigationTitle("Content Filters")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if !subredditFilters.isEmpty || !keywordFilters.isEmpty || !userFilters.isEmpty {
+                    Button(action: {
+                        showingClearConfirmation = true
                     }) {
-                        HStack {
-                            Spacer()
-                            Text("Clear All Filters")
-                            Spacer()
-                        }
-                        .padding(16)
+                        Text("Clear All")
+                            .foregroundColor(.red)
                     }
                 }
             }
         }
-        .navigationTitle("Content Filters")
-        .navigationBarTitleDisplayMode(.inline)
         .alert("Add Subreddit Filter", isPresented: $showingAddSubredditAlert) {
             TextField("Subreddit name", text: $newSubreddit)
             Button("Cancel", role: .cancel) {
@@ -136,6 +132,16 @@ struct FilterView: View {
                     newUser = ""
                 }
             }
+        }
+        .alert("Clear All Filters", isPresented: $showingClearConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear All", role: .destructive) {
+                subredditFilters.removeAll()
+                keywordFilters.removeAll()
+                userFilters.removeAll()
+            }
+        } message: {
+            Text("Are you sure you want to clear all filters? This action cannot be undone.")
         }
     }
 }

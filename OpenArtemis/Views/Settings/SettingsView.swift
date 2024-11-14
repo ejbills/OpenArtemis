@@ -87,9 +87,11 @@ struct SettingsView: View {
                         .padding(.top, 4)
                 }
                 
-                NavigationLink(destination: FilterView(appTheme: appTheme, textSizePreference: textSizePreference)) {
-                                    Label("Content Filters", systemImage: "line.3.horizontal.decrease.circle")
-                                }
+                NavigationLink(destination: FilterView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
+                    HStack {
+                        Text("Content Filters")
+                    }
+                })
 
                 
                 VStack{
