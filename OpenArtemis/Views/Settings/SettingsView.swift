@@ -157,12 +157,10 @@ struct SettingsView: View {
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
                     HStack{
-                        if let iconImage = UIImage(named: currentAppIcon) {
-                            Image(uiImage: iconImage)
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
-                        }
+                        Image(uiImage: UIImage(named: currentAppIcon)!)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
                         Text("App Icon")
                     }
                 })
