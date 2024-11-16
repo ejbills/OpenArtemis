@@ -38,11 +38,6 @@ struct EmbeddedMultiMediaView: View {
                     content: { image in
                         image
                             .resizable()
-//                            .if(useLargeThumbnail) { view in
-                                // should this be gone?
-//                                    view.scaledToFill(
-//                                    )
-//                            }
                             .if(!useLargeThumbnail) { view in
                                 view.scaledToFill()
                                 .frame(width: mediaWidth, height: mediaHeight)
