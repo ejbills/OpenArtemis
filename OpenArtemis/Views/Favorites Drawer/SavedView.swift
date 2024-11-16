@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import Defaults
 
 struct SavedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -94,6 +95,8 @@ struct MixedContentView: View {
     @EnvironmentObject var coordinator: NavCoordinator
     @Environment(\.managedObjectContext) var managedObjectContext
     
+    @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
+
     let content: MixedMedia
     let isRead: Bool
     let appTheme: AppThemeSettings
@@ -112,7 +115,7 @@ struct MixedContentView: View {
         switch content {
         case .post(let post, _):
             PostFeedView(post: post, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference,
-                         useLargeThumbnail: true) {
+                         useLargeThumbnail: useLargeThumbnailForMediaPreview) {
                 coordinator.path.append(PostResponse(post: post))
                 
                 if !isRead {
