@@ -22,6 +22,7 @@ struct SettingsView: View {
     @Default(.swipeAnywhere) var swipeAnywhere
     @Default(.hideReadPosts) var hideReadPosts
     @Default(.markReadOnScroll) var markReadOnScroll
+    @Default(.hideReadPostsImmediately) var hideReadPostsImmediately
     
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
@@ -190,6 +191,7 @@ struct SettingsView: View {
                         .foregroundColor(.red)
                 })
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
+                Toggle("Hide Read Post Immediately", isOn: $hideReadPostsImmediately)
                 Toggle("Mark Posts Read on Scroll", isOn: $markReadOnScroll)
             }
             
