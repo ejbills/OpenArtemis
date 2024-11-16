@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A7739F32CDB350200C58FE8 /* OnScrolledOffTopOfScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */; };
 		1AAF1ED42CDC0A35003E08EB /* FixAlertForMacOSStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */; };
 		652E2AA72B25B19C0075911F /* PrivacyTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA62B25B19C0075911F /* PrivacyTab.swift */; };
 		652E2AA92B25B1F10075911F /* HeroBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E2AA82B25B1F10075911F /* HeroBox.swift */; };
@@ -67,6 +68,7 @@
 		BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */; };
 		BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCA2B1ADE850014FB18 /* Post Utils.swift */; };
 		BB391FCD2B1ADE850014FB18 /* Media Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB391FCB2B1ADE850014FB18 /* Media Utils.swift */; };
+		BB467BAA2CDFD51B0064C9C8 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB467BA92CDFD5170064C9C8 /* FilterView.swift */; };
 		BB4845172B9E22C90015376B /* GlobalLoadingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4845162B9E22C90015376B /* GlobalLoadingManager.swift */; };
 		BB48451A2B9E32980015376B /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = BB4845192B9E32980015376B /* AlertToast */; };
 		BB502DD12B23AACC003C22DB /* SubredditUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB502DD02B23AACC003C22DB /* SubredditUtils.swift */; };
@@ -120,6 +122,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnScrolledOffTopOfScreen.swift; sourceTree = "<group>"; };
 		1AAF1ED32CDC0A32003E08EB /* FixAlertForMacOSStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixAlertForMacOSStyle.swift; sourceTree = "<group>"; };
 		652E2AA62B25B19C0075911F /* PrivacyTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyTab.swift; sourceTree = "<group>"; };
 		652E2AA82B25B1F10075911F /* HeroBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroBox.swift; sourceTree = "<group>"; };
@@ -181,6 +184,7 @@
 		BB391FC62B1ADE790014FB18 /* NavCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavCoordinator.swift; sourceTree = "<group>"; };
 		BB391FCA2B1ADE850014FB18 /* Post Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post Utils.swift"; sourceTree = "<group>"; };
 		BB391FCB2B1ADE850014FB18 /* Media Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media Utils.swift"; sourceTree = "<group>"; };
+		BB467BA92CDFD5170064C9C8 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		BB4845162B9E22C90015376B /* GlobalLoadingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalLoadingManager.swift; sourceTree = "<group>"; };
 		BB502DD02B23AACC003C22DB /* SubredditUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditUtils.swift; sourceTree = "<group>"; };
 		BB502DD22B23FD4A003C22DB /* CommentSkipper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSkipper.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 		65D3DBB72B1B20E100BCCD38 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				BB467BA92CDFD5170064C9C8 /* FilterView.swift */,
 				65D3DBB82B1B20ED00BCCD38 /* SettingsView.swift */,
 				65D3DBBF2B1B252300BCCD38 /* ChangeAppIconView.swift */,
 				BB2B1F272B96462000653677 /* TextSizeAdjustmentView.swift */,
@@ -446,6 +451,7 @@
 		BB391FBD2B1ADE560014FB18 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				1A7739F22CDB34F400C58FE8 /* OnScrolledOffTopOfScreen.swift */,
 				BB2B1F2C2B96873F00653677 /* increaseHitboxBy.swift */,
 				65D3DBBB2B1B212800BCCD38 /* Defaults.swift */,
 				BB391FC02B1ADE700014FB18 /* Loading Modifiers.swift */,
@@ -798,6 +804,7 @@
 				65F595A02B1F3A69005BE493 /* GestureActions.swift in Sources */,
 				65EFE4092B1CBCAA00517EBE /* ImportURLSheet.swift in Sources */,
 				BBB101D02B20154600691B2F /* PostDetailsView.swift in Sources */,
+				BB467BAA2CDFD51B0064C9C8 /* FilterView.swift in Sources */,
 				BBECC0E12B44E30D002FD4B9 /* ContentListView.swift in Sources */,
 				BB391FC92B1ADE790014FB18 /* NavCoordinator.swift in Sources */,
 				BB391FAB2B1ADD9B0014FB18 /* EmbeddedMultiMediaView.swift in Sources */,
@@ -824,6 +831,7 @@
 				BB34B3462BC0BCB700A49859 /* CommentThemeView.swift in Sources */,
 				65D3DBB22B1B1C0300BCCD38 /* AppDelegate.swift in Sources */,
 				65F595982B1F116F005BE493 /* ScrapeSubreddit.swift in Sources */,
+				1A7739F32CDB350200C58FE8 /* OnScrolledOffTopOfScreen.swift in Sources */,
 				BBA6FD6A2B45303C0096242E /* LimitedSet.swift in Sources */,
 				653245C42B2AF5D500227019 /* OOBE_WelcomeView.swift in Sources */,
 				BB391FCC2B1ADE850014FB18 /* Post Utils.swift in Sources */,
@@ -1026,7 +1034,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1067,7 +1075,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

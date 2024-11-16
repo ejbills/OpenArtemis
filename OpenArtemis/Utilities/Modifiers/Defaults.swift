@@ -27,8 +27,9 @@ extension Defaults.Keys {
     static let showJumpToNextCommentButton = Key<Bool>("showJumpToNextCommentButton", default: true)
     static let doLiveText = Key<Bool>("doLiveText", default: true)
     static let hideReadPosts = Key<Bool>("hideReadPosts", default: false)
+    static let markReadOnScroll = Key<Bool>("markReadOnScroll", default: false)
     static let useLargeThumbnailForMediaPreview = Key<Bool>("useLargeThumbnailForMediaPreview", default: false)
-    
+
     static let defaultPostPageSorting = Key<SortOption>("defaultPostPageSorting", default: SortOption.best)
     static let defaultSubSorting = Key<SortOption>("defaultSubSorting", default: SortOption.best)
     
@@ -37,6 +38,11 @@ extension Defaults.Keys {
     
     static let showingOOBE = Key<Bool>("showingOOBE", default: true)
     static let seenCaseSensitiveDisclaimer = Key<Bool>("seenCaseSensitiveDisclaimer", default: false)
+    
+    // MARK: - Filters
+    static let subredditFilters = Key<[String]>("subredditFilters", default: [])
+    static let keywordFilters = Key<[String]>("keywordFilters", default: [])
+    static let userFilters = Key<[String]>("userFilters", default: [])
     
     // MARK: - Website Redirects
     static let youtubeRedirect = Key<String>("youtubeRedirect", default: "yewtu.be")

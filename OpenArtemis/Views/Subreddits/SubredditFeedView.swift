@@ -15,6 +15,7 @@ struct SubredditFeedView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
     @Default(.hideReadPosts) var hideReadPosts
+    @Default(.markReadOnScroll) var markReadOnScroll
     @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
 
     let subredditName: String
@@ -49,7 +50,10 @@ struct SubredditFeedView: View {
         sortDescriptors: []
     ) var readPosts: FetchedResults<ReadPost>
     
-    
+    // Tracks posts that were just read due to scrolling, so we don't remove them until we reload
+    // This helps prevent the list from jumping around
+    @State private var justReadDueToScrollingPostIds: Set<String> = []
+
     // MARK: - Body
     var body: some View {
         Group {
@@ -59,26 +63,29 @@ struct SubredditFeedView: View {
                         var isRead: Bool {
                             readPosts.contains(where: { $0.readPostId == post.id })
                         }
+                        let justRead = justReadDueToScrollingPostIds.contains(post.id)
+                        
                         var isSaved: Bool {
                             savedPosts.contains { $0.id == post.id }
                         }
                         
-                        if hideReadPosts {
-                            if (!isRead || isSaved) {
-                                PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
-                                    handlePostTap(post, isRead: isRead)
-                                }
-                            }
-                        } else {
+                        if !hideReadPosts || (!isRead || isSaved || (isRead && justRead)) {
                             PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
                                 handlePostTap(post, isRead: isRead)
                             }
+                            .if(markReadOnScroll, transform: { postFeedItem in
+                                postFeedItem.onScrolledOffTopOfScreen {
+                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                                    justReadDueToScrollingPostIds.insert(post.id)
+                                }
+                            })
                         }
                     }
                     
                     Rectangle()
                         .fill(Color.clear)
                         .frame(height: 1)
+                        .id(UUID()) // adding this causes onAppear to be called multiple times even if the view didn't leave the screen
                         .onAppear {
                             scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption, preventListIdRefresh: true)
                         }
@@ -93,7 +100,7 @@ struct SubredditFeedView: View {
                         }
                     }
                 } else if (!searchResults.isEmpty || !searchTerm.isEmpty) && !isLoading {
-                    FilterView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
+                    SortOptionView(selectedSortOption: $selectedSearchSortOption, selectedTopOption: $selectedSearchTopOption) {
                         clearFeedAndReload(withSearchTerm: "subreddit:\(subredditName) \(searchTerm)")
                     }
                     ContentListView(content: $searchResults, readPosts: readPosts, savedPosts: savedPosts, appTheme: appTheme, textSizePreference: textSizePreference)
@@ -234,6 +241,7 @@ struct SubredditFeedView: View {
             postIDs.removeAll()
             searchResults.removeAll()
             mixedMediaIDs.removeAll()
+            justReadDueToScrollingPostIds.removeAll()
             lastPostAfter = ""
             isLoading = false
         }

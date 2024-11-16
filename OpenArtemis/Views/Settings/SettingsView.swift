@@ -21,8 +21,9 @@ struct SettingsView: View {
     @Default(.over18) var over18
     @Default(.swipeAnywhere) var swipeAnywhere
     @Default(.hideReadPosts) var hideReadPosts
+    @Default(.markReadOnScroll) var markReadOnScroll
     @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
-    
+
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
     @Default(.doLiveText) var doLiveText
@@ -54,17 +55,29 @@ struct SettingsView: View {
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             Section("About") {
-                Link("Contribute on GitHub", destination: URL(string: "https://github.com/ejbills/OpenArtemis")!)
-                Link("Join the Discord Community", destination: URL(string: "https://discord.com/invite/lo-cafe")!)
+                DisclosureGroup("Contributing") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("OpenArtemis is an open-source project that welcomes contributions from the community. You can report bugs, request features, or explore the source code.")
+                            .font(textSizePreference.caption)
+                            .foregroundColor(.secondary)
+                        
+                        Link("View on GitHub", destination: URL(string: "https://github.com/ejbills/OpenArtemis")!)
+                            .font(textSizePreference.caption)
+                            .foregroundColor(.artemisAccent)
+                    }
+                }
                 
-                Text("OpenArtemis is an open-source project, and welcomes contributions from the community. You can use the GitHub link to report bugs, request new features, or view the source code. Join the Discord channel to discuss the app with other users and developers.")
-                    .font(textSizePreference.caption)
-                    .foregroundColor(.secondary)
-                
-                Link("Show support with a coffee", destination: URL(string: "https://www.buymeacoffee.com/keplercafe")!)
-                Text("Consider supporting with a donation if you enjoy using OpenArtemis. Note that donating does not unlock any additional features; OpenArtemis is committed to remaining free forever.")
-                    .font(textSizePreference.caption)
-                    .foregroundColor(.secondary)
+                DisclosureGroup("Support OpenArtemis") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Your support helps keep OpenArtemis running and evolving. While all features remain free and accessible, your donations enable continued development and future improvements.")
+                            .font(textSizePreference.caption)
+                            .foregroundColor(.secondary)
+                        
+                        Link("Buy me a coffee", destination: URL(string: "https://www.buymeacoffee.com/keplercafe")!)
+                            .font(textSizePreference.caption)
+                            .foregroundColor(.artemisAccent)
+                    }
+                }
             }
 
             Section("General") {
@@ -75,6 +88,13 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                         .padding(.top, 4)
                 }
+                
+                NavigationLink(destination: FilterView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
+                    HStack {
+                        Text("Content Filters")
+                    }
+                })
+
                 
                 VStack{
                     Toggle("Live Text Analyzer", isOn: $doLiveText)
@@ -153,7 +173,7 @@ struct SettingsView: View {
                 
                 NavigationLink(destination: ChangeAppIconView(appTheme: appTheme, textSizePreference: textSizePreference), label: {
                     HStack{
-                        Image(uiImage: UIImage(named: currentAppIcon)!)
+                        Image(currentAppIcon)
                             .resizable()
                             .frame(width: 24, height: 24)
                             .mask(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
@@ -171,6 +191,7 @@ struct SettingsView: View {
                         .foregroundColor(.red)
                 })
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
+                Toggle("Mark Posts Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Use Large Thumbnail For Media", isOn: $useLargeThumbnailForMediaPreview)
             }
             

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftSoup
+import Defaults
 
 class RedditScraper {
     static let webViewManager = HeadlessWebManager()
@@ -107,6 +108,10 @@ class RedditScraper {
         let doc = try SwiftSoup.parse(html)
         let postElements = try doc.select("div.link")
         
+        let keywordFilters = Defaults[.keywordFilters]
+        let userFilters = Defaults[.userFilters]
+        let subredditFilters = Defaults[.subredditFilters]
+        
         let posts = postElements.compactMap { postElement -> Post? in
             do {
                 let isAd = try postElement.classNames().contains("promoted")
@@ -115,11 +120,32 @@ class RedditScraper {
                     return nil
                 }
                 
-                let id = try postElement.attr("data-fullname")
                 let subreddit = try postElement.attr("data-subreddit")
-                let title = try postElement.select("p.title a.title").text()
-                let tag = try postElement.select("span.linkflairlabel").first()?.text() ?? ""
+                
+                // Filter out banned subreddits
+                guard !subredditFilters.contains(subreddit.lowercased()) else {
+                    return nil
+                }
+                
                 let author = try postElement.attr("data-author")
+                
+                // Filter out banned users
+                guard !userFilters.contains(author.lowercased()) else {
+                    return nil
+                }
+                
+                let title = try postElement.select("p.title a.title").text()
+                
+                // Filter out posts with banned keywords in title
+                let lowercasedTitle = title.lowercased()
+                guard !keywordFilters.contains(where: { keyword in
+                    lowercasedTitle.contains(keyword.lowercased())
+                }) else {
+                    return nil
+                }
+                
+                let id = try postElement.attr("data-fullname")
+                let tag = try postElement.select("span.linkflairlabel").first()?.text() ?? ""
                 let votes = try postElement.attr("data-score")
                 let time = try postElement.select("time").attr("datetime")
                 let mediaURL = try postElement.attr("data-url")
@@ -138,7 +164,6 @@ class RedditScraper {
                 
                 return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)
             } catch {
-                // Handle any specific errors here if needed
                 print("Error parsing post element: \(error)")
                 return nil
             }
@@ -146,4 +171,5 @@ class RedditScraper {
         
         return posts
     }
+    
 }
