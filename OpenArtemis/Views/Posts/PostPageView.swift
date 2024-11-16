@@ -51,8 +51,7 @@ struct PostPageView: View {
                         savedPosts.contains(where: { $0.id == post.id })
                     }
                     
-                    PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme, textSizePreference: textSizePreference,
-                                 useLargeThumbnail: false)
+                    PostFeedView(post: post, forceAuthorToDisplay: true, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: false)
                         .savedIndicator(isSaved)
                     
                     if let postBody = postBody {

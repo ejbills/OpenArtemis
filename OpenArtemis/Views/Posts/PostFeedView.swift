@@ -25,9 +25,7 @@ struct PostFeedView: View {
     @State private var metadataThumbnailURL: String? = nil
     @State private var hasAppeared: Bool = false
     
-    init(post: Post, forceAuthorToDisplay: Bool = false, forceCompactMode: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference,
-         useLargeThumbnail: Bool,
-         onTap: (() -> Void)? = nil) {
+    init(post: Post, forceAuthorToDisplay: Bool = false, forceCompactMode: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference, useLargeThumbnail: Bool, onTap: (() -> Void)? = nil) {
         self.post = post
         self.forceAuthorToDisplay = forceAuthorToDisplay
         self.forceCompactMode = forceCompactMode
