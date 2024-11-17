@@ -23,7 +23,7 @@ struct SettingsView: View {
     @Default(.hideReadPosts) var hideReadPosts
     @Default(.markReadOnScroll) var markReadOnScroll
     @Default(.hideReadPostsImmediately) var hideReadPostsImmediately
-    
+    @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
     @Default(.showJumpToNextCommentButton) var showJumpToNextCommentButton
     
     @Default(.doLiveText) var doLiveText
@@ -193,6 +193,7 @@ struct SettingsView: View {
                 Toggle("Hide Read Posts", isOn: $hideReadPosts)
                 Toggle("Hide Read Post Immediately", isOn: $hideReadPostsImmediately)
                 Toggle("Mark Posts Read on Scroll", isOn: $markReadOnScroll)
+                Toggle("Use Large Thumbnail For Media", isOn: $useLargeThumbnailForMediaPreview)
             }
             
             Section("Comments"){

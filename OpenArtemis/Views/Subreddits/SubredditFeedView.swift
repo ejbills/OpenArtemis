@@ -17,6 +17,7 @@ struct SubredditFeedView: View {
     @Default(.hideReadPosts) var hideReadPosts
     @Default(.hideReadPostsImmediately) var hideReadPostsImmediately
     @Default(.markReadOnScroll) var markReadOnScroll
+    @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
 
     let subredditName: String
     let titleOverride: String?
@@ -70,7 +71,7 @@ struct SubredditFeedView: View {
                         }
                         
                         if !hideReadPosts || (!isRead || isSaved || (isRead && justRead)) {
-                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference) {
+                            PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
                                 handlePostTap(post, isRead: isRead)
                             }
                             .if(markReadOnScroll, transform: { postFeedItem in
@@ -166,11 +167,12 @@ struct SubredditFeedView: View {
         let isSaved: Bool
         let appTheme: AppThemeSettings
         let textSizePreference: TextSizePreference
+        let useLargeThumbnail: Bool
         let onTap: () -> Void
         
         var body: some View {
             Group {
-                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference) {
+                PostFeedView(post: post, forceCompactMode: forceCompactMode, isRead: isRead, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnail) {
                     onTap()
                 }
                 .savedIndicator(isSaved)

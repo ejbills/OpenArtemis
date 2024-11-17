@@ -15,6 +15,8 @@ struct MediaView: View {
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
+    let useLargeThumbnail: Bool
+
     let title: String
     let forceCompactMode: Bool
     let appTheme: AppThemeSettings
@@ -72,7 +74,7 @@ struct MediaView: View {
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
             default:
-                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
+                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, useLargeThumbnail: useLargeThumbnail, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
             }
         }
         .background(

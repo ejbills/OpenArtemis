@@ -29,7 +29,8 @@ extension Defaults.Keys {
     static let hideReadPosts = Key<Bool>("hideReadPosts", default: false)
     static let hideReadPostsImmediately = Key<Bool>("hideReadPostsImmediately", default: true) // When a post is marked read, should it be hidden from the post list immediately, or should it show until the list is reloaded
     static let markReadOnScroll = Key<Bool>("markReadOnScroll", default: false)
-    
+    static let useLargeThumbnailForMediaPreview = Key<Bool>("useLargeThumbnailForMediaPreview", default: false)
+
     static let defaultPostPageSorting = Key<SortOption>("defaultPostPageSorting", default: SortOption.best)
     static let defaultSubSorting = Key<SortOption>("defaultSubSorting", default: SortOption.best)
     
