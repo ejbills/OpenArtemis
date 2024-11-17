@@ -214,12 +214,12 @@ class PostUtils {
         return savedPost
     }
     
-    /// Toggles the read status of a `Post` entity.
+    /// Marks a`Post` entity as read after a small delay.
     ///
     /// - Parameters:
     ///   - context: The Core Data managed object context.
     ///   - postId: The identifier of the post to toggle.
-    func toggleRead(context: NSManagedObjectContext, postId: String) {
+    func markRead(context: NSManagedObjectContext, postId: String) {
         guard fetchReadPost(context: context, postId: postId) == nil else {
             // ReadPost already exists, no need to toggle
             return

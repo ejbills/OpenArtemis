@@ -15,6 +15,7 @@ struct SubredditFeedView: View {
     @EnvironmentObject var trackingParamRemover: TrackingParamRemover
     @Default(.over18) var over18
     @Default(.hideReadPosts) var hideReadPosts
+    @Default(.hideReadPostsImmediately) var hideReadPostsImmediately
     @Default(.markReadOnScroll) var markReadOnScroll
     @Default(.useLargeThumbnailForMediaPreview) var useLargeThumbnailForMediaPreview
 
@@ -50,9 +51,9 @@ struct SubredditFeedView: View {
         sortDescriptors: []
     ) var readPosts: FetchedResults<ReadPost>
     
-    // Tracks posts that were just read due to scrolling, so we don't remove them until we reload
-    // This helps prevent the list from jumping around
-    @State private var justReadDueToScrollingPostIds: Set<String> = []
+    // Tracks posts that were just read this "session". This can be due to scrolling or because they clicked to read
+    // This helps prevent the list from jumping around if the posts were marked read due to scrolling
+    @State private var readThisSession: Set<String> = []
 
     // MARK: - Body
     var body: some View {
@@ -63,7 +64,7 @@ struct SubredditFeedView: View {
                         var isRead: Bool {
                             readPosts.contains(where: { $0.readPostId == post.id })
                         }
-                        let justRead = justReadDueToScrollingPostIds.contains(post.id)
+                        let justRead = readThisSession.contains(post.id)
                         
                         var isSaved: Bool {
                             savedPosts.contains { $0.id == post.id }
@@ -75,8 +76,8 @@ struct SubredditFeedView: View {
                             }
                             .if(markReadOnScroll, transform: { postFeedItem in
                                 postFeedItem.onScrolledOffTopOfScreen {
-                                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
-                                    justReadDueToScrollingPostIds.insert(post.id)
+                                    PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
+                                    readThisSession.insert(post.id)
                                 }
                             })
                         }
@@ -152,7 +153,10 @@ struct SubredditFeedView: View {
     private func handlePostTap(_ post: Post, isRead: Bool) {
         coordinator.path.append(PostResponse(post: post))
         if !isRead {
-            PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+            PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
+            if (!hideReadPostsImmediately) {
+                readThisSession.insert(post.id)
+            }
         }
     }
     
@@ -241,7 +245,7 @@ struct SubredditFeedView: View {
             postIDs.removeAll()
             searchResults.removeAll()
             mixedMediaIDs.removeAll()
-            justReadDueToScrollingPostIds.removeAll()
+            readThisSession.removeAll()
             lastPostAfter = ""
             isLoading = false
         }

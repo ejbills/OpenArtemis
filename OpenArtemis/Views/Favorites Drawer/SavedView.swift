@@ -119,7 +119,7 @@ struct MixedContentView: View {
                 coordinator.path.append(PostResponse(post: post))
                 
                 if !isRead {
-                    PostUtils.shared.toggleRead(context: managedObjectContext, postId: post.id)
+                    PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
                 }
             }
         case .comment(let comment, _):
