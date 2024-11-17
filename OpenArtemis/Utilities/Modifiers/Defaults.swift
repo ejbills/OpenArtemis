@@ -28,7 +28,8 @@ extension Defaults.Keys {
     static let doLiveText = Key<Bool>("doLiveText", default: true)
     static let hideReadPosts = Key<Bool>("hideReadPosts", default: false)
     static let markReadOnScroll = Key<Bool>("markReadOnScroll", default: false)
-    
+    static let useLargeThumbnailForMediaPreview = Key<Bool>("useLargeThumbnailForMediaPreview", default: false)
+
     static let defaultPostPageSorting = Key<SortOption>("defaultPostPageSorting", default: SortOption.best)
     static let defaultSubSorting = Key<SortOption>("defaultSubSorting", default: SortOption.best)
     

@@ -16,6 +16,7 @@ struct EmbeddedMultiMediaView: View {
     let determinedType: String
     let mediaURL: Post.PrivateURL
     let thumbnailURL: String?
+    let useLargeThumbnail: Bool
     let title: String
     let forceCompactMode: Bool
     let appTheme: AppThemeSettings
@@ -24,7 +25,8 @@ struct EmbeddedMultiMediaView: View {
     @State private var isLoading: Bool = false
     
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
+        let layout = useLargeThumbnail ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
+        layout {
             // determines size of thumbnail mainly, it takes up the whole image slot if you are in comapct mode.
             let mediaHeight = appTheme.compactMode || forceCompactMode ? roughCompactHeight : 50
             let mediaWidth = appTheme.compactMode || forceCompactMode ? roughCompactWidth : 50
@@ -36,8 +38,11 @@ struct EmbeddedMultiMediaView: View {
                     content: { image in
                         image
                             .resizable()
-                            .scaledToFill()
-                            .frame(width: mediaWidth, height: mediaHeight)
+                            .if(!useLargeThumbnail) { view in
+                                view.scaledToFill()
+                                .frame(width: mediaWidth, height: mediaHeight)
+
+                            }
                             .cornerRadius(6)
                     },
                     placeholder: {
@@ -54,6 +59,10 @@ struct EmbeddedMultiMediaView: View {
                         .frame(width: 30, height: 30)
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
+                .if(useLargeThumbnail) { view in
+                    view.aspectRatio(contentMode: .fit)
+                }
+
             } else {
                 RoundedRectangle(cornerRadius: 6)
                    .foregroundColor(.clear)
