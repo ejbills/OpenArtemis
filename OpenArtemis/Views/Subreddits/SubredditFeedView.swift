@@ -76,7 +76,6 @@ struct SubredditFeedView: View {
                             }
                             .if(markReadOnScroll, transform: { postFeedItem in
                                 postFeedItem.onScrolledOffTopOfScreen {
-                                    // TODO: maybe make a function here to do all of these?
                                     readPostIDs.insert(post.id)
                                     PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
                                     readThisSession.insert(post.id)
@@ -241,7 +240,6 @@ struct SubredditFeedView: View {
                     for media in newMedia {
                         let mediaID = MiscUtils.extractMediaId(from: media)
                         if !mixedMediaIDs.contains(mediaID) {
-                            // TODO: should this honor isRead?
                             searchResults.append(media)
                             mixedMediaIDs.insert(mediaID)
                         }
