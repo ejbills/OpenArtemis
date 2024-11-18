@@ -24,6 +24,8 @@ struct SubredditFeedView: View {
     let appTheme: AppThemeSettings
     let textSizePreference: TextSizePreference
     
+    @State var readPostIDs: Set<String> = [] // Post IDs that are maked read, this is kept to improve scrolling performance rather than checking the CoreData for each new item
+    
     @State private var forceCompactMode: Bool = false
     
     @State private var posts: [Post] = []
@@ -61,9 +63,7 @@ struct SubredditFeedView: View {
             ThemedList(appTheme: appTheme, textSizePreference: textSizePreference, stripStyling: true) {
                 if !posts.isEmpty && searchTerm.isEmpty {
                     ForEach(posts, id: \.id) { post in
-                        var isRead: Bool {
-                            readPosts.contains(where: { $0.readPostId == post.id })
-                        }
+                        let isRead = readPostIDs.contains(post.id)
                         let justRead = readThisSession.contains(post.id)
                         
                         var isSaved: Bool {
@@ -72,10 +72,12 @@ struct SubredditFeedView: View {
                         
                         if !hideReadPosts || (!isRead || isSaved || (isRead && justRead)) {
                             PostFeedItemView(post: post, isRead: isRead, forceCompactMode: forceCompactMode, isSaved: isSaved, appTheme: appTheme, textSizePreference: textSizePreference, useLargeThumbnail: useLargeThumbnailForMediaPreview) {
-                                handlePostTap(post, isRead: isRead)
+                                handlePostTap(post)
                             }
                             .if(markReadOnScroll, transform: { postFeedItem in
                                 postFeedItem.onScrolledOffTopOfScreen {
+                                    // TODO: maybe make a function here to do all of these?
+                                    readPostIDs.insert(post.id)
                                     PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
                                     readThisSession.insert(post.id)
                                 }
@@ -141,18 +143,13 @@ struct SubredditFeedView: View {
     }
     
     // MARK: - Private Methods
-    
-    private func handlePostAppearance(_ postId: String) {
-        if !posts.isEmpty && posts.count > Int(Double(posts.count) * 0.85) {
-            if postId == posts[Int(Double(posts.count) * 0.85)].id {
-                scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sortOption)
-            }
-        }
-    }
-    
-    private func handlePostTap(_ post: Post, isRead: Bool) {
+    private func handlePostTap(_ post: Post) {
+        let isRead = readPostIDs.contains(post.id)
+        
         coordinator.path.append(PostResponse(post: post))
         if !isRead {
+            readPostIDs.insert(post.id)
+
             PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
             if (!hideReadPostsImmediately) {
                 readThisSession.insert(post.id)
@@ -183,6 +180,12 @@ struct SubredditFeedView: View {
         }
     }
     
+    private func deferredTurnOffLoading() {
+        defer {
+            isLoading = false
+        }
+    }
+    
     private func scrapeSubreddit(lastPostAfter: String? = nil, sort: SortOption? = nil, searchTerm: String = "", preventListIdRefresh: Bool = false) {
         self.isLoading = true
         if !preventListIdRefresh { self.listIdentifier = MiscUtils.randomString(length: 4) }
@@ -190,44 +193,55 @@ struct SubredditFeedView: View {
         if searchTerm.isEmpty {
             RedditScraper.scrapeSubreddit(subreddit: subredditName, lastPostAfter: lastPostAfter, sort: sort,
                                           trackingParamRemover: trackingParamRemover, over18: over18) { result in
-                defer {
-                    isLoading = false
-                }
                 
                 switch result {
                 case .success(let newPosts):
                     if newPosts.isEmpty && self.retryCount <  3 { // if a load fails, auto retry up to 3 times
                         self.retryCount +=  1
                         self.scrapeSubreddit(lastPostAfter: lastPostAfter, sort: sort, searchTerm: searchTerm, preventListIdRefresh: preventListIdRefresh)
+
+                        deferredTurnOffLoading()
                     } else {
-                        self.retryCount =  0
-                        for post in newPosts {
-                            if !postIDs.contains(post.id) {
-                                posts.append(post)
-                                postIDs.insert(post.id)
+                        DispatchQueue.global(qos: .background).async {
+                            self.retryCount =  0
+
+                            var newReadIds: Set<String> = []
+                            newPosts.forEach { post in
+                                let isRead = readPosts.contains(where: { $0.readPostId == post.id })
+                                if isRead {
+                                    newReadIds.insert(post.id)
+                                }
                             }
-                        }
-                        
-                        if let newLastPost = newPosts.last {
-                            self.lastPostAfter = newLastPost.id
+                            
+                            if let newLastPost = newPosts.last {
+                                self.lastPostAfter = newLastPost.id
+                            }
+                            
+                            DispatchQueue.main.async {
+                                posts += newPosts
+                                readPostIDs.formUnion(newReadIds)
+                                
+                                deferredTurnOffLoading()
+                            }
                         }
                     }
                 case .failure(let error):
+                    deferredTurnOffLoading()
+                    
                     print("Error: \(error.localizedDescription)")
                 }
             }
         } else {
             RedditScraper.search(query: searchTerm, searchType: "", sortBy: selectedSearchSortOption, topSortBy: selectedSearchTopOption,
                                  trackingParamRemover: trackingParamRemover, over18: over18) { result in
-                defer {
-                    isLoading = false
-                }
+                deferredTurnOffLoading()
                 
                 switch result {
                 case .success(let newMedia):
                     for media in newMedia {
                         let mediaID = MiscUtils.extractMediaId(from: media)
                         if !mixedMediaIDs.contains(mediaID) {
+                            // TODO: should this honor isRead?
                             searchResults.append(media)
                             mixedMediaIDs.insert(mediaID)
                         }
