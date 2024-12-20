@@ -148,7 +148,7 @@ class RedditScraper {
                 let tag = try postElement.select("span.linkflairlabel").first()?.text() ?? ""
                 let votes = try postElement.attr("data-score")
                 let time = try postElement.select("time").attr("datetime")
-                let mediaURL = try postElement.attr("data-url")
+                var mediaURL = try postElement.attr("data-url")
                 
                 let commentsElement = try postElement.select("a.bylink.comments.may-blank")
                 let commentsURL = try commentsElement.attr("href")
@@ -160,6 +160,10 @@ class RedditScraper {
                 
                 if type == "video" || type == "gallery" || type == "article", let thumbnailElement = try? postElement.select("a.thumbnail img").first() {
                     thumbnailURL = try? thumbnailElement.attr("src").replacingOccurrences(of: "//", with: "https://")
+                }
+                
+                if type == "gallery" {
+                    mediaURL = commentsURL
                 }
                 
                 return Post(id: id, subreddit: subreddit, title: title, tag: tag, author: author, votes: votes, time: time, mediaURL: mediaURL.privacyURL(trackingParamRemover: trackingParamRemover), commentsURL: commentsURL, commentsCount: commentsCount, type: type, thumbnailURL: thumbnailURL)

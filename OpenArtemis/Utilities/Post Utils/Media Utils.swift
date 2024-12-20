@@ -21,10 +21,12 @@ class MediaUtils {
                 let htmlString = String(data: data, encoding: .utf8)
                 let document = try SwiftSoup.parse(htmlString ?? "")
                 
-                // Extract image links from a tags within li elements within ul
-                let ulElements = try document.select("ul li a")
-                let imageUrls = ulElements.map { aElement in
-                    if let imageUrlString = try? aElement.attr("href") {
+                // Target the gallery-preview divs that contain the full resolution images
+                let galleryPreviews = try document.select("div.gallery-preview div.media-preview-content a.gallery-item-thumbnail-link")
+                
+                // Extract hrefs which contain the full resolution image URLs
+                let imageUrls = galleryPreviews.map { element in
+                    if let imageUrlString = try? element.attr("href") {
                         return imageUrlString
                     }
                     return nil
