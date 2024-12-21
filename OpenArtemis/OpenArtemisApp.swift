@@ -14,29 +14,33 @@ struct OpenArtemisApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Default(.appTheme) var appTheme
     @Default(.textSizePreference) var textSizePreference
+    @State private var isShowingSplash = true
     
-    //TrackingParamRemover as Environment Object so it loads / downloads the tracking params list only once and doesnt unload / load them all the time
     @ObservedObject private var trackingParamRemover = TrackingParamRemover()
     
-    // Scene phase tracks when the app goes to the background
     @Environment(\.scenePhase) var scenePhase
-    // this is the shared context controller for our CoreData module
     let persistenceController = PersistenceController.shared
     @Default(.showingOOBE) var showingOOBE
+    
     var body: some Scene {
         WindowGroup {
-            ContentView(appTheme: appTheme, textSizePreference: textSizePreference)
-                .accentColor(Color.artemisAccent)
-                .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
-                .sheet(isPresented: $showingOOBE){
-                    OnboardingView(appTheme: appTheme, textSizePreference: textSizePreference)
+            ZStack {
+                ContentView(appTheme: appTheme, textSizePreference: textSizePreference)
+                    .accentColor(Color.artemisAccent)
+                    .preferredColorScheme(appTheme.preferredThemeMode.id == 0 ? nil : appTheme.preferredThemeMode.id == 1 ? .light : .dark)
+                    .sheet(isPresented: $showingOOBE) {
+                        OnboardingView(appTheme: appTheme, textSizePreference: textSizePreference)
+                    }
+                
+                if isShowingSplash {
+                    SplashScreenView(isActive: $isShowingSplash)
                 }
-        }
-        .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        .environment(trackingParamRemover)
-        .onChange(of: scenePhase) {
-            // Always save to coredata when app moves to background
-            persistenceController.save()
+            }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            .environment(trackingParamRemover)
+            .onChange(of: scenePhase) {
+                persistenceController.save()
+            }
         }
     }
 }

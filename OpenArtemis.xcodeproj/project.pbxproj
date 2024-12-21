@@ -95,6 +95,7 @@
 		BBB2C0E92B1ADAB1003C8ACC /* OpenArtemisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */; };
 		BBB693302B420C550094DFEE /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = BBB6932F2B420C550094DFEE /* OpenGraph */; };
 		BBCACEF22C3ECC6500D06796 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = BBCACEF12C3ECC6500D06796 /* MarkdownUI */; };
+		BBDB23572D163BF600F1BF4E /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB23562D163BF300F1BF4E /* SplashScreenView.swift */; };
 		BBE434602B1BD02F00886CAB /* SubredditDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */; };
 		BBE434632B1BD32B00886CAB /* SectionIndexTitlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */; };
 		BBE434722B1BD6A400886CAB /* String Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434712B1BD6A400886CAB /* String Hex.swift */; };
@@ -103,6 +104,7 @@
 		BBE4347B2B1BF28E00886CAB /* Disabled Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4347A2B1BF28E00886CAB /* Disabled Modifier.swift */; };
 		BBE434842B1C0D1900886CAB /* SubredditRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434832B1C0D1900886CAB /* SubredditRowView.swift */; };
 		BBE434862B1C0E5200886CAB /* DefaultSubredditRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE434852B1C0E5200886CAB /* DefaultSubredditRowView.swift */; };
+		BBE692172D163D4E0093B4A5 /* FluidGradient in Frameworks */ = {isa = PBXBuildFile; productRef = BBE692162D163D4E0093B4A5 /* FluidGradient */; };
 		BBEB46E02B32812100C33D33 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46DF2B32812100C33D33 /* DividerView.swift */; };
 		BBEB46E32B34999B00C33D33 /* ScrapeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB46E22B34999B00C33D33 /* ScrapeSearch.swift */; };
 		BBEC22D72BC7793B000CFEE8 /* HeadlessWebManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEC22D62BC7793B000CFEE8 /* HeadlessWebManager.swift */; };
@@ -207,6 +209,7 @@
 		BBB2C0C52B1AD88F003C8ACC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBB2C0C82B1AD88F003C8ACC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BBB2C0E82B1ADAB1003C8ACC /* OpenArtemisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenArtemisApp.swift; sourceTree = "<group>"; };
+		BBDB23562D163BF300F1BF4E /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		BBE4345F2B1BD02F00886CAB /* SubredditDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditDrawerView.swift; sourceTree = "<group>"; };
 		BBE434622B1BD32B00886CAB /* SectionIndexTitlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitlesView.swift; sourceTree = "<group>"; };
 		BBE434712B1BD6A400886CAB /* String Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String Hex.swift"; sourceTree = "<group>"; };
@@ -242,6 +245,7 @@
 				BBB2C0DF2B1AD939003C8ACC /* CachedImage in Frameworks */,
 				BBB2C0E72B1AD9A7003C8ACC /* SwiftSoup in Frameworks */,
 				65AD50B12B1E2725008B39E9 /* LazyPager in Frameworks */,
+				BBE692172D163D4E0093B4A5 /* FluidGradient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +360,7 @@
 		BB391F9C2B1ADCC00014FB18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BBDB23562D163BF300F1BF4E /* SplashScreenView.swift */,
 				6535AC012B4563A100E6A2DD /* Images */,
 				BB0556912B3BAF0F00BB71F1 /* Profiles */,
 				BBEB46E12B34981300C33D33 /* Search */,
@@ -659,6 +664,7 @@
 				BBB6932F2B420C550094DFEE /* OpenGraph */,
 				BB4845192B9E32980015376B /* AlertToast */,
 				BBCACEF12C3ECC6500D06796 /* MarkdownUI */,
+				BBE692162D163D4E0093B4A5 /* FluidGradient */,
 			);
 			productName = OpenArtemis;
 			productReference = BBB2C0BE2B1AD88E003C8ACC /* OpenArtemis.app */;
@@ -702,6 +708,7 @@
 				BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				BBB6932E2B420C550094DFEE /* XCRemoteSwiftPackageReference "OpenGraph" */,
 				BB4845182B9E32980015376B /* XCRemoteSwiftPackageReference "AlertToast" */,
+				BBDB23582D163C2400F1BF4E /* XCRemoteSwiftPackageReference "FluidGradient" */,
 			);
 			productRefGroup = BBB2C0BF2B1AD88E003C8ACC /* Products */;
 			projectDirPath = "";
@@ -753,6 +760,7 @@
 				65F5959A2B1F1195005BE493 /* ScrapePostMedia.swift in Sources */,
 				BB8CAE7C2B1E73D400CA13BB /* TimeFormatter.swift in Sources */,
 				BB0556952B3BAF8400BB71F1 /* ScrapeProfile.swift in Sources */,
+				BBDB23572D163BF600F1BF4E /* SplashScreenView.swift in Sources */,
 				BB7683602BBFAE2500792D5A /* TapHighlighter.swift in Sources */,
 				BB8CAE732B1E735F00CA13BB /* PostPageView.swift in Sources */,
 				BB391FA42B1ADD140014FB18 /* SearchView.swift in Sources */,
@@ -1034,7 +1042,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1075,7 +1083,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ethanbills.OpenArtemis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1193,6 +1201,14 @@
 				minimumVersion = 1.5.0;
 			};
 		};
+		BBDB23582D163C2400F1BF4E /* XCRemoteSwiftPackageReference "FluidGradient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cindori/FluidGradient";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1230,6 +1246,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BB322CB82B26C0A300FC5849 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		BBE692162D163D4E0093B4A5 /* FluidGradient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBDB23582D163C2400F1BF4E /* XCRemoteSwiftPackageReference "FluidGradient" */;
+			productName = FluidGradient;
 		};
 /* End XCSwiftPackageProductDependency section */
 
