@@ -18,6 +18,24 @@ struct FilterView: View {
     @State private var showingAddUserAlert = false
     @State private var showingClearConfirmation = false
     
+    private func sanitizeSubreddit(_ input: String) -> String {
+        var sanitized = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        if sanitized.hasPrefix("r/") {
+            sanitized = String(sanitized.dropFirst(2))
+        } else if sanitized.hasPrefix("/r/") {
+            sanitized = String(sanitized.dropFirst(3))
+        }
+        return sanitized.lowercased()
+    }
+    
+    private func sanitizeUsername(_ input: String) -> String {
+        var sanitized = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        if sanitized.hasPrefix("u/") || sanitized.hasPrefix("/u/") {
+            sanitized = String(sanitized.dropFirst(sanitized.hasPrefix("u/") ? 2 : 3))
+        }
+        return sanitized.lowercased()
+    }
+    
     var body: some View {
         ThemedList(appTheme: appTheme, textSizePreference: textSizePreference) {
             Section {
@@ -103,8 +121,9 @@ struct FilterView: View {
                 newSubreddit = ""
             }
             Button("Add") {
-                if !newSubreddit.isEmpty && !subredditFilters.contains(where: { $0.lowercased() == newSubreddit.lowercased() }) {
-                    subredditFilters.append(newSubreddit.lowercased())
+                let sanitized = sanitizeSubreddit(newSubreddit)
+                if !sanitized.isEmpty && !subredditFilters.contains(where: { $0 == sanitized }) {
+                    subredditFilters.append(sanitized)
                     newSubreddit = ""
                 }
             }
@@ -115,8 +134,9 @@ struct FilterView: View {
                 newKeyword = ""
             }
             Button("Add") {
-                if !newKeyword.isEmpty && !keywordFilters.contains(where: { $0.lowercased() == newKeyword.lowercased() }) {
-                    keywordFilters.append(newKeyword.lowercased())
+                let sanitized = newKeyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                if !sanitized.isEmpty && !keywordFilters.contains(where: { $0 == sanitized }) {
+                    keywordFilters.append(sanitized)
                     newKeyword = ""
                 }
             }
@@ -127,8 +147,9 @@ struct FilterView: View {
                 newUser = ""
             }
             Button("Add") {
-                if !newUser.isEmpty && !userFilters.contains(where: { $0.lowercased() == newUser.lowercased() }) {
-                    userFilters.append(newUser.lowercased())
+                let sanitized = sanitizeUsername(newUser)
+                if !sanitized.isEmpty && !userFilters.contains(where: { $0 == sanitized }) {
+                    userFilters.append(sanitized)
                     newUser = ""
                 }
             }
