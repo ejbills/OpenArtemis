@@ -80,8 +80,13 @@ struct HandleDeepLinkResolution: ViewModifier {
         let cleanedURLString = MiscUtils.convertToOldRedditLink(normalLink: urlStringWithoutScheme)
         let correctedURLString = correctSchemeInURLString(cleanedURLString)
         
-        if let url = URL(string: correctedURLString) {
+        // Ensure URL has a scheme
+        let fullURLString = correctedURLString.hasPrefix("http") ? correctedURLString : "https://" + correctedURLString
+        
+        if let url = URL(string: fullURLString) {
             let pathComponents = url.pathComponents
+            
+            print(pathComponents)
             
             if pathComponents.count > 1 {
                 switch pathComponents[1] {
@@ -100,18 +105,10 @@ struct HandleDeepLinkResolution: ViewModifier {
                         coordinator.path.append(ProfileResponse(username: username))
                     }
                 default:
-                    // handle regular link display in an in-app browser
-                    let safariURL = URL(string: "https://" + urlStringWithoutScheme)
-                    if let safariURL = safariURL {
-                        SafariHelper.openSafariView(withURL: safariURL)
-                    }
+                        SafariHelper.openSafariView(withURL: url)
                 }
             } else {
-                // handle regular link display in an in-app browser
-                let safariURL = URL(string: "https://" + urlStringWithoutScheme)
-                if let safariURL = safariURL {
-                    SafariHelper.openSafariView(withURL: safariURL)
-                }
+                    SafariHelper.openSafariView(withURL: url)
             }
         }
     }
@@ -130,11 +127,11 @@ struct HandleDeepLinkResolution: ViewModifier {
         switch result {
         case .success(let post):
             coordinator.path.append(PostResponse(post: post, commentsURLOverride: originalURL))
-            GlobalLoadingManager.shared.setLoading(toState: false)
         case .failure(let error):
             print("Failed to scrape Reddit post: \(error)")
-            GlobalLoadingManager.shared.setLoading(toState: false)
         }
+        
+        GlobalLoadingManager.shared.setLoading(toState: false)
     }
     
     private func correctSchemeInURLString(_ urlString: String) -> String {
