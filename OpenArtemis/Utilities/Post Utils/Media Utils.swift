@@ -21,14 +21,39 @@ class MediaUtils {
                 let htmlString = String(data: data, encoding: .utf8)
                 let document = try SwiftSoup.parse(htmlString ?? "")
                 
-                // Extract image links from a tags within li elements within ul
-                let ulElements = try document.select("ul li a")
-                let imageUrls = ulElements.map { aElement in
-                    if let imageUrlString = try? aElement.attr("href") {
-                        return imageUrlString
+                // gallery url does not contain img links
+                // https://www.reddit.com/gallery/abcdefg
+                // need to redirect to comment url, but does not redirect automatically without loading js
+                // https://www.reddit.com/r/subreddit/comments/abcdefg/the_post_name/
+                
+                if let redirect = try? document.select("shreddit-redirect").attr("href"),
+                   redirect.hasPrefix("/r/"),
+                   var urlComponents = URLComponents(url: galleryURL, resolvingAgainstBaseURL: false) {
+                    
+                    // set the relative redirect path
+                    // /r/subreddit/comments/abcdefg/the_post_name/
+                    urlComponents.path = redirect
+                    
+                    // run again to extract media from the redirected url
+                    if let url = urlComponents.url, url != galleryURL {
+                        return Self.galleryMediaExtractor(galleryURL: url, completion: completion)
                     }
-                    return nil
-                }.compactMap { $0 }
+                    
+                }
+                
+                // extract images from carousel on comment page
+                // /r/subreddit/comments/abcdefg/the_post_name/
+                // there are 2 <img> tags, one directly in <li>, one in nested <figure>.
+                // Only extract one to prevent duplicate images
+                let imageUrls = try document.select("gallery-carousel ul li>img")
+                    .compactMap {
+                        // first image is loaded and has a src
+                        if let src = try? $0.attr("src"), !src.isEmpty {
+                            return src
+                        }
+                        // other images are not loaded yet, different attribute
+                        return try? $0.attr("data-lazy-src")
+                    }
                 
                 completion(imageUrls)
             } catch {
