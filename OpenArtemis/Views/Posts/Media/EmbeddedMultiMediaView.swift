@@ -23,6 +23,8 @@ struct EmbeddedMultiMediaView: View {
     let textSizePreference: TextSizePreference
     
     @State private var isLoading: Bool = false
+        
+    let onTap: (() -> Void)?
     
     var body: some View {
         let layout = useLargeThumbnail ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
@@ -95,6 +97,7 @@ struct EmbeddedMultiMediaView: View {
         .padding(appTheme.compactMode || forceCompactMode ? 0 : 6) // less spacing in compact ^.^
         .background(RoundedRectangle(cornerRadius: 6).foregroundColor(tagBgColor).opacity(appTheme.compactMode || forceCompactMode ? 0 : 1))
         .onTapGesture {
+            onTap?()
             if !isLoading {
                 withAnimation {
                     isLoading = true
