@@ -11,7 +11,7 @@ import Defaults
 
 struct PostFeedView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-    
+
     let post: Post
     let forceAuthorToDisplay: Bool
     let forceCompactMode: Bool
@@ -20,11 +20,11 @@ struct PostFeedView: View {
     let textSizePreference: TextSizePreference
     let onTap: (() -> Void)?
     let useLargeThumbnail: Bool
-    
+
     @State private var mediaSize: CGSize = .zero
     @State private var metadataThumbnailURL: String? = nil
     @State private var hasAppeared: Bool = false
-    
+
     init(post: Post, forceAuthorToDisplay: Bool = false, forceCompactMode: Bool = false, isRead: Bool = false, appTheme: AppThemeSettings, textSizePreference: TextSizePreference, useLargeThumbnail: Bool, onTap: (() -> Void)? = nil) {
         self.post = post
         self.forceAuthorToDisplay = forceAuthorToDisplay
@@ -101,12 +101,14 @@ struct PostFeedView: View {
     private func renderNormalContent() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             TitleTagView(title: post.title, domain: "", tag: post.tag, textSizePreference: textSizePreference)
-            
+
             // text posts do not have any metadata to display, so avoid rendering this entirely if it's a text post.
             if post.type != "text" {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), useLargeThumbnail: useLargeThumbnail, title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), useLargeThumbnail: useLargeThumbnail, title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize, onTap: {
+                    PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
+                })
             }
-            
+
             PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
         }
     }
@@ -114,19 +116,21 @@ struct PostFeedView: View {
     private func renderCompactContent() -> some View {
         HStack(alignment: .top) {
             VStack {
-                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), useLargeThumbnail: false, title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize)
+                MediaView(determinedType: post.type, mediaURL: post.mediaURL, thumbnailURL: getThumbnailURL(), useLargeThumbnail: false, title: post.title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, mediaSize: $mediaSize, onTap:  {
+                    PostUtils.shared.markRead(context: managedObjectContext, postId: post.id)
+                })
                     .frame(width: roughCompactWidth, height: roughCompactHeight) // lock media to a square
             }
-            
+
             VStack(alignment: .leading, spacing: 4) {
-                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL, 
+                TitleTagView(title: post.title, domain: appTheme.showOriginalURL ? post.mediaURL.originalURL : post.mediaURL.privateURL,
                              tag: post.tag, textSizePreference: textSizePreference)
                 PostDetailsView(postAuthor: post.author, subreddit: post.subreddit, time: post.time, votes: Int(post.votes) ?? 0, commentsCount: Int(post.commentsCount) ?? 0, forceAuthorToDisplay: forceAuthorToDisplay, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
     }
-    
+
     private func getThumbnailURL() -> String? {
         return post.thumbnailURL != nil ? post.thumbnailURL : metadataThumbnailURL
     }

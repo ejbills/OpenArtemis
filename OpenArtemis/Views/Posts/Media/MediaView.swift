@@ -24,6 +24,8 @@ struct MediaView: View {
     
     @Binding var mediaSize: CGSize
     
+    let onTap: (() -> Void)?
+    
     var body: some View {
         VStack {
             let forcedPrivateMediaURL = URL(string: mediaURL.privateURL)!
@@ -63,6 +65,7 @@ struct MediaView: View {
                 .aspectRatio(contentMode: .fit)
                 .onTapGesture {
                     ImageViewerController(images: [mediaURL.privateURL], imageTitle: title).present()
+                    onTap?()
                 }
                 .cornerRadius(6)
                 
@@ -74,7 +77,7 @@ struct MediaView: View {
                         .foregroundStyle(Color.white.opacity(0.75))
                 }
             default:
-                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, useLargeThumbnail: useLargeThumbnail, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference)
+                EmbeddedMultiMediaView(determinedType: determinedType, mediaURL: mediaURL, thumbnailURL: thumbnailURL, useLargeThumbnail: useLargeThumbnail, title: title, forceCompactMode: forceCompactMode, appTheme: appTheme, textSizePreference: textSizePreference, onTap: onTap)
             }
         }
         .background(
